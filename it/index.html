@@ -65,13 +65,9 @@
   <div class="snap-root">
   <main>
     <!-- HERO -->
-    <section class="hero" id="top">
+    <section class="hero home-hero" id="top">
       <div class="container hero__content">
-        <p class="hero__kicker">1-4 ottobre • Massagno</p>
         <div class="hero__title-spacer" aria-hidden="true"></div>
-        <p class="hero__subtitle">
-          Primo festival cinematografico interamente dedicato all’Ai in Svizzera.
-        </p>
 
         <div class="hero__actions">
           <a class="btn" href="program/index.html">Guarda il programma</a>
@@ -330,11 +326,21 @@ immagini, il pensiero e la realtà.
       });
     }
   </script>
-  
-  <script
-    async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU3RhoT04vjg5KrJAOymlwhJpVIduFGrA&callback=initFestivalMap">
+  <script src="../assets/js/maps-config.js"></script>
+  <script>
+    (function () {
+      var key = window.MFF_GOOGLE_MAPS_API_KEY;
+      var mapEl = document.getElementById('festival-map');
+      if (!key) {
+        if (mapEl) mapEl.dataset.mapStatus = 'missing-key';
+        return;
+      }
+      var script = document.createElement('script');
+      script.async = true;
+      script.defer = true;
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&callback=initFestivalMap';
+      document.head.appendChild(script);
+    })();
   </script>
 
 <script src="../assets/js/ticket-consent.js"></script>
@@ -344,13 +350,24 @@ immagini, il pensiero e la realtà.
     var heroContent = document.querySelector('.hero__content');
     if (!video) return;
     var revealed = false;
+    var scroller = document.querySelector('.snap-root');
+    function isHeroActive() {
+      var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
+      return scrollTop < window.innerHeight * 0.5;
+    }
+    function syncHeroActions() {
+      if (!heroContent || !revealed) return;
+      heroContent.classList.toggle('is-revealed', isHeroActive());
+    }
     function reveal() {
       if (revealed) return;
       revealed = true;
-      if (heroContent) heroContent.classList.add('is-revealed');
+      syncHeroActions();
     }
+    if (scroller) scroller.addEventListener('scroll', syncHeroActions, { passive: true });
+    window.addEventListener('resize', syncHeroActions);
     video.addEventListener('timeupdate', function () {
-      if (video.currentTime >= 8) reveal();
+      if (video.currentTime >= 5.5) reveal();
     });
     video.addEventListener('ended', function () {
       video.currentTime = 23;
@@ -358,6 +375,7 @@ immagini, il pensiero e la realtà.
       reveal();
     });
     video.addEventListener('error', reveal);
+    window.setTimeout(reveal, 6000);
   })();
 </script>
 </body>

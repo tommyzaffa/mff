@@ -536,8 +536,6 @@ a:hover { text-decoration: underline; }
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-size: 0.82rem;
-    position: relative;
-    top: -155px;           
   }
 .hero__title {
   margin: 0;
@@ -562,6 +560,79 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+}
+
+.home-hero .hero__content{
+  --homeButtonsX: -4vw;
+  --homeButtonsY: 12vh;
+  --homeButtonsGap: 1.2rem;
+  --homeButtonsDividerWidth: 36px;
+  --homeButtonsDividerOpacity: 0.28;
+
+  height: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding: 0;
+}
+
+.home-hero .hero__content > *{
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  filter: none;
+  transition: none;
+}
+
+.home-hero .hero__title-spacer{
+  height: clamp(7.5rem, 19vh, 12rem);
+}
+
+.home-hero .hero__actions{
+  position: fixed;
+  left: max(1rem, calc((100vw - 1100px) / 2));
+  top: 50%;
+  z-index: 3;
+  justify-content: flex-start;
+  gap: var(--homeButtonsGap);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(var(--homeButtonsX), calc(var(--homeButtonsY) + 24px)) scale(0.98);
+  filter: blur(12px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 1.25s;
+}
+
+.home-hero .hero__actions::before{
+  content: "";
+  width: var(--homeButtonsDividerWidth);
+  height: 1px;
+  align-self: center;
+  order: 1;
+  background: rgba(15,15,18,var(--homeButtonsDividerOpacity));
+}
+
+.home-hero .hero__actions .btn:first-child{
+  order: 0;
+}
+
+.home-hero .hero__actions .btn:last-child{
+  order: 2;
+}
+
+.home-hero .hero__content.is-revealed .hero__actions{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(var(--homeButtonsX), var(--homeButtonsY)) scale(1);
+  filter: blur(0);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 0s;
 }
 
 
@@ -1330,6 +1401,8 @@ a:hover{
 #news, #films{
   position: relative;
   isolation: isolate;
+  overflow: hidden;
+  background: #f7f7f5;
 }
 
 #news > .container,
@@ -1342,7 +1415,7 @@ a:hover{
 #films::before{
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -2px;
   z-index: 0;
   background-position: center;
   background-size: cover;
@@ -1373,6 +1446,16 @@ a:hover{
 #news::after,
 #films::after{
   background: transparent;
+}
+
+#news{
+  margin-bottom: -3px;
+  height: calc(100vh + 3px);
+}
+
+#films{
+  margin-top: -3px;
+  height: calc(100vh + 3px);
 }
 
 /* ====== Hero sections: testa.png = light bg → force dark text ====== */

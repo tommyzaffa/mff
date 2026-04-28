@@ -80,7 +80,7 @@ html{
   pointer-events: none;
 }
 
-/* Hero: dark bg → transparent overlay, white text */
+/* Hero: light bg -> dark text */
 .authors-hero{
   color: rgba(15,15,18,0.92);
 }
@@ -90,27 +90,27 @@ html{
 }
 
 .authors-hero .authors-index__item{
-  color: rgba(255,255,255,0.88);
-  border-color: rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08);
+  color: rgba(15,15,18,0.88);
+  border-color: rgba(15,15,18,0.20);
+  background: rgba(15,15,18,0.06);
 }
 
 .authors-hero .authors-index__item:hover{
-  background: rgba(255,255,255,0.14);
+  background: rgba(15,15,18,0.10);
 }
 
 .authors-hero .btn{
-  color: rgba(255,255,255,0.95);
-  border-color: rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.15);
+  color: rgba(15,15,18,0.92);
+  border-color: rgba(15,15,18,0.22);
+  background: rgba(15,15,18,0.06);
 }
 
 .authors-hero .btn:hover{
-  background: rgba(255,255,255,0.22);
+  background: rgba(15,15,18,0.12);
 }
 
 .authors-hero .btn--ghost{
-  background: rgba(0,0,0,0.30);
+  background: rgba(15,15,18,0.04);
 }
 
 /* content above */
@@ -122,6 +122,14 @@ html{
 /* Move hero content slightly (like jury) */
 .authors-hero > .container{
   transform: translateY(42px);
+}
+
+.authors-hero.authors-hero--raised > .container{
+  transform: translateY(-30px);
+}
+
+.authors-hero.authors-hero--about-raised > .container{
+  transform: translateY(-18px);
 }
 
 /* ====== Index pills ====== */
@@ -302,4 +310,3 @@ html{
 }
 
 .site-footer .footer__wrap{ transform: translateY(var(--sectionNudgeY)); }
-

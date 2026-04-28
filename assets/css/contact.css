@@ -165,6 +165,19 @@ html{ scroll-behavior: smooth; }
   opacity: 0.7;
 }
 
+.contact-newsletter,
+.contact-newsletter p,
+.contact-newsletter a,
+.contact-newsletter__title,
+.contact-newsletter__text,
+.contact-newsletter__tiny{
+  color: rgba(15,15,18,0.88);
+}
+
+.contact-panel .contact-newsletter a:not(.btn):not(.nav__lang-option){
+  color: rgba(15,15,18,0.88);
+}
+
 /* MailerLite embed — match your small style */
 .contact__ml{
   width: 100%;
@@ -408,15 +421,15 @@ html{ scroll-behavior: smooth; }
 }
 
 .contact-hero .btn{
-  color: rgba(255,255,255,0.92);
-  border-color: rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.12);
+  color: rgba(15,15,18,0.92);
+  border-color: rgba(15,15,18,0.22);
+  background: rgba(15,15,18,0.06);
 }
 
 .contact-hero .btn:hover{
-  background: rgba(255,255,255,0.22);
+  background: rgba(15,15,18,0.12);
 }
 
 .contact-hero .btn--ghost{
-  background: rgba(255,255,255,0.08);
+  background: rgba(15,15,18,0.04);
 }

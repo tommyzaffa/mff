@@ -8,6 +8,12 @@ body { overflow: hidden; }
   scroll-snap-align: start;
 }
 
+.films-hero{
+  display: grid;
+  align-items: center;
+  padding: 0;
+}
+
   /* ====== New award composition: stacked ====== */
 .award__stack{
     height: 100%;
@@ -216,7 +222,7 @@ body { overflow: hidden; }
 /* Hero a touch stronger */
 .films-hero::before{ opacity: 1; }
 
-/* Hero: dark bg → transparent overlay, white text */
+/* Hero: light bg -> dark text */
 .films-hero{
   color: rgba(15,15,18,0.92);
 }
@@ -226,13 +232,13 @@ body { overflow: hidden; }
 }
 
 .films-hero .awards-index__item{
-  color: rgba(255,255,255,0.88);
-  border-color: rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08);
+  color: rgba(15,15,18,0.88);
+  border-color: rgba(15,15,18,0.20);
+  background: rgba(15,15,18,0.06);
 }
 
 .films-hero .awards-index__item:hover{
-  background: rgba(255,255,255,0.14);
+  background: rgba(15,15,18,0.10);
 }
 
 /* Keep content above background */
