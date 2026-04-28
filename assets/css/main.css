@@ -858,10 +858,12 @@ will-change: transform, opacity, filter;
   border: 1px solid rgba(0,0,0,0.10);
   background: rgba(255,255,255,0.70);
   backdrop-filter: blur(10px);
+  color: rgba(15,15,18,0.90);
 }
 
 .map-card__eyebrow{
   margin: 0 0 0.9rem;
+  color: rgba(15,15,18,0.86);
   opacity: 0.7;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -889,10 +891,12 @@ will-change: transform, opacity, filter;
 }
 
 .map-list strong{
+  color: rgba(15,15,18,0.92);
   font-size: 0.98rem;
 }
 
 .map-list span{
+  color: rgba(15,15,18,0.78);
   opacity: 0.72;
   font-size: 0.92rem;
 }

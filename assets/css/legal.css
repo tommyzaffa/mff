@@ -60,12 +60,12 @@ body { overflow: hidden; }
 /* Hero */
 .legal-hero{
   display: grid;
-  align-items: start;
+  align-items: center;
 }
 
 .legal-hero > .container{
-  padding-top: 3vh;
-  padding-bottom: clamp(2rem, 4vh, 3rem);
+  padding-top: clamp(1.6rem, 3vw, 2.4rem);
+  padding-bottom: clamp(1.6rem, 3vw, 2.4rem);
 }
 
 /* Content section */
@@ -91,6 +91,7 @@ body { overflow: hidden; }
   background: rgba(255,255,255,0.72);
   backdrop-filter: blur(10px);
   overflow: hidden;
+  color: rgba(15,15,18,0.90);
 }
 
 .legal-scroll{
@@ -104,12 +105,25 @@ body { overflow: hidden; }
   margin: 0 0 0.6rem;
   font-size: 1.05rem;
   letter-spacing: -0.01em;
+  color: rgba(15,15,18,0.92);
+}
+
+.legal-scroll h4{
+  color: rgba(15,15,18,0.90);
 }
 
 .legal-scroll p{
   margin: 0 0 1rem;
-  opacity: 0.84;
+  color: rgba(15,15,18,0.84);
   max-width: 70ch;
+}
+
+.legal-scroll li{
+  color: rgba(15,15,18,0.84);
+}
+
+.legal-content .legal-card .legal-scroll a{
+  color: rgba(15,15,18,0.92);
 }
 
 .legal-scroll::-webkit-scrollbar{
