@@ -1,0 +1,422 @@
+/* Contact page (about/contact.html)
+   Keeps global look from main.css; only page-specific layout + backgrounds here.
+*/
+
+/* Smooth in-page navigation (no teleport) */
+html{ scroll-behavior: smooth; }
+/* If the site uses a dedicated scroll container, smooth it too */
+.snap-root{ scroll-behavior: smooth; }
+
+/* Keep header always visible on this page */
+.site-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+}
+
+/* Prevent anchored sections from hiding under the fixed header */
+.contact-hero,
+.contact-panel,
+.site-footer{
+  scroll-margin-top: 50px;
+}
+
+/* Snap sections */
+.contact-hero,
+.contact-panel,
+.site-footer{
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+/* Contact panel background (optional, subtle) */
+.contact-panel{
+  position: relative;
+  isolation: isolate;
+  background-color: rgba(255,255,255,0.1);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: var(--contact-bg);
+}
+
+.contact-panel > .container{
+  position: relative;
+  z-index: 2;
+  transform: translateY(4vh);
+}
+.contact-panel > .container{
+  padding: clamp(1.25rem, 2vw, 1.8rem);
+  border-radius: 28px;
+  background: transparent;
+  backdrop-filter: none;
+  border: 0;
+}
+
+.contact__eyebrow{
+  margin: 0 0 0.6rem;
+  opacity: 0.75;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+/* Grid of channels */
+.contact-grid{
+  margin-top: 1.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.6vw, 1.2rem);
+}
+
+.contact-card,
+.contact-card .contact-card__title,
+.contact-card .contact-card__value,
+.contact-card .contact-card__hint{
+  color: rgba(15,15,18,0.88);
+}
+
+.contact-card{
+  border-radius: 18px;
+  padding: 1.05rem 1.05rem;
+
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(0,0,0,0.10);
+  backdrop-filter: blur(8px);
+
+  display: grid;
+  gap: 0.25rem;
+
+  text-decoration: none;
+  opacity: 1;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.contact-card:hover{
+  text-decoration: none;
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(0,0,0,0.14);
+}
+
+.contact-card:focus-visible{
+  outline: 2px solid rgba(0,0,0,0.28);
+  outline-offset: 3px;
+}
+
+.contact-card__title{
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.contact-card__value{
+  font-weight: 650;
+  opacity: 0.85;
+}
+
+.contact-card__hint{
+  font-size: 0.92rem;
+  opacity: 0.68;
+}
+
+/* Newsletter block */
+.contact-newsletter{
+  margin-top: clamp(1.4rem, 2.4vw, 2rem);
+  padding: 1.2rem 1.2rem 1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+}
+
+.contact-newsletter__copy{
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.005rem;
+}
+
+.contact-newsletter__text{
+  margin-bottom: 0.4rem;
+}
+
+.contact-newsletter .ml-embedded{
+  margin-top: 0 !important;
+}
+
+.contact-newsletter .ml-form-embedWrapper{
+  margin-top: 0 !important;
+}
+
+.contact-newsletter__title{
+  margin: 0;
+  font-weight: 800;
+}
+
+.contact-newsletter__text{
+  margin: 0;
+  opacity: 0.78;
+}
+
+.contact-newsletter__tiny{
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* MailerLite embed — match your small style */
+.contact__ml{
+  width: 100%;
+  max-width: 700px;
+}
+
+.contact__ml iframe{
+  width: 100% !important;
+  max-width: 700px;
+  border: 0 !important;
+  transform: scale(0.92);
+  transform-origin: left top;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .contact-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px){
+  .contact-grid{ grid-template-columns: 1fr; }
+  .contact-card{ padding: 1rem; }
+  .contact-newsletter{ padding: 1.05rem; }
+}
+
+/* Ensure header stays above page overlays */
+.nav__dropdown{ position: relative; z-index: 10000; }
+.nav__panel{ z-index: 10000; }
+.site-header{ z-index: 10000; }
+
+/* -----------------------------
+   MailerLite embed — make it smaller + prettier (contact page only)
+   Works for the universal embed (non-iframe) and keeps footer consistent.
+-------------------------------- */
+
+/* Target both embeds on this page */
+.contact__ml,
+.footer__ml{
+  max-width: 420px;
+}
+
+/* Reset ML wrapper padding/background so we can style it */
+.contact__ml .ml-form-embedWrapper,
+.footer__ml .ml-form-embedWrapper,
+.contact__ml .ml-form-embedContainer,
+.footer__ml .ml-form-embedContainer{
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+/* Hide big default title/paragraphs MailerLite sometimes injects */
+.contact__ml .ml-form-embedWrapper h1,
+.footer__ml .ml-form-embedWrapper h1,
+.contact__ml .ml-form-embedWrapper h2,
+.footer__ml .ml-form-embedWrapper h2,
+.contact__ml .ml-form-embedWrapper h3,
+.footer__ml .ml-form-embedWrapper h3,
+.contact__ml .ml-form-embedWrapper .ml-form-embedHeader,
+.footer__ml .ml-form-embedWrapper .ml-form-embedHeader,
+.contact__ml .ml-form-embedWrapper .ml-form-embedHeader *,
+.footer__ml .ml-form-embedWrapper .ml-form-embedHeader * ,
+.contact__ml .ml-form-embedWrapper p:not(.ml-form-successBody),
+.footer__ml .ml-form-embedWrapper p:not(.ml-form-successBody){
+  display: none !important;
+}
+
+/* Compact single-line layout (email + button). If ML uses more fields, it will wrap. */
+.contact__ml form,
+.footer__ml form{
+  display: flex !important;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+/* Field wrapper: remove extra spacing */
+.contact__ml .ml-form-fieldRow,
+.footer__ml .ml-form-fieldRow,
+.contact__ml .ml-form-fieldRow .ml-field-group,
+.footer__ml .ml-form-fieldRow .ml-field-group{
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Email input */
+.contact__ml input,
+.footer__ml input{
+  -webkit-appearance: none;
+  appearance: none;
+  height: 38px;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.14) !important;
+  background: rgba(255,255,255,0.78) !important;
+  color: rgba(0,0,0,0.86) !important;
+  font: inherit;
+  line-height: 1;
+  flex: 0 1 240px;
+  min-width: 180px;
+  box-shadow: none !important;
+}
+
+.contact__ml input::placeholder,
+.footer__ml input::placeholder{
+  color: rgba(0,0,0,0.45);
+}
+
+.contact__ml input:focus,
+.footer__ml input:focus{
+  outline: none;
+  border-color: rgba(0,0,0,0.28) !important;
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.08) !important;
+}
+
+/* Button */
+.contact__ml button,
+.footer__ml button,
+.contact__ml .ml-button,
+.footer__ml .ml-button{
+  height: 38px;
+  padding: 0 0.9rem;
+  border-radius: 999px !important;
+  border: 1px solid rgba(0,0,0,0.14) !important;
+  background: rgba(0,0,0,0.86) !important;
+  color: rgba(255,255,255,0.92) !important;
+  font: inherit;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.contact__ml button:hover,
+.footer__ml button:hover,
+.contact__ml .ml-button:hover,
+.footer__ml .ml-button:hover{
+  filter: brightness(1.03);
+}
+
+/* Success message: keep it compact */
+.contact__ml .ml-form-successBody,
+.footer__ml .ml-form-successBody{
+  padding: 0.6rem 0 !important;
+  margin: 0 !important;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* If ML renders as iframe for some reason, keep it visually smaller */
+.contact__ml iframe,
+.footer__ml iframe{
+  width: 100% !important;
+  border: 0 !important;
+  transform: scale(0.9);
+  transform-origin: left top;
+}
+
+.contact-newsletter{
+  width: 100%;
+  /* same width as the contact grid above (the container width) */
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.contact-newsletter .contact__ml,
+.contact-newsletter .footer__ml,
+.contact-newsletter .ml-embedded{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-newsletter__copy{
+  text-align: center;
+}
+
+.contact-newsletter__tiny{
+  text-align: center;
+}
+
+/* Force-hide any remaining MailerLite default titles */
+.contact__ml .ml-form-embedTitle,
+.footer__ml .ml-form-embedTitle,
+.contact__ml .ml-block-form .ml-form-embedTitle,
+.footer__ml .ml-block-form .ml-form-embedTitle,
+.contact__ml .ml-embedded h1,
+.contact__ml .ml-embedded h2,
+.contact__ml .ml-embedded h3,
+.footer__ml .ml-embedded h1,
+.footer__ml .ml-embedded h2,
+.footer__ml .ml-embedded h3,
+.contact__ml legend,
+.footer__ml legend{
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Reduce top spacing inside the embed now that title is removed */
+.contact__ml .ml-form-embedWrapper,
+.footer__ml .ml-form-embedWrapper{
+  padding-top: 0 !important;
+}
+
+/* Last-resort: the Contact section embed uses slightly different wrapper structure */
+.contact-newsletter .ml-embedded .ml-form-embedHeader,
+.contact-newsletter .ml-embedded .ml-form-embedHeader * ,
+.contact-newsletter .ml-embedded .ml-form-embedTitle,
+.contact-newsletter .ml-embedded .ml-form-embedTitle * ,
+.contact-newsletter .ml-embedded .ml-form-title,
+.contact-newsletter .ml-embedded .ml-form-title * ,
+.contact-newsletter .ml-embedded [class*="embedHeader"],
+.contact-newsletter .ml-embedded [class*="embedTitle"],
+.contact-newsletter .ml-embedded [class*="formTitle"],
+.contact-newsletter .ml-embedded header{
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove any top spacing that might remain from the hidden header */
+.contact-newsletter .ml-embedded .ml-form-embedWrapper,
+.contact-newsletter .ml-embedded .ml-form-embedContainer{
+  padding-top: 0 !important;
+}
+
+/* Some ML templates add an empty spacer div right after the header */
+.contact-newsletter .ml-embedded .ml-form-embedBody > div:empty{
+  display: none !important;
+}
+
+.contact-hero{
+  --section-shift: -16vh;
+  color: rgba(15,15,18,0.92);
+}
+
+.contact-hero .btn{
+  color: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.12);
+}
+
+.contact-hero .btn:hover{
+  background: rgba(255,255,255,0.22);
+}
+
+.contact-hero .btn--ghost{
+  background: rgba(255,255,255,0.08);
+}

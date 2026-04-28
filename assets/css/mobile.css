@@ -1,0 +1,277 @@
+/* ================================================================
+   mobile.css — responsive overrides for smartphones
+   Caricato dopo tutti gli altri CSS. Si attiva solo in @media.
+   ================================================================ */
+
+@media (max-width: 640px) {
+
+  /* ---- Scroll interno: footer e sezione mappa/venues ---- */
+  .site-footer,
+  #films {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Breathing room sotto le venues */
+  #films .container {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 8rem);
+  }
+
+  /* ---- Header: pseudo-elemento che riempie la gap sopra con lo stesso stile ---- */
+  .site-header {
+    padding: 0.55rem 0.75rem;
+    overflow: visible; /* permette al ::before di uscire sopra */
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * env(safe-area-inset-top));
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top);
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Nascondi il pulsante "Acquista" nell'header — accessibile dal menu a tendina */
+  .nav__cta-btn {
+    display: none;
+  }
+
+  /* Rimpicciolisci il selettore lingua */
+  .nav__lang-switch {
+    padding: 0.15rem;
+    gap: 0.08rem;
+  }
+
+  .nav__lang-option {
+    min-width: 32px;
+    height: 28px;
+    padding: 0 0.38rem;
+    font-size: 0.63rem;
+  }
+
+  /* Rimpicciolisci il toggle menu */
+  .nav__toggle {
+    padding: 0.42rem 0.65rem;
+    font-size: 0.71rem;
+    gap: 0.4rem;
+  }
+
+  /* Pannello nav: non esca dallo schermo */
+  .nav__panel {
+    right: 0;
+    min-width: 200px;
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  /* ---- Hero ---- */
+  .hero__title {
+    font-size: clamp(1.9rem, 9vw, 2.8rem);
+    letter-spacing: -0.025em;
+  }
+
+  .hero__subtitle {
+    font-size: 0.92rem;
+    margin: 0.7rem 0 1.2rem;
+  }
+
+  .hero__actions .btn {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.88rem;
+  }
+
+  /* ---- About ---- */
+  .about__title {
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+  }
+
+  /* ---- Sezioni generiche ---- */
+  .section {
+    padding: 3rem 0;
+  }
+
+  .section__title {
+    font-size: clamp(1.2rem, 6vw, 1.7rem);
+  }
+
+  /* ---- Poster strip ---- */
+  .poster-strip {
+    grid-auto-columns: minmax(148px, 176px);
+  }
+
+  .poster img {
+    height: 220px;
+  }
+
+  /* ---- Carosello film ---- */
+  .carousel {
+    padding: 0.8rem 40px 1rem;
+  }
+
+  .carousel__btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel__btn--prev { left: -2px; }
+  .carousel__btn--next { right: -2px; }
+
+  /* ---- Carosello news: card compatta per smartphone ---- */
+  .carousel--news .carousel__track {
+    --cardW: min(calc(100vw - 5.5rem), 280px);
+  }
+
+  .carousel--news .news-card {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .carousel--news .news__img {
+    height: 150px;
+  }
+
+  .carousel--news .news__body {
+    padding: 1rem 1.1rem 1.3rem;
+    gap: 0.5rem;
+  }
+
+  .carousel--news .card {
+    height: auto !important;
+    padding: 0;
+  }
+
+  .carousel--news .news__title {
+    font-size: 1rem;
+  }
+
+  .carousel--news .news__text {
+    font-size: 0.88rem;
+  }
+
+  /* ---- Mappa ---- */
+  .festival-map {
+    min-height: 38vh;
+  }
+
+  /* ---- Footer: scrollabile internamente se il contenuto supera 100vh ---- */
+  .site-footer {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Estendi lo sfondo sotto la home indicator di iOS */
+    padding-bottom: env(safe-area-inset-bottom);
+    align-items: flex-start;
+  }
+
+  .footer__wrap {
+    padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 8rem);
+  }
+
+  .footer__headline {
+    font-size: clamp(1.7rem, 8vw, 2.6rem);
+  }
+
+  .footer__lead {
+    font-size: 0.92rem;
+  }
+
+  .footer__panel {
+    padding: 1.1rem 1rem 0.9rem;
+  }
+
+  /* Newsletter inline → stack verticale */
+  .footer__form {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .footer__input,
+  .footer__submit {
+    width: 100%;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  /* ---- Giurie (in_competition) ---- */
+  .juries__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jury-card {
+    height: auto;
+  }
+
+  /* ---- Carosello in concorso ---- */
+  .award-carousel--wide {
+    padding: 0 48px;
+  }
+
+  .award-carousel--wide .carousel__track {
+    --cardW: clamp(148px, 58vw, 200px);
+  }
+
+  /* ---- Press form ---- */
+  .press-form__wrap {
+    max-width: 100%;
+    padding-bottom: clamp(3rem, 7vh, 5rem);
+  }
+
+  /* ---- Contatti ---- */
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Modale consenso biglietti ---- */
+  .ticket-modal__dialog {
+    width: calc(100% - 2rem) !important;
+    max-width: 420px !important;
+    border-radius: 18px !important;
+  }
+
+  .ticket-modal__body {
+    padding: 1.2rem 1.1rem 1rem !important;
+  }
+
+  .ticket-modal__title {
+    font-size: 1.2rem !important;
+  }
+
+  .ticket-modal__actions {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .ticket-modal__btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ---- Extra small ≤ 380px ---- */
+@media (max-width: 380px) {
+
+  .nav__lang-option {
+    min-width: 27px;
+    padding: 0 0.28rem;
+    font-size: 0.58rem;
+  }
+
+  .hero__title {
+    font-size: clamp(1.6rem, 10vw, 2.2rem);
+  }
+
+  .about__title {
+    font-size: clamp(1.3rem, 8vw, 1.8rem);
+  }
+
+  .footer__headline {
+    font-size: clamp(1.5rem, 9vw, 2.2rem);
+  }
+}

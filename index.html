@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e8e8ed" />
+  <title>Merge Film Festival</title>
+  <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+
+<body>
+  <!-- Background layer (video optional) -->
+  <div class="bg">
+    <video class="bg__video" id="heroVideo" src="assets/video/hero-web.mp4" autoplay muted playsinline preload="auto"></video>
+
+    <div class="bg__overlay" aria-hidden="true"></div>
+  </div>
+
+  <!-- Header + dropdown menu -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Home">
+      <span class="brand__mark" style="font-size: 12px;">MFF</span>
+      <span class="brand__text">Merge Film Festival</span>
+    </a>
+
+    <div class="nav__actions">
+
+      <!-- CTA button -->
+      <a class="nav__cta-btn" href="https://www.jfcinema.ch" target="_blank">
+        Buy your ticket
+      </a>
+    
+      <!--
+      <a class="nav__cta-btn" href="https://filmfreeway.com" target="_blank">
+        Submit your film
+      </a>
+      -->
+    
+      <!-- Language switch -->
+            <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" href="./it/index.html">IT</a>
+        <a class="nav__lang-option nav__lang-option--active" href="#">ENG</a>
+        <a class="nav__lang-option" href="./fr/index.html">FR</a>
+        <a class="nav__lang-option" href="./de/index.html">DE</a>
+      </div>
+    
+      <details class="nav__dropdown">
+        <summary class="nav__toggle" aria-label="Open menu">Menu</summary>
+    
+        <div class="nav__panel">
+          <a href="index.html">Home</a>
+          <a href="program/index.html">Program</a>
+          <a href="in_competition/index.html">In Competition</a>
+          <!-- <a href="editions/2025/index.html">Media</a> -->
+          <a href="press/index.html">Press</a>
+          <a href="contact/index.html">Contact</a>
+        </div>
+      </details>
+    
+    </div>
+  </header>
+
+  <div class="snap-root">
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="container hero__content">
+        <p class="hero__kicker">1–4 October • Massagno</p>
+        <div class="hero__title-spacer" aria-hidden="true"></div>
+        <p class="hero__subtitle">
+          The first film festival in Switzerland entirely dedicated to AI.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn" href="program/index.html">See Program</a>
+          <a class="btn btn--ghost" href="https://www.jfcinema.ch" target="_blank">Buy Tickets</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ABOUT FESTIVAL -->
+<section id="about" class="section--dark section section--about">
+  <div class="container about__wrap">
+
+    <div class="about__text">
+      <p class="about__eyebrow">Festival presentation</p>
+
+      <h2 class="about__title">
+        The first film festival in Switzerland entirely dedicated to AI
+      </h2>
+
+      <p class="about__desc">
+        The Merge Film Festival, running from 1 to 4 October, is Switzerland's first film festival
+        dedicated to artificial intelligence.
+      </p>
+
+      <p class="about__desc">
+        It offers four days of screenings, masterclasses and public talks.
+      </p>
+
+      <p class="about__desc">
+        It provides an opportunity to explore the role of artificial intelligence in creative
+        processes and in the wider transformation of our relationship with images, thought and reality.
+      </p>
+
+      <div class="about__actions">
+        <a class="btn" href="contact/authors/index.html">ABOUT US</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- NEWS -->
+    <section id="news" class="section--light section section--full">
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title">News</h2>
+          <p class="section__desc">Festival updates and news</p>
+        </header>
+
+        <div class="carousel carousel--news" aria-label="News carousel">
+            <button class="carousel__btn carousel__btn--prev news-prev" type="button" aria-label="Previous news">‹</button>
+            <button class="carousel__btn carousel__btn--next news-next" type="button" aria-label="Next news">›</button>
+          
+            <div class="carousel__track news-track">
+              <article class="card news-card">
+                <img class="news__img" src="assets/img/events/generative_editing.jpg" alt="Workshop: Generative Editing Lab" loading="lazy" />
+                <div class="news__body">
+                  <p class="news__meta">Feb 2026 • Workshop</p>
+                  <h3 class="news__title">Generative Editing Lab announced</h3>
+                  <p class="news__text">Seats are limited. Registration opens soon.</p>
+                  <a class="news__link" href="program/event/workshop-01.html">Read more</a>
+                </div>
+              </article>
+              
+              <article class="card news-card">
+                <img class="news__img" src="assets/img/events/event-02.jpg" alt="Jury: lineup revealed" loading="lazy" />
+                <div class="news__body">
+                  <p class="news__meta">Feb 2026 • Jury</p>
+                  <h3 class="news__title">Jury lineup revealed</h3>
+                  <p class="news__text">Meet the filmmakers, artists, and researchers.</p>
+                  <a class="news__link" href="in_competition/index.html">View jury</a>
+                </div>
+              </article>
+
+              <!-- OTHER NEWS -->
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- LOCATIONS -->
+<section id="films" class="section--dark section section--full section--map">
+  <div class="container map-section">
+    <header class="section__header section__header--row">
+      <div>
+        <h2 class="section__title">Map</h2>
+        <p class="section__desc">
+          Discover all the venues of the Merge Film Festival.
+        </p>
+      </div>
+
+      <a class="btn btn--ghost" href="program/index.html">See Program</a>
+    </header>
+
+    <div class="map-card">
+      <div id="festival-map" class="festival-map" aria-label="Festival locations map"></div>
+
+      <div class="map-card__info">
+        <p class="map-card__eyebrow">Main venues</p>
+        <ul class="map-list">
+          <li>
+            <strong>Cinema Lux</strong>
+            <span>The festival's main venue</span>
+          </li>
+          <li>
+            <strong>Piazza</strong>
+            <span>Live music, food &amp; drink</span>
+          </li>
+          <li>
+            <strong>Circle 91</strong>
+            <span>The Artist's House</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+  </main>
+
+  <!-- FOOTER (same every page) -->
+  <footer class="site-footer" id="footer">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline">See you at the festival.</h2>
+          <p class="footer__lead">
+            The first film festival in Switzerland entirely dedicated to AI.
+          </p>
+  
+          <div class="footer__cta">
+            <a class="btn" href="https://www.jfcinema.ch" target="_blank">Buy Tickets</a>
+            <a class="btn btn--ghost" href="./program/index.html">See Program</a>
+          </div>
+        </div>
+  
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title">Explore</p>
+              <ul class="footer__links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="./program/index.html">Program</a></li>
+                <li><a href="./in_competition/index.html">In Competition</a></li>
+                <!-- <li><a href="editions/2025/index.html">Media</a></li> -->
+              </ul>
+            </div>
+  
+            <div>
+              <p class="footer__title">Info</p>
+              <ul class="footer__links">
+                <li><a href="./press/index.html">Press</a></li>
+                <li><a href="./contact/index.html">Contact</a></li>
+              </ul>
+            </div>
+  
+            <div>
+                <p class="footer__title">Get updates</p>
+                <p class="footer__small">
+                  Workshop announcements, schedule drops, winners — no spam.
+                </p>
+              
+                <div class="ml-embedded footer__ml" data-form="HwxvEb"></div>
+            </div>
+          </div>
+  
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny">Website design &amp; development — <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+          
+              <p class="footer__tiny">
+                <a href="legal/terms.html">Terms & Conditions</a> — 
+                <a href="legal/privacy.html">Privacy Policy</a>
+              </p>
+            </div>
+          
+            <a class="footer__tiny" href="#top">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </div>
+  <script src="assets/js/carousel.js"></script>
+  <script src="assets/js/menu.js"></script>
+  <script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2102085');
+  </script>
+  <script>
+    function initFestivalMap() {
+      const venues = [
+        {
+          name: "Cinema Lux",
+          description: "The festival's main venue",
+          position: { lat: 46.0125159564746, lng: 8.943832038028487 }
+        },
+        {
+          name: "Piazza",
+          description: "Live music, food & drink",
+          position: { lat: 46.01195697792443, lng: 8.941396633733902 }
+        },
+        {
+          name: "Circle 91",
+          description: "The Artist's House",
+          position: { lat: 46.007544549797416, lng: 8.94211870515944 }
+        }
+      ];
+  
+      const map = new google.maps.Map(document.getElementById("festival-map"), {
+        center: { lat: 46.0088, lng: 8.9498 },
+        zoom: 14,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true
+      });
+  
+      const bounds = new google.maps.LatLngBounds();
+  
+      venues.forEach((venue) => {
+        const marker = new google.maps.Marker({
+          position: venue.position,
+          map,
+          title: venue.name
+        });
+  
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div style="min-width:180px; line-height:1.4;">
+              <strong>${venue.name}</strong><br />
+              <span>${venue.description}</span>
+            </div>
+          `
+        });
+  
+        marker.addListener("click", () => {
+          infoWindow.open(map, marker);
+        });
+  
+        bounds.extend(venue.position);
+      });
+  
+      map.fitBounds(bounds);
+  
+      google.maps.event.addListenerOnce(map, "bounds_changed", function () {
+        if (map.getZoom() > 15) {
+          map.setZoom(15);
+        }
+      });
+    }
+  </script>
+  
+  <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU3RhoT04vjg5KrJAOymlwhJpVIduFGrA&callback=initFestivalMap">
+  </script>
+
+<script src="assets/js/ticket-consent.js"></script>
+<script>
+  (function () {
+    var video = document.getElementById('heroVideo');
+    var heroContent = document.querySelector('.hero__content');
+    if (!video) return;
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      if (heroContent) heroContent.classList.add('is-revealed');
+    }
+    video.addEventListener('timeupdate', function () {
+      if (video.currentTime >= 8) reveal();
+    });
+    video.addEventListener('ended', function () {
+      video.currentTime = 23;
+      video.play();
+      reveal();
+    });
+    video.addEventListener('error', reveal);
+  })();
+</script>
+</body>
+</html>
