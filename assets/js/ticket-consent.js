@@ -4,10 +4,54 @@ document.addEventListener("DOMContentLoaded", () => {
     // Detect language from <html lang="…">
     const pageLang = (document.documentElement.lang || "en").toLowerCase().slice(0, 2);
 
-    // Resolve terms URL relative to current page depth
-    const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-    const prefix = depth <= 1 ? "./" : "../".repeat(depth - 1);
-    const TERMS_URL = prefix + "legal/terms.html";
+    const LANG_CODES = new Set(["it", "fr", "de"]);
+    const SITE_ROOTS = new Set([
+      "contact",
+      "in_competition",
+      "legal",
+      "press",
+      "program",
+    ]);
+
+    function getTermsUrl() {
+      const segments = window.location.pathname
+        .split("/")
+        .filter(Boolean)
+        .map((segment) => {
+          try {
+            return decodeURIComponent(segment);
+          } catch (_) {
+            return segment;
+          }
+        });
+
+      const baseSegments = [];
+      let langSegment = "";
+
+      for (const segment of segments) {
+        if (LANG_CODES.has(segment)) {
+          langSegment = segment;
+          break;
+        }
+
+        if (SITE_ROOTS.has(segment) || segment.endsWith(".html")) {
+          break;
+        }
+
+        baseSegments.push(segment);
+      }
+
+      const termsSegments = [
+        ...baseSegments,
+        ...(langSegment ? [langSegment] : []),
+        "legal",
+        "terms.html",
+      ];
+
+      return "/" + termsSegments.join("/");
+    }
+
+    const TERMS_URL = getTermsUrl();
 
     const i18n = {
       en: {
