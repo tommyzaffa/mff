@@ -3,7 +3,107 @@
    Caricato dopo tutti gli altri CSS. Si attiva solo in @media.
    ================================================================ */
 
-@media (max-width: 640px) {
+@media (max-width: 700px) {
+
+  :root {
+    --mobile-screen: 100vh;
+    --mobile-header-space: calc(6.2rem + env(safe-area-inset-top));
+    --mobile-bottom-space: calc(1.8rem + env(safe-area-inset-bottom));
+  }
+
+  @supports (height: 100dvh) {
+    :root {
+      --mobile-screen: 100dvh;
+    }
+  }
+
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .snap-root {
+    height: var(--mobile-screen);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .snap-root > main > .section,
+  .snap-root > main > section,
+  .snap-root > footer.site-footer {
+    height: var(--mobile-screen) !important;
+    min-height: var(--mobile-screen) !important;
+    max-height: var(--mobile-screen);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    scrollbar-width: none;
+  }
+
+  .snap-root > main > .section::-webkit-scrollbar,
+  .snap-root > main > section::-webkit-scrollbar,
+  .snap-root > footer.site-footer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .program-day,
+  .award,
+  .juries,
+  .author,
+  .event,
+  .film,
+  .related,
+  .press-form,
+  .contact-panel,
+  .legal-content,
+  #news,
+  #films {
+    align-items: start !important;
+  }
+
+  .program-day > .container,
+  .award > .container,
+  .author > .container,
+  .event > .container,
+  .film > .container,
+  .related > .container,
+  .press-form > .container,
+  .contact-panel > .container,
+  .legal-content > .container,
+  #news > .container,
+  #films > .container {
+    padding-top: var(--mobile-header-space) !important;
+    padding-bottom: var(--mobile-bottom-space) !important;
+  }
+
+  .day__stack,
+  .award__stack,
+  .juries__stack,
+  .author__stack,
+  .related__wrap,
+  .press-form__wrap,
+  .legal-content__wrap {
+    height: auto !important;
+    min-height: 0;
+    align-content: start;
+    justify-content: flex-start;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    transform: none !important;
+  }
+
+  .film > .container,
+  .event > .container,
+  .contact-panel > .container,
+  .authors-hero > .container {
+    transform: none !important;
+  }
 
   /* ---- Scroll interno: footer e sezione mappa/venues ---- */
   .site-footer,
@@ -19,7 +119,16 @@
 
   /* ---- Header: pseudo-elemento che riempie la gap sopra con lo stesso stile ---- */
   .site-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "brand menu"
+      "langs langs";
+    align-items: center;
+    justify-content: start;
+    row-gap: 0.35rem;
     padding: 0.55rem 0.75rem;
+    gap: 0.45rem;
     overflow: visible; /* permette al ::before di uscire sopra */
   }
 
@@ -42,8 +151,11 @@
 
   /* Rimpicciolisci il selettore lingua */
   .nav__lang-switch {
+    grid-area: langs;
+    justify-self: start;
     padding: 0.15rem;
     gap: 0.08rem;
+    flex-shrink: 0;
   }
 
   .nav__lang-option {
@@ -60,9 +172,29 @@
     gap: 0.4rem;
   }
 
+  .nav__actions {
+    display: contents;
+  }
+
+  .brand {
+    grid-area: brand;
+    min-width: 0;
+    gap: 0.45rem;
+  }
+
+  .brand__text {
+    display: none;
+  }
+
+  .nav__dropdown {
+    grid-area: menu;
+    justify-self: start;
+  }
+
   /* Pannello nav: non esca dallo schermo */
   .nav__panel {
-    right: 0;
+    left: 0;
+    right: auto;
     min-width: 200px;
     max-width: calc(100vw - 1.5rem);
   }
@@ -71,11 +203,24 @@
   .hero__title {
     font-size: clamp(1.9rem, 9vw, 2.8rem);
     letter-spacing: -0.025em;
+    overflow-wrap: break-word;
+  }
+
+  .program-hero .hero__title,
+  .films-hero .hero__title,
+  .press-hero .hero__title,
+  .legal-hero .hero__title,
+  .authors-hero .hero__title,
+  .contact-hero .hero__title {
+    font-size: clamp(1.8rem, 8.6vw, 2.25rem);
+    line-height: 1.08;
   }
 
   .hero__subtitle {
     font-size: 0.92rem;
     margin: 0.7rem 0 1.2rem;
+    max-width: min(100%, 32ch);
+    overflow-wrap: break-word;
   }
 
   .hero__actions .btn {
@@ -93,8 +238,27 @@
     padding: 3rem 0;
   }
 
+  .section--full {
+    padding: 0;
+  }
+
   .section__title {
     font-size: clamp(1.2rem, 6vw, 1.7rem);
+    overflow-wrap: break-word;
+  }
+
+  .section__desc {
+    max-width: min(100%, 34ch);
+    overflow-wrap: break-word;
+  }
+
+  .section__header,
+  .day__copy--wide,
+  .award__copy--wide,
+  .author__copy {
+    width: 100%;
+    max-width: calc(100vw - 2rem);
+    min-width: 0;
   }
 
   /* ---- Poster strip ---- */
@@ -109,6 +273,7 @@
   /* ---- Carosello film ---- */
   .carousel {
     padding: 0.8rem 40px 1rem;
+    max-width: 100%;
   }
 
   .carousel__btn {
@@ -152,8 +317,23 @@
   }
 
   /* ---- Mappa ---- */
+  .map-section {
+    height: auto;
+    transform: none;
+  }
+
+  .map-card {
+    min-height: 0;
+  }
+
   .festival-map {
-    min-height: 38vh;
+    min-height: 280px;
+    height: 38vh;
+  }
+
+  .map-card__info {
+    border-radius: 18px;
+    padding: 1rem;
   }
 
   /* ---- Footer: scrollabile internamente se il contenuto supera 100vh ---- */
@@ -199,21 +379,62 @@
   }
 
   /* ---- Giurie (in_competition) ---- */
+  .award-carousel--wide {
+    padding-left: 44px;
+    padding-right: 44px;
+    max-width: 100%;
+  }
+
   .juries__grid {
     grid-template-columns: 1fr;
   }
 
   .jury-card {
     height: auto;
+    min-height: 0;
+    border-radius: 18px;
+  }
+
+  .jury-card__img {
+    height: 140px;
   }
 
   /* ---- Carosello in concorso ---- */
   .award-carousel--wide {
     padding: 0 48px;
+    max-width: 100%;
   }
 
   .award-carousel--wide .carousel__track {
     --cardW: clamp(148px, 58vw, 200px);
+  }
+
+  html.js .timeline__list::before {
+    transform: translateY(-50%) scaleX(1) !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  html.js .timeline__list::after {
+    display: none !important;
+  }
+
+  html.js .timeline:not(.is-active) .t-node,
+  html.js .timeline:not(.is-active) .t-time,
+  html.js .timeline:not(.is-active) .t-card,
+  html.js .timeline:not(.is-active) .t-card::before {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  html.js .timeline .t-card {
+    --settle: 0px;
+    transition: none !important;
+  }
+
+  html.js .timeline .t-card::before {
+    height: var(--branch-gap) !important;
   }
 
   /* ---- Press form ---- */
@@ -222,9 +443,105 @@
     padding-bottom: clamp(3rem, 7vh, 5rem);
   }
 
+  .form {
+    gap: 0.65rem;
+  }
+
+  .form textarea {
+    min-height: 110px;
+  }
+
   /* ---- Contatti ---- */
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-panel > .container {
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .contact-newsletter {
+    border-radius: 18px;
+  }
+
+  /* ---- Legal ---- */
+  .legal-scroll {
+    max-height: 62vh;
+  }
+
+  .legal-card {
+    border-radius: 18px;
+  }
+
+  /* ---- Detail pages: film/event + related ---- */
+  .film__grid,
+  .event__grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .film__header,
+  .event__header,
+  .related__header {
+    margin-bottom: 0.9rem;
+  }
+
+  .film__title,
+  .event__title {
+    white-space: normal;
+    font-size: clamp(1.45rem, 8vw, 2.2rem);
+  }
+
+  .film__poster {
+    max-width: 300px;
+  }
+
+  .film__poster img {
+    max-height: 36vh;
+  }
+
+  .event__media {
+    min-height: 0;
+    border-radius: 18px;
+  }
+
+  .film__block,
+  .event__block {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .related__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .related-card {
+    border-radius: 18px;
+  }
+
+  .related-card__img {
+    height: 140px;
+  }
+
+  /* ---- Autori / giurie biografiche ---- */
+  .author__card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .author__media {
+    min-height: 220px;
+    border-radius: 18px;
+  }
+
+  .author__body {
+    padding-left: 0;
+    gap: 0.85rem;
+  }
+
+  .author__body::before {
+    display: none;
   }
 
   /* ---- Modale consenso biglietti ---- */
