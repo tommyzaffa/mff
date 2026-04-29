@@ -1,6 +1,13 @@
 .bg { display: none; }
 body { overflow: hidden; } 
 
+.site-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .films-hero,
 .award,
 .site-footer {
