@@ -6,50 +6,37 @@
 @media (max-width: 700px) {
 
   :root {
-    --mobile-screen: 100vh;
-    --mobile-header-space: calc(6.2rem + env(safe-area-inset-top));
-    --mobile-bottom-space: calc(1.8rem + env(safe-area-inset-bottom));
-  }
-
-  @supports (height: 100dvh) {
-    :root {
-      --mobile-screen: 100dvh;
-    }
+    --mobile-header-space: calc(4.7rem + env(safe-area-inset-top));
+    --mobile-bottom-space: calc(2rem + env(safe-area-inset-bottom));
   }
 
   html,
   body {
+    height: auto;
+    min-height: 100%;
     width: 100%;
-    overflow-x: hidden;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
 
   .snap-root {
-    height: var(--mobile-screen);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-snap-type: y mandatory;
+    height: auto !important;
+    min-height: 100%;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
     scroll-padding-top: 0;
-    -webkit-overflow-scrolling: touch;
   }
 
   .snap-root > main > .section,
   .snap-root > main > section,
   .snap-root > footer.site-footer {
-    height: var(--mobile-screen) !important;
-    min-height: var(--mobile-screen) !important;
-    max-height: var(--mobile-screen);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scrollbar-width: none;
-  }
-
-  .snap-root > main > .section::-webkit-scrollbar,
-  .snap-root > main > section::-webkit-scrollbar,
-  .snap-root > footer.site-footer::-webkit-scrollbar {
-    display: none;
+    height: auto !important;
+    min-height: 100svh;
+    max-height: none !important;
+    overflow: visible !important;
+    scroll-snap-align: none !important;
+    scroll-snap-stop: normal !important;
+    scroll-margin-top: var(--mobile-header-space) !important;
   }
 
   .program-day,
@@ -108,8 +95,7 @@
   /* ---- Scroll interno: footer e sezione mappa/venues ---- */
   .site-footer,
   #films {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible !important;
   }
 
   /* Breathing room sotto le venues */
@@ -119,16 +105,11 @@
 
   /* ---- Header: pseudo-elemento che riempie la gap sopra con lo stesso stile ---- */
   .site-header {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "brand menu"
-      "langs langs";
+    display: flex;
     align-items: center;
-    justify-content: start;
-    row-gap: 0.35rem;
+    justify-content: flex-start;
     padding: 0.55rem 0.75rem;
-    gap: 0.45rem;
+    gap: 0.5rem;
     overflow: visible; /* permette al ::before di uscire sopra */
   }
 
@@ -151,18 +132,16 @@
 
   /* Rimpicciolisci il selettore lingua */
   .nav__lang-switch {
-    grid-area: langs;
-    justify-self: start;
     padding: 0.15rem;
     gap: 0.08rem;
     flex-shrink: 0;
   }
 
   .nav__lang-option {
-    min-width: 32px;
+    min-width: 25px !important;
     height: 28px;
-    padding: 0 0.38rem;
-    font-size: 0.63rem;
+    padding: 0 0.26rem !important;
+    font-size: 0.6rem;
   }
 
   /* Rimpicciolisci il toggle menu */
@@ -173,13 +152,17 @@
   }
 
   .nav__actions {
-    display: contents;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+    margin-left: 0;
   }
 
   .brand {
-    grid-area: brand;
     min-width: 0;
     gap: 0.45rem;
+    flex-shrink: 0;
   }
 
   .brand__text {
@@ -187,14 +170,13 @@
   }
 
   .nav__dropdown {
-    grid-area: menu;
-    justify-self: start;
+    flex-shrink: 0;
   }
 
   /* Pannello nav: non esca dallo schermo */
   .nav__panel {
-    left: 0;
-    right: auto;
+    right: 0;
+    left: auto;
     min-width: 200px;
     max-width: calc(100vw - 1.5rem);
   }
@@ -318,8 +300,8 @@
 
   /* ---- Mappa ---- */
   .map-section {
-    height: auto;
-    transform: none;
+    height: auto !important;
+    transform: none !important;
   }
 
   .map-card {
@@ -467,7 +449,8 @@
 
   /* ---- Legal ---- */
   .legal-scroll {
-    max-height: 62vh;
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   .legal-card {
