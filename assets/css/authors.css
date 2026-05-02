@@ -119,13 +119,16 @@ html{
   position: relative;
   z-index: 2;
 }
-/* Move hero content slightly (like jury) */
-.authors-hero > .container{
-  transform: translateY(42px);
+/* Center hero content vertically + left horizontally, like other heroes.
+   The --raised modifier disables centering for tall-content variants
+   (e.g. jury/young) so the content stacks from the top of the section. */
+.authors-hero{
+  display: grid;
+  align-items: center;
 }
 
-.authors-hero.authors-hero--raised > .container{
-  transform: translateY(-30px);
+.authors-hero.authors-hero--raised{
+  display: block;
 }
 
 .authors-hero.authors-hero--about-raised > .container{
