@@ -12,31 +12,33 @@
 
   html,
   body {
-    height: auto;
-    min-height: 100%;
+    height: 100% !important;
     width: 100%;
-    overflow-y: auto !important;
     overflow-x: hidden !important;
   }
 
+  /* Hybrid snap: proximity (not mandatory) + svh + sections free to grow.
+     Short sections snap; long ones scroll naturally without trapping the user. */
   .snap-root {
-    height: auto !important;
-    min-height: 100%;
-    overflow: visible !important;
-    scroll-snap-type: none !important;
+    height: 100svh !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    scroll-snap-type: y proximity !important;
+    scroll-snap-stop: normal !important;
     scroll-padding-top: 0;
+    -webkit-overflow-scrolling: touch;
   }
 
   .snap-root > main > .section,
   .snap-root > main > section,
   .snap-root > footer.site-footer {
     height: auto !important;
-    min-height: 100svh;
+    min-height: 100svh !important;
     max-height: none !important;
     overflow: visible !important;
-    scroll-snap-align: none !important;
+    scroll-snap-align: start !important;
     scroll-snap-stop: normal !important;
-    scroll-margin-top: var(--mobile-header-space) !important;
+    scroll-margin-top: 0 !important;
   }
 
   .program-day,
