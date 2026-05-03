@@ -91,4 +91,32 @@
       document.addEventListener("DOMContentLoaded", placeInitialScroll);
     }
     window.addEventListener("load", placeInitialScroll);
+
+    // ---- Tall-section detector ----
+    // Su mobile, le sezioni piu' alte del viewport ricevono la classe .is-tall:
+    // mobile.css le trasforma in scroll container annidati cosi' lo scroll
+    // interno e' fluido (niente snap-back-to-top a fine sezione).
+    const isMobile = () => window.matchMedia("(max-width: 700px)").matches;
+    const updateTallSections = () => {
+      if (!scrollerEl) return;
+      const sections = scrollerEl.querySelectorAll(
+        "main > .section, main > section, footer.site-footer"
+      );
+      if (!isMobile()) {
+        sections.forEach((s) => s.classList.remove("is-tall"));
+        return;
+      }
+      const vpH = scrollerEl.clientHeight;
+      const tolerance = 8;
+      sections.forEach((sec) => {
+        // Misura ignorando una eventuale classe .is-tall gia' applicata:
+        // la togliamo, leggiamo l'altezza naturale, poi la riapplichiamo se serve.
+        sec.classList.remove("is-tall");
+        const naturalH = sec.scrollHeight;
+        if (naturalH > vpH + tolerance) sec.classList.add("is-tall");
+      });
+    };
+    window.addEventListener("load", updateTallSections);
+    window.addEventListener("resize", updateTallSections);
+    window.addEventListener("orientationchange", updateTallSections);
   })();
