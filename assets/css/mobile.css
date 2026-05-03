@@ -141,9 +141,7 @@
     left: 0;
     right: 0;
     height: env(safe-area-inset-top);
-    background: rgba(255,255,255,0.65);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: #F3F2EF;
   }
 
   /* Nascondi il pulsante "Acquista" nell'header — accessibile dal menu a tendina */

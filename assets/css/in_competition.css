@@ -76,7 +76,7 @@ body { overflow: hidden; }
   }
   
   @media (max-width: 700px){
-    .award-carousel--wide{ padding: 0 64px; }
+    .award-carousel--wide{ padding: 1.8rem 64px 0; }
     .award-carousel--wide .carousel__track{
       --cardW: clamp(160px, 62vw, 220px);
     }
