@@ -7,4 +7,3 @@ Thumbs.db
 .idea/
 node_modules/
 .claude/settings.local.json
-assets/js/maps-config.js
