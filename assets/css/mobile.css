@@ -44,21 +44,6 @@
     scroll-margin-top: 0 !important;
   }
 
-  /* Sezioni piu alte del viewport diventano scroll container annidati:
-     l'outer .snap-root mantiene snap-mandatory (perfetto tra sezioni),
-     ma il contenuto interno scrolla fluido senza essere riportato in cima
-     quando si arriva alla fine. La classe .is-tall e' aggiunta da menu.js. */
-  .snap-root > main > .section.is-tall,
-  .snap-root > main > section.is-tall,
-  .snap-root > footer.site-footer.is-tall {
-    height: 100svh !important;
-    min-height: 100svh !important;
-    max-height: 100svh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
   .program-day,
   .award,
   .juries,
@@ -88,6 +73,21 @@
   #films > .container {
     padding-top: var(--mobile-header-space) !important;
     padding-bottom: var(--mobile-bottom-space) !important;
+  }
+
+  /* Tail padding extra sulle sezioni tendenzialmente lunghe su mobile:
+     mitiga lo snap-back-to-top quando si scorre fino in fondo dando un
+     po' di "respiro" sotto al contenuto utile. Footer escluso (gia' suo).
+     Posto dopo le regole sopra per vincere la cascata (stessa specificita'). */
+  #about > .container,
+  #news > .container,
+  #films > .container,
+  .authors-hero.authors-hero--raised > .container,
+  .legal-content > .container,
+  .program-day > .container,
+  .juries > .container,
+  .author > .container {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 7rem) !important;
   }
 
   .day__stack,
