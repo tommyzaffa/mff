@@ -61,30 +61,34 @@
       scroller.scrollTo({ top, behavior: "smooth" });
     }, true);
 
-    // ---- Tall-section detector (mobile only) ----
-    // On mobile, sections that overflow the viewport lose their
-    // scroll-snap-align so internal scrolling feels fluid instead of
-    // micro-snapping. The .is-tall class is consumed by mobile.css.
-    const isMobile = () => window.matchMedia("(max-width: 700px)").matches;
-
-    const updateTallSections = () => {
+    // ---- Initial scroll position ----
+    // .snap-root is the scroll container, so neither browser fragment-jump
+    // nor session restore touch it correctly. Place it at the top, or on the
+    // hash target if one is present in the URL.
+    const placeInitialScroll = () => {
       if (!scrollerEl) return;
-      const vpH = scrollerEl.clientHeight;
-      const sections = scrollerEl.querySelectorAll(
-        "main > .section, main > section, footer.site-footer"
-      );
-      const tolerance = 8;
-      sections.forEach((sec) => {
-        const tall = isMobile() && sec.scrollHeight > vpH + tolerance;
-        sec.classList.toggle("is-tall", tall);
-      });
+      const hash = window.location.hash;
+      if (hash && hash.length > 1) {
+        let target = null;
+        try { target = document.querySelector(hash); } catch (_) {}
+        if (target) {
+          const header = document.querySelector(".site-header");
+          const headerOffset = header ? header.offsetHeight + 12 : 0;
+          const top = Math.max(
+            0,
+            target.getBoundingClientRect().top + scrollerEl.scrollTop - headerOffset
+          );
+          scrollerEl.scrollTo({ top, behavior: "auto" });
+          return;
+        }
+      }
+      scrollerEl.scrollTo({ top: 0, behavior: "auto" });
     };
 
-    if (document.readyState === "complete") {
-      updateTallSections();
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      placeInitialScroll();
     } else {
-      window.addEventListener("load", updateTallSections);
+      document.addEventListener("DOMContentLoaded", placeInitialScroll);
     }
-    window.addEventListener("resize", updateTallSections);
-    window.addEventListener("orientationchange", updateTallSections);
+    window.addEventListener("load", placeInitialScroll);
   })();

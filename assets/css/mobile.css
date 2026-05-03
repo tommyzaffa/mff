@@ -17,15 +17,18 @@
     overflow-x: hidden !important;
   }
 
-  /* Hybrid snap: proximity (not mandatory) + svh + sections free to grow.
-     Short sections snap; long ones scroll naturally without trapping the user. */
+  /* Mandatory snap (like desktop) + svh + sections free to grow vertically.
+     Per CSS spec, when a snap area is taller than the snapport, any scroll
+     position where the area covers the snapport is a valid snap position —
+     so the user can scroll fluidly inside long sections (no micro-snap),
+     and snap kicks in fully when crossing into the next section. */
   .snap-root {
     height: 100svh !important;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
-    scroll-snap-type: y proximity !important;
+    scroll-snap-type: y mandatory !important;
     scroll-snap-stop: normal !important;
-    scroll-padding-top: var(--mobile-header-space) !important;
+    scroll-padding-top: 0 !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -39,15 +42,6 @@
     scroll-snap-align: start !important;
     scroll-snap-stop: normal !important;
     scroll-margin-top: 0 !important;
-  }
-
-  /* Sections taller than the viewport lose their snap-target
-     so internal scrolling feels fluid (no micro-snapping).
-     The .is-tall class is added by menu.js on load/resize. */
-  .snap-root > main > .section.is-tall,
-  .snap-root > main > section.is-tall,
-  .snap-root > footer.site-footer.is-tall {
-    scroll-snap-align: none !important;
   }
 
   .program-day,
