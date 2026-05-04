@@ -363,7 +363,7 @@
   }
 
   .footer__wrap {
-    padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 8rem);
+    padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
   }
 
   .footer__headline {
