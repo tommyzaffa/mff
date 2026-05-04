@@ -91,4 +91,64 @@
       document.addEventListener("DOMContentLoaded", placeInitialScroll);
     }
     window.addEventListener("load", placeInitialScroll);
+
+    // ---- Hero video: kick-start when iOS Low Power Mode blocks autoplay ----
+    // Apple disables muted-autoplay under Low Power Mode. There's no API to
+    // bypass it, but a single user gesture (tap, scroll, key) IS allowed to
+    // start playback. Set a poster so the screen isn't empty until then,
+    // then on first interaction force-play any paused .bg__video.
+    const initHeroVideo = () => {
+      const videos = document.querySelectorAll("video.bg__video");
+      if (!videos.length) return;
+
+      videos.forEach(v => {
+        // Make sure the basics are right — these attrs may be missing on
+        // some pages or stripped by other tooling.
+        v.muted = true;
+        v.playsInline = true;
+        v.setAttribute("playsinline", "");
+        v.setAttribute("webkit-playsinline", "");
+        if (!v.hasAttribute("poster")) {
+          // root-relative so it works from every nested page
+          v.setAttribute("poster", "/assets/img/hero-poster.jpg");
+        }
+      });
+
+      const tryPlayAll = () => {
+        videos.forEach(v => {
+          if (v.paused) {
+            const p = v.play();
+            if (p && typeof p.catch === "function") p.catch(() => {});
+          }
+        });
+      };
+
+      // First attempt — works on full-power Safari, no-op on Low Power Mode.
+      tryPlayAll();
+
+      // Fallback: any user gesture re-tries playback. Once one succeeds,
+      // we don't need to keep listening.
+      const events = ["pointerdown", "touchstart", "click", "keydown", "wheel", "scroll"];
+      const onGesture = () => {
+        tryPlayAll();
+        // If at least one is now playing, detach.
+        const anyPlaying = Array.from(videos).some(v => !v.paused);
+        if (anyPlaying) {
+          events.forEach(e => {
+            document.removeEventListener(e, onGesture, true);
+            window.removeEventListener(e, onGesture, true);
+          });
+        }
+      };
+      events.forEach(e => {
+        document.addEventListener(e, onGesture, { capture: true, passive: true });
+        window.addEventListener(e, onGesture, { capture: true, passive: true });
+      });
+    };
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      initHeroVideo();
+    } else {
+      document.addEventListener("DOMContentLoaded", initHeroVideo);
+    }
   })();
