@@ -41,52 +41,70 @@
     scroll-margin-top: 0 !important;
   }
 
-  /* Softens the visible cut between illustrated section backgrounds while
-     keeping the exact same section sizing and scroll behavior. */
+  /* Feather the artwork layers themselves across section boundaries.
+     This keeps the same section sizing and avoids visible separator bands. */
   :root {
-    --mobile-section-blend: clamp(4.5rem, 14svh, 7rem);
+    --mobile-section-blend: clamp(5.5rem, 16svh, 8rem);
   }
 
-  #about::after,
-  #news::after,
-  #films::after,
-  .site-footer::after,
-  .program-hero::after,
-  .program-day::after,
-  .films-hero::after,
-  .award::after,
-  .authors-hero::after,
-  .author::after,
-  .film::after,
-  .event::after,
-  .related::after,
-  .contact-hero::after,
-  .contact-panel::after,
-  .press-hero::after,
-  .press-form::after,
-  .legal-hero::after,
-  .legal-content::after {
-    content: "" !important;
+  #about,
+  #news,
+  #films,
+  .site-footer,
+  .program-hero,
+  .program-day,
+  .films-hero,
+  .award,
+  .authors-hero,
+  .author,
+  .film,
+  .event,
+  .related,
+  .press-hero,
+  .press-form,
+  .legal-hero,
+  .legal-content {
+    overflow: visible !important;
+    background-color: #f3f2ef;
+  }
+
+  #about::before,
+  #news::before,
+  #films::before,
+  .site-footer::before,
+  .program-hero::before,
+  .program-day::before,
+  .films-hero::before,
+  .award::before,
+  .authors-hero::before,
+  .author::before,
+  .film::before,
+  .event::before,
+  .related::before,
+  .press-hero::before,
+  .press-form::before,
+  .legal-hero::before,
+  .legal-content::before {
     position: absolute !important;
-    inset: 0 !important;
-    z-index: 1 !important;
+    inset: calc(-1 * var(--mobile-section-blend)) 0 !important;
+    z-index: 0 !important;
     pointer-events: none !important;
-    background:
+    -webkit-mask-image:
       linear-gradient(
         to bottom,
-        rgba(243, 242, 239, 0.58),
-        rgba(243, 242, 239, 0) var(--mobile-section-blend)
-      ),
-      linear-gradient(
-        to top,
-        rgba(243, 242, 239, 0.58),
-        rgba(243, 242, 239, 0) var(--mobile-section-blend)
-      ),
+        transparent 0,
+        #000 var(--mobile-section-blend),
+        #000 calc(100% - var(--mobile-section-blend)),
+        transparent 100%
+      );
+    mask-image:
       linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.04),
-        rgba(255, 255, 255, 0.12)
-      ) !important;
+        transparent 0,
+        #000 var(--mobile-section-blend),
+        #000 calc(100% - var(--mobile-section-blend)),
+        transparent 100%
+      );
   }
 
   #about > .container,
