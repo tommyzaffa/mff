@@ -1471,7 +1471,7 @@ a:hover{
   height: calc(100vh + 3px);
 }
 
-/* ====== Hero sections: testa.png = light bg → force dark text ====== */
+/* ====== Hero sections: testa.jpg = light bg → force dark text ====== */
 .films-hero, .films-hero *:not(.nav__lang-option):not(.nav__toggle),
 .program-hero, .program-hero *:not(.nav__lang-option):not(.nav__toggle),
 .press-hero, .press-hero *:not(.nav__lang-option):not(.nav__toggle),
