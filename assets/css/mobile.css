@@ -44,7 +44,8 @@
   /* Feather the artwork layers themselves across section boundaries.
      This keeps the same section sizing and avoids visible separator bands. */
   :root {
-    --mobile-section-blend: clamp(5.5rem, 16svh, 8rem);
+    --mobile-section-bleed: clamp(8rem, 24svh, 13rem);
+    --mobile-section-feather: clamp(5rem, 14svh, 8rem);
   }
 
   #about,
@@ -86,23 +87,23 @@
   .legal-hero::before,
   .legal-content::before {
     position: absolute !important;
-    inset: calc(-1 * var(--mobile-section-blend)) 0 !important;
+    inset: calc(-1 * var(--mobile-section-bleed)) 0 !important;
     z-index: 0 !important;
     pointer-events: none !important;
     -webkit-mask-image:
       linear-gradient(
         to bottom,
         transparent 0,
-        #000 var(--mobile-section-blend),
-        #000 calc(100% - var(--mobile-section-blend)),
+        #000 calc(var(--mobile-section-bleed) + var(--mobile-section-feather)),
+        #000 calc(100% - var(--mobile-section-bleed) - var(--mobile-section-feather)),
         transparent 100%
       );
     mask-image:
       linear-gradient(
         to bottom,
         transparent 0,
-        #000 var(--mobile-section-blend),
-        #000 calc(100% - var(--mobile-section-blend)),
+        #000 calc(var(--mobile-section-bleed) + var(--mobile-section-feather)),
+        #000 calc(100% - var(--mobile-section-bleed) - var(--mobile-section-feather)),
         transparent 100%
       );
   }
