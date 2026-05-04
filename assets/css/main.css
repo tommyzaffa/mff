@@ -1279,6 +1279,14 @@ a:hover{
   border: 1px solid rgba(0,0,0,0.12);
 }
 
+/* On dark/purple backgrounds (Full + Experimental in_competition awards),
+   the black border vanishes — switch to a soft white so cards stand out. */
+.section--dark .card,
+.section--dark .poster{
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.32);
+}
+
 /* Carousel buttons */
 .carousel__btn{
   border: 1px solid rgba(0,0,0,0.14);

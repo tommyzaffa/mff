@@ -86,8 +86,27 @@
   .legal-content > .container,
   .program-day > .container,
   .juries > .container,
-  .author > .container {
+  .author > .container,
+  .film > .container,
+  .event > .container,
+  .related > .container {
     padding-bottom: calc(env(safe-area-inset-bottom) + 7rem) !important;
+  }
+
+  /* Film/event detail pages: prevent horizontal overflow + tame poster height */
+  .film__title,
+  .event__title {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+
+  .film__poster img {
+    max-height: 48vh !important;
+  }
+
+  .film__meta,
+  .event__meta {
+    gap: 0.6rem 1rem !important;
   }
 
   .day__stack,
