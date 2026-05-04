@@ -17,16 +17,13 @@
     overflow-x: hidden !important;
   }
 
-  /* Mandatory snap (like desktop) + svh + sections free to grow vertically.
-     Per CSS spec, when a snap area is taller than the snapport, any scroll
-     position where the area covers the snapport is a valid snap position —
-     so the user can scroll fluidly inside long sections (no micro-snap),
-     and snap kicks in fully when crossing into the next section. */
+  /* Mobile keeps the same section sizing as desktop, but scrolls normally
+     instead of snapping between sections. */
   .snap-root {
     height: 100svh !important;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
-    scroll-snap-type: y mandatory !important;
+    scroll-snap-type: none !important;
     scroll-snap-stop: normal !important;
     scroll-padding-top: 0 !important;
     -webkit-overflow-scrolling: touch;
@@ -39,7 +36,7 @@
     min-height: 100svh !important;
     max-height: none !important;
     overflow: visible !important;
-    scroll-snap-align: start !important;
+    scroll-snap-align: none !important;
     scroll-snap-stop: normal !important;
     scroll-margin-top: 0 !important;
   }
