@@ -366,6 +366,10 @@
     padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
   }
 
+  .snap-root:has(.home-hero) > .site-footer .footer__wrap {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
+  }
+
   .footer__headline {
     font-size: clamp(1.7rem, 8vw, 2.6rem);
   }
