@@ -8,12 +8,29 @@
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI." />
   <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/mobile.css">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
 </head>
 
 <body>
   <!-- Background layer (video optional) -->
   <div class="bg">
-    <video class="bg__video" id="heroVideo" src="assets/video/hero-web.mp4" autoplay muted playsinline preload="auto"></video>
+    <video class="bg__video" id="heroVideo" autoplay muted playsinline preload="auto"
+           data-src-desktop="assets/video/hero-web.mp4"
+           data-src-mobile="assets/video/hero-mobile.mp4"></video>
+    <script>
+      (function () {
+        var v = document.getElementById('heroVideo');
+        if (!v) return;
+        var src = window.matchMedia('(max-width: 700px)').matches
+          ? v.getAttribute('data-src-mobile')
+          : v.getAttribute('data-src-desktop');
+        if (src) { v.setAttribute('src', src); v.load(); }
+      })();
+    </script>
 
     <div class="bg__overlay" aria-hidden="true"></div>
   </div>
