@@ -563,8 +563,8 @@ a:hover { text-decoration: underline; }
 }
 
 .home-hero .hero__content{
-  --homeButtonsX: -4vw;
-  --homeButtonsY: 12vh;
+  --homeButtonsX: -24.5vw;
+  --homeButtonsY: 15vh;
   --homeButtonsGap: 1.2rem;
   --homeButtonsDividerWidth: 36px;
   --homeButtonsDividerOpacity: 0.28;
