@@ -590,15 +590,18 @@ a:hover { text-decoration: underline; }
 
 .home-hero .hero__actions{
   position: fixed;
-  left: max(1rem, calc((100vw - 1100px) / 2));
+  left: 50%;
   top: 50%;
   z-index: 3;
-  justify-content: flex-start;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  flex-wrap: nowrap;
+  justify-content: center;
   gap: var(--homeButtonsGap);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(var(--homeButtonsX), calc(var(--homeButtonsY) + 24px)) scale(0.98);
+  transform: translate(calc(-50% + var(--homeButtonsX)), calc(-50% + var(--homeButtonsY) + 24px)) scale(0.98);
   filter: blur(12px);
   transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
               transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -627,7 +630,7 @@ a:hover { text-decoration: underline; }
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate(var(--homeButtonsX), var(--homeButtonsY)) scale(1);
+  transform: translate(calc(-50% + var(--homeButtonsX)), calc(-50% + var(--homeButtonsY))) scale(1);
   filter: blur(0);
   transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
               transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),

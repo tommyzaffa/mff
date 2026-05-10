@@ -17,6 +17,61 @@
     overflow-x: hidden !important;
   }
 
+  /* === Sfondo Tavola_disegno_7 su mobile per TUTTE le pagine TRANNE la home ===
+     La home (identificata dalla presenza di .home-hero) mantiene il suo video. */
+  body:not(:has(.home-hero)) {
+    background-color: #F3F2EF;
+    background-image: url("../img/bg/Tavola_disegno_7.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  /* Sulle pagine non-home, nasconde l'immagine di sfondo originale (es. testa.jpg) */
+  body:not(:has(.home-hero)) .bg__media {
+    display: none !important;
+  }
+
+  /* Sulle pagine non-home, nasconde anche i ::before/::after che disegnano
+     testa.jpg via CSS variables (--legal-bg, --award-bg, --authors-bg, ecc.).
+     Queste regole forzano lo sfondo del body (Tavola_disegno_7) a vedersi. */
+  body:not(:has(.home-hero)) .legal-hero::before,
+  body:not(:has(.home-hero)) .legal-hero::after,
+  body:not(:has(.home-hero)) .legal-content::before,
+  body:not(:has(.home-hero)) .legal-content::after,
+  body:not(:has(.home-hero)) .authors-hero::before,
+  body:not(:has(.home-hero)) .authors-hero::after,
+  body:not(:has(.home-hero)) .author::before,
+  body:not(:has(.home-hero)) .author::after,
+  body:not(:has(.home-hero)) .press-hero::before,
+  body:not(:has(.home-hero)) .press-hero::after,
+  body:not(:has(.home-hero)) .press-form::before,
+  body:not(:has(.home-hero)) .press-form::after,
+  body:not(:has(.home-hero)) .films-hero::before,
+  body:not(:has(.home-hero)) .films-hero::after,
+  body:not(:has(.home-hero)) .award::before,
+  body:not(:has(.home-hero)) .award::after,
+  body:not(:has(.home-hero)) .program-hero::before,
+  body:not(:has(.home-hero)) .program-hero::after,
+  body:not(:has(.home-hero)) .program-day::before,
+  body:not(:has(.home-hero)) .program-day::after,
+  body:not(:has(.home-hero)) .event::before,
+  body:not(:has(.home-hero)) .event::after,
+  body:not(:has(.home-hero)) .film::before,
+  body:not(:has(.home-hero)) .film::after,
+  body:not(:has(.home-hero)) .related::before,
+  body:not(:has(.home-hero)) .related::after {
+    background: transparent !important;
+    background-image: none !important;
+  }
+
+  /* Contact-panel usa background-image diretto (non ::before) */
+  body:not(:has(.home-hero)) .contact-panel {
+    background-image: none !important;
+    background-color: transparent !important;
+  }
+
   /* Mobile keeps the same section sizing as desktop, but scrolls normally
      instead of snapping between sections. */
   .snap-root {
@@ -591,6 +646,25 @@
     text-align: center !important;
     justify-content: center !important;
   }
+
+  /* === Hero Home: bottoni più piccoli e riposizionati su mobile === */
+
+/* Sovrascrive le variabili che spostano i bottoni nella home.
+   IMPORTANTISSIMO: ogni valore DEVE avere un'unità (px, vw, vh, %, rem...).
+   "0" è ok, "-100" da solo NO -> rompe l'intera transform e i bottoni non si muovono. */
+.home-hero .hero__content {
+  --homeButtonsX: -0px;       /* orizzontale: 0 = come container; -2vw = un po' a sinistra; 4vw = un po' a destra */
+  --homeButtonsY: -11vh;     /* verticale rispetto al centro schermo: 0 = centrati, -20vh = più in alto, +20vh = più in basso */
+  --homeButtonsGap: 0.6rem;          /* spazio tra bottoni e divisorio */
+  --homeButtonsDividerWidth: 22px;   /* lunghezza del trattino tra i due bottoni */
+}
+
+/* Bottoni più piccoli (sostituisce la regola esistente a riga 243) */
+.hero__actions .btn {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.78rem;
+  border-radius: 999px; /* opzionale: pill style */
+}
 }
 
 /* ---- Extra small ≤ 380px ---- */
