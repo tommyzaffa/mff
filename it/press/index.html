@@ -200,14 +200,28 @@
   
       if (!form || !status) return;
   
+      // Regex email robusta: utente@dominio.tld con TLD ≥ 2 caratteri
+      const EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
-  
+
+        // --- Validazione email ---
+        const emailInput = form.querySelector('input[type="email"]');
+        const emailValue = (emailInput?.value || "").trim();
+        if (!EMAIL_RE.test(emailValue)) {
+          status.textContent = "Inserisci un indirizzo email valido.";
+          status.classList.remove("is-success");
+          status.classList.add("is-error");
+          emailInput?.focus();
+          return;
+        }
+
         status.textContent = "Sending...";
         status.classList.remove("is-error", "is-success");
-  
+
         const formData = new FormData(form);
-  
+
         try {
           const response = await fetch(form.action, {
             method: form.method,

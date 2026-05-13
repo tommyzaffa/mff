@@ -197,14 +197,28 @@
   
       if (!form || !status) return;
   
+      // Robuste E-Mail-Regex: benutzer@domain.tld mit TLD ≥ 2 Zeichen
+      const EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
-  
+
+        // --- E-Mail-Validierung ---
+        const emailInput = form.querySelector('input[type="email"]');
+        const emailValue = (emailInput?.value || "").trim();
+        if (!EMAIL_RE.test(emailValue)) {
+          status.textContent = "Bitte gib eine gültige E-Mail-Adresse ein.";
+          status.classList.remove("is-success");
+          status.classList.add("is-error");
+          emailInput?.focus();
+          return;
+        }
+
         status.textContent = "Sending...";
         status.classList.remove("is-error", "is-success");
-  
+
         const formData = new FormData(form);
-  
+
         try {
           const response = await fetch(form.action, {
             method: form.method,
