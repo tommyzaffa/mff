@@ -33,43 +33,21 @@
     display: none !important;
   }
 
-  /* Sulle pagine non-home, nasconde anche i ::before/::after che disegnano
-     testa.jpg via CSS variables (--legal-bg, --award-bg, --authors-bg, ecc.).
-     Queste regole forzano lo sfondo del body (Tavola_disegno_7) a vedersi. */
+  /* Solo gli HERO delle pagine non-home usano lo sfondo del body
+     (Tavola_disegno_7). Le sezioni successive mantengono i propri
+     sfondi desktop (--legal-bg, --award-bg, ecc.) per coerenza con il PC. */
   body:not(:has(.home-hero)) .legal-hero::before,
   body:not(:has(.home-hero)) .legal-hero::after,
-  body:not(:has(.home-hero)) .legal-content::before,
-  body:not(:has(.home-hero)) .legal-content::after,
   body:not(:has(.home-hero)) .authors-hero::before,
   body:not(:has(.home-hero)) .authors-hero::after,
-  body:not(:has(.home-hero)) .author::before,
-  body:not(:has(.home-hero)) .author::after,
   body:not(:has(.home-hero)) .press-hero::before,
   body:not(:has(.home-hero)) .press-hero::after,
-  body:not(:has(.home-hero)) .press-form::before,
-  body:not(:has(.home-hero)) .press-form::after,
   body:not(:has(.home-hero)) .films-hero::before,
   body:not(:has(.home-hero)) .films-hero::after,
-  body:not(:has(.home-hero)) .award::before,
-  body:not(:has(.home-hero)) .award::after,
   body:not(:has(.home-hero)) .program-hero::before,
-  body:not(:has(.home-hero)) .program-hero::after,
-  body:not(:has(.home-hero)) .program-day::before,
-  body:not(:has(.home-hero)) .program-day::after,
-  body:not(:has(.home-hero)) .event::before,
-  body:not(:has(.home-hero)) .event::after,
-  body:not(:has(.home-hero)) .film::before,
-  body:not(:has(.home-hero)) .film::after,
-  body:not(:has(.home-hero)) .related::before,
-  body:not(:has(.home-hero)) .related::after {
+  body:not(:has(.home-hero)) .program-hero::after {
     background: transparent !important;
     background-image: none !important;
-  }
-
-  /* Contact-panel usa background-image diretto (non ::before) */
-  body:not(:has(.home-hero)) .contact-panel {
-    background-image: none !important;
-    background-color: transparent !important;
   }
 
   /* Mobile keeps the same section sizing as desktop, but scrolls normally

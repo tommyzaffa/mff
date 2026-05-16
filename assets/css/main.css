@@ -1530,7 +1530,7 @@ a:hover{
 .nav__panel{
   position: absolute;
   right: 0;
-  margin-top: 0.8rem;
+  margin-top: 1.15rem;
 
   min-width: 280px;
   padding: 1rem 0.85rem 1rem;
