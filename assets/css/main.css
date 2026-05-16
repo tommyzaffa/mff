@@ -1455,19 +1455,18 @@ a:hover{
   align-items: flex-end;
 }
 
-/* ====== DROP-DOWN: editorial cinema redesign — cream + viola ====== */
+/* ====== DROP-DOWN: cinematic minimal — cream + viola ====== */
 
 :root{
   --menu-paper: #F3F2EF;
-  --menu-paper-soft: #ECEAE2;
   --menu-ink: #1A1320;
   --menu-violet: #4B2E83;
-  --menu-violet-deep: #2E1A52;
-  --menu-violet-soft: rgba(75,46,131,0.10);
+  --menu-violet-soft: rgba(75,46,131,0.06);
   --menu-violet-line: rgba(75,46,131,0.22);
+  --menu-border: rgba(0,0,0,0.16);
 }
 
-/* ---- Toggle button ---- */
+/* ---- Toggle button — matches the other nav pills ---- */
 .nav__toggle{
   position: relative;
   list-style: none;
@@ -1476,59 +1475,54 @@ a:hover{
 
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
 
-  padding: 0.5rem 0.95rem 0.5rem 1.05rem;
+  padding: 0.5rem 0.95rem;
   border-radius: 999px;
 
-  border: 1px solid var(--menu-ink);
+  border: 1px solid var(--menu-border);
+  background: rgba(255,255,255,0.70);
   color: var(--menu-ink);
 
-  /* purple fill that sweeps in from the left */
-  background-color: var(--menu-paper);
-  background-image: linear-gradient(90deg, var(--menu-violet), var(--menu-violet));
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  background-position: left center;
-
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.72rem;
 
-  transition: color 280ms ease,
-              border-color 280ms ease,
-              background-size 420ms cubic-bezier(.65,0,.35,1);
-  overflow: hidden;
+  transition: background 220ms ease, border-color 220ms ease, color 220ms ease;
 }
 .nav__toggle::-webkit-details-marker{ display: none; }
 
-/* the mark — small square frame, rotates 45deg when open */
+/* tiny square mark — rotates 45° and fills violet on open */
 .nav__toggle::after{
   content: "";
   width: 7px; height: 7px;
-  border-radius: 0;
   border: 1.5px solid currentColor;
   background: transparent;
   transform: rotate(0deg);
-  transition: transform 420ms cubic-bezier(.65,0,.35,1),
-              background 280ms ease;
+  transition: transform 360ms cubic-bezier(.65,0,.35,1),
+              background 220ms ease,
+              border-color 220ms ease;
 }
 
 .nav__toggle:hover{
-  color: var(--menu-paper);
-  border-color: var(--menu-violet);
-  background-size: 100% 100%;
+  color: var(--menu-violet);
+  border-color: var(--menu-violet-line);
+  background: rgba(255,255,255,0.92);
 }
-.nav__toggle:hover::after{ background: var(--menu-paper); }
+.nav__toggle:hover::after{
+  background: var(--menu-violet);
+  border-color: var(--menu-violet);
+}
 
 .nav__dropdown[open] .nav__toggle{
-  color: var(--menu-paper);
-  border-color: var(--menu-violet-deep);
-  background-size: 100% 100%;
+  color: var(--menu-ink);
+  border-color: var(--menu-violet-line);
+  background: rgba(255,255,255,0.92);
 }
 .nav__dropdown[open] .nav__toggle::after{
-  background: var(--menu-paper);
+  background: var(--menu-violet);
+  border-color: var(--menu-violet);
   transform: rotate(45deg);
 }
 
@@ -1536,57 +1530,53 @@ a:hover{
 .nav__panel{
   position: absolute;
   right: 0;
-  margin-top: 0.85rem;
+  margin-top: 0.8rem;
 
-  min-width: 320px;
-  padding: 1.4rem 1.25rem 1.1rem;
+  min-width: 280px;
+  padding: 1rem 0.85rem 1rem;
+  padding-left: 1.8rem; /* leaves room for the violet rail on the left */
 
-  border-radius: 2px;
+  border-radius: 4px;
   background: var(--menu-paper);
   color: var(--menu-ink);
-  border: 1px solid var(--menu-ink);
+  border: 1px solid rgba(0,0,0,0.08);
   backdrop-filter: none;
 
   display: grid;
   gap: 0;
 
-  /* sharp paper shadow + a slight purple offset (like duotone print) */
   box-shadow:
-    8px 8px 0 0 var(--menu-violet),
-    0 24px 60px -20px rgba(46,26,82,0.45);
+    0 1px 0 rgba(0,0,0,0.04),
+    0 18px 50px -20px rgba(46,26,82,0.35),
+    0 4px 16px -8px rgba(0,0,0,0.18);
 
-  /* hidden-by-default state — closed */
+  /* closed state */
   opacity: 0;
   pointer-events: none;
   clip-path: inset(0 0 100% 0);
   transform: translateY(-4px);
   transition: opacity 220ms ease,
-              clip-path 460ms cubic-bezier(.65,0,.35,1),
-              transform 460ms cubic-bezier(.65,0,.35,1);
+              clip-path 380ms cubic-bezier(.65,0,.35,1),
+              transform 380ms cubic-bezier(.65,0,.35,1);
 }
 
-/* kill old "frame" gradient overlay */
 .nav__panel::before{ content: none; }
 
-/* registration corner marks (top-left + bottom-right) — film print vibe */
+/* the cinematic detail: a thin violet rail on the left edge
+   with a small "playhead" pill that travels to the hovered row */
 .nav__panel::after{
   content: "";
   position: absolute;
   pointer-events: none;
-  inset: 8px;
-  background:
-    /* TL corner */
-    linear-gradient(var(--menu-violet),var(--menu-violet)) top left / 14px 1.5px no-repeat,
-    linear-gradient(var(--menu-violet),var(--menu-violet)) top left / 1.5px 14px no-repeat,
-    /* TR corner */
-    linear-gradient(var(--menu-violet),var(--menu-violet)) top right / 14px 1.5px no-repeat,
-    linear-gradient(var(--menu-violet),var(--menu-violet)) top right / 1.5px 14px no-repeat,
-    /* BL corner */
-    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom left / 14px 1.5px no-repeat,
-    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom left / 1.5px 14px no-repeat,
-    /* BR corner */
-    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom right / 14px 1.5px no-repeat,
-    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom right / 1.5px 14px no-repeat;
+  left: 0.85rem;
+  top: 1rem;
+  bottom: 1rem;
+  width: 1.5px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--menu-violet-line) 14%,
+    var(--menu-violet-line) 86%,
+    transparent 100%);
 }
 
 /* open state */
@@ -1597,125 +1587,82 @@ a:hover{
   transform: translateY(0);
 }
 
-/* eyebrow header inside panel */
-.nav__panel::before{
-  content: "MENU · 2026";
-  display: block;
-  position: relative;
-  padding: 0 0 0.85rem 0;
-  margin: 0 0 0.6rem 0;
-  font-size: 0.62rem;
-  letter-spacing: 0.28em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--menu-violet);
-  border-bottom: 1px solid var(--menu-violet-line);
-  background: none;
-  inset: auto;
-  border-radius: 0;
-  -webkit-mask: none;
-          mask: none;
-  opacity: 1;
-  pointer-events: none;
-}
-
 /* ---- Menu items ---- */
-.nav__panel{ counter-reset: navidx; }
-
 .nav__panel a{
-  counter-increment: navidx;
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: 2ch 1fr auto;
-  align-items: baseline;
-  gap: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 
-  padding: 0.85rem 0.7rem 0.85rem 0.55rem;
+  padding: 0.95rem 0.6rem 0.95rem 0.45rem;
   border-radius: 0;
   text-decoration: none;
   color: var(--menu-ink);
 
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: 0.005em;
+  text-transform: none;
+  font-size: 1.18rem;
+  line-height: 1.1;
 
-  opacity: 1;
-  transition: color 280ms ease, padding-left 360ms cubic-bezier(.65,0,.35,1);
+  transition: color 280ms ease, transform 380ms cubic-bezier(.65,0,.35,1);
 }
 
-/* index "01", "02"... — italic serif in violet */
+/* hover "playhead" — a small violet pill that snaps onto the row's left edge */
 .nav__panel a::before{
-  content: counter(navidx, decimal-leading-zero);
-  font-family: "Times New Roman", Georgia, serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: var(--menu-violet);
-  opacity: 0.85;
-  align-self: center;
-  transition: color 280ms ease, transform 360ms cubic-bezier(.65,0,.35,1);
-  transform-origin: left center;
+  content: "";
+  position: absolute;
+  left: -1.35rem;
+  top: 50%;
+  width: 5px;
+  height: 0;
+  background: var(--menu-violet);
+  transform: translateY(-50%);
+  border-radius: 3px;
+  transition: height 280ms cubic-bezier(.65,0,.35,1);
 }
 
-/* arrow on the right — minimal "→" */
+/* violet underline that grows under the label on hover */
 .nav__panel a::after{
   content: "";
-  width: 22px;
-  height: 1.5px;
-  background: currentColor;
-  position: relative;
-  opacity: 0.45;
-  transform: translateX(-6px) scaleX(0.55);
-  transform-origin: right center;
-  transition: opacity 280ms ease, transform 360ms cubic-bezier(.65,0,.35,1),
-              background 280ms ease;
-  align-self: center;
-}
-
-/* hairline divider between items */
-.nav__panel a + a{
-  box-shadow: 0 -1px 0 var(--menu-violet-line) inset;
-}
-
-/* HOVER: purple sweep behind text + label flips to paper color */
-.nav__panel a > span,
-.nav__panel a{
-  z-index: 1;
-}
-.nav__panel a::marker{ content: none; }
-
-/* purple "marquee" highlight — slides in from left */
-.nav__panel a{
-  background-image: linear-gradient(90deg, var(--menu-violet) 0%, var(--menu-violet) 100%);
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  background-position: left center;
-  transition: color 280ms ease,
-              padding-left 360ms cubic-bezier(.65,0,.35,1),
-              background-size 420ms cubic-bezier(.65,0,.35,1);
+  position: absolute;
+  left: 0.45rem;
+  bottom: 0.6rem;
+  height: 2px;
+  width: 0;
+  background: var(--menu-violet);
+  transition: width 420ms cubic-bezier(.65,0,.35,1);
 }
 
 .nav__panel a:hover,
 .nav__panel a:focus-visible{
-  color: var(--menu-paper);
-  background-size: 100% 100%;
-  padding-left: 1.2rem;
+  color: var(--menu-violet);
+  transform: translateX(8px);
   text-decoration: none;
   outline: none;
 }
 .nav__panel a:hover::before,
-.nav__panel a:focus-visible::before{
-  color: var(--menu-paper);
-  transform: translateX(2px);
-}
+.nav__panel a:focus-visible::before{ height: 64%; }
 .nav__panel a:hover::after,
-.nav__panel a:focus-visible::after{
-  opacity: 1;
-  transform: translateX(0) scaleX(1);
-  background: var(--menu-paper);
+.nav__panel a:focus-visible::after{ width: 40px; }
+
+/* signature mark — tiny "*" in the bottom-right corner of the panel */
+.nav__panel{
+  --signature: "✱";
+}
+.nav__panel::before{
+  content: var(--signature);
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.45rem;
+  font-size: 0.7rem;
+  color: var(--menu-violet);
+  opacity: 0.55;
+  pointer-events: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 1;
 }
 
 /* focus-visible: keyboard a11y */
@@ -1727,24 +1674,24 @@ a:hover{
 /* ---- Entry animation ---- */
 .nav__panel a{
   opacity: 0;
-  transform: translateY(-4px);
+  transform: translateX(8px);
 }
 .nav__dropdown[open] .nav__panel a{
   animation: navItemIn 520ms cubic-bezier(.16,1,.3,1) both;
 }
-.nav__dropdown[open] .nav__panel a:nth-child(1){ animation-delay: 120ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(2){ animation-delay: 180ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(3){ animation-delay: 240ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(4){ animation-delay: 300ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(5){ animation-delay: 360ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(6){ animation-delay: 420ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(7){ animation-delay: 480ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(8){ animation-delay: 540ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(1){ animation-delay: 80ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(2){ animation-delay: 130ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(3){ animation-delay: 180ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(4){ animation-delay: 230ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(5){ animation-delay: 280ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(6){ animation-delay: 330ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(7){ animation-delay: 380ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(8){ animation-delay: 430ms; }
 
 @keyframes navItemIn{
   0%{
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(10px);
     filter: blur(2px);
   }
   60%{
@@ -1753,7 +1700,7 @@ a:hover{
   }
   100%{
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
     filter: blur(0);
   }
 }
