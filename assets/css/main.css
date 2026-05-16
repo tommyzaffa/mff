@@ -290,31 +290,10 @@ a:hover { text-decoration: underline; }
   opacity: 0.75;
 }
 
+/* Base panel-link skeleton — full styling overridden in the editorial block below */
 .nav__panel a{
   position: relative;
-  padding: 0.62rem 0.7rem;
-  border-radius: 12px;
   text-decoration: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  opacity: 0.9;
-  transition: background 140ms ease, opacity 140ms ease, transform 140ms ease;
-}
-
-/* minimal hover “ink” */
-.nav__panel a:hover{
-  background: rgba(255,255,255,0.08);
-  opacity: 1;
-  text-decoration: none;
-  transform: translateX(1px);
-}
-
-/* tiny hairline separator between items */
-.nav__panel a + a{
-  box-shadow: 0 -1px 0 rgba(255,255,255,0.06) inset;
 }
 
 /* CTA: slightly more present but still minimal */
@@ -1203,51 +1182,15 @@ body{
   border: 1px solid rgba(0,0,0,0.20);
 }
 
-/* Dropdown menu */
+/* Dropdown menu — minimal base for light theme (real design below) */
 .nav__toggle{
-  border: 1px solid rgba(0,0,0,0.14);
+  border: 1px solid rgba(15,15,18,0.16);
   background: rgba(255,255,255,0.70);
+  color: rgba(15,15,18,0.92);
 }
-
-.nav__toggle::after{
-  border: 1px solid rgba(0,0,0,0.22);
-  background: transparent;
-  opacity: 0.65;
-}
-
-.nav__dropdown[open] .nav__toggle{
-  background: rgba(255,255,255,0.85);
-  border-color: rgba(0,0,0,0.18);
-}
-
-.nav__dropdown[open] .nav__toggle::after{
-  background: rgba(0,0,0,0.85);
-  opacity: 1;
-}
-
 .nav__panel{
-  border: 1px solid rgba(0,0,0,0.10);
+  border: 1px solid rgba(15,15,18,0.10);
   background: rgba(255,255,255,0.88);
-}
-
-.nav__panel::before{
-  opacity: 0.55;
-}
-
-.nav__panel a:hover{
-  background: rgba(0,0,0,0.06);
-}
-
-.nav__panel a + a{
-  box-shadow: 0 -1px 0 rgba(0,0,0,0.06) inset;
-}
-
-.nav__cta{
-  border: 1px solid rgba(0,0,0,0.14);
-  background: rgba(0,0,0,0.04);
-}
-.nav__cta:hover{
-  background: rgba(0,0,0,0.07);
 }
 
 /* Links */
@@ -1512,99 +1455,318 @@ a:hover{
   align-items: flex-end;
 }
 
-/* ====== DROP-DOWN: layout più “artistico” + animazione ====== */
+/* ====== DROP-DOWN: editorial cinema redesign — cream + viola ====== */
 
-/* pannello un filo “storto” e più teatrale */
+:root{
+  --menu-paper: #F3F2EF;
+  --menu-paper-soft: #ECEAE2;
+  --menu-ink: #1A1320;
+  --menu-violet: #4B2E83;
+  --menu-violet-deep: #2E1A52;
+  --menu-violet-soft: rgba(75,46,131,0.10);
+  --menu-violet-line: rgba(75,46,131,0.22);
+}
+
+/* ---- Toggle button ---- */
+.nav__toggle{
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.5rem 0.95rem 0.5rem 1.05rem;
+  border-radius: 999px;
+
+  border: 1px solid var(--menu-ink);
+  color: var(--menu-ink);
+
+  /* purple fill that sweeps in from the left */
+  background-color: var(--menu-paper);
+  background-image: linear-gradient(90deg, var(--menu-violet), var(--menu-violet));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left center;
+
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+
+  transition: color 280ms ease,
+              border-color 280ms ease,
+              background-size 420ms cubic-bezier(.65,0,.35,1);
+  overflow: hidden;
+}
+.nav__toggle::-webkit-details-marker{ display: none; }
+
+/* the mark — small square frame, rotates 45deg when open */
+.nav__toggle::after{
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 0;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  transform: rotate(0deg);
+  transition: transform 420ms cubic-bezier(.65,0,.35,1),
+              background 280ms ease;
+}
+
+.nav__toggle:hover{
+  color: var(--menu-paper);
+  border-color: var(--menu-violet);
+  background-size: 100% 100%;
+}
+.nav__toggle:hover::after{ background: var(--menu-paper); }
+
+.nav__dropdown[open] .nav__toggle{
+  color: var(--menu-paper);
+  border-color: var(--menu-violet-deep);
+  background-size: 100% 100%;
+}
+.nav__dropdown[open] .nav__toggle::after{
+  background: var(--menu-paper);
+  transform: rotate(45deg);
+}
+
+/* ---- Panel ---- */
 .nav__panel{
-  transform-origin: top right;
-  transform: translateY(-10px) rotate(-1.2deg) scale(0.98);
+  position: absolute;
+  right: 0;
+  margin-top: 0.85rem;
+
+  min-width: 320px;
+  padding: 1.4rem 1.25rem 1.1rem;
+
+  border-radius: 2px;
+  background: var(--menu-paper);
+  color: var(--menu-ink);
+  border: 1px solid var(--menu-ink);
+  backdrop-filter: none;
+
+  display: grid;
+  gap: 0;
+
+  /* sharp paper shadow + a slight purple offset (like duotone print) */
+  box-shadow:
+    8px 8px 0 0 var(--menu-violet),
+    0 24px 60px -20px rgba(46,26,82,0.45);
+
+  /* hidden-by-default state — closed */
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(-4px);
+  transition: opacity 220ms ease,
+              clip-path 460ms cubic-bezier(.65,0,.35,1),
+              transform 460ms cubic-bezier(.65,0,.35,1);
 }
 
-/* quando apri: entra con un “settle” */
+/* kill old "frame" gradient overlay */
+.nav__panel::before{ content: none; }
+
+/* registration corner marks (top-left + bottom-right) — film print vibe */
+.nav__panel::after{
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 8px;
+  background:
+    /* TL corner */
+    linear-gradient(var(--menu-violet),var(--menu-violet)) top left / 14px 1.5px no-repeat,
+    linear-gradient(var(--menu-violet),var(--menu-violet)) top left / 1.5px 14px no-repeat,
+    /* TR corner */
+    linear-gradient(var(--menu-violet),var(--menu-violet)) top right / 14px 1.5px no-repeat,
+    linear-gradient(var(--menu-violet),var(--menu-violet)) top right / 1.5px 14px no-repeat,
+    /* BL corner */
+    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom left / 14px 1.5px no-repeat,
+    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom left / 1.5px 14px no-repeat,
+    /* BR corner */
+    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom right / 14px 1.5px no-repeat,
+    linear-gradient(var(--menu-violet),var(--menu-violet)) bottom right / 1.5px 14px no-repeat;
+}
+
+/* open state */
 .nav__dropdown[open] .nav__panel{
-  transform: translateY(0) rotate(0deg) scale(1);
-  animation: navPanelIn 320ms cubic-bezier(.16, 1, .3, 1) both;
+  opacity: 1;
+  pointer-events: auto;
+  clip-path: inset(0 0 0 0);
+  transform: translateY(0);
 }
 
-/* gli item NON partono tutti uguali: ritmo irregolare (collage) */
+/* eyebrow header inside panel */
+.nav__panel::before{
+  content: "MENU · 2026";
+  display: block;
+  position: relative;
+  padding: 0 0 0.85rem 0;
+  margin: 0 0 0.6rem 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--menu-violet);
+  border-bottom: 1px solid var(--menu-violet-line);
+  background: none;
+  inset: auto;
+  border-radius: 0;
+  -webkit-mask: none;
+          mask: none;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* ---- Menu items ---- */
+.nav__panel{ counter-reset: navidx; }
+
 .nav__panel a{
-  opacity: 0; /* parte nascosto */
-  transform: translateY(-6px) translateX(10px);
+  counter-increment: navidx;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 2ch 1fr auto;
+  align-items: baseline;
+  gap: 0.95rem;
+
+  padding: 0.85rem 0.7rem 0.85rem 0.55rem;
+  border-radius: 0;
+  text-decoration: none;
+  color: var(--menu-ink);
+
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.92rem;
+
+  opacity: 1;
+  transition: color 280ms ease, padding-left 360ms cubic-bezier(.65,0,.35,1);
 }
 
-.nav__panel a:nth-child(odd){
-  transform: translateY(-6px) translateX(6px);
-}
-.nav__panel a:nth-child(even){
-  transform: translateY(-6px) translateX(14px);
-}
-.nav__panel a:nth-child(3n){
+/* index "01", "02"... — italic serif in violet */
+.nav__panel a::before{
+  content: counter(navidx, decimal-leading-zero);
+  font-family: "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.78rem;
   letter-spacing: 0.04em;
+  color: var(--menu-violet);
+  opacity: 0.85;
+  align-self: center;
+  transition: color 280ms ease, transform 360ms cubic-bezier(.65,0,.35,1);
+  transform-origin: left center;
 }
 
-/* quando è open: gli item entrano uno dopo l’altro */
+/* arrow on the right — minimal "→" */
+.nav__panel a::after{
+  content: "";
+  width: 22px;
+  height: 1.5px;
+  background: currentColor;
+  position: relative;
+  opacity: 0.45;
+  transform: translateX(-6px) scaleX(0.55);
+  transform-origin: right center;
+  transition: opacity 280ms ease, transform 360ms cubic-bezier(.65,0,.35,1),
+              background 280ms ease;
+  align-self: center;
+}
+
+/* hairline divider between items */
+.nav__panel a + a{
+  box-shadow: 0 -1px 0 var(--menu-violet-line) inset;
+}
+
+/* HOVER: purple sweep behind text + label flips to paper color */
+.nav__panel a > span,
+.nav__panel a{
+  z-index: 1;
+}
+.nav__panel a::marker{ content: none; }
+
+/* purple "marquee" highlight — slides in from left */
+.nav__panel a{
+  background-image: linear-gradient(90deg, var(--menu-violet) 0%, var(--menu-violet) 100%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left center;
+  transition: color 280ms ease,
+              padding-left 360ms cubic-bezier(.65,0,.35,1),
+              background-size 420ms cubic-bezier(.65,0,.35,1);
+}
+
+.nav__panel a:hover,
+.nav__panel a:focus-visible{
+  color: var(--menu-paper);
+  background-size: 100% 100%;
+  padding-left: 1.2rem;
+  text-decoration: none;
+  outline: none;
+}
+.nav__panel a:hover::before,
+.nav__panel a:focus-visible::before{
+  color: var(--menu-paper);
+  transform: translateX(2px);
+}
+.nav__panel a:hover::after,
+.nav__panel a:focus-visible::after{
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+  background: var(--menu-paper);
+}
+
+/* focus-visible: keyboard a11y */
+.nav__toggle:focus-visible{
+  outline: 2px solid var(--menu-violet);
+  outline-offset: 3px;
+}
+
+/* ---- Entry animation ---- */
+.nav__panel a{
+  opacity: 0;
+  transform: translateY(-4px);
+}
 .nav__dropdown[open] .nav__panel a{
-  opacity: 0; /* prevent flash before animation starts */
-  animation: navItemIn 420ms cubic-bezier(.16, 1, .3, 1) both;
+  animation: navItemIn 520ms cubic-bezier(.16,1,.3,1) both;
 }
-
-/* stagger (fino a 8 voci; se ne hai meno non succede niente) */
-.nav__dropdown[open] .nav__panel a:nth-child(1){ animation-delay: 40ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(2){ animation-delay: 90ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(3){ animation-delay: 140ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(4){ animation-delay: 190ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(5){ animation-delay: 240ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(6){ animation-delay: 290ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(7){ animation-delay: 340ms; }
-.nav__dropdown[open] .nav__panel a:nth-child(8){ animation-delay: 390ms; }
-
-/* hover un po’ più “gesture” */
-.nav__panel a:hover{
-  transform: translateX(4px);
-}
-
-/* keyframes: pannello + item */
-@keyframes navPanelIn{
-  0%{
-    opacity: 0;
-    transform: translateY(-10px) rotate(-1.2deg) scale(0.98);
-    filter: blur(1px);
-  }
-  60%{
-    opacity: 1;
-    transform: translateY(0) rotate(0.35deg) scale(1);
-    filter: blur(0px);
-  }
-  100%{
-    opacity: 1;
-    transform: translateY(0) rotate(0deg) scale(1);
-    filter: blur(0px);
-  }
-}
+.nav__dropdown[open] .nav__panel a:nth-child(1){ animation-delay: 120ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(2){ animation-delay: 180ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(3){ animation-delay: 240ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(4){ animation-delay: 300ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(5){ animation-delay: 360ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(6){ animation-delay: 420ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(7){ animation-delay: 480ms; }
+.nav__dropdown[open] .nav__panel a:nth-child(8){ animation-delay: 540ms; }
 
 @keyframes navItemIn{
   0%{
     opacity: 0;
-    transform: translateY(-6px) translateX(12px);
-    filter: blur(1px);
+    transform: translateY(-6px);
+    filter: blur(2px);
   }
-  70%{
-    opacity: 0.92;
-    transform: translateY(0) translateX(0);
-    filter: blur(0px);
+  60%{
+    opacity: 1;
+    filter: blur(0);
   }
   100%{
-    opacity: 0.92;
-    transform: translateY(0) translateX(0);
-    filter: blur(0px);
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
   }
 }
 
-/* rispetto accessibilità */
+/* accessibility */
 @media (prefers-reduced-motion: reduce){
   .nav__panel,
   .nav__panel a,
-  .nav__toggle{
+  .nav__toggle,
+  .nav__toggle::before,
+  .nav__toggle::after,
+  .nav__panel a::before,
+  .nav__panel a::after{
     transition: none !important;
     animation: none !important;
   }
