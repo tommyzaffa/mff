@@ -3,28 +3,60 @@
     const scrollerEl = document.querySelector(".snap-root");
     const getScroller = () => scrollerEl || document.scrollingElement || document.documentElement;
 
-    // ---- Dropdown menu ----
+    // ---- Editorial dropdown menu ----
+    // Panel stays inside .nav__dropdown (position: absolute), so we just
+    // toggle attributes/classes and let CSS handle the open/close transitions.
     const dd = document.querySelector(".nav__dropdown");
     if (dd) {
-      const close = () => dd.removeAttribute("open");
+      const panel = dd.querySelector(".nav__panel");
+      let isOpen = false;
+      let closeTimer = null;
 
-      document.addEventListener("click", (e) => {
-        if (!dd.contains(e.target)) close();
-      });
+      const menuOpen = () => {
+        if (!panel || isOpen) return;
+        isOpen = true;
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        panel.classList.remove("is-closing");
+        panel.classList.add("is-open");
+        dd.setAttribute("open", "");
+        document.body.classList.add("menu-open");
+      };
 
-      const scrollSrc = scrollerEl || window;
-      scrollSrc.addEventListener("scroll", close, { passive: true });
-      if (scrollSrc !== window) {
-        window.addEventListener("scroll", close, { passive: true });
+      const menuClose = () => {
+        if (!panel || !isOpen) return;
+        isOpen = false;
+        panel.classList.remove("is-open");
+        panel.classList.add("is-closing");
+        // Remove [open] so the IN-animation stops; .is-closing keeps the
+        // panel visible and plays the OUT animation.
+        dd.removeAttribute("open");
+        document.body.classList.remove("menu-open");
+        closeTimer = setTimeout(() => {
+          panel.classList.remove("is-closing");
+          closeTimer = null;
+        }, 620);
+      };
+
+      // Intercept summary click before native <details> behaviour
+      const summary = dd.querySelector("summary");
+      if (summary) {
+        summary.addEventListener("click", (e) => {
+          e.preventDefault();
+          isOpen ? menuClose() : menuOpen();
+        });
       }
 
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") close();
+      // Close when a nav link inside the overlay is clicked
+      document.addEventListener("click", (e) => {
+        if (panel && panel.contains(e.target)) {
+          const a = e.target.closest("a");
+          if (a) menuClose();
+        }
       });
 
-      dd.addEventListener("click", (e) => {
-        const a = e.target.closest("a");
-        if (a) close();
+      // Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && isOpen) menuClose();
       });
     }
 

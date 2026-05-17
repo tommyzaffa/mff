@@ -132,7 +132,7 @@ html{
 }
 
 .authors-hero.authors-hero--about-raised > .container{
-  transform: translateY(-18px);
+  transform: translateY(14px);
 }
 
 /* ====== Index pills ====== */

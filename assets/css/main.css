@@ -151,9 +151,18 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter moved to ::before so it does NOT create a containing block
+     for position:fixed children (the full-screen overlay panel) */
   background: rgba(0,0,0,0.35);
   border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.site-header::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .brand {
@@ -162,6 +171,9 @@ a:hover { text-decoration: underline; }
   align-items: center;
   font-weight: 600;
   letter-spacing: 0.2px;
+  /* Stay visible above the full-screen overlay (nav__dropdown is z-index 10001 in the header) */
+  position: relative;
+  z-index: 10002;
 }
 .brand__mark {
   display: inline-grid;
@@ -173,144 +185,53 @@ a:hover { text-decoration: underline; }
 }
 .brand__text { opacity: 0.95; }
 
-/* Dropdown menu via <details> (artistic + minimal) */
+/* ====== MENU A TENDINA — base positioning (real design in editorial block below) ====== */
+
 .nav__dropdown{
   position: relative;
   isolation: isolate;
 }
 
-.nav__toggle{
-  list-style: none;
-  cursor: pointer;
-  user-select: none;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-
-  padding: 0.55rem 0.95rem;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.20);
-  backdrop-filter: blur(10px);
-
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.78rem;
-
-  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
-}
-.nav__toggle::-webkit-details-marker{ display: none; }
-
-/* subtle “open” indicator */
-.nav__toggle::after{
-  content: "";
-  width: 6px; height: 6px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.28);
-  opacity: 0.7;
-  transform: scale(0.9);
-  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
-}
-
-.nav__dropdown[open] .nav__toggle{
-  background: rgba(0,0,0,0.35);
-  border-color: rgba(255,255,255,0.22);
-  transform: translateY(-1px);
-}
-.nav__dropdown[open] .nav__toggle::after{
+/* Closing state — keep panel open while links fade out, then collapse */
+.nav__panel.is-closing{
   opacity: 1;
-  transform: scale(1);
-  background: rgba(255,255,255,0.85);
-}
-
-.nav__toggle:hover{
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.20);
-}
-.nav__toggle:active{
-  transform: translateY(0px);
-}
-
-/* panel “glass card” with a hairline gradient border */
-.nav__panel{
-  position: absolute;
-  right: 0;
-  margin-top: calc(0.7rem + 2mm);
-
-  min-width: 240px;
-  padding: 0.7rem;
-
-  border-radius: 16px;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255,255,255,0.10);
-
-  display: grid;
-  gap: 0.25rem;
-
-  transform: translateY(-6px) scale(0.98);
-  opacity: 0;
+  clip-path: inset(0 0 0 0);
+  transform: translateY(0);
   pointer-events: none;
-
-  transition: opacity 170ms ease, transform 170ms ease;
+  animation: menuPanelOut 380ms cubic-bezier(.65,0,.35,1) 220ms forwards;
 }
 
-/* show panel only when <details> is open */
-.nav__dropdown[open] .nav__panel{
-  transform: translateY(0) scale(1);
-  opacity: 1;
-  pointer-events: auto;
+@keyframes menuPanelOut{
+  to{
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-4px);
+  }
 }
 
-/* gradient “frame” */
-.nav__panel::before{
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: 17px;
-  padding: 1px;
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0.22),
-    rgba(255,255,255,0.06),
-    rgba(255,255,255,0.16)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.75;
+.nav__panel.is-closing a{
+  animation: menuLinkOut 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+.nav__panel.is-closing a:nth-child(1){ animation-delay: 0ms; }
+.nav__panel.is-closing a:nth-child(2){ animation-delay: 25ms; }
+.nav__panel.is-closing a:nth-child(3){ animation-delay: 50ms; }
+.nav__panel.is-closing a:nth-child(4){ animation-delay: 75ms; }
+.nav__panel.is-closing a:nth-child(5){ animation-delay: 100ms; }
+.nav__panel.is-closing a:nth-child(6){ animation-delay: 125ms; }
+.nav__panel.is-closing a:nth-child(7){ animation-delay: 150ms; }
+.nav__panel.is-closing a:nth-child(8){ animation-delay: 175ms; }
 
-/* Base panel-link skeleton — full styling overridden in the editorial block below */
-.nav__panel a{
-  position: relative;
-  text-decoration: none;
-}
-
-/* CTA: slightly more present but still minimal */
-.nav__cta{
-  margin-top: 0.35rem;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06);
-}
-.nav__cta:hover{
-  background: rgba(255,255,255,0.12);
-}
-
-/* accessibility: keyboard focus */
-.nav__panel a:focus-visible,
-.nav__toggle:focus-visible{
-  outline: 2px solid rgba(255,255,255,0.40);
-  outline-offset: 3px;
+@keyframes menuLinkOut{
+  from{
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+  to{
+    opacity: 0;
+    transform: translateX(8px);
+    filter: blur(2px);
+  }
 }
 
 .nav__actions{
@@ -405,6 +326,7 @@ a:hover { text-decoration: underline; }
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.10);
   text-decoration: none;
+  text-align: center;
   font-weight: 600;
 }
 .btn:hover { text-decoration: none; background: rgba(255,255,255,0.14); }
@@ -588,6 +510,8 @@ a:hover { text-decoration: underline; }
               visibility 0s linear 1.25s;
 }
 
+/* Divider commented out — only one button in hero now */
+/*
 .home-hero .hero__actions::before{
   content: "";
   width: var(--homeButtonsDividerWidth);
@@ -596,6 +520,7 @@ a:hover { text-decoration: underline; }
   order: 1;
   background: rgba(15,15,18,var(--homeButtonsDividerOpacity));
 }
+*/
 
 .home-hero .hero__actions .btn:first-child{
   order: 0;
@@ -1182,7 +1107,7 @@ body{
   border: 1px solid rgba(0,0,0,0.20);
 }
 
-/* Dropdown menu — minimal base for light theme (real design below) */
+/* Dropdown menu — light theme base (real design in editorial block below) */
 .nav__toggle{
   border: 1px solid rgba(15,15,18,0.16);
   background: rgba(255,255,255,0.70);
@@ -1436,9 +1361,10 @@ a:hover{
   border-color: rgba(15,15,18,0.20);
 }
 
+/* Header floats ABOVE the full-screen overlay */
 .site-header{ z-index: 10000; }
 .nav__dropdown{ position: relative; z-index: 10001; }
-.nav__panel{ z-index: 10002; }
+.nav__panel{ z-index: 9999; } /* overlay is behind header so toggle stays clickable */
 
 .bg,
 .bg__media,
@@ -1707,7 +1633,16 @@ a:hover{
 
 /* accessibility */
 @media (prefers-reduced-motion: reduce){
-  .nav__panel,
+  .nav__panel{
+    clip-path: none !important;
+    opacity: 0;
+    transition: opacity 200ms ease !important;
+    pointer-events: none;
+  }
+  .nav__panel.is-open{
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
   .nav__panel a,
   .nav__toggle,
   .nav__toggle::before,
@@ -1716,6 +1651,9 @@ a:hover{
   .nav__panel a::after{
     transition: none !important;
     animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
 
