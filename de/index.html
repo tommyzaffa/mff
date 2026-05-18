@@ -29,6 +29,11 @@
           ? v.getAttribute('data-src-mobile')
           : v.getAttribute('data-src-desktop');
         if (src) {
+          v.defaultMuted = true;
+          v.muted = true;
+          v.setAttribute('muted', '');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('webkit-playsinline', '');
           v.setAttribute('src', src);
           v.load();
           var p = v.play();
@@ -409,8 +414,14 @@
     var fadeDuration = 0;
     var scrollFactor = 1.0;   // 0..1, multiplier on volume from scroll position
     var rafScheduled = false;
+    var revealTimeout = null;
 
     function ensurePlaying() {
+      if (!audioActivated) {
+        video.defaultMuted = true;
+        video.muted = true;
+        video.setAttribute('muted', '');
+      }
       var p = video.play();
       if (p && p.catch) p.catch(function () {});
     }
@@ -428,7 +439,20 @@
     function reveal() {
       if (revealed) return;
       revealed = true;
+      if (revealTimeout !== null) {
+        clearTimeout(revealTimeout);
+        revealTimeout = null;
+      }
       syncHeroActions();
+    }
+    function scheduleRevealFallback() {
+      if (revealTimeout !== null) clearTimeout(revealTimeout);
+      revealTimeout = window.setTimeout(reveal, 6000);
+    }
+    function resetHeroActionsTimer() {
+      revealed = false;
+      if (heroContent) heroContent.classList.remove('is-revealed');
+      scheduleRevealFallback();
     }
 
     function computeScrollFactor() {
@@ -492,12 +516,12 @@
       reveal();
     });
     video.addEventListener('error', reveal);
-    window.setTimeout(reveal, 6000);
+    scheduleRevealFallback();
 
     // First-user-gesture audio activation (browsers block autoplay-with-sound).
     if (prompt) {
       var activated = false;
-      var activationEvents = ['click', 'touchstart', 'keydown', 'wheel', 'scroll'];
+      var activationEvents = ['pointerdown', 'click', 'touchstart', 'keydown'];
       function activate() {
         if (activated) return;
         activated = true;
@@ -506,11 +530,9 @@
           video.volume = 0;
           video.muted = false;
           audioActivated = true;
-          // Replay the intro with sound if we're still in the early sound-design window
-          if (video.currentTime < REVEAL_AT) {
-            try { video.currentTime = 0; } catch (e) {}
-            ensurePlaying();
-          }
+          resetHeroActionsTimer();
+          try { video.currentTime = 0; } catch (e) {}
+          ensurePlaying();
           startFade(ACTIVATE_FADE_IN_MS);
         } catch (e) {}
         prompt.classList.add('audio-prompt--gone');

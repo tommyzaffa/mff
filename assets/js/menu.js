@@ -2,6 +2,10 @@
 (() => {
     const scrollerEl = document.querySelector(".snap-root");
     const getScroller = () => scrollerEl || document.scrollingElement || document.documentElement;
+    const scriptSrc = document.currentScript && document.currentScript.src;
+    const heroPosterSrc = scriptSrc
+      ? new URL("../img/hero-poster.jpg", scriptSrc).href
+      : "assets/img/hero-poster.jpg";
 
     // ---- Editorial dropdown menu ----
     // Panel stays inside .nav__dropdown (position: absolute), so we just
@@ -147,10 +151,7 @@
         v.playsInline = true;
         v.setAttribute("playsinline", "");
         v.setAttribute("webkit-playsinline", "");
-        if (!v.hasAttribute("poster")) {
-          // root-relative so it works from every nested page
-          v.setAttribute("poster", "/assets/img/hero-poster.jpg");
-        }
+        if (!v.hasAttribute("poster")) v.setAttribute("poster", heroPosterSrc);
       });
 
       const tryPlayAll = () => {
