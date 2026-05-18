@@ -212,13 +212,13 @@
     font-size: 0.6rem;
   }
 
-  /* Toggle: mantiene la forma circolare anche su mobile */
+  /* Toggle: small pill with "MENU" label on mobile */
   .nav__toggle {
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    font-size: 0;
-    gap: 0;
+    width: auto;
+    height: auto;
+    padding: 0.38rem 0.7rem;
+    font-size: 0.62rem;
+    gap: 0.4rem;
   }
 
   .nav__actions {
@@ -243,18 +243,23 @@
     flex-shrink: 0;
   }
 
-  /* Pannello nav: overlay fullscreen su mobile */
+  /* Pannello nav: dropdown ancorato sotto l'header su mobile */
   .nav__panel {
-    inset: 0;
-    left: 0;
-    right: 0;
+    position: fixed;
+    top: 64px;
+    right: 0.7rem;
+    left: 0.7rem;
+    inset: 64px 0.7rem auto 0.7rem;
     min-width: 0;
-    max-width: 100vw;
-    padding: 5rem 6vw 3rem;
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 1.2rem 1.2rem 1.4rem;
   }
   .nav__panel a {
-    font-size: clamp(1.6rem, 7vw, 2.8rem);
-    padding-left: 2.5rem;
+    font-size: clamp(1.05rem, 4.6vw, 1.4rem);
+    padding-left: 0.4rem;
   }
 
   /* ---- Hero ---- */
@@ -594,8 +599,12 @@
   }
 
   .author__media {
-    min-height: 220px;
+    min-height: 0;
     border-radius: 18px;
+    box-shadow: 0 18px 60px rgba(0,0,0,0.16);
+  }
+  .author__media img {
+    height: auto;
   }
 
   .author__body {
