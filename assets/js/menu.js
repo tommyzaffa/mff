@@ -9,6 +9,7 @@
     const dd = document.querySelector(".nav__dropdown");
     if (dd) {
       const panel = dd.querySelector(".nav__panel");
+      const summary = dd.querySelector("summary");
       let isOpen = false;
       let closeTimer = null;
 
@@ -18,28 +19,34 @@
         if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
         panel.classList.remove("is-closing");
         panel.classList.add("is-open");
+        dd.classList.add("is-open");
         dd.setAttribute("open", "");
+        if (summary) summary.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
       };
 
       const menuClose = () => {
         if (!panel || !isOpen) return;
         isOpen = false;
+        // Remove .is-open so the panel transitions back to closed state.
+        // Keep [open] on <details> during the animation so the UA stylesheet
+        // doesn't hide children instantly; .is-closing handles link stagger
+        // and pointer-events. Then strip [open] when the close finishes.
         panel.classList.remove("is-open");
         panel.classList.add("is-closing");
-        // Remove [open] so the IN-animation stops; .is-closing keeps the
-        // panel visible and plays the OUT animation.
-        dd.removeAttribute("open");
+        dd.classList.remove("is-open");
+        if (summary) summary.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
         closeTimer = setTimeout(() => {
           panel.classList.remove("is-closing");
+          dd.removeAttribute("open");
           closeTimer = null;
         }, 620);
       };
 
       // Intercept summary click before native <details> behaviour
-      const summary = dd.querySelector("summary");
       if (summary) {
+        summary.setAttribute("aria-expanded", "false");
         summary.addEventListener("click", (e) => {
           e.preventDefault();
           isOpen ? menuClose() : menuOpen();
