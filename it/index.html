@@ -28,7 +28,12 @@
         var src = window.matchMedia('(max-width: 700px)').matches
           ? v.getAttribute('data-src-mobile')
           : v.getAttribute('data-src-desktop');
-        if (src) { v.setAttribute('src', src); v.load(); }
+        if (src) {
+          v.setAttribute('src', src);
+          v.load();
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        }
       })();
     </script>
 
@@ -362,40 +367,6 @@ immagini, il pensiero e la realtà.
   </script>
 
 <script src="../assets/js/ticket-consent.js"></script>
-<script>
-  (function () {
-    var video = document.getElementById('heroVideo');
-    var heroContent = document.querySelector('.hero__content');
-    if (!video) return;
-    var revealed = false;
-    var scroller = document.querySelector('.snap-root');
-    function isHeroActive() {
-      var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
-      return scrollTop < window.innerHeight * 0.5;
-    }
-    function syncHeroActions() {
-      if (!heroContent || !revealed) return;
-      heroContent.classList.toggle('is-revealed', isHeroActive());
-    }
-    function reveal() {
-      if (revealed) return;
-      revealed = true;
-      syncHeroActions();
-    }
-    if (scroller) scroller.addEventListener('scroll', syncHeroActions, { passive: true });
-    window.addEventListener('resize', syncHeroActions);
-    video.addEventListener('timeupdate', function () {
-      if (video.currentTime >= 5.5) reveal();
-    });
-    video.addEventListener('ended', function () {
-      video.currentTime = 23;
-      video.play();
-      reveal();
-    });
-    video.addEventListener('error', reveal);
-    window.setTimeout(reveal, 6000);
-  })();
-</script>
 
 <!-- Audio unmute prompt (browsers block autoplay-with-sound; sound is enabled on first user gesture) -->
 <style>
@@ -414,33 +385,153 @@ immagini, il pensiero e la realtà.
   <span class="audio-prompt__text">Clicca per il suono</span>
 </button>
 <script>
-  (function(){
-    var video=document.getElementById('heroVideo');
-    var prompt=document.getElementById('audioPrompt');
-    if(!video||!prompt)return;
-    var activated=false;
-    function activate(){
-      if(activated)return;activated=true;
-      try{
-        video.muted=false;video.volume=1.0;
-        if(video.currentTime<5.5){
-          video.currentTime=0;
-          var p=video.play();
-          if(p&&p.catch)p.catch(function(){});
-        }
-      }catch(e){}
-      prompt.classList.add('audio-prompt--gone');
-      setTimeout(function(){if(prompt&&prompt.parentNode)prompt.parentNode.removeChild(prompt);},500);
-      cleanup();
+  /*
+   * Hero video / audio controller
+   * - Ensures the muted video starts playing on load.
+   * - Reveals hero actions after the intro (or after a safety timeout).
+   * - At end-of-video, loops back to LOOP_RESTART_TIME (22.0s).
+   * - Volume is attenuated by scroll position: full at hero, 0 once a viewport away
+   *   (gives a "distance from the hero" feel as the user scrolls down).
+   * - Fades audio in on first user activation (click-for-sound) and on each loop
+   *   restart, so the loop seam feels symmetric with the in-video fade-out.
+   */
+  (function () {
+    var LOOP_RESTART_TIME = 22.0;   // seconds - where the video resumes after each loop
+    var LOOP_FADE_IN_MS = 1500;     // fade-in duration on loop restart
+    var ACTIVATE_FADE_IN_MS = 800;  // fade-in duration on first user activation
+    var REVEAL_AT = 5.5;            // seconds - when to reveal hero actions
+
+    var video = document.getElementById('heroVideo');
+    var heroContent = document.querySelector('.hero__content');
+    var prompt = document.getElementById('audioPrompt');
+    if (!video) return;
+    var scroller = document.querySelector('.snap-root');
+
+    var revealed = false;
+    var audioActivated = false;
+    var fadeStart = null;     // performance.now() when the current fade-in began, or null
+    var fadeDuration = 0;
+    var scrollFactor = 1.0;   // 0..1, multiplier on volume from scroll position
+    var rafScheduled = false;
+
+    function ensurePlaying() {
+      var p = video.play();
+      if (p && p.catch) p.catch(function () {});
     }
-    function cleanup(){
-      ['click','touchstart','keydown','wheel','scroll'].forEach(function(ev){
-        document.removeEventListener(ev,activate,true);
+    if (video.readyState >= 2) ensurePlaying();
+    else video.addEventListener('loadeddata', ensurePlaying, { once: true });
+
+    function isHeroActive() {
+      var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
+      return scrollTop < window.innerHeight * 0.5;
+    }
+    function syncHeroActions() {
+      if (!heroContent || !revealed) return;
+      heroContent.classList.toggle('is-revealed', isHeroActive());
+    }
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      syncHeroActions();
+    }
+
+    function computeScrollFactor() {
+      var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
+      var dist = Math.max(1, window.innerHeight);
+      var linear = 1 - Math.min(1, Math.max(0, scrollTop / dist));
+      // Quadratic ease so the audio drops faster as the user moves away from the hero.
+      return linear * linear;
+    }
+
+    function currentFadeFactor(now) {
+      if (fadeStart === null) return 1.0;
+      var t = (now - fadeStart) / fadeDuration;
+      if (t >= 1) { fadeStart = null; return 1.0; }
+      return t;
+    }
+
+    function applyVolume() {
+      rafScheduled = false;
+      if (!audioActivated) return;
+      var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      var f = currentFadeFactor(now);
+      var vol = Math.max(0, Math.min(1, scrollFactor * f));
+      try { video.volume = vol; } catch (e) {}
+      if (fadeStart !== null) scheduleApply();
+    }
+
+    function scheduleApply() {
+      if (rafScheduled) return;
+      rafScheduled = true;
+      requestAnimationFrame(applyVolume);
+    }
+
+    function startFade(durationMs) {
+      fadeStart = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      fadeDuration = Math.max(1, durationMs);
+      scheduleApply();
+    }
+
+    function onScroll() {
+      scrollFactor = computeScrollFactor();
+      scheduleApply();
+      syncHeroActions();
+    }
+
+    if (scroller) scroller.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () {
+      scrollFactor = computeScrollFactor();
+      scheduleApply();
+      syncHeroActions();
+    });
+
+    video.addEventListener('timeupdate', function () {
+      if (video.currentTime >= REVEAL_AT) reveal();
+    });
+    video.addEventListener('ended', function () {
+      try { video.currentTime = LOOP_RESTART_TIME; } catch (e) {}
+      ensurePlaying();
+      if (audioActivated) startFade(LOOP_FADE_IN_MS);
+      reveal();
+    });
+    video.addEventListener('error', reveal);
+    window.setTimeout(reveal, 6000);
+
+    // First-user-gesture audio activation (browsers block autoplay-with-sound).
+    if (prompt) {
+      var activated = false;
+      var activationEvents = ['click', 'touchstart', 'keydown', 'wheel', 'scroll'];
+      function activate() {
+        if (activated) return;
+        activated = true;
+        try {
+          scrollFactor = computeScrollFactor();
+          video.volume = 0;
+          video.muted = false;
+          audioActivated = true;
+          // Replay the intro with sound if we're still in the early sound-design window
+          if (video.currentTime < REVEAL_AT) {
+            try { video.currentTime = 0; } catch (e) {}
+            ensurePlaying();
+          }
+          startFade(ACTIVATE_FADE_IN_MS);
+        } catch (e) {}
+        prompt.classList.add('audio-prompt--gone');
+        setTimeout(function () {
+          if (prompt && prompt.parentNode) prompt.parentNode.removeChild(prompt);
+        }, 500);
+        cleanup();
+      }
+      function cleanup() {
+        activationEvents.forEach(function (ev) {
+          document.removeEventListener(ev, activate, true);
+        });
+      }
+      activationEvents.forEach(function (ev) {
+        document.addEventListener(ev, activate, { capture: true, passive: true });
       });
     }
-    ['click','touchstart','keydown','wheel','scroll'].forEach(function(ev){
-      document.addEventListener(ev,activate,{capture:true,passive:true});
-    });
   })();
 </script>
 </body>
