@@ -121,11 +121,15 @@
       </p>
 
       <p class="about__desc">
-        Il propose quatre jours de projections, de masterclasses et de rencontres publiques. 
+        Il propose quatre jours de projections, de masterclasses et de rencontres publiques.
       </p>
 
       <p class="about__desc">
-        Une occasion d’interroger le rôle de l’intelligence artificielle dans les processus créatifs et dans la transformation plus large de notre rapport aux images, à la pensée et à la réalité.
+        Une occasion de nous interroger sur le rôle de l’intelligence artificielle dans les processus créatifs et dans la transformation plus large de notre rapport aux images.
+      </p>
+
+      <p class="about__desc">
+        Merge est né de la nécessité de donner de l’espace à une nouvelle forme de langage cinématographique, tout en servant d’espace de réflexion sur le phénomène culturel de l’intelligence artificielle. Une transformation qui remet en question notre rapport à la réalité.
       </p>
 
       <div class="about__actions">
@@ -206,6 +210,10 @@
           <li>
             <strong>Cercle 91</strong>
             <span>Maison de l’artiste</span>
+          </li>
+          <li>
+            <strong>Salle Masterclass</strong>
+            <span>Masterclasses, conférences et tables rondes</span>
           </li>
         </ul>
       </div>
@@ -305,6 +313,11 @@
           name: "Cercle 91",
           description: "Ateliers et installations",
           position: { lat: 46.007544549797416, lng: 8.94211870515944 }
+        },
+        {
+          name: "Salle Masterclass",
+          description: "Masterclasses, conférences et tables rondes",
+          position: { lat: 46.01338258189602, lng: 8.941049892418572 }
         }
       ];
   
@@ -369,67 +382,30 @@
 
 <script src="../assets/js/ticket-consent.js"></script>
 
-<!-- Audio unmute prompt (browsers block autoplay-with-sound; sound is enabled on first user gesture) -->
-<style>
-  .audio-prompt{position:fixed;bottom:24px;right:24px;z-index:1000;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(20,20,20,.78);color:#fff;border-radius:999px;font-family:inherit;font-size:13px;line-height:1;letter-spacing:.01em;cursor:pointer;border:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,.18);transition:opacity .35s ease,transform .35s ease;animation:audio-prompt-pulse 2.4s ease-in-out infinite}
-  .audio-prompt:hover{transform:translateY(-2px)}
-  .audio-prompt--gone{opacity:0;transform:translateY(8px);pointer-events:none}
-  .audio-prompt__icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px}
-  @keyframes audio-prompt-pulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,.18),0 0 0 0 rgba(123,89,199,.45)}50%{box-shadow:0 4px 20px rgba(0,0,0,.18),0 0 0 10px rgba(123,89,199,0)}}
-  @media (prefers-reduced-motion:reduce){.audio-prompt{animation:none}}
-  @media (max-width:600px){.audio-prompt{bottom:16px;right:16px;font-size:12px;padding:9px 12px}}
-</style>
-<button id="audioPrompt" class="audio-prompt" type="button" aria-label="Cliquez pour le son">
-  <span class="audio-prompt__icon" aria-hidden="true">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-  </span>
-  <span class="audio-prompt__text">Cliquez pour le son</span>
-</button>
+<!-- Hero videos are muted; audio prompt removed -->
 <script>
   /*
-   * Hero video / audio controller
+   * Hero video controller (muted only)
    * - Ensures the muted video starts playing on load.
    * - Reveals hero actions after the intro (or after a safety timeout).
-   * - At end-of-video, loops back to 22.0s on desktop and 22.5s on mobile.
-   * - Volume is attenuated by scroll position: full at hero, 0 once a viewport away
-   *   (gives a "distance from the hero" feel as the user scrolls down).
-   * - Fades audio in on first user activation (click-for-sound) and on each loop
-   *   restart, so the loop seam feels symmetric with the in-video fade-out.
+   * - At end-of-video, loops back to 22.0s on desktop and 22.9s on mobile.
    */
   (function () {
-    var LOOP_RESTART_TIME_DESKTOP = 22.0; // seconds - where desktop resumes after each loop
-    var LOOP_RESTART_TIME_MOBILE = 22.90;  // seconds - where mobile resumes after each loop
-    var LOOP_FADE_IN_MS = 1500;     // fade-in duration on loop restart
-    var ACTIVATE_FADE_IN_MS = 800;  // fade-in duration on first user activation
-    var REVEAL_AT = 5.5;            // seconds - when to reveal hero actions
+    var LOOP_RESTART_TIME_DESKTOP = 22.0;
+    var LOOP_RESTART_TIME_MOBILE = 22.90;
+    var REVEAL_AT = 5.5;
 
     var video = document.getElementById('heroVideo');
     var heroContent = document.querySelector('.hero__content');
-    var prompt = document.getElementById('audioPrompt');
     if (!video) return;
     var scroller = document.querySelector('.snap-root');
-
     var revealed = false;
-    var audioActivated = false;
-    var fadeStart = null;     // performance.now() when the current fade-in began, or null
-    var fadeDuration = 0;
-    var scrollFactor = 1.0;   // 0..1, multiplier on volume from scroll position
-    var rafScheduled = false;
     var revealTimeout = null;
-    var audioContext = null;
-    var audioGain = null;
-    var audioBuffer = null;
-    var audioBufferPromise = null;
-    var audioSource = null;
-    var audioStartedAt = 0;
-    var nativeAudioFallback = false;
 
     function ensurePlaying() {
-      if (!audioActivated) {
-        video.defaultMuted = true;
-        video.muted = true;
-        video.setAttribute('muted', '');
-      }
+      video.defaultMuted = true;
+      video.muted = true;
+      video.setAttribute('muted', '');
       var p = video.play();
       if (p && p.catch) p.catch(function () {});
     }
@@ -441,7 +417,6 @@
         ? LOOP_RESTART_TIME_MOBILE
         : LOOP_RESTART_TIME_DESKTOP;
     }
-
     function isHeroActive() {
       var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
       return scrollTop < window.innerHeight * 0.5;
@@ -453,263 +428,30 @@
     function reveal() {
       if (revealed) return;
       revealed = true;
-      if (revealTimeout !== null) {
-        clearTimeout(revealTimeout);
-        revealTimeout = null;
-      }
+      if (revealTimeout !== null) { clearTimeout(revealTimeout); revealTimeout = null; }
       syncHeroActions();
     }
     function scheduleRevealFallback() {
       if (revealTimeout !== null) clearTimeout(revealTimeout);
       revealTimeout = window.setTimeout(reveal, 6000);
     }
-    function resetHeroActionsTimer() {
-      revealed = false;
-      if (heroContent) heroContent.classList.remove('is-revealed');
-      scheduleRevealFallback();
-    }
 
-    function getScrollMetrics() {
-      var candidates = [];
-      function addCandidate(el) {
-        if (!el) return;
-        var max = Math.max(0, (el.scrollHeight || 0) - (el.clientHeight || window.innerHeight));
-        candidates.push({ top: Math.max(0, el.scrollTop || 0), max: max });
-      }
-      addCandidate(scroller);
-      addCandidate(document.scrollingElement || document.documentElement);
-      addCandidate(document.documentElement);
-      addCandidate(document.body);
-      var active = candidates[0] || { top: window.pageYOffset || 0, max: 0 };
-      candidates.forEach(function (item) {
-        if (item.top > active.top || (active.max <= 1 && item.max > active.max)) active = item;
-      });
-      if (active.max <= 1) {
-        var doc = document.documentElement;
-        var body = document.body;
-        var pageHeight = Math.max(
-          doc ? doc.scrollHeight : 0,
-          body ? body.scrollHeight : 0,
-          window.innerHeight
-        );
-        active = {
-          top: window.pageYOffset || window.scrollY || active.top,
-          max: Math.max(1, pageHeight - window.innerHeight)
-        };
-      }
-      return active;
-    }
-
-    function computeScrollFactor() {
-      var metrics = getScrollMetrics();
-      var progress = metrics.max > 1 ? metrics.top / metrics.max : 0;
-      return 1 - Math.min(1, Math.max(0, progress));
-    }
-
-    function currentFadeFactor(now) {
-      if (fadeStart === null) return 1.0;
-      var t = (now - fadeStart) / fadeDuration;
-      if (t >= 1) { fadeStart = null; return 1.0; }
-      return t;
-    }
-
-    function getHeroAudioSrc() {
-      var src = video.currentSrc || video.getAttribute('src') || '';
-      return src.replace('/video/', '/audio/').replace(/\.mp4(\?.*)?$/, '.m4a$1');
-    }
-
-    function initAudioContext() {
-      if (audioContext && audioGain) return true;
-      var AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return false;
-      try {
-        audioContext = audioContext || new AudioCtx();
-        audioGain = audioContext.createGain();
-        audioGain.gain.value = 0;
-        audioGain.connect(audioContext.destination);
-        return true;
-      } catch (e) {
-        audioContext = null;
-        audioGain = null;
-        return false;
-      }
-    }
-
-    function decodeAudioData(data) {
-      return new Promise(function (resolve, reject) {
-        var settled = false;
-        function done(buffer) {
-          if (settled) return;
-          settled = true;
-          resolve(buffer);
-        }
-        function fail(err) {
-          if (settled) return;
-          settled = true;
-          reject(err);
-        }
-        try {
-          var p = audioContext.decodeAudioData(data, done, fail);
-          if (p && p.then) p.then(done, fail);
-        } catch (e) {
-          fail(e);
-        }
-      });
-    }
-
-    function loadAudioBuffer() {
-      if (audioBuffer) return Promise.resolve(audioBuffer);
-      if (!audioBufferPromise) {
-        audioBufferPromise = fetch(getHeroAudioSrc())
-          .then(function (res) {
-            if (!res.ok) throw new Error('Hero audio failed to load');
-            return res.arrayBuffer();
-          })
-          .then(decodeAudioData)
-          .then(function (buffer) {
-            audioBuffer = buffer;
-            return buffer;
-          });
-      }
-      return audioBufferPromise;
-    }
-
-    function stopAudioSource() {
-      if (!audioSource) return;
-      try { audioSource.stop(0); } catch (e) {}
-      try { audioSource.disconnect(); } catch (e) {}
-      audioSource = null;
-    }
-
-    function startSeparateAudioAt(offset) {
-      if (!initAudioContext()) {
-        nativeAudioFallback = true;
-        video.muted = false;
-        return;
-      }
-      if (audioContext.resume) {
-        var p = audioContext.resume();
-        if (p && p.catch) p.catch(function () {});
-      }
-      loadAudioBuffer().then(function (buffer) {
-        if (!audioActivated) return;
-        stopAudioSource();
-        var safeOffset = Math.max(0, Math.min(offset, Math.max(0, buffer.duration - 0.05)));
-        audioSource = audioContext.createBufferSource();
-        audioSource.buffer = buffer;
-        audioSource.connect(audioGain);
-        audioStartedAt = audioContext.currentTime - safeOffset;
-        audioSource.start(0, safeOffset);
-        video.muted = true;
-      }).catch(function () {
-        nativeAudioFallback = true;
-        video.muted = false;
-      });
-    }
-
-    function syncSeparateAudio(force) {
-      if (!audioActivated || nativeAudioFallback || !audioContext || !audioSource || !audioBuffer) return;
-      var drift = video.currentTime - (audioContext.currentTime - audioStartedAt);
-      if (force || Math.abs(drift) > 0.35) startSeparateAudioAt(video.currentTime);
-    }
-
-    function setMediaVolume(vol) {
-      if (audioGain && !nativeAudioFallback) {
-        try { audioGain.gain.value = vol; } catch (e) {}
-        if (audioActivated) video.muted = true;
-        return;
-      }
-      try { video.volume = vol; } catch (e) {}
-      if (audioActivated) video.muted = vol <= 0.02;
-    }
-
-    function applyVolume() {
-      rafScheduled = false;
-      if (!audioActivated) return;
-      var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-      var f = currentFadeFactor(now);
-      var vol = Math.max(0, Math.min(1, scrollFactor * f));
-      setMediaVolume(vol);
-      if (fadeStart !== null) scheduleApply();
-    }
-
-    function scheduleApply() {
-      if (rafScheduled) return;
-      rafScheduled = true;
-      requestAnimationFrame(applyVolume);
-    }
-
-    function startFade(durationMs) {
-      fadeStart = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-      fadeDuration = Math.max(1, durationMs);
-      scheduleApply();
-    }
-
-    function onScroll() {
-      scrollFactor = computeScrollFactor();
-      scheduleApply();
-      syncHeroActions();
-    }
-
+    function onScroll() { syncHeroActions(); }
     if (scroller) scroller.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('scroll', onScroll, { capture: true, passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () {
-      scrollFactor = computeScrollFactor();
-      scheduleApply();
-      syncHeroActions();
-    });
+    window.addEventListener('resize', syncHeroActions);
 
     video.addEventListener('timeupdate', function () {
       if (video.currentTime >= REVEAL_AT) reveal();
-      syncSeparateAudio(false);
     });
     video.addEventListener('ended', function () {
-      var loopRestartTime = getLoopRestartTime();
-      if (audioActivated) setMediaVolume(0);
-      try { video.currentTime = loopRestartTime; } catch (e) {}
+      try { video.currentTime = getLoopRestartTime(); } catch (e) {}
       ensurePlaying();
-      if (audioActivated && !nativeAudioFallback) startSeparateAudioAt(loopRestartTime);
-      if (audioActivated) startFade(LOOP_FADE_IN_MS);
       reveal();
     });
     video.addEventListener('error', reveal);
     scheduleRevealFallback();
-
-    // First-user-gesture audio activation (browsers block autoplay-with-sound).
-    if (prompt) {
-      var activated = false;
-      var activationEvents = ['pointerdown', 'click', 'touchstart', 'keydown'];
-      function activate() {
-        if (activated) return;
-        activated = true;
-        try {
-          scrollFactor = computeScrollFactor();
-          audioActivated = true;
-          nativeAudioFallback = false;
-          video.muted = true;
-          setMediaVolume(0);
-          resetHeroActionsTimer();
-          try { video.currentTime = 0; } catch (e) {}
-          ensurePlaying();
-          startSeparateAudioAt(0);
-          startFade(ACTIVATE_FADE_IN_MS);
-        } catch (e) {}
-        prompt.classList.add('audio-prompt--gone');
-        setTimeout(function () {
-          if (prompt && prompt.parentNode) prompt.parentNode.removeChild(prompt);
-        }, 500);
-        cleanup();
-      }
-      function cleanup() {
-        activationEvents.forEach(function (ev) {
-          document.removeEventListener(ev, activate, true);
-        });
-      }
-      activationEvents.forEach(function (ev) {
-        document.addEventListener(ev, activate, { capture: true, passive: true });
-      });
-    }
   })();
 </script>
 </body>

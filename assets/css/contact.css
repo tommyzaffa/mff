@@ -67,7 +67,7 @@ html{ scroll-behavior: smooth; }
 .contact-grid{
   margin-top: 1.4rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(0.9rem, 1.6vw, 1.2rem);
 }
 
@@ -201,6 +201,13 @@ html{ scroll-behavior: smooth; }
   .contact-grid{ grid-template-columns: 1fr; }
   .contact-card{ padding: 1rem; }
   .contact-newsletter{ padding: 1.05rem; }
+}
+
+/* On medium screens (2 cols), avoid an orphan card on the second row by stretching it */
+@media (min-width: 561px) and (max-width: 980px){
+  .contact-grid > .contact-card:last-child:nth-child(odd){
+    grid-column: 1 / -1;
+  }
 }
 
 /* Ensure header stays above page overlays */
