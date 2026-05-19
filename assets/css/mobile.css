@@ -7,7 +7,7 @@
 
   :root {
     --mobile-header-space: calc(4.7rem + env(safe-area-inset-top));
-    --mobile-header-visual-space: calc(3.35rem + env(safe-area-inset-top));
+    --mobile-header-visual-space: calc(3.05rem + env(safe-area-inset-top));
     --mobile-bottom-space: calc(2rem + env(safe-area-inset-bottom));
   }
 
