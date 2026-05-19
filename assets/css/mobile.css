@@ -7,6 +7,7 @@
 
   :root {
     --mobile-header-space: calc(4.7rem + env(safe-area-inset-top));
+    --mobile-header-visual-space: calc(3.35rem + env(safe-area-inset-top));
     --mobile-bottom-space: calc(2rem + env(safe-area-inset-bottom));
   }
 
@@ -191,6 +192,31 @@
     right: 0;
     height: env(safe-area-inset-top);
     background: #F3F2EF;
+  }
+
+  /* Home hero video: keep the whole 9:16 mobile render visible below the header.
+     iOS Safari changes the usable viewport height between devices/browser states;
+     cover-cropping plus the sticky header can hide the title baked into the video. */
+  body:has(.home-hero) .bg {
+    top: var(--mobile-header-visual-space);
+    right: 0;
+    bottom: auto;
+    left: 0;
+    height: calc(100vh - var(--mobile-header-visual-space));
+    background: #F3F2EF;
+  }
+
+  @supports (height: 100svh) {
+    body:has(.home-hero) .bg {
+      height: calc(100svh - var(--mobile-header-visual-space));
+    }
+  }
+
+  body:has(.home-hero) .bg__video,
+  body:has(.home-hero) .bg__video.is-hidden {
+    object-fit: contain;
+    object-position: center top;
+    transform: none;
   }
 
   /* Nascondi il pulsante "Acquista" nell'header — accessibile dal menu a tendina */
