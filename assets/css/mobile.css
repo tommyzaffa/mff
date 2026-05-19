@@ -194,9 +194,9 @@
     background: #F3F2EF;
   }
 
-  /* Home hero video: keep the whole 9:16 mobile render visible below the header.
+  /* Home hero video: keep the 9:16 mobile render below the header.
      iOS Safari changes the usable viewport height between devices/browser states;
-     cover-cropping plus the sticky header can hide the title baked into the video. */
+     anchoring the cover crop at the top keeps the title baked into the video visible. */
   body:has(.home-hero) .bg {
     top: var(--mobile-header-visual-space);
     right: 0;
@@ -214,9 +214,14 @@
 
   body:has(.home-hero) .bg__video,
   body:has(.home-hero) .bg__video.is-hidden {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center top;
+    mix-blend-mode: normal;
     transform: none;
+  }
+
+  body:has(.home-hero) .bg__overlay {
+    background: transparent;
   }
 
   /* Nascondi il pulsante "Acquista" nell'header — accessibile dal menu a tendina */
