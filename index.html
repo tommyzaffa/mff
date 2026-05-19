@@ -389,7 +389,7 @@
   /*
    * Hero video controller (muted only)
    * - Ensures the muted video starts playing on load.
-   * - Reveals hero actions after the intro (or after a safety timeout).
+   * - Reveals hero actions only when video playback reaches the intro point.
    * - At end-of-video, loops back to 22.0s on desktop and 22.9s on mobile.
    */
   (function () {
@@ -402,7 +402,6 @@
     if (!video) return;
     var scroller = document.querySelector('.snap-root');
     var revealed = false;
-    var revealTimeout = null;
 
     function ensurePlaying() {
       video.defaultMuted = true;
@@ -430,12 +429,10 @@
     function reveal() {
       if (revealed) return;
       revealed = true;
-      if (revealTimeout !== null) { clearTimeout(revealTimeout); revealTimeout = null; }
       syncHeroActions();
     }
-    function scheduleRevealFallback() {
-      if (revealTimeout !== null) clearTimeout(revealTimeout);
-      revealTimeout = window.setTimeout(reveal, 6000);
+    function revealFromVideoTime() {
+      if (video.currentTime >= REVEAL_AT) reveal();
     }
 
     function onScroll() { syncHeroActions(); }
@@ -444,16 +441,14 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', syncHeroActions);
 
-    video.addEventListener('timeupdate', function () {
-      if (video.currentTime >= REVEAL_AT) reveal();
-    });
+    video.addEventListener('timeupdate', revealFromVideoTime);
+    video.addEventListener('playing', revealFromVideoTime);
     video.addEventListener('ended', function () {
       try { video.currentTime = getLoopRestartTime(); } catch (e) {}
       ensurePlaying();
       reveal();
     });
     video.addEventListener('error', reveal);
-    scheduleRevealFallback();
   })();
 </script>
 </body>
