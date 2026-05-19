@@ -394,14 +394,15 @@ immagini, il pensiero e la realtà.
    * Hero video / audio controller
    * - Ensures the muted video starts playing on load.
    * - Reveals hero actions after the intro (or after a safety timeout).
-   * - At end-of-video, loops back to LOOP_RESTART_TIME (22.0s).
+   * - At end-of-video, loops back to 22.0s on desktop and 22.5s on mobile.
    * - Volume is attenuated by scroll position: full at hero, 0 once a viewport away
    *   (gives a "distance from the hero" feel as the user scrolls down).
    * - Fades audio in on first user activation (click-for-sound) and on each loop
    *   restart, so the loop seam feels symmetric with the in-video fade-out.
    */
   (function () {
-    var LOOP_RESTART_TIME = 22.0;   // seconds - where the video resumes after each loop
+    var LOOP_RESTART_TIME_DESKTOP = 22.0; // seconds - where desktop resumes after each loop
+    var LOOP_RESTART_TIME_MOBILE = 22.90;  // seconds - where mobile resumes after each loop
     var LOOP_FADE_IN_MS = 1500;     // fade-in duration on loop restart
     var ACTIVATE_FADE_IN_MS = 800;  // fade-in duration on first user activation
     var REVEAL_AT = 5.5;            // seconds - when to reveal hero actions
@@ -419,6 +420,13 @@ immagini, il pensiero e la realtà.
     var scrollFactor = 1.0;   // 0..1, multiplier on volume from scroll position
     var rafScheduled = false;
     var revealTimeout = null;
+    var audioContext = null;
+    var audioGain = null;
+    var audioBuffer = null;
+    var audioBufferPromise = null;
+    var audioSource = null;
+    var audioStartedAt = 0;
+    var nativeAudioFallback = false;
 
     function ensurePlaying() {
       if (!audioActivated) {
@@ -431,6 +439,12 @@ immagini, il pensiero e la realtà.
     }
     if (video.readyState >= 2) ensurePlaying();
     else video.addEventListener('loadeddata', ensurePlaying, { once: true });
+
+    function getLoopRestartTime() {
+      return window.matchMedia && window.matchMedia('(max-width: 700px)').matches
+        ? LOOP_RESTART_TIME_MOBILE
+        : LOOP_RESTART_TIME_DESKTOP;
+    }
 
     function isHeroActive() {
       var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
@@ -459,12 +473,41 @@ immagini, il pensiero e la realtà.
       scheduleRevealFallback();
     }
 
+    function getScrollMetrics() {
+      var candidates = [];
+      function addCandidate(el) {
+        if (!el) return;
+        var max = Math.max(0, (el.scrollHeight || 0) - (el.clientHeight || window.innerHeight));
+        candidates.push({ top: Math.max(0, el.scrollTop || 0), max: max });
+      }
+      addCandidate(scroller);
+      addCandidate(document.scrollingElement || document.documentElement);
+      addCandidate(document.documentElement);
+      addCandidate(document.body);
+      var active = candidates[0] || { top: window.pageYOffset || 0, max: 0 };
+      candidates.forEach(function (item) {
+        if (item.top > active.top || (active.max <= 1 && item.max > active.max)) active = item;
+      });
+      if (active.max <= 1) {
+        var doc = document.documentElement;
+        var body = document.body;
+        var pageHeight = Math.max(
+          doc ? doc.scrollHeight : 0,
+          body ? body.scrollHeight : 0,
+          window.innerHeight
+        );
+        active = {
+          top: window.pageYOffset || window.scrollY || active.top,
+          max: Math.max(1, pageHeight - window.innerHeight)
+        };
+      }
+      return active;
+    }
+
     function computeScrollFactor() {
-      var scrollTop = scroller ? scroller.scrollTop : window.scrollY;
-      var dist = Math.max(1, window.innerHeight);
-      var linear = 1 - Math.min(1, Math.max(0, scrollTop / dist));
-      // Quadratic ease so the audio drops faster as the user moves away from the hero.
-      return linear * linear;
+      var metrics = getScrollMetrics();
+      var progress = metrics.max > 1 ? metrics.top / metrics.max : 0;
+      return 1 - Math.min(1, Math.max(0, progress));
     }
 
     function currentFadeFactor(now) {
@@ -474,13 +517,123 @@ immagini, il pensiero e la realtà.
       return t;
     }
 
+    function getHeroAudioSrc() {
+      var src = video.currentSrc || video.getAttribute('src') || '';
+      return src.replace('/video/', '/audio/').replace(/\.mp4(\?.*)?$/, '.m4a$1');
+    }
+
+    function initAudioContext() {
+      if (audioContext && audioGain) return true;
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return false;
+      try {
+        audioContext = audioContext || new AudioCtx();
+        audioGain = audioContext.createGain();
+        audioGain.gain.value = 0;
+        audioGain.connect(audioContext.destination);
+        return true;
+      } catch (e) {
+        audioContext = null;
+        audioGain = null;
+        return false;
+      }
+    }
+
+    function decodeAudioData(data) {
+      return new Promise(function (resolve, reject) {
+        var settled = false;
+        function done(buffer) {
+          if (settled) return;
+          settled = true;
+          resolve(buffer);
+        }
+        function fail(err) {
+          if (settled) return;
+          settled = true;
+          reject(err);
+        }
+        try {
+          var p = audioContext.decodeAudioData(data, done, fail);
+          if (p && p.then) p.then(done, fail);
+        } catch (e) {
+          fail(e);
+        }
+      });
+    }
+
+    function loadAudioBuffer() {
+      if (audioBuffer) return Promise.resolve(audioBuffer);
+      if (!audioBufferPromise) {
+        audioBufferPromise = fetch(getHeroAudioSrc())
+          .then(function (res) {
+            if (!res.ok) throw new Error('Hero audio failed to load');
+            return res.arrayBuffer();
+          })
+          .then(decodeAudioData)
+          .then(function (buffer) {
+            audioBuffer = buffer;
+            return buffer;
+          });
+      }
+      return audioBufferPromise;
+    }
+
+    function stopAudioSource() {
+      if (!audioSource) return;
+      try { audioSource.stop(0); } catch (e) {}
+      try { audioSource.disconnect(); } catch (e) {}
+      audioSource = null;
+    }
+
+    function startSeparateAudioAt(offset) {
+      if (!initAudioContext()) {
+        nativeAudioFallback = true;
+        video.muted = false;
+        return;
+      }
+      if (audioContext.resume) {
+        var p = audioContext.resume();
+        if (p && p.catch) p.catch(function () {});
+      }
+      loadAudioBuffer().then(function (buffer) {
+        if (!audioActivated) return;
+        stopAudioSource();
+        var safeOffset = Math.max(0, Math.min(offset, Math.max(0, buffer.duration - 0.05)));
+        audioSource = audioContext.createBufferSource();
+        audioSource.buffer = buffer;
+        audioSource.connect(audioGain);
+        audioStartedAt = audioContext.currentTime - safeOffset;
+        audioSource.start(0, safeOffset);
+        video.muted = true;
+      }).catch(function () {
+        nativeAudioFallback = true;
+        video.muted = false;
+      });
+    }
+
+    function syncSeparateAudio(force) {
+      if (!audioActivated || nativeAudioFallback || !audioContext || !audioSource || !audioBuffer) return;
+      var drift = video.currentTime - (audioContext.currentTime - audioStartedAt);
+      if (force || Math.abs(drift) > 0.35) startSeparateAudioAt(video.currentTime);
+    }
+
+    function setMediaVolume(vol) {
+      if (audioGain && !nativeAudioFallback) {
+        try { audioGain.gain.value = vol; } catch (e) {}
+        if (audioActivated) video.muted = true;
+        return;
+      }
+      try { video.volume = vol; } catch (e) {}
+      if (audioActivated) video.muted = vol <= 0.02;
+    }
+
     function applyVolume() {
       rafScheduled = false;
       if (!audioActivated) return;
       var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
       var f = currentFadeFactor(now);
       var vol = Math.max(0, Math.min(1, scrollFactor * f));
-      try { video.volume = vol; } catch (e) {}
+      setMediaVolume(vol);
       if (fadeStart !== null) scheduleApply();
     }
 
@@ -503,6 +656,7 @@ immagini, il pensiero e la realtà.
     }
 
     if (scroller) scroller.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', function () {
       scrollFactor = computeScrollFactor();
@@ -512,10 +666,14 @@ immagini, il pensiero e la realtà.
 
     video.addEventListener('timeupdate', function () {
       if (video.currentTime >= REVEAL_AT) reveal();
+      syncSeparateAudio(false);
     });
     video.addEventListener('ended', function () {
-      try { video.currentTime = LOOP_RESTART_TIME; } catch (e) {}
+      var loopRestartTime = getLoopRestartTime();
+      if (audioActivated) setMediaVolume(0);
+      try { video.currentTime = loopRestartTime; } catch (e) {}
       ensurePlaying();
+      if (audioActivated && !nativeAudioFallback) startSeparateAudioAt(loopRestartTime);
       if (audioActivated) startFade(LOOP_FADE_IN_MS);
       reveal();
     });
@@ -531,12 +689,14 @@ immagini, il pensiero e la realtà.
         activated = true;
         try {
           scrollFactor = computeScrollFactor();
-          video.volume = 0;
-          video.muted = false;
           audioActivated = true;
+          nativeAudioFallback = false;
+          video.muted = true;
+          setMediaVolume(0);
           resetHeroActionsTimer();
           try { video.currentTime = 0; } catch (e) {}
           ensurePlaying();
+          startSeparateAudioAt(0);
           startFade(ACTIVATE_FADE_IN_MS);
         } catch (e) {}
         prompt.classList.add('audio-prompt--gone');

@@ -649,7 +649,7 @@
    "0" è ok, "-100" da solo NO -> rompe l'intera transform e i bottoni non si muovono. */
 .home-hero .hero__content {
   --homeButtonsX: -0px;       /* orizzontale: 0 = come container; -2vw = un po' a sinistra; 4vw = un po' a destra */
-  --homeButtonsY: -11vh;     /* verticale rispetto al centro schermo: 0 = centrati, -20vh = più in alto, +20vh = più in basso */
+  --homeButtonsY: -18vh;     /* verticale rispetto al centro schermo: 0 = centrati, -20vh = più in alto, +20vh = più in basso */
   --homeButtonsGap: 0.6rem;          /* spazio tra bottoni e divisorio */
   --homeButtonsDividerWidth: 22px;   /* lunghezza del trattino tra i due bottoni */
 }
