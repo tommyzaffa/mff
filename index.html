@@ -7,7 +7,7 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI." />
   <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="stylesheet" href="assets/css/mobile.css?v=20260519-hero-raise-25-button-10">
+  <link rel="stylesheet" href="assets/css/mobile.css?v=20260520-hero-bottom-anchor">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -15,7 +15,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
 </head>
 
-<body>
+<body class="home-page">
   <!-- Background layer (video optional) -->
   <div class="bg">
     <video class="bg__video" id="heroVideo" autoplay muted playsinline preload="auto"
@@ -28,17 +28,29 @@
         var src = window.matchMedia('(max-width: 700px)').matches
           ? v.getAttribute('data-src-mobile')
           : v.getAttribute('data-src-desktop');
-        if (src) {
+        var fallbackSrc = v.getAttribute('data-src-desktop');
+        var fallbackTried = false;
+
+        function loadHeroSource(nextSrc) {
+          if (!nextSrc) return;
           v.defaultMuted = true;
           v.muted = true;
           v.setAttribute('muted', '');
           v.setAttribute('playsinline', '');
           v.setAttribute('webkit-playsinline', '');
-          v.setAttribute('src', src);
+          v.setAttribute('src', nextSrc);
           v.load();
           var p = v.play();
           if (p && p.catch) p.catch(function () {});
         }
+
+        v.addEventListener('error', function () {
+          if (fallbackTried || !fallbackSrc || v.currentSrc.indexOf(fallbackSrc.split('?')[0]) !== -1) return;
+          fallbackTried = true;
+          loadHeroSource(fallbackSrc);
+        });
+
+        loadHeroSource(src);
       })();
     </script>
 

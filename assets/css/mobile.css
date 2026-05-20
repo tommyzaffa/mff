@@ -195,32 +195,28 @@
   }
 
   /* Home hero video: keep the 9:16 mobile render below the header.
-     iOS Safari changes the usable viewport height between devices/browser states;
-     anchoring the cover crop at the top keeps the title baked into the video visible. */
-  body:has(.home-hero) .bg {
+     iOS browsers report viewport heights differently between Safari/Chrome
+     and toolbar states, so the fixed layer is anchored with top + bottom
+     instead of a fixed svh height. The video itself is anchored to the
+     bottom so any cover crop is taken from the top. */
+  body.home-page .bg {
     top: var(--mobile-header-visual-space);
     right: 0;
-    bottom: auto;
+    bottom: 0;
     left: 0;
-    height: calc(100vh - var(--mobile-header-visual-space));
+    height: auto;
     background: #F3F2EF;
   }
 
-  @supports (height: 100svh) {
-    body:has(.home-hero) .bg {
-      height: calc(100svh - var(--mobile-header-visual-space));
-    }
-  }
-
-  body:has(.home-hero) .bg__video,
-  body:has(.home-hero) .bg__video.is-hidden {
+  body.home-page .bg__video,
+  body.home-page .bg__video.is-hidden {
     object-fit: cover;
-    object-position: center top;
+    object-position: center bottom;
     mix-blend-mode: normal;
-    transform: translateY(-2%);
+    transform: none;
   }
 
-  body:has(.home-hero) .bg__overlay {
+  body.home-page .bg__overlay {
     background: transparent;
   }
 
@@ -443,7 +439,7 @@
     padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
   }
 
-  .snap-root:has(.home-hero) > .site-footer .footer__wrap {
+  body.home-page .site-footer .footer__wrap {
     padding-bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
   }
 
