@@ -211,7 +211,7 @@
   body.home-page .bg__video,
   body.home-page .bg__video.is-hidden {
     object-fit: cover;
-    object-position: center 94%;
+    object-position: center 90%;
     mix-blend-mode: normal;
     transform: none;
   }
