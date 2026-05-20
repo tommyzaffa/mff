@@ -217,7 +217,7 @@
     object-fit: cover;
     object-position: center top;
     mix-blend-mode: normal;
-    transform: translateY(-3%);
+    transform: translateY(0%);
   }
 
   body:has(.home-hero) .bg__overlay {
