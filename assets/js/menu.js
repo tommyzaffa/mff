@@ -192,3 +192,107 @@
       document.addEventListener("DOMContentLoaded", initHeroVideo);
     }
   })();
+
+  // ---- Submit CTA marquee (mobile) ----
+  // Quando il testo del pulsante "Submit your film" (e traduzioni) non sta
+  // nel bottone su mobile, il testo scorre lentamente avanti e indietro
+  // con una pausa a inizio e fine. Sopra la breakpoint il bottone torna
+  // alla larghezza naturale e non c'è bisogno di marquee.
+  (() => {
+    const MQ = window.matchMedia("(max-width: 768px)");
+    const PAUSE_MS = 1600;        // pausa a inizio/fine
+    const SPEED_PX_PER_S = 35;    // velocità scorrimento (px/sec)
+    const MIN_DURATION_MS = 1800; // durata minima di una passata
+    const state = new WeakMap(); // btn -> { overflow, timer }
+    let resizeRaf = null;
+
+    function stop(btn, text) {
+      const s = state.get(btn);
+      if (s && s.timer) clearTimeout(s.timer);
+      state.delete(btn);
+      btn.classList.remove("is-marquee");
+      text.style.transition = "";
+      text.style.transform = "";
+    }
+
+    function start(btn, text, overflow) {
+      btn.classList.add("is-marquee");
+      // partenza pulita
+      text.style.transition = "none";
+      text.style.transform = "translateX(0)";
+      // forziamo un reflow così la prossima transition viene applicata
+      void text.offsetWidth;
+
+      const duration = Math.max(MIN_DURATION_MS, (overflow / SPEED_PX_PER_S) * 1000);
+      const entry = { overflow, timer: null };
+      let toEnd = true;
+
+      const tick = () => {
+        text.style.transition = `transform ${duration}ms linear`;
+        text.style.transform = toEnd ? `translateX(${-overflow}px)` : "translateX(0)";
+        toEnd = !toEnd;
+        entry.timer = setTimeout(tick, duration + PAUSE_MS);
+      };
+
+      entry.timer = setTimeout(tick, PAUSE_MS);
+      state.set(btn, entry);
+    }
+
+    function evaluate() {
+      const btns = document.querySelectorAll('.nav__cta-btn[href*="filmfreeway"]');
+      btns.forEach(btn => {
+        const text = btn.querySelector(".nav__cta-long");
+        if (!text) return;
+
+        if (!MQ.matches) {
+          stop(btn, text);
+          return;
+        }
+
+        // misura: spazio disponibile dentro al bottone vs larghezza naturale del testo
+        const cs = getComputedStyle(btn);
+        const padL = parseFloat(cs.paddingLeft) || 0;
+        const padR = parseFloat(cs.paddingRight) || 0;
+        const available = btn.clientWidth - padL - padR;
+        // misuriamo la larghezza naturale dello span senza vincoli
+        const prevMax = text.style.maxWidth;
+        text.style.maxWidth = "none";
+        const natural = text.scrollWidth;
+        text.style.maxWidth = prevMax;
+        const overflow = Math.round(natural - available);
+
+        if (overflow > 1) {
+          // se già in marquee con stesso overflow, non ricominciare
+          const cur = state.get(btn);
+          if (cur && cur.overflow === overflow) return;
+          stop(btn, text);
+          start(btn, text, overflow);
+        } else {
+          stop(btn, text);
+        }
+      });
+    }
+
+    function onResize() {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        resizeRaf = null;
+        evaluate();
+      });
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      evaluate();
+    } else {
+      document.addEventListener("DOMContentLoaded", evaluate);
+    }
+    // ricontrolla dopo il caricamento dei font (le metriche del testo possono cambiare)
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(evaluate).catch(() => {});
+    }
+    window.addEventListener("load", evaluate);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    if (MQ.addEventListener) MQ.addEventListener("change", evaluate);
+    else if (MQ.addListener) MQ.addListener(evaluate);
+  })();
