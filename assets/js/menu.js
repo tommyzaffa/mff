@@ -261,7 +261,8 @@
         text.style.maxWidth = prevMax;
         const overflow = Math.round(natural - available);
 
-        if (overflow > 1) {
+        // soglia con un piccolo margine: ignora overflow di pochi px (sub-pixel)
+        if (overflow > 4) {
           // se già in marquee con stesso overflow, non ricominciare
           const cur = state.get(btn);
           if (cur && cur.overflow === overflow) return;
