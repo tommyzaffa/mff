@@ -225,6 +225,20 @@
     display: none;
   }
 
+  /* Mostra il pulsante "Submit your film" anche su mobile, in versione compatta */
+  .nav__cta-btn[href*="filmfreeway"] {
+    display: inline-flex;
+    padding: 0.38rem 0.7rem;
+    font-size: 0.62rem;
+    height: auto;
+    line-height: 1.1;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav__cta-btn[href*="filmfreeway"] .nav__cta-long{ display: none; }
+  .nav__cta-btn[href*="filmfreeway"] .nav__cta-short{ display: inline; }
+
   /* Rimpicciolisci il selettore lingua */
   .nav__lang-switch {
     padding: 0.15rem;

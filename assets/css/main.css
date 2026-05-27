@@ -262,6 +262,8 @@ a[href*="jfcinema.ch"] {
   transition: background 160ms ease, transform 160ms ease;
 }
 
+.nav__cta-short{ display: none; }
+
 .nav__cta-btn:hover{
   background: rgba(0,0,0,0.10);
   transform: translateY(-1px);
@@ -1200,7 +1202,7 @@ a:hover{
 .carousel--news .news-card{
   padding: 0;
   display: grid;
-  grid-template-columns: 70% 1fr;
+  grid-template-columns: minmax(0, 70%) minmax(0, 1fr);
   height: min(520px, 62vh);
 }
 
@@ -1221,7 +1223,8 @@ a:hover{
   justify-self: start;
   font-weight: 700;
   opacity: 0.9;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
 }
 
 .news__link:hover{ opacity: 1; }
