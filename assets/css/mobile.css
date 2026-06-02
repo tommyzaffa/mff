@@ -483,7 +483,7 @@
   }
 
   .footer__wrap {
-    padding: calc(var(--mobile-header-space) + 2rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
+    padding: calc(var(--mobile-header-space) + 0.75rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
   }
 
   body.home-page .site-footer .footer__wrap {
