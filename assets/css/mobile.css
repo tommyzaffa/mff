@@ -124,6 +124,12 @@
     padding-bottom: calc(env(safe-area-inset-bottom) + 7rem) !important;
   }
 
+  /* Supporters: respiro verticale simmetrico (loghi non attaccati ai bordi del fondale) */
+  #supporters > .container {
+    padding-top: calc(env(safe-area-inset-top) + 5.5rem) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 5.5rem) !important;
+  }
+
   /* Film/event detail pages: prevent horizontal overflow + tame poster height */
   .film__title,
   .event__title {
@@ -477,7 +483,7 @@
   }
 
   .footer__wrap {
-    padding: clamp(1.8rem, 4vw, 2.5rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
+    padding: calc(var(--mobile-header-space) + 2rem) 0 calc(env(safe-area-inset-bottom) + 2.5rem);
   }
 
   body.home-page .site-footer .footer__wrap {
