@@ -402,6 +402,81 @@ a[href*="jfcinema.ch"] {
   max-width: 60ch;
 }
 
+/* ====== Supporters / Partners & Sponsors ====== */
+#supporters{
+  display: flex;
+  align-items: center;
+}
+.supporters{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2.75rem;
+}
+.supporters__header{
+  margin-bottom: 0;
+}
+.supporters__header .section__desc{
+  margin-inline: auto;
+}
+.supporters__groups{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+.supporters__group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+.supporters__label{
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.supporters__grid{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.supporters__item{
+  flex: 0 0 auto;
+}
+.supporters__logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  max-width: 100%;
+  height: 90px;
+  padding: 0.5rem 1rem;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.supporters__logo:hover{
+  transform: translateY(-4px);
+  opacity: 0.7;
+}
+.supporters__logo img{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
 /* ====== Hero ====== */
 .hero{
     height: 100vh;
@@ -1031,6 +1106,7 @@ will-change: transform, opacity, filter;
 #about,
 #news,
 #films,
+#supporters,
 #footer{
   scroll-snap-align: start;
 }
@@ -1039,6 +1115,7 @@ will-change: transform, opacity, filter;
 #about,
 #news,
 #films,
+#supporters,
 #footer{
   height: 100vh;
 }
@@ -1340,6 +1417,32 @@ a:hover{
 #films{
   margin-top: -3px;
   height: calc(100vh + 3px);
+}
+
+#supporters{
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f7f7f5;
+  margin-top: -3px;
+  margin-bottom: -3px;
+  height: calc(100vh + 6px);
+}
+
+#supporters::before{
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  background-image: url('../img/bg/Tavola_disegno_7.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#supporters > .container{
+  position: relative;
+  z-index: 2;
 }
 
 /* ====== Hero sections: testa.jpg = light bg → force dark text ====== */
