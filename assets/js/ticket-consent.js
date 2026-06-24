@@ -186,6 +186,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const ticketLinks = Array.from(document.querySelectorAll("a[href]")).filter((link) => {
       const href = link.getAttribute("href") || "";
+      // Skip partner logos (e.g. the Lux cinema logo): they link to the venue,
+      // not the ticketing flow, so no consent popup is needed.
+      if (link.classList.contains("supporters__logo")) return false;
       return TICKET_HOST_PATTERN.test(href);
     });
   

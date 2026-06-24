@@ -14,8 +14,9 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Ticket CTAs disabled sitewide. Remove this rule when sales reopen. */
-a[href*="jfcinema.ch"] {
+/* Ticket CTAs disabled sitewide. Remove this rule when sales reopen.
+   Partner logos (e.g. the Lux cinema logo) are excluded so they stay visible. */
+a[href*="jfcinema.ch"]:not(.supporters__logo) {
   display: none !important;
 }
 
