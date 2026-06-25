@@ -1446,6 +1446,13 @@ a:hover{
   z-index: 2;
 }
 
+/* Desktop: raise the logos block slightly so it doesn't sit too low */
+@media (min-width: 701px){
+  #supporters > .container{
+    transform: translateY(-5vh);
+  }
+}
+
 /* ====== Hero sections: testa.jpg = light bg → force dark text ====== */
 .films-hero, .films-hero *:not(.nav__lang-option):not(.nav__toggle),
 .program-hero, .program-hero *:not(.nav__lang-option):not(.nav__toggle),
