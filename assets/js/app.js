@@ -143,6 +143,10 @@
     var canvas = $("#bgCanvas");
     var mesh = $("#bgMesh");
     if (!canvas) return;
+    var themeMeta = document.querySelector('meta[name="theme-color"]');
+    var defaultThemeColor = themeMeta ? themeMeta.getAttribute("content") : "#4B2E83";
+    var mobileThemeMq = window.matchMedia("(max-width: 700px)");
+    var lastThemeColor = "";
 
     var stops = $all("[data-bg]").map(function (el) {
       var kind = el.getAttribute("data-bg");
@@ -160,6 +164,33 @@
     }
 
     var CREAM_SOLID = { r: 243, g: 242, b: 239, a: 1, mesh: 0 };
+
+    function toHexChannel(n) {
+      var hex = Math.max(0, Math.min(255, Math.round(n))).toString(16);
+      return hex.length === 1 ? "0" + hex : hex;
+    }
+
+    function toHex(c) {
+      return "#" + toHexChannel(c.r) + toHexChannel(c.g) + toHexChannel(c.b);
+    }
+
+    function updateMobileChrome(col) {
+      if (!themeMeta) return;
+      var theme = (document.body.classList.contains("home-page") && col.a < 0.35)
+        ? "#4B2E83"
+        : toHex(col);
+
+      document.documentElement.style.setProperty("--safari-ui-bg", theme);
+      document.body.style.setProperty("--safari-ui-bg", theme);
+
+      if (!mobileThemeMq.matches) {
+        theme = defaultThemeColor;
+      }
+      if (theme !== lastThemeColor) {
+        themeMeta.setAttribute("content", theme);
+        lastThemeColor = theme;
+      }
+    }
 
     function buildPoints() {
       var pts = [];
@@ -209,6 +240,7 @@
       if (!col) col = pts[0].c;
       canvas.style.backgroundColor = "rgba(" + Math.round(col.r) + "," + Math.round(col.g) + "," + Math.round(col.b) + "," + col.a.toFixed(3) + ")";
       if (mesh) mesh.style.opacity = (col.mesh * 0.5 * col.a).toFixed(3);
+      updateMobileChrome(col);
     }
 
     var ticking = false;
@@ -219,6 +251,8 @@
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", render);
+    if (mobileThemeMq.addEventListener) mobileThemeMq.addEventListener("change", render);
+    else if (mobileThemeMq.addListener) mobileThemeMq.addListener(render);
     render();
   }
 
@@ -364,6 +398,7 @@
     var prev = $(".news-prev", carousel), next = $(".news-next", carousel);
     var dotsWrap = $(".news-dots", carousel);
     var active = 0;
+    var mobileMq = window.matchMedia("(max-width: 700px)");
 
     /* build progress dots */
     if (dotsWrap) {
@@ -383,18 +418,20 @@
       if (stage && maxH) stage.style.height = Math.ceil(maxH + 56) + "px";
 
       var w = cards[0].getBoundingClientRect().width || 340;
-      var spacing = w * 0.6;
+      var compact = mobileMq.matches;
+      var spacing = compact ? 0 : w * 0.6;
 
       cards.forEach(function (card, i) {
         var off = i - active;
         var abs = Math.abs(off);
-        var scale = Math.max(0, 1 - abs * 0.2);
-        var opacity = abs > 2 ? 0 : Math.max(0, 1 - abs * 0.32);
+        var scale = compact ? (off === 0 ? 1 : 0.96) : Math.max(0, 1 - abs * 0.2);
+        var opacity = compact ? (off === 0 ? 1 : 0) : (abs > 2 ? 0 : Math.max(0, 1 - abs * 0.32));
         var tx = off * spacing;
-        var rot = off * -20;
+        var rot = compact ? 0 : off * -20;
         card.style.transform =
           "translate(-50%, -50%) translateX(" + tx + "px) rotateY(" + rot + "deg) scale(" + scale + ")";
         card.style.opacity = opacity;
+        card.style.visibility = compact && off !== 0 ? "hidden" : "visible";
         card.style.zIndex = String(100 - abs);
         card.style.pointerEvents = off === 0 ? "auto" : "none";
         card.setAttribute("aria-hidden", off === 0 ? "false" : "true");
@@ -419,6 +456,8 @@
 
     var rt;
     window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(layout, 150); });
+    if (mobileMq.addEventListener) mobileMq.addEventListener("change", layout);
+    else if (mobileMq.addListener) mobileMq.addListener(layout);
     cards.forEach(function (card) {
       $all("img", card).forEach(function (img) {
         if (!img.complete) img.addEventListener("load", layout, { once: true });
