@@ -214,9 +214,17 @@
           pts.push({ y: top, c: CREAM_SOLID });
           pts.push({ y: top + vh * 0.42, c: c });
         } else if (prevKind === "hero") {
-          /* Leaving the video hero: fade straight to this section's colour over
-             the back half of the hero, with no white flash. */
-          pts.push({ y: mobileThemeMq.matches ? top : top - vh * 0.28, c: c });
+          /* Leaving the video hero. The render sample line is scrollY + vh/2, so
+             to keep the video perfectly CLEAN at the top (no violet wash) we hold
+             the hero's transparent colour until (top - vh*0.5) — which is exactly
+             where the sample line sits at scrollY 0 — and only then fade to this
+             section's colour over the last stretch before it. */
+          if (mobileThemeMq.matches) {
+            pts.push({ y: top, c: c });
+          } else {
+            pts.push({ y: top - vh * 0.5, c: colorFor("hero") }); /* hold video clean */
+            pts.push({ y: top - vh * 0.05, c: c });               /* fade to violet   */
+          }
         } else {
           /* Generic boundary between two content sections. The colour change is
              confined to a short band centred on the boundary, so each section

@@ -1232,11 +1232,15 @@ main :where(h1, h2, h3, h4, p, li, a, strong, span),
   .footer__grid { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
   .carousel--news {
-    overflow-x: hidden;
-    overflow-x: clip;
+    /* On phones every card is stacked dead-centre (spacing 0) with the inactive
+       ones hidden (opacity 0 + visibility hidden), so nothing leaks sideways and
+       there's no need to clip here. Clipping was slicing the active card's soft
+       drop-shadow into hard rectangular corners — let it show. Horizontal
+       containment is still handled by the section's own overflow-x: clip. */
+    overflow: visible;
   }
   .carousel__stage {
-    overflow: hidden;
+    overflow: visible;
     perspective: none;
   }
   .carousel__nav {
