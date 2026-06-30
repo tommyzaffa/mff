@@ -1168,6 +1168,33 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   body {
     background-color: var(--safari-ui-bg, var(--cream));
   }
+  main :where(h1, h2, h3, h4, p, li, a, strong, span),
+  .site-footer :where(h1, h2, h3, h4, p, li, a, strong, span) {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    -webkit-hyphenate-character: "-";
+    hyphenate-character: "-";
+    hyphenate-limit-chars: 6 3 3;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+  .bg {
+    z-index: 0;
+  }
+  #bgCanvas {
+    z-index: 1;
+  }
+  #bgMesh {
+    z-index: 2;
+  }
+  #bgGrain {
+    z-index: 3;
+  }
+  main,
+  .site-footer {
+    position: relative;
+    z-index: 4;
+  }
   body { font-size: 16px; }
   .brand__text { display: none; }
   .nav__cta-long { display: none; }

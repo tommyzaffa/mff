@@ -176,7 +176,7 @@
 
     function updateMobileChrome(col) {
       if (!themeMeta) return;
-      var theme = (document.body.classList.contains("home-page") && col.a < 0.35)
+      var theme = (document.body.classList.contains("home-page") && col.a < 0.98)
         ? "#4B2E83"
         : toHex(col);
 
@@ -208,7 +208,7 @@
              straight to violet. */
           pts.push({ y: topOf(stop.el), c: CREAM_SOLID });
         } else if (index > 0 && prevKind === "hero") {
-          pts.push({ y: y - window.innerHeight * 0.28, c: c });
+          pts.push({ y: mobileThemeMq.matches ? topOf(stop.el) : y - window.innerHeight * 0.28, c: c });
         }
         pts.push({ y: y, c: c });
       });
