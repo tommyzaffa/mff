@@ -36,3 +36,6 @@ coverage/
 .claude/worktrees/
 .claude/projects/
 .claude/cache/
+
+# Docs
+/docs

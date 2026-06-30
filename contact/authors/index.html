@@ -3,259 +3,188 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#F3F2EF" />
-  <title>Authors — Merge Film Festival</title>
-  <meta name="description" content="Authors — Merge Film Festival." />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>About us — Merge Film Festival</title>
+  <meta name="description" content="About us — Merge Film Festival." />
 
-  <link rel="stylesheet" href="../../assets/css/main.css" />
-    <link rel="stylesheet" href="../../assets/css/mobile.css?v=20260602-supporters-spacing">
-  <link rel="stylesheet" href="../../assets/css/authors.css" />
-  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=4" />
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../../assets/img/favicon-48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../../assets/img/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
 </head>
 
 <body>
-  <!-- (Same as Jury) Background video hidden via authors.css -->
-  <div class="bg" aria-hidden="true">
-    <img class="bg__media" src="../../assets/img/bg/testa.jpg" alt="" />
-    <div class="bg__overlay" aria-hidden="true"></div>
-  </div>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
 
-  <!-- Header + dropdown menu -->
   <header class="site-header">
     <a class="brand" href="../../index.html" aria-label="Home">
-      <span class="brand__mark" style="font-size: 12px;">MFF</span>
+      <span class="brand__mark"><img src="../../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
       <span class="brand__text">Merge Film Festival</span>
     </a>
-
     <div class="nav__actions">
-
-      <!-- CTA button -->
-      <!--
-      <a class="nav__cta-btn" href="https://www.jfcinema.ch" target="_blank">
-        Buy your ticket
-      </a>
-      -->
-
       <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
-        <span class="nav__cta-long">Submit your film</span>
-        <span class="nav__cta-short">Submit</span>
+        <span class="nav__cta-long" data-i18n="nav.submitLong">Submit your film</span>
+        <span class="nav__cta-short" data-i18n="nav.submitShort">Submit</span>
       </a>
-      <!-- Language switch -->
-            <div class="nav__lang-switch" aria-label="Language switch">
-        <a class="nav__lang-option" href="../../it/contact/authors/index.html">IT</a>
-        <a class="nav__lang-option nav__lang-option--active" href="#">ENG</a>
-        <a class="nav__lang-option" href="../../fr/contact/authors/index.html">FR</a>
-        <a class="nav__lang-option" href="../../de/contact/authors/index.html">DE</a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
       </div>
-    
-      <details class="nav__dropdown">
-        <summary class="nav__toggle" aria-label="Open menu">Menu</summary>
-    
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
-          <a href="../../index.html">Home</a>
-          <!-- Disabled link to program/in-competition | Program | href: ../../program/index.html -->
-          <!-- Disabled link to program/in-competition | In Competition | href: ../../in_competition/index.html -->
-          <!-- <a href="editions/2025/index.html">Media</a> -->
-          <a href="../../press/index.html">Press</a>
-          <a href="../../contact/index.html">Contact</a>
+          <a href="../../index.html" data-i18n="nav.home">Home</a>
+          <a href="../../press/index.html" data-i18n="nav.press">Press</a>
+          <a href="../index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
+          </div>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
         </div>
-      </details>
-    
+      </div>
     </div>
   </header>
 
-  <div class="snap-root">
-    <main>
+  <main>
+    <!-- Intro -->
+    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container reveal">
+        <p class="page-hero__kicker" data-i18n="authors.kicker">Direction • Production • Communications</p>
+        <h1 class="page-hero__title" data-i18n="authors.title">About us</h1>
+        <p class="page-hero__subtitle" data-i18n-html="authors.intro">PoPaCi Pictures is an audiovisual production company based in Ticino.</p>
+        <h3 style="margin-top:2rem" data-i18n="authors.teamTitle">Organizational Team</h3>
+        <p class="page-hero__subtitle" data-i18n="authors.teamText">The project is developed by a team of young authors and professionals.</p>
+        <nav class="authors-index" aria-label="Authors index">
+          <a class="authors-index__item" href="#dario">Dario Cirrincione</a>
+          <a class="authors-index__item" href="#francesco">Francesco Poloni</a>
+          <a class="authors-index__item" href="#gabriele">Gabriele Crasci</a>
+        </nav>
+      </div>
+    </section>
 
-      <!-- Intro -->
-      <section class="section section--full authors-hero authors-hero--about-raised" id="top" style="--authors-bg: url('../img/bg/testa.jpg');">
-        <div class="container">
-          <p class="hero__kicker">Direction • Production • Communications</p>
-          <h1 class="hero__title">About us</h1>
-          <p class="hero__subtitle">
-            PoPaCi Pictures is an audiovisual production company based in Ticino, founded on 28 January 2026, specialising in the development and production of short films and feature films.
-          </p>
-          <p class="hero__subtitle">
-            Our activity goes beyond film production and extends to promoting audiovisual culture through the organisation of events and the design of installations. Our work is part of a broader field of research that investigates the relationship between image, technology and contemporary society, with particular attention to the implications of artificial intelligence.
-          </p>
-          <p class="hero__subtitle">
-            The Merge Film Festival was conceived as a space for encounter and dialogue, becoming the natural extension of the PoPaCi project across the canton. The festival serves as a cultural platform where cinema and artificial intelligence are brought together to challenge the viewer to reflect on creative processes and on the ways in which these technologies redefine the imagination and the experience of reality.
-          </p>
-
-          <p>
-            <h3> Organizational Team </h3>
-            The project is developed by a team of young authors and professionals <br>working in film and the visual arts
-            with skills that integrate artistic research, <br>production, and organization.
-          </p>
-
-          <nav class="authors-index" aria-label="Authors index">
-            <a class="authors-index__item" href="#dario">Dario Cirrincione</a>
-            <a class="authors-index__item" href="#francesco">Francesco Poloni</a>
-            <a class="authors-index__item" href="#gabriele">Gabriele Crasci</a>
-          </nav>
-        </div>
-      </section>
-
-      <!-- AUTHOR 1 -->
-      <section class="section--dark section section--full author" id="dario" style="--authors-bg: url('../img/bg/Tavola_disegno_1.png');">
-        <div class="container author__stack">
-          <header class="author__copy">
-            <p class="author__eyebrow">Organising team</p>
-            <h2 class="section__title">Dario Cirrincione</h2>
-            <p class="section__desc">CEO &amp; Artistic Director</p>
-          </header>
-
-          <div class="author__card">
-            <div class="author__media">
-              <img src="../../assets/img/authors/dario_1.webp" alt="Portrait of Dario Cirrincione" loading="lazy" />
-            </div>
-
-            <div class="author__body">
-              <p>A Swiss director, writer, audiovisual programmer and producer, Dario Cirrincione serves as General Manager and Artistic Director of the Merge Film Festival. He is co-founder of the independent company PoPaCi Pictures SNC, through which he develops film and art projects as well as cultural initiatives in Switzerland and internationally. He directed Present, a short film that explores and blends various expressive formats, including the use of artificial intelligence. The film has been selected for several international festivals, including the World AI Film Festival.</p>
-
-              <div class="author__nav">
-                <a class="btn btn--ghost" href="#top">Back to index</a>
-                <a class="btn" href="#francesco">Next</a>
-              </div>
+    <!-- Author 1 -->
+    <section class="section is-on-violet author" id="dario" data-bg="violet">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+        <header class="author__copy reveal">
+          <p class="author__eyebrow" data-i18n="authors.eyebrow">Organising team</p>
+          <h2 class="section__title">Dario Cirrincione</h2>
+          <p class="section__desc" data-i18n="authors.role1">CEO &amp; Artistic Director</p>
+        </header>
+        <div class="author__card reveal" data-delay="1">
+          <div class="author__media"><img src="../../assets/img/authors/dario_1.webp" alt="Portrait of Dario Cirrincione" loading="lazy" /></div>
+          <div class="author__body">
+            <p data-i18n="authors.bio1">A Swiss director, writer, audiovisual programmer and producer, Dario Cirrincione serves as General Manager and Artistic Director of the Merge Film Festival.</p>
+            <div class="author__nav">
+              <a class="btn btn--ghost" href="#top" data-i18n="authors.navBack">Back to index</a>
+              <a class="btn" href="#francesco" data-i18n="authors.navNext">Next</a>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- AUTHOR 2 -->
-      <section class="section--light section section--full author" id="francesco" style="--authors-bg: url('../img/bg/Tavola_disegno_2.png');">
-        <div class="container author__stack">
-          <header class="author__copy">
-            <p class="author__eyebrow">Organising team</p>
-            <h2 class="section__title">Francesco Poloni</h2>
-            <p class="section__desc">COO &amp; Artistic Director</p>
-          </header>
-
-          <div class="author__card">
-            <div class="author__media">
-              <img src="../../assets/img/authors/fra_3.webp" alt="Portrait of Francesco Poloni" loading="lazy" />
-            </div>
-
-            <div class="author__body">
-              <p>A Swiss director, writer, audiovisual programmer and producer, Francesco Poloni serves as Chief Operating Officer and Artistic Director of the Merge Film Festival. He is co-founder of the independent company PoPaCi Pictures SNC, through which he develops film and art projects and cultural initiatives between Switzerland and the international scene. He directed the short film Tusen Toner, which was selected for the Pardi di domani section of the 2025 Locarno Film Festival, where it won the SRG SSR Silver Pardino, one of the leading awards dedicated to emerging filmmakers.</p>
-
-              <div class="author__nav">
-                <a class="btn btn--ghost" href="#top">Back to index</a>
-                <a class="btn" href="#gabriele">Next</a>
-              </div>
+    <!-- Author 2 -->
+    <section class="section is-on-cream author" id="francesco" data-bg="cream">
+      <div class="container">
+        <header class="author__copy reveal">
+          <p class="author__eyebrow" data-i18n="authors.eyebrow">Organising team</p>
+          <h2 class="section__title">Francesco Poloni</h2>
+          <p class="section__desc" data-i18n="authors.role2">COO &amp; Artistic Director</p>
+        </header>
+        <div class="author__card reveal" data-delay="1">
+          <div class="author__media"><img src="../../assets/img/authors/fra_3.webp" alt="Portrait of Francesco Poloni" loading="lazy" /></div>
+          <div class="author__body">
+            <p data-i18n="authors.bio2">A Swiss director, writer, audiovisual programmer and producer, Francesco Poloni serves as Chief Operating Officer and Artistic Director of the Merge Film Festival.</p>
+            <div class="author__nav">
+              <a class="btn btn--ghost" href="#top" data-i18n="authors.navBack">Back to index</a>
+              <a class="btn" href="#gabriele" data-i18n="authors.navNext">Next</a>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- AUTHOR 4 -->
-      <section class="section--light section section--full author" id="gabriele" style="--authors-bg: url('../img/bg/Tavola_disegno_4.png');">
-        <div class="container author__stack">
-          <header class="author__copy">
-            <p class="author__eyebrow">Organising team</p>
-            <h2 class="section__title">Gabriele Crasci</h2>
-            <p class="section__desc">CCO</p>
-          </header>
-
-          <div class="author__card">
-            <div class="author__media">
-              <img src="../../assets/img/authors/gabri_3.webp" alt="Portrait of Gabriele Crasci" loading="lazy" />
-            </div>
-
-            <div class="author__body">
-              <p>Editor, director and audiovisual creator, Gabriele Crasci serves as Communications Director of the Merge Film Festival. In this role, he coordinates and strategically guides the entire communications department, defining its operational guidelines and objectives, and overseeing the activities of the press office, the editorial team and the festival’s marketing, visual identity and branding departments.</p>
-
-              <div class="author__nav">
-                <a class="btn btn--ghost" href="#top">Back to index</a>
-                <a class="btn" href="#footer">End</a>
-              </div>
+    <!-- Author 3 -->
+    <section class="section is-on-violet author" id="gabriele" data-bg="violet">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container">
+        <header class="author__copy reveal">
+          <p class="author__eyebrow" data-i18n="authors.eyebrow">Organising team</p>
+          <h2 class="section__title">Gabriele Crasci</h2>
+          <p class="section__desc" data-i18n="authors.role3">CCO</p>
+        </header>
+        <div class="author__card reveal" data-delay="1">
+          <div class="author__media"><img src="../../assets/img/authors/gabri_3.webp" alt="Portrait of Gabriele Crasci" loading="lazy" /></div>
+          <div class="author__body">
+            <p data-i18n="authors.bio3">Editor, director and audiovisual creator, Gabriele Crasci serves as Communications Director of the Merge Film Festival.</p>
+            <div class="author__nav">
+              <a class="btn btn--ghost" href="#top" data-i18n="authors.navBack">Back to index</a>
+              <a class="btn" href="#footer" data-i18n="authors.navEnd">End</a>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  </main>
 
-
-    </main>
-
-    <!-- FOOTER (same every page) -->
-  <footer class="site-footer" id="footer">
+  <footer class="site-footer" id="footer" data-bg="violet">
     <div class="footer__wrap">
       <div class="container">
         <div class="footer__top">
           <p class="footer__eyebrow">Merge Film Festival</p>
-          <h2 class="footer__headline">See you at the festival.</h2>
-          <p class="footer__lead">
-            The first film festival in Switzerland entirely dedicated to AI.
-          </p>
-  
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
           <div class="footer__cta">
-            <a class="btn" href="https://www.jfcinema.ch" target="_blank">Buy Tickets</a>
-            <!-- Disabled link to program/in-competition | See Program | href: ../../program/index.html -->
+            <a class="btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer" data-i18n="nav.submitLong">Submit your film</a>
           </div>
         </div>
-  
         <div class="footer__panel">
           <div class="footer__grid">
             <div>
-              <p class="footer__title">Explore</p>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links"><li><a href="../../index.html" data-i18n="nav.home">Home</a></li></ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
               <ul class="footer__links">
-                <li><a href="../../index.html">Home</a></li>
-                <!-- Disabled link to program/in-competition | Program | href: ../../program/index.html -->
-                <!-- Disabled link to program/in-competition | In Competition | href: ../../in_competition/index.html -->
-                <!-- <li><a href="editions/2025/index.html">Media</a></li> -->
+                <li><a href="../../press/index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../index.html" data-i18n="nav.contact">Contact</a></li>
               </ul>
             </div>
-  
             <div>
-              <p class="footer__title">Info</p>
-              <ul class="footer__links">
-                <li><a href="../../press/index.html">Press</a></li>
-                <li><a href="../../contact/index.html">Contact</a></li>
-              </ul>
-            </div>
-  
-            <div>
-                <p class="footer__title">Get updates</p>
-                <p class="footer__small">
-                  Workshop announcements, schedule drops, winners — no spam.
-                </p>
-              
-                <div class="ml-embedded footer__ml" data-form="HwxvEb"></div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
             </div>
           </div>
-  
           <div class="footer__bottom">
             <div class="footer__legal">
               <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
-              <p class="footer__tiny">Website design &amp; development — <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
-          
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
               <p class="footer__tiny">
-                <a href="../../legal/terms.html">Terms & Conditions</a> —
-                <a href="../../legal/privacy.html">Privacy Policy</a>
+                <a href="../../legal/terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="../../legal/privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
               </p>
             </div>
-          
-            <a class="footer__tiny" href="#top">Back to top</a>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
           </div>
         </div>
       </div>
     </div>
   </footer>
-  </div>
 
-  <script src="../../assets/js/menu.js" defer></script>
-  <script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '2102085');
-  </script>
-
-<script src="../../assets/js/ticket-consent.js"></script>
+  <script src="../../assets/js/translations.js?v=4"></script>
+  <script src="../../assets/js/app.js?v=4"></script>
 </body>
 </html>

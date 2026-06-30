@@ -1,0 +1,1165 @@
+/* ============================================================
+   Merge Film Festival 2.0 — main stylesheet
+   Two-colour system: cream (#F3F2EF) + violet (#4B2E83)
+   Scroll-driven background colour crossfade (cream <-> violet),
+   artistic "wow" dropdown menu, animated/blended backgrounds.
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Brand colours (exact codes from the original site) */
+  --cream: #F3F2EF;
+  --violet: #4B2E83;
+  --violet-deep: #2E1B54;
+  --violet-bright: #6A47B8;
+
+  /* Ink */
+  --ink: #0F0F12;             /* dark text on cream */
+  --ink-soft: rgba(15, 15, 18, 0.72);
+  --ink-faint: rgba(15, 15, 18, 0.50);
+  --paper: #F3F2EF;           /* light text on violet */
+  --paper-soft: rgba(243, 242, 239, 0.78);
+  --paper-faint: rgba(243, 242, 239, 0.52);
+
+  /* Lines */
+  --line-on-cream: rgba(75, 46, 131, 0.22);
+  --line-on-violet: rgba(243, 242, 239, 0.22);
+
+  /* Type */
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Metrics */
+  --container: 1180px;
+  --pad: clamp(20px, 5vw, 64px);
+  --radius: 18px;
+  --radius-lg: 28px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --bg-transition: background-color 0.5s linear;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Hide the vertical scrollbar on every page (scrolling stays enabled) */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* old Edge / IE */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 0; height: 0; display: none; } /* Chrome / Safari */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body:not(.home-page) {
+  /* The hero photo is a FIXED, viewport-anchored layer (it stays put while you
+     scroll). The horizontal cream wash for text legibility is baked into the
+     SAME fixed layer. Because the photo + wash are fixed and uniform, and the
+     scroll-driven #bgCanvas that rises over them (cream -> violet) is also fixed
+     and uniform, there is no section boundary anywhere — so the next section
+     covers the still photo smoothly, with no hard seam. */
+  background-color: var(--cream);
+  background-image:
+    linear-gradient(90deg, rgba(243, 242, 239, 0.98) 0%, rgba(243, 242, 239, 0.88) 36%, rgba(243, 242, 239, 0.38) 70%, rgba(243, 242, 239, 0.08) 100%),
+    url("../img/bg/testa.jpg");
+  background-position: center center, center center;
+  background-size: cover, cover;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
+  /* The hero photo (a fixed background) paints instantly, but the page
+     entrance fade (pageFadeIn on body) kept fading the text in *after* it,
+     making the hero copy lag the photo. Disable the entrance fade on the
+     photo sub-pages so text and photo appear together. */
+  animation: none;
+}
+html.is-menu-open,
+body.is-menu-open {
+  overflow: hidden;
+}
+
+/* ---------- Page open / close fade transition ---------- */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+body {
+  animation: pageFadeIn 0.85s var(--ease) both;
+}
+body.is-leaving {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+img, video, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.08; margin: 0; letter-spacing: 0; }
+p { margin: 0 0 1em; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* ---------- Fixed background canvas (the crossfade engine) ---------- */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-color: var(--cream);
+  transition: var(--bg-transition);
+  will-change: background-color;
+}
+body:not(.home-page) #bgCanvas { background-color: rgba(243, 242, 239, 0); }
+/* Soft animated mesh that lives over the canvas to keep it "alive"
+   without sharp cuts. Opacity is driven a little by the canvas tone. */
+#bgMesh {
+  position: fixed;
+  inset: -20vmax;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(40vmax 40vmax at 18% 22%, rgba(106, 71, 184, 0.30), transparent 60%),
+    radial-gradient(38vmax 38vmax at 82% 30%, rgba(75, 46, 131, 0.28), transparent 62%),
+    radial-gradient(46vmax 46vmax at 60% 88%, rgba(46, 27, 84, 0.26), transparent 60%);
+  filter: blur(6px);
+  opacity: var(--mesh-opacity, 0.0);
+  transition: opacity 0.6s linear;
+  animation: meshDrift 26s ease-in-out infinite alternate;
+}
+@keyframes meshDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2.5vmax, -2vmax, 0) scale(1.06); }
+  100% { transform: translate3d(-2vmax, 2.5vmax, 0) scale(1.02); }
+}
+/* Fine film grain for texture */
+#bgGrain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+.section {
+  position: relative;
+  padding-block: clamp(72px, 12vh, 150px);
+}
+.section--full { min-height: 100vh; display: flex; align-items: center; }
+/* Non-home pages use the SAME scroll-driven canvas crossfade as the home page:
+   content sections are transparent so the fixed #bgCanvas supplies the
+   cream <-> violet colour. This gives a smooth hero -> section transition
+   (photo fades to white, then slowly to violet) and a seamless footer blend,
+   instead of solid section backgrounds that slid up with a hard edge. */
+body:not(.home-page) main > .section:not(.page-hero--photo) { background: transparent; }
+
+/* Section ink mode — colour of text on top of the crossfading canvas */
+.is-on-cream  { color: var(--ink); }
+.is-on-violet { color: var(--paper); }
+.is-on-cream  .section__desc, .is-on-cream  .lead { color: var(--ink-soft); }
+.is-on-violet .section__desc, .is-on-violet .lead { color: var(--paper-soft); }
+
+/* Violet "macchie" (stains) — only on cream sections, kept to the edges
+   so they never sit under text. */
+.stain {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.16;
+  background: radial-gradient(circle at 30% 30%, var(--violet-bright), var(--violet) 55%, transparent 72%);
+}
+.stain--tl { width: 34vmax; height: 34vmax; top: -10vmax; left: -12vmax; }
+.stain--br { width: 40vmax; height: 40vmax; bottom: -16vmax; right: -14vmax; opacity: 0.13; }
+.is-on-violet .stain { display: none; }
+.section > .container { position: relative; z-index: 2; }
+
+/* ---------- Typography helpers ---------- */
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0 0 1.1rem;
+}
+.section__header { margin-bottom: clamp(28px, 4vw, 52px); max-width: 60ch; }
+.section__header--row {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap; max-width: none;
+}
+.section__title { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; }
+.section__desc  { font-size: 1.05rem; margin: 0.6rem 0 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--violet);
+  --btn-fg: var(--cream);
+  display: inline-flex; align-items: center; gap: 0.5em;
+  padding: 0.85em 1.5em;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), background 0.3s;
+  box-shadow: 0 8px 24px rgba(46, 27, 84, 0.22);
+}
+.btn::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.28), transparent 80%);
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--ease);
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(46, 27, 84, 0.32); }
+.btn:hover::after { transform: translateX(120%); }
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: currentColor;
+  border-color: currentColor;
+  box-shadow: none;
+}
+.btn--ghost:hover { box-shadow: none; }
+.is-on-violet .btn { --btn-bg: var(--cream); --btn-fg: var(--violet); }
+.is-on-violet .btn--ghost { --btn-bg: transparent; --btn-fg: var(--paper); }
+
+/* ============================================================
+   Header
+   ============================================================ */
+.site-header {
+  --header-ink: var(--paper);
+  --brand-mark-border: var(--cream);
+  --lang-border: rgba(243, 242, 239, 0.45);
+  --lang-bg: rgba(15, 15, 18, 0.28);
+  --lang-active-bg: var(--cream);
+  --lang-active-fg: var(--violet);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--pad);
+  color: var(--header-ink);
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+.site-header[data-header-theme="cream"] {
+  --header-ink: var(--ink);
+  --brand-mark-border: var(--violet);
+  --lang-border: var(--line-on-cream);
+  --lang-bg: color-mix(in srgb, var(--cream) 55%, transparent);
+  --lang-active-bg: var(--violet);
+  --lang-active-fg: var(--cream);
+}
+.site-header.is-scrolled {
+  background: color-mix(in srgb, var(--cream) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  padding-block: 11px;
+  box-shadow: 0 1px 0 var(--line-on-cream);
+}
+.brand { display: inline-flex; align-items: center; gap: 12px; color: var(--header-ink); }
+.brand__mark {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--brand-mark-border);
+  border-radius: 11px;
+  overflow: hidden;
+  padding: 0;
+  transition: box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+}
+.brand__mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.brand:hover .brand__mark {
+  border-color: var(--violet-bright, #7a5cc6);
+  box-shadow: 0 4px 16px rgba(46, 27, 84, 0.28);
+}
+.site-header[data-header-theme="violet"] .brand:hover .brand__mark {
+  border-color: var(--cream);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+.brand__text {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 0.98rem; letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.nav__actions { display: flex; align-items: center; gap: 12px; }
+
+.nav__cta-btn {
+  display: inline-flex; align-items: center;
+  padding: 0.6em 1.15em;
+  background: var(--violet); color: var(--cream);
+  border-radius: 999px;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.86rem;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  box-shadow: 0 6px 18px rgba(46, 27, 84, 0.25);
+}
+.nav__cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(46, 27, 84, 0.35); }
+.nav__cta-short { display: none; }
+
+/* Language switch */
+.nav__lang-switch {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--lang-border);
+  border-radius: 999px;
+  padding: 3px;
+  background: var(--lang-bg);
+  backdrop-filter: blur(8px);
+  color: var(--header-ink);
+}
+.nav__lang-option {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 0.72rem; letter-spacing: 0.05em;
+  padding: 5px 9px; border-radius: 999px;
+  opacity: 0.82; transition: all 0.3s;
+}
+.nav__lang-option:hover { opacity: 1; }
+.nav__lang-option--active { opacity: 1; background: var(--lang-active-bg); color: var(--lang-active-fg); }
+
+/* ============================================================
+   Artistic "wow" dropdown menu
+   ============================================================ */
+.nav__dropdown { position: relative; }
+.nav__toggle {
+  list-style: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 0.55em 1.05em;
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.86rem;
+  line-height: 1.2;
+  user-select: none;
+  transition: background 0.3s, color 0.3s, opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+.nav__toggle::before {
+  content: ""; width: 16px; height: 10px;
+  background:
+    linear-gradient(currentColor, currentColor) top/100% 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center/100% 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) bottom/100% 1.5px no-repeat;
+  transition: transform 0.4s var(--ease);
+}
+.nav__dropdown.is-open .nav__toggle {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+/* Full-screen artistic overlay panel */
+.nav__panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: clamp(86px, 12vh, 150px) var(--pad) clamp(40px, 8vh, 80px);
+  background: var(--violet-deep);
+  color: var(--paper);
+  /* The whole panel (solid backdrop included) fades, so it no longer snaps
+     in on open or cuts out abruptly on close. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: none;
+  transition: opacity 0.5s var(--ease), visibility 0s linear 0.55s;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.nav__panel::before {
+  content: "";
+  /* Fixed (not absolute): the zooming backdrop covers the whole viewport but
+     does NOT count toward the panel's scrollable overflow, so its scale(1.06)
+     animation no longer flashes a vertical scrollbar on open/close. Real
+     content scrolling on short screens still works. */
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60vmax 60vmax at 80% -10%, var(--violet-bright), transparent 60%),
+    linear-gradient(160deg, var(--violet-deep), var(--violet) 60%, var(--violet-deep));
+  opacity: 0;
+  /* No vertical offset here: the backdrop only zooms (never shifts up), so it
+     always fully covers the panel and never exposes the flat --violet-deep
+     panel background as a dark strip at the bottom edge. */
+  transform: translate3d(0, 0, 0) scale(1.06);
+}
+.nav__dropdown.is-open .nav__panel,
+.nav__panel.is-open {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.55s var(--ease), visibility 0s;
+}
+.nav__dropdown.is-open .nav__panel::before,
+.nav__panel.is-open::before {
+  animation: menuBackdropIn 0.72s var(--ease) forwards;
+}
+@keyframes menuBackdropIn {
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Close (X) button inside the panel */
+.nav__panel-close {
+  position: absolute;
+  top: clamp(20px, 4vh, 38px);
+  right: clamp(20px, 4vw, 48px);
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(243,242,239,0.45);
+  background: rgba(255,255,255,0.06);
+  color: var(--paper);
+  cursor: pointer;
+  display: grid; place-items: center;
+  opacity: 0;
+  transform: scale(0.7) rotate(-30deg);
+  transition: opacity 0.4s ease, transform 0.5s var(--ease), background 0.3s, border-color 0.3s;
+  z-index: 2;
+}
+.nav__dropdown.is-open .nav__panel-close,
+.nav__panel.is-open .nav__panel-close {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  transition-delay: 0.08s;
+}
+.nav__panel-close:hover { background: rgba(255,255,255,0.16); border-color: var(--cream); }
+.nav__panel-close::before,
+.nav__panel-close::after {
+  content: ""; position: absolute;
+  width: 22px; height: 1.6px; border-radius: 2px;
+  background: currentColor;
+}
+.nav__panel-close::before { transform: rotate(45deg); }
+.nav__panel-close::after { transform: rotate(-45deg); }
+.nav__panel a {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 9vw, 6rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  color: var(--paper);
+  padding: 0.06em 0;
+  width: max-content;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: color 0.3s, transform 0.3s;
+}
+.nav__dropdown.is-open .nav__panel a,
+.nav__panel.is-open a {
+  animation: menuItemIn 0.72s var(--ease) forwards;
+}
+.nav__panel a:nth-child(1) { animation-delay: 0.16s; }
+.nav__panel a:nth-child(2) { animation-delay: 0.26s; }
+.nav__panel a:nth-child(3) { animation-delay: 0.36s; }
+.nav__panel a:nth-child(4) { animation-delay: 0.46s; }
+.nav__panel a:nth-child(5) { animation-delay: 0.56s; }
+@keyframes menuItemIn {
+  from { opacity: 0; transform: translateY(34px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Closing: the same cascade, played in reverse ---- */
+.nav__panel.is-closing {
+  visibility: visible;
+  pointer-events: none;
+  /* Fade the whole panel out softly while the items play their reverse
+     cascade, so the menu dissolves instead of cutting out. */
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* The items leave first (gentle reverse cascade); the backdrop holds, then
+   fades out slowly AFTER them, so the menu dissolves softly instead of
+   snapping shut. */
+.nav__panel.is-closing::before {
+  opacity: 1;
+  animation: menuBackdropOut 0.62s cubic-bezier(0.4, 0, 0.2, 1) 0.22s forwards;
+}
+@keyframes menuBackdropOut {
+  from { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  /* Zoom only, no upward shift — keeps the backdrop covering the whole panel
+     so the dark flat background never flashes as a bottom strip on close. */
+  to   { opacity: 0; transform: translate3d(0, 0, 0) scale(1.06); }
+}
+.nav__panel.is-closing a {
+  opacity: 1;
+  transform: translateY(0);
+  animation: menuItemOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+/* reverse stagger — the last item leaves first */
+.nav__panel.is-closing a:nth-child(1) { animation-delay: 0.18s; }
+.nav__panel.is-closing a:nth-child(2) { animation-delay: 0.10s; }
+.nav__panel.is-closing a:nth-child(3) { animation-delay: 0.02s; }
+@keyframes menuItemOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(28px); }
+}
+.nav__panel.is-closing .nav__panel-close {
+  opacity: 0;
+  transform: scale(0.7) rotate(-30deg);
+  transition: opacity 0.4s ease, transform 0.5s var(--ease);
+}
+
+.nav__panel a::after {
+  content: ""; position: absolute; left: 0; bottom: 0.12em;
+  width: 0; height: 3px; border-radius: 3px;
+  background: var(--cream);
+  transition: width 0.4s var(--ease);
+}
+.nav__panel a:hover { color: var(--cream); }
+.nav__panel a:hover::after { width: 100%; }
+.nav__panel a:hover { transform: translateX(14px); }
+
+/* ============================================================
+   Hero (home) — language-specific video for desktop + mobile
+   ============================================================ */
+/* The hero video is PINNED (fixed) behind everything and never scrolls.
+   The crossfade canvas (#bgCanvas) sits ABOVE it and starts transparent on
+   the hero, then fades to cream/violet as the first content section scrolls
+   up — so the section visually "covers" the still video, like the old site. */
+.bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  height: 100svh;
+  z-index: -4;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg__video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.bg__overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15,15,18,0.30), rgba(46,27,84,0.20) 45%, rgba(15,15,18,0.55));
+}
+/* On the home page the fixed video IS the hero backdrop. The crossfade
+   canvas starts transparent over the hero and fades in (cream <-> violet)
+   as the content sections scroll up — driven by app.js. */
+.home-page #bgCanvas { background-color: rgba(243, 242, 239, 0); }
+
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: flex-end;
+  position: relative;
+  color: var(--paper);
+}
+.hero .container { padding-bottom: clamp(48px, 9vh, 110px); }
+.hero__content { width: 100%; }
+.hero__title-spacer { height: 0; }
+.hero__lead {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  max-width: 16ch;
+  text-shadow: 0 2px 30px rgba(15,15,18,0.45);
+}
+.hero__sub {
+  margin-top: 1rem;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--paper-soft);
+  max-width: 44ch;
+}
+.hero__actions { margin-top: 1.8rem; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero__scroll {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+  font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--paper-soft);
+  display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.hero__scroll::after {
+  content: ""; width: 1px; height: 34px;
+  background: linear-gradient(var(--paper-soft), transparent);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleY(0.6); } 50% { opacity: 1; transform: scaleY(1); } }
+
+/* Home content sections are transparent: the fixed crossfade canvas
+   behind them provides the alternating cream/violet colour. */
+.home-page main > section { background: transparent; }
+
+/* ============================================================
+   About
+   ============================================================ */
+.about__wrap { max-width: 72ch; }
+.about__title { font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 800; margin-bottom: 1.2rem; }
+.about__desc { font-size: 1.08rem; margin-bottom: 1rem; }
+.is-on-violet .about__desc { color: var(--paper-soft); }
+.about__actions { margin-top: 2rem; }
+
+/* ============================================================
+   News carousel
+   ============================================================ */
+.carousel { position: relative; }
+/* Wheel / coverflow stage: active card centered & full-size, side cards
+   shrink + fade until they disappear. JS (initCarousel) sets the transforms. */
+.carousel__stage {
+  position: relative;
+  overflow: visible;
+  perspective: 1600px;
+  padding: 28px 0;
+  margin-bottom: 22px;
+}
+.carousel__track { position: relative; height: 100%; }
+.news-card {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: clamp(280px, 72vw, 380px);
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  background: color-mix(in srgb, var(--cream) 92%, white);
+  border: 1px solid var(--line-on-cream);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.6s var(--ease), opacity 0.55s var(--ease), box-shadow 0.5s var(--ease);
+  box-shadow: 0 18px 50px rgba(46,27,84,0.16);
+}
+.is-on-violet .news-card {
+  background: color-mix(in srgb, var(--violet) 78%, black 6%);
+  border-color: var(--line-on-violet);
+  color: var(--paper);
+}
+.news-card:hover { transform: translateY(-8px); box-shadow: 0 22px 50px rgba(46,27,84,0.22); }
+.news__img { width: 100%; height: 200px; object-fit: cover; background: var(--violet-deep); }
+.news__body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.news__meta {
+  font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; opacity: 0.6; margin: 0;
+}
+.news__title { font-size: 1.35rem; font-weight: 700; margin: 0; }
+.news__text { font-size: 0.98rem; opacity: 0.82; margin: 0; flex: 1; }
+.news__link { align-self: flex-start; margin-top: 6px; }
+
+/* Arrows live in a row BELOW the cards, fully detached from them. */
+.carousel__nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 22px; margin-top: 6px;
+}
+.carousel__btn {
+  position: static;
+  width: 50px; height: 50px; border-radius: 50%;
+  border: 1px solid var(--line-on-cream);
+  background: color-mix(in srgb, var(--cream) 80%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 1.5rem; line-height: 1; color: var(--violet);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), background 0.3s, opacity 0.3s, border-color 0.3s;
+}
+.is-on-violet .carousel__btn { border-color: var(--line-on-violet); color: var(--paper); background: rgba(46,27,84,0.4); }
+.carousel__btn:hover:not(:disabled) { transform: scale(1.1); background: var(--violet); color: var(--cream); }
+.carousel__btn:disabled { opacity: 0.32; cursor: default; }
+/* Progress dots between the arrows */
+.carousel__dots { display: inline-flex; align-items: center; gap: 9px; }
+.carousel__dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor; opacity: 0.28;
+  transition: opacity 0.3s, transform 0.3s var(--ease);
+}
+.carousel__dots span.is-active { opacity: 1; transform: scale(1.35); }
+
+/* ============================================================
+   Map
+   ============================================================ */
+.map-card {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line-on-violet);
+  box-shadow: 0 20px 60px rgba(15,15,18,0.3);
+  min-height: 460px;
+}
+.festival-map { width: 100%; height: 100%; min-height: 460px; background: #1d1530; }
+.festival-map::before {
+  content: "Map loads with a Google Maps API key";
+  display: grid; place-items: center; height: 100%;
+  color: var(--paper-faint); font-size: 0.9rem; padding: 20px; text-align: center;
+}
+.map-card__info {
+  background: color-mix(in srgb, var(--violet) 82%, black 8%);
+  color: var(--paper);
+  padding: clamp(26px, 3vw, 40px);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.map-card__eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.7; margin: 0 0 1.2rem;
+}
+.map-list li {
+  padding: 14px 0; border-top: 1px solid var(--line-on-violet);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.map-list li:last-child { border-bottom: 1px solid var(--line-on-violet); }
+.map-list strong { font-family: var(--font-display); font-size: 1.1rem; }
+.map-list span { color: var(--paper-soft); font-size: 0.92rem; }
+
+/* ============================================================
+   Supporters
+   ============================================================ */
+.supporters__groups { display: grid; gap: clamp(34px, 5vw, 60px); }
+.supporters__label {
+  font-family: var(--font-display); font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.6;
+  margin: 0 0 1.2rem;
+}
+.supporters__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 4vw, 58px);
+  align-items: center;
+  justify-content: flex-start;
+}
+.supporters__item { display: flex; align-items: center; min-height: 76px; }
+.supporters__logo {
+  display: flex; align-items: center; justify-content: flex-start;
+  height: 76px; width: auto; padding: 0;
+  filter: none; opacity: 1;
+  transition: transform 0.4s var(--ease);
+}
+.supporters__logo img {
+  max-height: 62px; max-width: 184px;
+  width: auto; height: auto; object-fit: contain;
+}
+.supporters__logo img[src*="migros"] {
+  max-width: 190px;
+  max-height: 42px;
+}
+.supporters__logo img[src*="massagno"] {
+  max-width: 166px;
+  max-height: 60px;
+}
+.supporters__logo img[src*="ubs"] {
+  max-width: 164px;
+  max-height: 54px;
+}
+.supporters__logo img[src*="axa"] {
+  max-width: 128px;
+  max-height: 68px;
+}
+.supporters__logo img[src*="lux"],
+.supporters__logo img[src*="centro_generativo"] {
+  max-width: 148px;
+  max-height: 68px;
+}
+.supporters__logo img[src*="ortega"] {
+  width: 128px;
+  max-width: 148px;
+  max-height: 68px;
+}
+.supporters__logo:hover { transform: scale(1.06); }
+
+/* ============================================================
+   Generic page hero (press / contact / authors / legal)
+   ============================================================ */
+.page-hero {
+  min-height: 78vh;
+  display: flex; align-items: center;
+  padding-top: clamp(120px, 18vh, 200px);
+}
+.page-hero--photo {
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+/* The decorative blurred "stain" blob sits bottom-right of the hero; because
+   the hero has overflow:hidden, its blur was clipped dead straight at the
+   hero's bottom edge, producing the hard horizontal seam between the hero and
+   the next section. Removing the stain from the photo hero kills that line
+   while leaving the fixed photo -> section crossfade untouched. */
+.page-hero--photo .stain { display: none; }
+.page-hero--photo::before,
+.page-hero--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* The photo + cream wash now live on the fixed body layer (see
+   body:not(.home-page)), so the hero needs no section-bounded overlay. Keeping
+   these off is what removes the hard seam at the hero's bottom edge. */
+.page-hero--photo::before,
+.page-hero--photo::after {
+  display: none;
+}
+.page-hero__kicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; margin: 0 0 1.2rem;
+}
+.page-hero__title {
+  font-size: clamp(2.6rem, 9vw, 6rem); font-weight: 800; letter-spacing: 0;
+  line-height: 1.08;
+  margin: 0 0 1.2rem;
+}
+.page-hero__subtitle { font-size: clamp(1.05rem, 2vw, 1.3rem); max-width: 60ch; }
+.is-on-violet .page-hero__subtitle { color: var(--paper-soft); }
+.is-on-cream .page-hero__subtitle { color: var(--ink-soft); }
+.page-hero__actions { margin-top: 2rem; display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ============================================================
+   Press form
+   ============================================================ */
+.form-card {
+  background: color-mix(in srgb, var(--cream) 92%, white);
+  border: 1px solid var(--line-on-cream);
+  border-radius: var(--radius-lg);
+  padding: clamp(26px, 4vw, 48px);
+  max-width: 680px;
+  box-shadow: 0 18px 50px rgba(46,27,84,0.12);
+}
+.is-on-violet .form-card {
+  background: color-mix(in srgb, var(--violet) 80%, black 6%);
+  border-color: var(--line-on-violet); color: var(--paper);
+}
+.form-card h2 { font-size: 1.7rem; margin-bottom: 0.5rem; }
+.form-card .form__desc { opacity: 0.8; margin-bottom: 1.6rem; }
+.form__field { margin-bottom: 16px; }
+.form__field input, .form__field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font: inherit;
+  color: inherit;
+  background: color-mix(in srgb, var(--cream) 60%, transparent);
+  border: 1px solid var(--line-on-cream);
+  border-radius: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.is-on-violet .form__field input, .is-on-violet .form__field textarea {
+  background: rgba(15,15,18,0.18); border-color: var(--line-on-violet);
+}
+.form__field textarea { min-height: 140px; resize: vertical; }
+.form__field input::placeholder, .form__field textarea::placeholder { color: var(--ink-faint); }
+.is-on-violet .form__field input::placeholder, .is-on-violet .form__field textarea::placeholder { color: var(--paper-faint); }
+.form__field input:focus, .form__field textarea:focus {
+  outline: none; border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(75,46,131,0.18);
+}
+.is-on-violet .form__field input:focus, .is-on-violet .form__field textarea:focus {
+  border-color: var(--cream); box-shadow: 0 0 0 3px rgba(243,242,239,0.22);
+}
+.form__status { margin-top: 14px; font-size: 0.95rem; min-height: 1.2em; }
+.form__status.is-ok { color: #2e9e5b; }
+.form__status.is-err { color: #d24b4b; }
+
+/* ============================================================
+   Contact channels
+   ============================================================ */
+.contact-grid {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.contact-card {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 24px;
+  border: 1px solid var(--line-on-cream);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--cream) 92%, white);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+}
+.is-on-violet .contact-card {
+  background: color-mix(in srgb, var(--violet) 80%, black 6%);
+  border-color: var(--line-on-violet); color: var(--paper);
+}
+.contact-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(46,27,84,0.18); }
+.contact-card__label { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+.contact-card__value { font-size: 0.98rem; opacity: 0.85; word-break: break-word; }
+.contact-card__hint { font-size: 0.82rem; opacity: 0.6; }
+
+.newsletter-block { margin-top: clamp(40px, 6vw, 72px); max-width: 560px; }
+.newsletter-block h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.newsletter-block p { opacity: 0.82; }
+.newsletter-block .footer__tiny a { text-decoration: underline; }
+.is-on-violet .newsletter-block .footer__tiny { color: var(--paper-soft) !important; }
+
+/* ============================================================
+   Authors (About us)
+   ============================================================ */
+.authors-index {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem;
+}
+.authors-index__item {
+  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
+  padding: 0.55em 1.1em; border-radius: 999px;
+  border: 1px solid currentColor; opacity: 0.85;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.authors-index__item:hover { transform: translateY(-2px); }
+.is-on-violet .authors-index__item:hover { background: var(--cream); color: var(--violet); }
+.is-on-cream .authors-index__item:hover { background: var(--violet); color: var(--cream); }
+
+.author__copy { max-width: 60ch; margin-bottom: clamp(24px, 4vw, 40px); }
+.author__eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 0.8rem;
+}
+.author__card {
+  display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+.author__media {
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(15,15,18,0.28);
+  aspect-ratio: 4 / 5; background: var(--violet-deep);
+}
+.author__media img { width: 100%; height: 100%; object-fit: cover; }
+.author__body p { font-size: 1.05rem; }
+.is-on-violet .author__body p { color: var(--paper-soft); }
+.is-on-cream .author__body p { color: var(--ink-soft); }
+.author__nav { display: flex; gap: 12px; margin-top: 1.6rem; }
+
+/* ============================================================
+   Legal
+   ============================================================ */
+.legal-card {
+  background: color-mix(in srgb, var(--cream) 92%, white);
+  border: 1px solid var(--line-on-cream);
+  border-radius: var(--radius-lg);
+  padding: clamp(26px, 4vw, 52px);
+  max-width: 820px;
+  box-shadow: 0 18px 50px rgba(46,27,84,0.10);
+}
+.legal-card.reveal { opacity: 1; transform: none; }
+.legal-card h2 { font-size: 1.6rem; margin: 1.8rem 0 0.7rem; }
+.legal-card h2:first-child { margin-top: 0; }
+.legal-card h3 { font-size: 1.15rem; margin: 1.4rem 0 0.5rem; color: var(--violet); }
+.legal-card h4 { font-size: 1rem; margin: 1rem 0 0.3rem; color: var(--ink); }
+.legal-card p, .legal-card li { color: var(--ink-soft); font-size: 0.98rem; }
+.legal-card ul { list-style: disc; padding-left: 1.3em; margin: 0 0 1em; }
+.legal-card li { margin-bottom: 0.4em; }
+.legal-card a { color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
+.legal-card a:hover { color: var(--violet-bright); }
+.legal-card p:last-child { margin-top: 1.6rem; }
+.legal-meta { font-size: 0.85rem; opacity: 0.6; margin-bottom: 1.6rem; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  position: relative;
+  z-index: 3;
+  margin-top: -220px;
+  background: linear-gradient(180deg, rgba(75, 46, 131, 0) 0%, rgba(75, 46, 131, 0) 18%, rgba(75, 46, 131, 0.12) 36%, rgba(75, 46, 131, 0.46) 56%, rgba(75, 46, 131, 0.86) 76%, var(--violet-deep) 100%);
+  color: var(--paper);
+  padding-block: calc(clamp(52px, 7vw, 86px) + 220px) clamp(24px, 3vw, 40px);
+  overflow: hidden;
+  /* The footer is pulled up 220px to overlap the previous section for the
+     colour blend. That empty top padding must NOT swallow clicks meant for
+     the content above it (e.g. the contact newsletter). Clicks pass through
+     here; the actual footer content re-enables them via .footer__wrap. */
+  pointer-events: none;
+}
+.site-footer::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(64vmax 52vmax at 88% 34%, rgba(106,71,184,0.42), transparent 68%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.16) 22%, black 48%);
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.16) 22%, black 48%);
+  pointer-events: none;
+}
+.footer__wrap { position: relative; z-index: 2; pointer-events: auto; }
+.footer__eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.7; margin: 0 0 1rem;
+}
+.footer__headline { font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; letter-spacing: 0; line-height: 1.08; }
+.footer__lead { color: var(--paper-soft); max-width: 44ch; margin: 0.8rem 0 0; font-size: 1.1rem; }
+.footer__cta { margin-top: 1.2rem; }
+.site-footer .footer__cta .btn {
+  --btn-bg: var(--cream);
+  --btn-fg: var(--violet);
+  box-shadow: 0 10px 28px rgba(15, 15, 18, 0.22);
+}
+.footer__panel { margin-top: clamp(32px, 5vw, 56px); }
+.footer__grid {
+  display: grid; gap: 36px;
+  grid-template-columns: 1fr 1fr 1.6fr;
+  padding-bottom: 28px; border-bottom: 1px solid var(--line-on-violet);
+}
+.footer__title { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin: 0 0 1rem; }
+.footer__links li { margin-bottom: 0.6em; }
+.footer__links a { color: var(--paper-soft); transition: color 0.3s; }
+.footer__links a:hover { color: var(--cream); }
+.footer__small { color: var(--paper-soft); font-size: 0.92rem; max-width: 36ch; }
+.footer__ml { margin-top: 16px; }
+
+/* ---------- Clean newsletter form (field + CTA) ---------- */
+.nl-form {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 16px;
+  max-width: 420px;
+}
+.nl-form__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.85em 1.1em;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--paper);
+  background: rgba(243, 242, 239, 0.10);
+  border: 1px solid var(--line-on-violet);
+  border-radius: 999px;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+.nl-form__input::placeholder { color: var(--paper-faint); }
+.nl-form__input:focus {
+  outline: none;
+  border-color: var(--cream);
+  background: rgba(243, 242, 239, 0.16);
+  box-shadow: 0 0 0 3px rgba(243, 242, 239, 0.16);
+}
+.nl-form__btn {
+  flex: 0 0 auto;
+  padding: 0.85em 1.5em;
+  background: var(--cream);
+  color: var(--violet);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  box-shadow: 0 8px 22px rgba(15, 15, 18, 0.25);
+}
+.nl-form__btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15, 15, 18, 0.35); }
+.nl-form__status { margin: 10px 0 0; font-size: 0.85rem; min-height: 1.1em; color: var(--paper-soft); }
+.nl-form__status.is-ok { color: #9be3b4; }
+.nl-form__status.is-err { color: #f2a9a9; }
+
+/* Newsletter on the contact page sits on a cream section */
+.is-on-cream .nl-form__input {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--cream) 60%, transparent);
+  border-color: var(--line-on-cream);
+}
+.is-on-cream .nl-form__input::placeholder { color: var(--ink-faint); }
+.is-on-cream .nl-form__input:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(75, 46, 131, 0.18); }
+.is-on-cream .nl-form__btn { background: var(--violet); color: var(--cream); }
+.is-on-cream .nl-form__status { color: var(--ink-soft); }
+.is-on-cream .nl-form__status.is-ok { color: #2e9e5b; }
+.is-on-cream .nl-form__status.is-err { color: #d24b4b; }
+
+@media (max-width: 420px) {
+  .nl-form { flex-direction: column; }
+  .nl-form__btn { width: 100%; }
+}
+.footer__bottom {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-top: 20px;
+}
+.footer__tiny { color: var(--paper-faint); font-size: 0.82rem; margin: 0.3em 0; }
+.footer__tiny a { color: var(--paper-soft); text-decoration: underline; }
+.footer__tiny a:hover { color: var(--cream); }
+
+/* ============================================================
+   Scroll reveals
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(34px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.is-in { opacity: 1; transform: none; }
+/* Hero content keeps its slide-up entrance, but as an animation that fires
+   immediately on page load (instead of waiting for the scroll observer), so it
+   starts together with the instantly-painted hero photo rather than lagging it. */
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(34px); }
+  to   { opacity: 1; transform: none; }
+}
+.page-hero .reveal { opacity: 0; transform: translateY(34px); transition: none; animation: heroReveal 0.8s var(--ease) both; }
+.reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reveal[data-delay="2"] { transition-delay: 0.16s; }
+.reveal[data-delay="3"] { transition-delay: 0.24s; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 920px) {
+  .map-card { grid-template-columns: 1fr; }
+  .festival-map { min-height: 320px; }
+  .author__card { grid-template-columns: 1fr; }
+  .author__media { max-width: 420px; }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  body { font-size: 16px; }
+  .brand__text { display: none; }
+  .nav__cta-long { display: none; }
+  .nav__cta-short { display: inline; }
+  .nav__lang-switch { display: none; } /* language available via the menu overlay */
+  .footer__grid { grid-template-columns: 1fr; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; }
+  .carousel__btn { display: none; }
+  .section { padding-block: clamp(56px, 10vh, 90px); }
+  /* On phones the inner (non-home) pages drop the fixed "head" photo entirely.
+     With no white photo header, the page starts on pure violet and the section
+     colours simply alternate (violet -> cream -> violet ...). The actual
+     inversion of each section is handled in app.js (initMobileInnerColors);
+     here we just remove the photo + cream wash so the violet canvas shows. */
+  body:not(.home-page) {
+    background-image: none;
+    background-color: var(--violet);
+  }
+}
+
+/* In-menu language switch (mobile) appears inside the overlay */
+.nav__panel-lang {
+  display: none;
+  margin-top: clamp(30px, 6vh, 60px);
+  gap: 10px;
+}
+.nav__panel-lang a {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem !important;
+  padding: 0.4em 0.9em; border: 1px solid var(--line-on-violet); border-radius: 999px;
+  opacity: 0.7; transform: none !important; animation: none !important;
+}
+.nav__panel-lang a.is-active, .nav__panel-lang a:hover { opacity: 1; background: var(--cream); color: var(--violet); }
+@media (max-width: 700px) { .nav__panel-lang { display: flex; } }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}

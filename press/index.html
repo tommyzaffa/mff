@@ -3,254 +3,167 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#F3F2EF" />
+  <meta name="theme-color" content="#4B2E83" />
   <title>Press — Merge Film Festival</title>
+  <meta name="description" content="Press — Merge Film Festival." />
 
-  <!-- Global -->
-  <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/mobile.css?v=20260602-supporters-spacing">
-  <!-- Page -->
-  <link rel="stylesheet" href="../assets/css/press.css" />
-  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="stylesheet" href="../assets/css/style.css?v=4" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../assets/img/favicon-48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../assets/img/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
 </head>
 
 <body>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
 
-<header class="site-header">
-  <a class="brand" href="../index.html">
-    <span class="brand__mark" style="font-size: 12px;">MFF</span>
-    <span class="brand__text">Merge Film Festival</span>
-  </a>
-
-  <div class="nav__actions">
-    <!--
-    <a class="nav__cta-btn" href="https://www.jfcinema.ch" target="_blank">
-      Buy your ticket
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
     </a>
-    -->
-
-    <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
-      <span class="nav__cta-long">Submit your film</span>
-      <span class="nav__cta-short">Submit</span>
-    </a>
-          <div class="nav__lang-switch" aria-label="Language switch">
-        <a class="nav__lang-option" href="../it/press/index.html">IT</a>
-        <a class="nav__lang-option nav__lang-option--active" href="#">ENG</a>
-        <a class="nav__lang-option" href="../fr/press/index.html">FR</a>
-        <a class="nav__lang-option" href="../de/press/index.html">DE</a>
+    <div class="nav__actions">
+      <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
+        <span class="nav__cta-long" data-i18n="nav.submitLong">Submit your film</span>
+        <span class="nav__cta-short" data-i18n="nav.submitShort">Submit</span>
+      </a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
       </div>
-
-    <details class="nav__dropdown">
-      <summary class="nav__toggle">Menu</summary>
-      <div class="nav__panel">
-        <a href="../index.html">Home</a>
-        <!-- Disabled link to program/in-competition | Program | href: ../program/index.html -->
-        <!-- Disabled link to program/in-competition | In Competition | href: ../in_competition/index.html -->
-        <a href="../press/index.html">Press</a>
-        <a href="../contact/index.html">Contact</a>
-      </div>
-    </details>
-  </div>
-</header>
-
-<div class="snap-root">
-<main>
-
-<!-- HERO -->
-<section class="section section--full press-hero" id="top" style="--award-bg: url('../img/bg/testa.jpg');">
-  <div class="container">
-    <p class="hero__kicker">Press • Media • Contact</p>
-    <h1 class="hero__title">Press</h1>
-    <p class="hero__subtitle">
-      For press enquiries and media accreditation regarding the Merge Film Festival, please complete the form below. The festival welcomes journalists and industry professionals interested in covering the event.
-      <br> <br> Our team is on hand to provide materials, information and support throughout the festival.
-    </p>
-  </div>
-</section>
-
-<!-- FORM -->
-<section class="section--dark section section--full press-form" style="--award-bg: url('../img/bg/Tavola_disegno_1.png');">
-  <div class="container press-form__wrap">
-
-    <header class="section__header">
-      <h2 class="section__title">Press contact</h2>
-      <p class="section__desc">
-        Fill out the form below and we'll get back to you as soon as possible.
-      </p>
-    </header>
-
-    <form id="press-form" class="form" action="https://formspree.io/f/maqvqvjp" method="POST">
-
-        <div class="form__grid">
-          <input type="text" name="name" placeholder="Full name" required />
-          <input type="email" name="email" placeholder="Email address" required />
-        </div>
-      
-        <input type="text" name="organization" placeholder="Media / Organization" />
-      
-        <textarea name="message" rows="5" placeholder="Your request..." required></textarea>
-      
-        <!-- opzionale: subject email -->
-        <input type="hidden" name="_subject" value="Press request — Merge Film Festival">
-      
-        <button type="submit" class="btn">Send request</button>
-        <p class="form__status" id="form-status" aria-live="polite"></p>
-      
-      </form>
-
-  </div>
-</section>
-
-</main>
-
-<!-- FOOTER (copia identica al tuo) -->
-<footer class="site-footer" id="footer" style="--award-bg: url('../img/bg/Tavola_disegno_7.png');">
-  <div class="footer__wrap">
-    <div class="container">
-      <div class="footer__top">
-        <p class="footer__eyebrow">Merge Film Festival</p>
-        <h2 class="footer__headline">See you at the festival.</h2>
-        <p class="footer__lead">
-          The first film festival in Switzerland entirely dedicated to AI.
-        </p>
-
-        <div class="footer__cta">
-          <a class="btn" href="https://www.jfcinema.ch" target="_blank">Buy Tickets</a>
-          <!-- Disabled link to program/in-competition | See Program | href: ../program/index.html -->
-        </div>
-      </div>
-
-      <div class="footer__panel">
-        <div class="footer__grid">
-          <div>
-            <p class="footer__title">Explore</p>
-            <ul class="footer__links">
-              <li><a href="../index.html">Home</a></li>
-              <!-- Disabled link to program/in-competition | Program | href: ../program/index.html -->
-              <!-- Disabled link to program/in-competition | In Competition | href: ../in_competition/index.html -->
-            </ul>
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <div class="nav__panel">
+          <a href="../index.html" data-i18n="nav.home">Home</a>
+          <a href="index.html" data-i18n="nav.press">Press</a>
+          <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
           </div>
-
-          <div>
-            <p class="footer__title">Info</p>
-            <ul class="footer__links">
-              <li><a href="../press/index.html">Press</a></li>
-              <li><a href="../contact/index.html">Contact</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <p class="footer__title">Get updates</p>
-            <p class="footer__small">
-              Workshop announcements, schedule drops, winners — no spam.
-            </p>
-          
-            <div class="ml-embedded footer__ml" data-form="HwxvEb"></div>
-          </div>
-        </div>
-
-        <div class="footer__bottom">
-            <div class="footer__legal">
-                <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
-                <p class="footer__tiny">Website design &amp; development — <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
-              
-                <p class="footer__tiny">
-                  <a href="../legal/terms.html">Terms & Conditions</a> — 
-                  <a href="../legal/privacy.html">Privacy Policy</a>
-                </p>
-              </div>
-
-              <a class="footer__tiny js-back-to-top" href="#top">Back to top</a>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </header>
 
-</div>
-<script src="../assets/js/menu.js" defer></script>
-<script>
-  (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-  .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-  n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-  (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-  ml('account', '2102085');
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const backToTop = document.querySelector(".js-back-to-top");
-      const snapRoot = document.querySelector(".snap-root");
-  
-      if (!backToTop || !snapRoot) return;
-  
-      backToTop.addEventListener("click", (event) => {
-        event.preventDefault();
-  
-        snapRoot.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      });
-    });
-  </script>
+  <main>
+    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container reveal">
+        <p class="page-hero__kicker" data-i18n="press.kicker">Press • Media • Contact</p>
+        <h1 class="page-hero__title" data-i18n="press.title">Press</h1>
+        <p class="page-hero__subtitle" data-i18n-html="press.subtitle">For press enquiries and media accreditation regarding the Merge Film Festival, please complete the form below.</p>
+      </div>
+    </section>
+
+    <section class="section is-on-violet" data-bg="violet">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+        <form class="form-card reveal" id="pressForm" action="https://formspree.io/f/maqvqvjp" method="POST" novalidate>
+          <h2 data-i18n="press.formTitle">Press contact</h2>
+          <p class="form__desc" data-i18n="press.formDesc">Fill out the form below and we'll get back to you as soon as possible.</p>
+
+          <div class="form__field">
+            <input type="text" name="name" autocomplete="name" required data-i18n-attr="placeholder:press.phName" placeholder="Full name" />
+          </div>
+          <div class="form__field">
+            <input type="email" name="email" autocomplete="email" required data-i18n-attr="placeholder:press.phEmail" placeholder="Email address" />
+          </div>
+          <div class="form__field">
+            <input type="text" name="organization" data-i18n-attr="placeholder:press.phOrg" placeholder="Media / Organization" />
+          </div>
+          <div class="form__field">
+            <textarea name="message" required data-i18n-attr="placeholder:press.phMsg" placeholder="Your request..."></textarea>
+          </div>
+
+          <button class="btn" type="submit" data-i18n="press.btnSend">Send request</button>
+          <p class="form__status" id="pressStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer" data-bg="violet">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
+          <div class="footer__cta">
+            <a class="btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer" data-i18n="nav.submitLong">Submit your film</a>
+          </div>
+        </div>
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links"><li><a href="../index.html" data-i18n="nav.home">Home</a></li></ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
+              <ul class="footer__links">
+                <li><a href="index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../contact/index.html" data-i18n="nav.contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+              <p class="footer__tiny">
+                <a href="../legal/terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="../legal/privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+              </p>
+            </div>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/translations.js?v=4"></script>
+  <script src="../assets/js/app.js?v=4"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("press-form");
-      const status = document.getElementById("form-status");
-  
-      if (!form || !status) return;
-  
-      // Robust RFC-5322-ish email regex: requires user@domain.tld with TLD ≥ 2 chars
-      const EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        // --- Email validation ---
-        const emailInput = form.querySelector('input[type="email"]');
-        const emailValue = (emailInput?.value || "").trim();
-        if (!EMAIL_RE.test(emailValue)) {
-          status.textContent = "Please enter a valid email address.";
-          status.classList.remove("is-success");
-          status.classList.add("is-error");
-          emailInput?.focus();
-          return;
-        }
-
-        status.textContent = "Sending...";
-        status.classList.remove("is-error", "is-success");
-
-        const formData = new FormData(form);
-
-        try {
-          const response = await fetch(form.action, {
-            method: form.method,
-            body: formData,
-            headers: {
-              "Accept": "application/json"
-            }
-          });
-  
-          if (response.ok) {
-            form.reset();
-            status.textContent = "Request sent successfully.";
-            status.classList.add("is-success");
-          } else {
-            status.textContent = "Something went wrong. Please try again.";
-            status.classList.add("is-error");
-          }
-        } catch (error) {
-          status.textContent = "Network error. Please try again.";
-          status.classList.add("is-error");
-        }
+    (function () {
+      var form = document.getElementById('pressForm');
+      var status = document.getElementById('pressStatus');
+      if (!form) return;
+      function t(key) {
+        var lang = document.documentElement.dataset.lang || 'en';
+        var d = (window.MFF_I18N[lang] && window.MFF_I18N[lang].press) || window.MFF_I18N.en.press;
+        return d[key];
+      }
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        status.className = 'form__status';
+        var email = form.email.value.trim();
+        if (!emailRe.test(email)) { status.textContent = t('stEmail'); status.classList.add('is-err'); return; }
+        status.textContent = t('stSending');
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) {
+            if (r.ok) { status.textContent = t('stOk'); status.classList.add('is-ok'); form.reset(); }
+            else { status.textContent = t('stErr'); status.classList.add('is-err'); }
+          })
+          .catch(function () { status.textContent = t('stNet'); status.classList.add('is-err'); });
       });
-    });
+    })();
   </script>
-
-<script src="../assets/js/ticket-consent.js"></script>
 </body>
 </html>

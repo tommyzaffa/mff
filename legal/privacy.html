@@ -3,292 +3,143 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#F3F2EF" />
+  <meta name="theme-color" content="#4B2E83" />
   <title>Privacy Policy — Merge Film Festival</title>
+  <meta name="description" content="Privacy Policy — Merge Film Festival." />
 
-  <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/mobile.css?v=20260602-supporters-spacing">
-  <link rel="stylesheet" href="../assets/css/legal.css" />
-  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="stylesheet" href="../assets/css/style.css?v=4" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../assets/img/favicon-48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../assets/img/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
 </head>
 
 <body>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
 
-<header class="site-header">
-  <a class="brand" href="../index.html">
-    <span class="brand__mark" style="font-size: 12px;">MFF</span>
-    <span class="brand__text">Merge Film Festival</span>
-  </a>
-
-  <div class="nav__actions">
-    <!--
-    <a class="nav__cta-btn" href="https://www.jfcinema.ch" target="_blank">
-      Buy your ticket
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
     </a>
-    -->
-
-    <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
-      <span class="nav__cta-long">Submit your film</span>
-      <span class="nav__cta-short">Submit</span>
-    </a>
-          <div class="nav__lang-switch" aria-label="Language switch">
-        <a class="nav__lang-option" href="../it/legal/privacy.html">IT</a>
-        <a class="nav__lang-option nav__lang-option--active" href="#">ENG</a>
-        <a class="nav__lang-option" href="../fr/legal/privacy.html">FR</a>
-        <a class="nav__lang-option" href="../de/legal/privacy.html">DE</a>
+    <div class="nav__actions">
+      <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
+        <span class="nav__cta-long" data-i18n="nav.submitLong">Submit your film</span>
+        <span class="nav__cta-short" data-i18n="nav.submitShort">Submit</span>
+      </a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
       </div>
-
-    <details class="nav__dropdown">
-      <summary class="nav__toggle">Menu</summary>
-      <div class="nav__panel">
-        <a href="../index.html">Home</a>
-        <!-- Disabled link to program/in-competition | Program | href: ../program/index.html -->
-        <!-- Disabled link to program/in-competition | In Competition | href: ../in_competition/index.html -->
-        <a href="../press/index.html">Press</a>
-        <a href="../contact/index.html">Contact</a>
-      </div>
-    </details>
-  </div>
-</header>
-
-<div class="snap-root">
-<main>
-
-  <!-- HERO -->
-  <section class="section section--full legal-hero" id="top" style="--legal-bg: url('../img/bg/testa.jpg');">
-    <div class="container">
-      <p class="hero__kicker">Legal • Data • Transparency</p>
-      <h1 class="hero__title">Privacy Policy</h1>
-      <p class="hero__subtitle">
-        How the Merge Film Festival collects, uses and protects your personal data.
-      </p>
-    </div>
-  </section>
-
-  <!-- TEXT BLOCK -->
-  <section class="section--dark section section--full legal-content" style="--legal-bg: url('../img/bg/Tavola_disegno_1.png');">
-    <div class="container legal-content__wrap">
-
-      <header class="section__header">
-        <h2 class="section__title">Privacy Policy</h2>
-      </header>
-
-      <div class="legal-card">
-        <div class="legal-scroll">
-
-          <p>The Merge Film Festival places great importance on protecting the privacy and personal data of all those who interact with its activities, including participants, collaborators, guests and users of the services and platforms associated with the event.</p>
-
-          <p>This policy is intended to clearly explain how personal data is collected, used, stored and, where necessary, shared, in compliance with current Swiss data protection legislation.</p>
-
-          <p>We invite all interested parties to carefully read this document in order to understand how the festival manages personal information and ensures responsible and legally compliant processing.</p>
-
-          <h3>1. Collection of Personal Data</h3>
-
-          <p>The Merge Film Festival may collect various categories of personal data, in compliance with Swiss data protection legislation and depending on the manner in which users interact with the festival and its services.</p>
-
-          <p>The data collected may include, by way of example and without limitation:</p>
-
-          <ul>
-            <li>identifying information (such as name, address, date of birth, nationality, photograph);</li>
-            <li>contact data (for example, email address and phone number);</li>
-            <li>financial information (such as data required for payments);</li>
-            <li>professional data (such as job role or organisational affiliation);</li>
-            <li>information relating to participation in events or use of festival services;</li>
-            <li>any other data voluntarily provided by the user.</li>
-          </ul>
-
-          <h3>2. Legal Basis for Processing Personal Data</h3>
-
-          <p>The Merge Film Festival processes personal data in compliance with applicable legislation, including Swiss data protection law. Processing is based on various legal grounds, which vary depending on the purposes for which the data is used:</p>
-
-          <p><strong>Contractual Necessity</strong><br>
-          Data may be processed where this is indispensable for initiating or performing a contractual relationship with the user, for example to provide the requested services or fulfil obligations arising from an agreement.</p>
-
-          <p><strong>Legal Obligations</strong><br>
-          Processing may be carried out to comply with obligations imposed by applicable law or regulations.</p>
-
-          <p><strong>Legitimate Interests</strong><br>
-          In certain situations, processing may be based on the legitimate interests of the festival, provided that these do not override the fundamental rights and freedoms of the individuals concerned.</p>
-
-          <p><strong>Consent</strong><br>
-          Where required, processing is based on the explicit consent of the user, in particular in cases provided for by law or when dealing with special categories of personal data.</p>
-
-          <h3>3. Use of Personal Data</h3>
-
-          <p>The Merge Film Festival is committed to collecting and processing personal data only to the extent necessary for the achievement of specific purposes. In particular, data may be used to:</p>
-
-          <ul>
-            <li>organise and manage festival services, events and platforms, including registration, ticket sales and communications with participants;</li>
-            <li>fulfil legal and regulatory obligations, such as those of a fiscal, accounting or other applicable nature;</li>
-            <li>safeguard the festival's legitimate interests, for example by ensuring the safety and proper functioning of events and services, preventing fraudulent behaviour and ensuring compliance with the terms of use.</li>
-          </ul>
-
-          <p>In specific cases, the processing of personal data may occur on the basis of the individual's consent, in particular where the purposes do not fall within the legal bases indicated above. In such situations, consent may be withdrawn at any time.</p>
-
-          <p>Personal data may be processed by the Merge Film Festival in various situations, in particular when:</p>
-
-          <ul>
-            <li>the festival's website is visited;</li>
-            <li>tickets are purchased, invitations to participate in festival activities are accepted, or a film is submitted;</li>
-            <li>contact is made with the company, for example for job applications;</li>
-            <li>information is provided by email, phone, post or in person, including while present at festival venues;</li>
-            <li>participation in events, conferences, training sessions or screenings organised as part of the festival;</li>
-            <li>participation in competitions, votes or surveys;</li>
-            <li>tickets, products or services are purchased through official festival channels, both online and in person.</li>
-          </ul>
-
-          <h3>4. Communication of Personal Data</h3>
-
-          <p>The Merge Film Festival may share personal data with external partners who collaborate in organising and managing festival services, events and platforms, in compliance with Swiss data protection legislation. Such parties are bound by contractual obligations that guarantee the confidentiality and security of the information and may process data solely on behalf of the festival and for the agreed purposes.</p>
-
-          <p>Festival services and platforms may contain links to external websites or services that are not managed or controlled by the festival. Consequently, the Merge Film Festival is not responsible for the content, policies or privacy practices adopted by such third parties.</p>
-
-          <p>Users acknowledge and accept that the festival cannot be held responsible, directly or indirectly, for any damages or consequences arising from the use of linked external sites or services, or for activities connected thereto.</p>
-
-          <h3>5. Data Retention</h3>
-
-          <p>The Merge Film Festival retains personal data for only as long as strictly necessary to achieve the purposes described in this policy, as well as to fulfil obligations imposed by Swiss legislation and other applicable legal provisions.</p>
-
-          <p>The duration of retention may vary depending on the type of data processed and the specific purposes for which it is used.</p>
-
-          <h3>6. Users' and Visitors' Rights</h3>
-
-          <p>To exercise your rights or for any enquiry relating to the processing of personal data, please contact the Merge Film Festival at the following details:</p>
-
-          <p>
-            Merge Film Festival<br>
-            Phone: +41 (0)77 993 04 97<br>
-            Email: info@mergefestival.ch
-          </p>
-
-          <p>The use of festival services, the website or any platform associated with the festival implies acceptance of the personal data processing practices described in this policy.</p>
-
-          <h3>7. Cookies, Technical Information and Third-Party Services</h3>
-
-          <p>The Merge Film Festival's website does not use proprietary cookies for profiling or tracking purposes and does not employ analytics or advertising platforms (such as Google Analytics, Facebook Pixel or similar). Browser storage technologies (cookies, localStorage, sessionStorage) are not used by the festival to identify visitors or store personal information.</p>
-
-          <p>In order to deliver certain functionalities, the website integrates the following third-party services, which may set their own cookies or use local storage on the user's device in accordance with their own privacy policies:</p>
-
-          <ul>
-            <li><strong>MailerLite</strong> — used to operate the newsletter sign-up form. When a user voluntarily submits their email address, the data is transmitted to and processed by MailerLite (privacy policy: <a href="https://www.mailerlite.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">mailerlite.com/legal/privacy-policy</a>).</li>
-            <li><strong>Formspree</strong> — used to handle the press contact form. Information submitted through the form (such as name, email address and message) is transmitted to Formspree, which forwards it to the festival (privacy policy: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer">formspree.io/legal/privacy-policy</a>).</li>
-            <li><strong>Google Maps</strong> — used to display interactive maps of festival venues. Loading the map may result in Google receiving information about the visit and setting its own cookies (privacy policy: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>).</li>
-            <li><strong>External ticketing (jfcinema.ch)</strong> — ticket purchases are handled on an external website. Before redirecting to that site, the festival displays a confirmation prompt; no personal data is shared with jfcinema.ch by the festival itself.</li>
-          </ul>
-
-          <p>Users can configure their browser to refuse or delete cookies and local storage at any time, although this may affect the proper functioning of some features.</p>
-
-          <h3>8. Amendments to This Policy</h3>
-
-          <p>The Merge Film Festival reserves the right to update or amend this policy at any time in order to reflect any changes in its practices or regulatory obligations.</p>
-
-          <p>The updated version will be published on the festival's official channels. Visitors are therefore encouraged to periodically consult the policy to remain informed about personal data processing practices.</p>
-
-          <p><strong>Last updated:</strong> 19/05/2026</p>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer" id="footer" style="--legal-bg: url('../img/bg/Tavola_disegno_7.png');">
-  <div class="footer__wrap">
-    <div class="container">
-      <div class="footer__top">
-        <p class="footer__eyebrow">Merge Film Festival</p>
-        <h2 class="footer__headline">See you at the festival.</h2>
-        <p class="footer__lead">
-          The first film festival in Switzerland entirely dedicated to AI.
-        </p>
-
-        <div class="footer__cta">
-          <a class="btn" href="https://www.jfcinema.ch" target="_blank">Buy Tickets</a>
-          <!-- Disabled link to program/in-competition | See Program | href: ../program/index.html -->
-        </div>
-      </div>
-
-      <div class="footer__panel">
-        <div class="footer__grid">
-          <div>
-            <p class="footer__title">Explore</p>
-            <ul class="footer__links">
-              <li><a href="../index.html">Home</a></li>
-              <!-- Disabled link to program/in-competition | Program | href: ../program/index.html -->
-              <!-- Disabled link to program/in-competition | In Competition | href: ../in_competition/index.html -->
-            </ul>
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <div class="nav__panel">
+          <a href="../index.html" data-i18n="nav.home">Home</a>
+          <a href="../press/index.html" data-i18n="nav.press">Press</a>
+          <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
           </div>
-
-          <div>
-            <p class="footer__title">Info</p>
-            <ul class="footer__links">
-              <li><a href="../press/index.html">Press</a></li>
-              <li><a href="../contact/index.html">Contact</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <p class="footer__title">Get updates</p>
-            <p class="footer__small">
-              Workshop announcements, schedule drops, winners — no spam.
-            </p>
-            <div class="ml-embedded footer__ml" data-form="HwxvEb"></div>
-          </div>
-        </div>
-
-        <div class="footer__bottom">
-          <div class="footer__legal">
-            <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
-            <p class="footer__tiny">Website design &amp; development — <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
-
-            <p class="footer__tiny">
-              <a href="../legal/terms.html">Terms &amp; Conditions</a> —
-              <a href="../legal/privacy.html">Privacy Policy</a>
-            </p>
-          </div>
-
-          <a class="footer__tiny js-back-to-top" href="#top">Back to top</a>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </header>
 
-</div>
+  <main>
+    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container reveal">
+        <p class="page-hero__kicker" data-i18n="legal.kicker">Legal • Data • Transparency</p>
+        <h1 class="page-hero__title" data-i18n="legal.privacyTitle">Privacy Policy</h1>
+        <p class="page-hero__subtitle" data-i18n="legal.privacySubtitle">How the Merge Film Festival collects, uses and protects your personal data.</p>
+      </div>
+    </section>
 
-<script src="../assets/js/menu.js" defer></script>
-<script>
-  (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-  .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-  n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-  (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-  ml('account', '2102085');
-</script>
+    <section class="section is-on-violet" data-bg="violet">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow" data-i18n="legal.kicker">Legal • Data • Transparency</p>
+          <h2 class="section__title" data-i18n="legal.privacyHeading">Privacy Policy</h2>
+        </header>
+        <div class="legal-card reveal" data-delay="1" id="legalBody"></div>
+      </div>
+    </section>
+  </main>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const backToTop = document.querySelector(".js-back-to-top");
-    const snapRoot = document.querySelector(".snap-root");
+  <footer class="site-footer" id="footer" data-bg="violet">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
+          <div class="footer__cta">
+            <a class="btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer" data-i18n="nav.submitLong">Submit your film</a>
+          </div>
+        </div>
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links"><li><a href="../index.html" data-i18n="nav.home">Home</a></li></ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
+              <ul class="footer__links">
+                <li><a href="../press/index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../contact/index.html" data-i18n="nav.contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+              <p class="footer__tiny">
+                <a href="terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+              </p>
+            </div>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-    if (!backToTop || !snapRoot) return;
-
-    backToTop.addEventListener("click", (event) => {
-      event.preventDefault();
-      snapRoot.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  });
-</script>
-
-<script src="../assets/js/ticket-consent.js"></script>
-
+  <script src="../assets/js/legal-content.js"></script>
+  <script src="../assets/js/translations.js?v=4"></script>
+  <script src="../assets/js/app.js?v=4"></script>
+  <script>
+    (function () {
+      function injectLegal(lang) {
+        var el = document.getElementById('legalBody');
+        if (!el || !window.MFF_LEGAL) return;
+        var dict = window.MFF_LEGAL.privacy || {};
+        el.innerHTML = dict[lang] || dict.en || '';
+      }
+      var prev = window.onLangApplied;
+      window.onLangApplied = function (lang) {
+        if (typeof prev === 'function') { try { prev(lang); } catch (e) {} }
+        injectLegal(lang);
+      };
+      injectLegal(document.documentElement.dataset.lang || 'en');
+    })();
+  </script>
 </body>
 </html>

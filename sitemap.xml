@@ -1,281 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Home -->
   <url>
     <loc>https://mergefestival.ch/</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/"/>
   </url>
 
   <!-- Press -->
   <url>
     <loc>https://mergefestival.ch/press/</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/press/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/press/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/press/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/press/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/press/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/press/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/press/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/press/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/press/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/press/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/press/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/press/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/press/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/press/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/press/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/press/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/press/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/press/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/press/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/press/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/press/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/press/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/press/"/>
   </url>
 
   <!-- Contact -->
   <url>
     <loc>https://mergefestival.ch/contact/</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/contact/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/contact/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/contact/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/"/>
   </url>
 
   <!-- About / Authors -->
   <url>
     <loc>https://mergefestival.ch/contact/authors/</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/authors/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/contact/authors/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/authors/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/contact/authors/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/authors/"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/contact/authors/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/contact/authors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/contact/authors/"/>
   </url>
 
   <!-- Privacy -->
   <url>
     <loc>https://mergefestival.ch/legal/privacy.html</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/privacy.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/legal/privacy.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/privacy.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/legal/privacy.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/privacy.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/legal/privacy.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/privacy.html"/>
   </url>
 
   <!-- Terms -->
   <url>
     <loc>https://mergefestival.ch/legal/terms.html</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/terms.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/it/legal/terms.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/terms.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/fr/legal/terms.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/terms.html"/>
-  </url>
-  <url>
-    <loc>https://mergefestival.ch/de/legal/terms.html</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mergefestival.ch/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://mergefestival.ch/it/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mergefestival.ch/fr/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://mergefestival.ch/de/legal/terms.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mergefestival.ch/legal/terms.html"/>
   </url>
 
 </urlset>
