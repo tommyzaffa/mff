@@ -1184,6 +1184,15 @@ main :where(h1, h2, h3, h4, p, li, a, strong, span),
   word-break: normal;
 }
 
+/* The home presentation title must never break mid-word on desktop — whole
+   words wrap to the next line instead of being hyphenated (e.g. "cine-
+   matografico"). On phones (<=700px) hyphenation stays on, so long words can
+   still break where needed to fit narrow screens. Applies to all languages. */
+.about__title { -webkit-hyphens: none; hyphens: none; }
+@media (max-width: 700px) {
+  .about__title { -webkit-hyphens: auto; hyphens: auto; }
+}
+
 /* ============================================================
    Responsive
    ============================================================ */
