@@ -6,7 +6,7 @@
    ============================================================ */
 
 /* ---------- Fonts ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ---------- Design tokens ---------- */
 :root {
@@ -29,7 +29,7 @@
   --line-on-violet: rgba(243, 242, 239, 0.22);
 
   /* Type */
-  --font-display: 'Syne', system-ui, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Metrics */
@@ -138,14 +138,17 @@ body:not(.home-page) #bgCanvas { background-color: rgba(243, 242, 239, 0); }
    without sharp cuts. Opacity is driven a little by the canvas tone. */
 #bgMesh {
   position: fixed;
-  inset: -20vmax;
+  inset: -40vmax;
   z-index: -2;
   pointer-events: none;
+  /* Gradients are oversized and centred well outside the viewport so their
+     soft edges never fall inside the visible area — they can only ever read
+     as a gentle full-screen tonal wash, never as a horizontal division. */
   background:
-    radial-gradient(40vmax 40vmax at 18% 22%, rgba(106, 71, 184, 0.30), transparent 60%),
-    radial-gradient(38vmax 38vmax at 82% 30%, rgba(75, 46, 131, 0.28), transparent 62%),
-    radial-gradient(46vmax 46vmax at 60% 88%, rgba(46, 27, 84, 0.26), transparent 60%);
-  filter: blur(6px);
+    radial-gradient(120vmax 120vmax at 10% 0%, rgba(106, 71, 184, 0.14), transparent 70%),
+    radial-gradient(120vmax 120vmax at 95% 10%, rgba(75, 46, 131, 0.12), transparent 72%),
+    radial-gradient(140vmax 140vmax at 50% 110%, rgba(46, 27, 84, 0.12), transparent 72%);
+  filter: blur(40px);
   opacity: var(--mesh-opacity, 0.0);
   transition: opacity 0.6s linear;
   animation: meshDrift 26s ease-in-out infinite alternate;
@@ -197,6 +200,13 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 /* Violet "macchie" (stains) — only on cream sections, kept to the edges
    so they never sit under text. */
 .stain {
+  /* Disabled: these corner blobs sat at -10/-16vmax so they bled PAST the
+     section edge, painting a soft violet glow across each seam on alternating
+     sides (bottom-right of one cream section, top-left of the next). That read
+     as a "division line, on the right in one and the left in the other".
+     Removing them lets the flat #bgCanvas crossfade blend seams with no edge,
+     and keeps the page clean as new sections are added. */
+  display: none;
   position: absolute;
   z-index: 0;
   pointer-events: none;
@@ -688,14 +698,16 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   overflow: hidden;
   display: flex; flex-direction: column;
   transition: transform 0.6s var(--ease), opacity 0.55s var(--ease), box-shadow 0.5s var(--ease);
-  box-shadow: 0 18px 50px rgba(46,27,84,0.16);
+  /* Soft, evenly-spread halo so the shadow follows the card's rounded corners
+     instead of pooling into hard angular blobs at the bottom. */
+  box-shadow: 0 8px 24px rgba(46,27,84,0.10), 0 20px 50px rgba(46,27,84,0.12);
 }
 .is-on-violet .news-card {
   background: color-mix(in srgb, var(--violet) 78%, black 6%);
   border-color: var(--line-on-violet);
   color: var(--paper);
 }
-.news-card:hover { transform: translateY(-8px); box-shadow: 0 22px 50px rgba(46,27,84,0.22); }
+.news-card:hover { transform: translateY(-8px); box-shadow: 0 10px 28px rgba(46,27,84,0.12), 0 26px 60px rgba(46,27,84,0.16); }
 .news__img { width: 100%; height: 200px; object-fit: cover; background: var(--violet-deep); }
 .news__body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 .news__meta {
@@ -1154,6 +1166,25 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .reveal[data-delay="3"] { transition-delay: 0.24s; }
 
 /* ============================================================
+   Hyphenation (all viewports)
+   ============================================================ */
+/* Long words (e.g. "cinematografico") should break at proper syllable
+   boundaries with a real "-" hyphen rather than snapping mid-word with no
+   mark. This applies on desktop AND mobile; the browser uses the language
+   dictionary set via the html[lang] attribute (kept in sync by translations.js
+   for it/en/fr/de), so the break points follow each language's rules. */
+main :where(h1, h2, h3, h4, p, li, a, strong, span),
+.site-footer :where(h1, h2, h3, h4, p, li, a, strong, span) {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  -webkit-hyphenate-character: "-";
+  hyphenate-character: "-";
+  hyphenate-limit-chars: 6 3 3;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 920px) {
@@ -1167,16 +1198,6 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   html,
   body {
     background-color: var(--safari-ui-bg, var(--cream));
-  }
-  main :where(h1, h2, h3, h4, p, li, a, strong, span),
-  .site-footer :where(h1, h2, h3, h4, p, li, a, strong, span) {
-    -webkit-hyphens: auto;
-    hyphens: auto;
-    -webkit-hyphenate-character: "-";
-    hyphenate-character: "-";
-    hyphenate-limit-chars: 6 3 3;
-    overflow-wrap: break-word;
-    word-break: normal;
   }
   .bg {
     z-index: 0;
@@ -1194,6 +1215,14 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   .site-footer {
     position: relative;
     z-index: 4;
+  }
+  /* On phones the footer drops its own colour gradient and lets the fixed
+     #bgCanvas show through. That canvas is the SAME source that drives the
+     Safari UI bar (--safari-ui-bg), so the footer area and the browser chrome
+     now change colour at the exact same scroll moment instead of drifting
+     apart. The radial ::before glow is kept for depth. */
+  .site-footer {
+    background: transparent;
   }
   body { font-size: 16px; }
   .brand__text { display: none; }

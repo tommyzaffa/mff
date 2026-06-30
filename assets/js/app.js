@@ -77,7 +77,7 @@
     switch (kind) {
       case "violet": return { r: 75, g: 46, b: 131, a: 1, mesh: 1 };
       case "cream":  return { r: 243, g: 242, b: 239, a: 1, mesh: 0 };
-      case "hero":   return { r: 243, g: 242, b: 239, a: 0, mesh: 0 };
+      case "hero":   return { r: 75, g: 46, b: 131, a: 0, mesh: 0 };
       case "photo":  return { r: 243, g: 242, b: 239, a: 0, mesh: 0 };
       default:       return { r: 243, g: 242, b: 239, a: 1, mesh: 0 };
     }
@@ -194,23 +194,42 @@
 
     function buildPoints() {
       var pts = [];
+      var vh = window.innerHeight;
       stops.forEach(function (stop, index) {
         /* Read data-bg live so the mobile colour inversion
            (initMobileInnerColors) is reflected without re-initialising. */
         var kind = stop.el.getAttribute("data-bg");
         var c = colorFor(kind);
+        var rect = stop.el.getBoundingClientRect();
+        var top = rect.top + window.scrollY;
         var prevKind = index > 0 ? stops[index - 1].el.getAttribute("data-bg") : null;
-        var y = centerOf(stop.el);
-        if (index > 0 && prevKind === "photo") {
-          /* Leaving a photo hero: first fade the still photo into an opaque
-             cream "page" (the same white as the hero), THEN tint toward this
-             section's own colour by its centre — so the hero never snaps
-             straight to violet. */
-          pts.push({ y: topOf(stop.el), c: CREAM_SOLID });
-        } else if (index > 0 && prevKind === "hero") {
-          pts.push({ y: mobileThemeMq.matches ? topOf(stop.el) : y - window.innerHeight * 0.28, c: c });
+
+        if (index === 0) {
+          /* First section holds its own colour from the very top. */
+          pts.push({ y: top, c: c });
+        } else if (prevKind === "photo") {
+          /* Leaving a photo hero: fade the still photo into an opaque cream
+             "page" first, THEN tint toward this section's own colour — so the
+             hero never snaps straight to violet. */
+          pts.push({ y: top, c: CREAM_SOLID });
+          pts.push({ y: top + vh * 0.42, c: c });
+        } else if (prevKind === "hero") {
+          /* Leaving the video hero: fade straight to this section's colour over
+             the back half of the hero, with no white flash. */
+          pts.push({ y: mobileThemeMq.matches ? top : top - vh * 0.28, c: c });
+        } else {
+          /* Generic boundary between two content sections. The colour change is
+             confined to a short band centred on the boundary, so each section
+             holds its OWN pure colour across its whole body instead of sitting
+             in a permanent half-blend (which read as faint seams). This stays
+             clean as the site grows: the plateaus just get longer, the
+             transitions stay put at the seams. */
+          var prevRect = stops[index - 1].el.getBoundingClientRect();
+          var band = Math.min(vh * 0.42, rect.height * 0.45, prevRect.height * 0.45);
+          var prevColor = colorFor(prevKind);
+          pts.push({ y: top - band, c: prevColor }); /* end of previous plateau */
+          pts.push({ y: top + band, c: c });          /* start of this plateau  */
         }
-        pts.push({ y: y, c: c });
       });
       return pts;
     }
@@ -228,6 +247,9 @@
             var span = pts[i + 1].y - pts[i].y || 1;
             var t = (line - pts[i].y) / span;
             t = t < 0 ? 0 : t > 1 ? 1 : t;
+            /* smoothstep: zero slope at both ends, so the joins where a plateau
+               meets a transition band are imperceptible (no faint crease). */
+            t = t * t * (3 - 2 * t);
             var A = pts[i].c, B = pts[i + 1].c;
             col = {
               r: lerp(A.r, B.r, t), g: lerp(A.g, B.g, t), b: lerp(A.b, B.b, t),
