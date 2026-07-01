@@ -506,14 +506,15 @@
     var v = $("#heroVideo");
     if (!v) return;
     var base = v.getAttribute("data-base") || "";
+    var root = document.documentElement;
     var LOOP_START_DESKTOP = 22.0;
     var LOOP_START_MOBILE = 22.90;
     function device() { return window.matchMedia("(max-width: 700px)").matches ? "mobile" : "desktop"; }
     function loopStartSeconds() { return device() === "mobile" ? LOOP_START_MOBILE : LOOP_START_DESKTOP; }
 
     // Some environments (notably iOS Low Power / energy-saving mode) block
-    // autoplay even for muted, inline video. We keep a gesture fallback armed
-    // so the first user gesture — scroll, tap, etc. — starts the video.
+    // programmatic playback even for muted, inline video. We keep a gesture
+    // fallback armed after the intro so the first interaction starts the video.
     var gestureArmed = false;
     var GESTURE_EVENTS = ["pointerdown", "touchstart", "touchend", "click", "keydown", "scroll", "wheel"];
     function removeGestureListeners() {
@@ -541,13 +542,32 @@
     }
     function tryPlay() {
       v.muted = true; // a muted video is far more likely to be allowed to play
-      // Always keep a gesture fallback armed: if autoplay is blocked, the first
-      // scroll or tap will start the video.
+      // Always keep a gesture fallback armed: if playback is blocked, the first
+      // scroll or tap after the intro will start the video.
       armGestureFallback();
       var p = v.play();
       if (p && p.then) {
         p.then(function () { if (!v.paused) removeGestureListeners(); }).catch(function () {});
       }
+    }
+    var waitingForIntro = false;
+    var pendingPlayAfterIntro = false;
+    function requestPlay() {
+      if (root.classList.contains("intro-armed")) {
+        pendingPlayAfterIntro = true;
+        if (!waitingForIntro) {
+          waitingForIntro = true;
+          window.addEventListener("mff:intro-done", function () {
+            waitingForIntro = false;
+            if (!pendingPlayAfterIntro) return;
+            pendingPlayAfterIntro = false;
+            try { v.currentTime = 0; } catch (e) {}
+            tryPlay();
+          }, { once: true });
+        }
+        return;
+      }
+      tryPlay();
     }
 
     function load(lang) {
@@ -556,7 +576,7 @@
       v.defaultMuted = true; v.muted = true;
       v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
       v.setAttribute("src", src); v.load();
-      tryPlay();
+      requestPlay();
     }
     window.onLangApplied = function (lang) { load(lang); };
     load(document.documentElement.dataset.lang || "en");
@@ -571,7 +591,7 @@
         var LS = loopStartSeconds();
         v.currentTime = isFinite(v.duration) && v.duration > LS ? LS : 0;
       } catch (e) {}
-      tryPlay();
+      requestPlay();
     });
   }
 
@@ -844,6 +864,7 @@
     function clear() {
       root.classList.remove("intro-armed");
       overlay.setAttribute("aria-hidden", "true");
+      window.dispatchEvent(new Event("mff:intro-done"));
     }
 
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
