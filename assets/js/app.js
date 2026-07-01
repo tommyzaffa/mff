@@ -557,7 +557,7 @@
         pendingPlayAfterIntro = true;
         if (!waitingForIntro) {
           waitingForIntro = true;
-          window.addEventListener("mff:intro-done", function () {
+          window.addEventListener("mff:intro-reveal", function () {
             waitingForIntro = false;
             if (!pendingPlayAfterIntro) return;
             pendingPlayAfterIntro = false;
@@ -864,7 +864,6 @@
     function clear() {
       root.classList.remove("intro-armed");
       overlay.setAttribute("aria-hidden", "true");
-      window.dispatchEvent(new Event("mff:intro-done"));
     }
 
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -876,6 +875,7 @@
       overlay.classList.add("is-playing");
       window.setTimeout(function () {
         overlay.classList.add("is-done");
+        window.dispatchEvent(new Event("mff:intro-reveal"));
         var done = false;
         function finish() { if (done) return; done = true; clear(); }
         overlay.addEventListener("transitionend", finish, { once: true });
