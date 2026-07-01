@@ -7,15 +7,34 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="assets/css/style.css?v=10" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
   <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+  <!-- Arm the first-visit intro before paint (once per session, no flash on repeats) -->
+  <script>
+    (function () {
+      try {
+        if (!sessionStorage.getItem("mff_intro_seen")) {
+          document.documentElement.classList.add("intro-armed");
+          sessionStorage.setItem("mff_intro_seen", "1");
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body class="home-page">
+
+  <!-- First-visit opening animation -->
+  <div id="introOverlay" role="presentation" aria-hidden="false">
+    <span class="intro__mark"><img src="assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+    <span class="intro__word">Merge Film Festival</span>
+    <span class="intro__line" aria-hidden="true"></span>
+  </div>
 
   <!-- Crossfade background stack -->
   <div id="bgCanvas"></div>
@@ -54,6 +73,8 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="index.html" data-i18n="nav.home">Home</a>
+          <!-- <a href="program/index.html" data-i18n="nav.program">Program</a> -->
+          <!-- <a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a> -->
           <a href="press/index.html" data-i18n="nav.press">Press</a>
           <a href="contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
@@ -188,11 +209,6 @@
                 </a>
               </li>
               <li class="supporters__item">
-                <a class="supporters__logo" href="https://www.axa.ch/it/clienti-privati.html" target="_blank" rel="noopener noreferrer" aria-label="AXA">
-                  <img src="assets/img/logos/axa.png" alt="AXA" loading="lazy" />
-                </a>
-              </li>
-              <li class="supporters__item">
                 <a class="supporters__logo" href="https://www.ubs.com/ch/en.html" target="_blank" rel="noopener noreferrer" aria-label="UBS">
                   <img src="assets/img/logos/ubs.png" alt="UBS" loading="lazy" />
                 </a>
@@ -255,6 +271,8 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <!-- <li><a href="program/index.html" data-i18n="nav.program">Program</a></li> -->
+                <!-- <li><a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
               </ul>
             </div>
             <div>
@@ -293,8 +311,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/js/translations.js?v=4"></script>
-  <script src="assets/js/app.js?v=7"></script>
+  <script src="assets/js/translations.js?v=5"></script>
+  <script src="assets/js/app.js?v=9"></script>
 
   <!-- Google Maps -->
   <script>

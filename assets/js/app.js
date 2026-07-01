@@ -690,8 +690,178 @@
     });
   }
 
+  /* ---------------- timeline scroll animation ----------------
+     The vertical line "grows" downward as you scroll (a CSS var on
+     each list drives the fill height) and every item lights up the
+     moment the fill front reaches its node. Fully progressive: with
+     no JS or reduced motion the markup just shows normally. */
+  function initTimeline() {
+    var timelines = $all(".timeline");
+    if (!timelines.length) return;
+
+    var reduce = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduce) {
+      timelines.forEach(function (tl) {
+        var list = $(".timeline__list", tl);
+        if (list) list.style.setProperty("--t-fill", "1");
+        $all(".t-item", tl).forEach(function (it) { it.classList.add("is-lit"); });
+      });
+      return;
+    }
+
+    timelines.forEach(function (tl) { tl.classList.add("is-anim"); });
+
+    function clamp(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+    function update() {
+      /* the "reveal line" sits ~72% down the viewport */
+      var anchor = window.scrollY + window.innerHeight * 0.72;
+      timelines.forEach(function (tl) {
+        var list = $(".timeline__list", tl);
+        if (!list) return;
+        var rect = list.getBoundingClientRect();
+        var top = rect.top + window.scrollY;
+        var h = rect.height || 1;
+        list.style.setProperty("--t-fill", clamp((anchor - top) / h).toFixed(4));
+
+        $all(".t-item", list).forEach(function (it) {
+          if (it.classList.contains("is-lit")) return;
+          var node = $(".t-node", it) || it;
+          var nr = node.getBoundingClientRect();
+          var ny = nr.top + window.scrollY + nr.height / 2;
+          if (anchor >= ny) it.classList.add("is-lit");
+        });
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () { update(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update).catch(function () {});
+    update();
+  }
+
+  /* ---------------- custom desktop cursor ----------------
+     Only on real pointer devices (hover + fine). A dot tracks the
+     pointer 1:1 while a ring follows with a soft lag and swells over
+     interactive elements. Both use mix-blend-mode:difference so they
+     stay visible over the cream and violet backgrounds alike. */
+  function initCursor() {
+    if (!(window.matchMedia &&
+          window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+
+    var root = document.documentElement;
+    var ring = document.createElement("div");
+    var dot = document.createElement("div");
+    ring.className = "mff-cursor-ring";
+    dot.className = "mff-cursor-dot";
+    ring.setAttribute("aria-hidden", "true");
+    dot.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ring);
+    document.body.appendChild(dot);
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my, moved = false;
+
+    function place(el, x, y) { el.style.transform = "translate(" + x + "px," + y + "px)"; }
+
+    /* Decide whether the pointer is over a violet background so the cursor
+       can flip to white ring + lime dot; otherwise black ring + violet dot.
+       We read the nearest ancestor that declares a theme (section class,
+       footer, intro overlay or data-bg attribute). */
+    var THEME_SEL = '.is-on-violet, .is-on-cream, .site-footer, #introOverlay, [data-bg]';
+    var onViolet = false;
+    function themeAt(x, y) {
+      var el = document.elementFromPoint(x, y);
+      if (!el || !el.closest) return false;
+      var m = el.closest(THEME_SEL);
+      if (!m) return false;
+      if (m.classList.contains("is-on-violet") ||
+          m.classList.contains("site-footer") ||
+          m.id === "introOverlay") return true;
+      var bg = m.getAttribute("data-bg");
+      return bg === "violet" || bg === "violet-deep";
+    }
+    function updateTheme() {
+      var v = themeAt(mx, my);
+      if (v === onViolet) return;
+      onViolet = v;
+      dot.classList.toggle("on-violet", v);
+      ring.classList.toggle("on-violet", v);
+    }
+
+    window.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      place(dot, mx, my);
+      if (reduce) { place(ring, mx, my); updateTheme(); }
+      if (!moved) { moved = true; root.classList.add("mff-cursor-ready"); updateTheme(); }
+    }, { passive: true });
+
+    window.addEventListener("mousedown", function () { ring.classList.add("is-down"); });
+    window.addEventListener("mouseup", function () { ring.classList.remove("is-down"); });
+    document.addEventListener("mouseleave", function () { root.classList.remove("mff-cursor-ready"); moved = false; });
+    document.addEventListener("mouseenter", function () { if (moved) root.classList.add("mff-cursor-ready"); });
+
+    var HOVER_SEL = 'a, button, input, textarea, select, label, summary, [role="button"], .t-card, .card';
+    document.addEventListener("mouseover", function (e) {
+      if (e.target.closest && e.target.closest(HOVER_SEL)) ring.classList.add("is-hover");
+    });
+    document.addEventListener("mouseout", function (e) {
+      if (!(e.target.closest && e.target.closest(HOVER_SEL))) return;
+      var to = e.relatedTarget;
+      if (!to || !(to.closest && to.closest(HOVER_SEL))) ring.classList.remove("is-hover");
+    });
+
+    if (reduce) { place(ring, mx, my); return; }
+    var tick = 0;
+    (function follow() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      place(ring, rx, ry);
+      /* re-check the background theme a few times a second — this also
+         catches scroll-driven background changes under a still pointer */
+      if ((tick++ & 3) === 0) updateTheme();
+      requestAnimationFrame(follow);
+    })();
+  }
+
+  /* ---------------- home intro / opening animation ----------------
+     Plays once per browsing session (armed inline in index.html via
+     sessionStorage, so there's no flash on repeat visits). The violet
+     curtain holds briefly, then lifts to reveal the hero. */
+  function initIntro() {
+    var overlay = document.getElementById("introOverlay");
+    var root = document.documentElement;
+    if (!overlay || !root.classList.contains("intro-armed")) return;
+
+    function clear() {
+      root.classList.remove("intro-armed");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      clear();
+      return;
+    }
+
+    window.setTimeout(function () {
+      overlay.classList.add("is-done");
+      var done = false;
+      function finish() { if (done) return; done = true; clear(); }
+      overlay.addEventListener("transitionend", finish, { once: true });
+      window.setTimeout(finish, 1200); /* failsafe if transitionend is missed */
+    }, 2100);
+  }
+
   /* ---------------- boot ---------------- */
   function boot() {
+    initIntro();
     applyTranslations(resolveInitialLang());
     initMobileInnerColors();
     initLangControls();
@@ -699,9 +869,11 @@
     initHeader();
     initCarousel();
     initReveals();
+    initTimeline();
     initHeroVideo();
     initNewsletter();
     initBackgroundEngine();
+    initCursor();
     initPageTransitions();
   }
 

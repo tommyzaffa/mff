@@ -184,6 +184,9 @@ body:not(.home-page) #bgCanvas { background-color: rgba(243, 242, 239, 0); }
   overflow-x: clip;
 }
 .section--full { min-height: 100vh; display: flex; align-items: center; }
+/* Adds breathing room between the final content section and the footer,
+   which is pulled up 220px to overlap for the colour blend. */
+.section--pre-footer { padding-bottom: clamp(150px, 20vh, 260px); }
 /* Non-home pages use the SAME scroll-driven canvas crossfade as the home page:
    content sections are transparent so the fixed #bgCanvas supplies the
    cream <-> violet colour. This gives a smooth hero -> section transition
@@ -1184,10 +1187,17 @@ main :where(h1, h2, h3, h4, p, li, a, strong, span),
   word-break: normal;
 }
 
-/* The home presentation title must never break mid-word — whole words wrap to
-   the next line instead of being hyphenated (e.g. "cine-matografico"), on every
-   device. Applies to all languages. */
-.about__title { -webkit-hyphens: none; hyphens: none; }
+/* Display titles must never break mid-word — whole words wrap to the next line
+   instead of being hyphenated (e.g. "festi-val"), on every device and in every
+   language. Applies to ALL headings in the main content and footer (the same
+   selectors as the hyphenation rule above, so it simply overrides hyphens for
+   headings while body text keeps language-aware hyphenation). */
+main :where(h1, h2, h3, h4),
+.site-footer :where(h1, h2, h3, h4),
+.about__title, .footer__headline, .brand__text {
+  -webkit-hyphens: none;
+  hyphens: none;
+}
 
 /* ============================================================
    Responsive
@@ -1290,4 +1300,318 @@ main :where(h1, h2, h3, h4, p, li, a, strong, span),
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   In Competition + Program + Film/Event detail
+   (additive — these classes are used only by the new
+   in_competition/ and program/ pages; existing pages are
+   untouched. Cards are theme-aware via is-on-violet/is-on-cream
+   exactly like .contact-card / .author__card.)
+   ============================================================ */
+
+/* ---- shared index pill row (reuses authors-index look) ---- */
+.comp-index, .program-index { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem; }
+.comp-index__item, .program-index__item {
+  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
+  padding: 0.55em 1.1em; border-radius: 999px;
+  border: 1px solid currentColor; opacity: 0.85;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.comp-index__item:hover, .program-index__item:hover { transform: translateY(-2px); }
+.is-on-violet .comp-index__item:hover, .is-on-violet .program-index__item:hover { background: var(--cream); color: var(--violet); }
+.is-on-cream .comp-index__item:hover, .is-on-cream .program-index__item:hover { background: var(--violet); color: var(--cream); }
+
+/* ---- generic eyebrow used by category / jury / related blocks ---- */
+.block-eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 0.8rem;
+}
+
+/* ---- film poster grid (In Competition categories) ---- */
+.film-grid {
+  display: grid; gap: clamp(16px, 2vw, 24px);
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  margin-top: clamp(20px, 3vw, 36px);
+}
+.film-card {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius); overflow: hidden; border: 1px solid transparent;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+}
+.film-card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(15,15,18,0.20); }
+.film-card__media { aspect-ratio: 2 / 3; background: var(--violet-deep); }
+.film-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.film-card__body { padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 3px; }
+.film-card__title { font-family: var(--font-display); font-weight: 700; font-size: 0.98rem; }
+.film-card__meta { font-size: 0.8rem; opacity: 0.62; }
+
+/* ---- juries grid (In Competition) ---- */
+.juries__grid {
+  display: grid; gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: clamp(24px, 4vw, 40px);
+}
+.jury-card {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius-lg); overflow: hidden; border: 1px solid transparent;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+}
+.jury-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(15,15,18,0.22); }
+.jury-card__media { aspect-ratio: 4 / 3; background: var(--violet-deep); }
+.jury-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.jury-card__body { display: flex; flex-direction: column; gap: 8px; padding: 20px 22px 24px; flex: 1 1 auto; }
+.jury-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; }
+.jury-card__text { font-size: 0.95rem; line-height: 1.5; flex: 1 1 auto; }
+.jury-card__cta { margin-top: 6px; }
+
+/* ---- program timeline ---- */
+.day__copy { max-width: 72ch; margin-bottom: clamp(24px, 4vw, 44px); }
+.day__copy--wide { max-width: 84ch; }
+.day__eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 0.8rem;
+}
+.timeline { position: relative; }
+.timeline__list { position: relative; list-style: none; margin: 0; padding-left: clamp(26px, 4vw, 42px); }
+.timeline__list::before {
+  content: ""; position: absolute; left: 1px; top: 6px; bottom: 6px; width: 2px;
+  background: currentColor; opacity: 0.22; border-radius: 2px;
+}
+.t-item { position: relative; margin-bottom: clamp(16px, 2.5vw, 26px); }
+.t-item:last-child { margin-bottom: 0; }
+.t-time {
+  display: block; font-family: var(--font-display); font-weight: 700;
+  font-size: 0.82rem; letter-spacing: 0.04em; opacity: 0.7; margin-bottom: 8px;
+}
+.t-node {
+  position: absolute; left: calc(-1 * clamp(26px, 4vw, 42px) + 1px); top: 36px;
+  width: 11px; height: 11px; border-radius: 50%; background: var(--violet-bright);
+  transform: translateX(-4px);
+}
+.is-on-cream .t-node { box-shadow: 0 0 0 4px var(--cream); }
+.is-on-violet .t-node { box-shadow: 0 0 0 4px var(--violet); }
+.t-card {
+  display: flex; gap: 14px; align-items: center;
+  padding: 12px 16px; border-radius: var(--radius); border: 1px solid transparent;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+}
+a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,18,0.16); }
+.t-card__img { width: 60px; height: 84px; object-fit: cover; border-radius: 10px; flex: 0 0 auto; background: var(--violet-deep); }
+.t-card__body { display: flex; flex-direction: column; gap: 3px; }
+.t-card__meta { font-family: var(--font-display); font-size: 0.76rem; letter-spacing: 0.04em; opacity: 0.65; }
+.t-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.t-card--end { justify-content: center; text-align: center; font-family: var(--font-display); font-weight: 600; opacity: 0.85; }
+
+/* ---- film / event detail ---- */
+.film__header, .event__header { max-width: 72ch; margin-bottom: clamp(22px, 4vw, 40px); }
+.film__kicker, .event__kicker {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 1rem;
+}
+.film__title, .event__title {
+  font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800; line-height: 1.08; margin: 0 0 1.4rem;
+}
+.film__meta, .event__meta {
+  display: flex; flex-wrap: wrap; gap: 14px 32px; list-style: none; padding: 0; margin: 0;
+}
+.film__meta li, .event__meta li { display: flex; flex-direction: column; gap: 2px; }
+.film__meta strong, .event__meta strong {
+  font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.6;
+}
+.film__meta span, .event__meta span { font-size: 1rem; }
+.film__grid, .event__grid {
+  display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(24px, 4vw, 56px);
+  align-items: start; margin-top: clamp(8px, 2vw, 20px);
+}
+.film__poster, .event__media {
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(15,15,18,0.28); background: var(--violet-deep);
+}
+.film__poster { aspect-ratio: 2 / 3; }
+.event__media { aspect-ratio: 3 / 2; }
+.film__poster img, .event__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.film__block, .event__block { margin-bottom: clamp(20px, 3vw, 32px); }
+.film__h, .event__h { font-size: 1.3rem; font-weight: 700; margin: 0 0 0.6rem; }
+.film__p, .event__p { font-size: 1.05rem; line-height: 1.6; }
+.is-on-violet .film__p, .is-on-violet .event__p { color: var(--paper-soft); }
+.is-on-cream .film__p, .is-on-cream .event__p { color: var(--ink-soft); }
+.film__list, .event__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.film__list li, .event__list li { font-size: 1rem; }
+.film__list strong, .event__list strong { font-family: var(--font-display); }
+.film__actions, .event__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: clamp(16px, 2vw, 24px); }
+.pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem;
+  padding: 0.5em 1em; border-radius: 999px; border: 1px solid currentColor; opacity: 0.85;
+  margin: 0 8px 8px 0;
+}
+
+/* ---- related cards (film / event detail) ---- */
+.related__wrap { }
+.related__header { max-width: 60ch; margin-bottom: clamp(24px, 4vw, 40px); }
+.related__eyebrow {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 0.8rem;
+}
+.related__grid {
+  display: grid; gap: clamp(18px, 2.5vw, 28px);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.related-card {
+  display: flex; flex-direction: column;
+  border-radius: var(--radius); overflow: hidden; border: 1px solid transparent;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+}
+.related-card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(15,15,18,0.20); }
+.related-card__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.related-card__body { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 22px; }
+.related-card__meta {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.6;
+}
+.related-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
+.related-card__text { font-size: 0.95rem; line-height: 1.5; }
+
+/* ---- theme-aware card surfaces (shared) ---- */
+.is-on-violet :is(.film-card, .jury-card, .related-card, .t-card) {
+  background: color-mix(in srgb, var(--violet) 80%, black 6%);
+  border-color: var(--line-on-violet); color: var(--paper);
+}
+.is-on-cream :is(.film-card, .jury-card, .related-card, .t-card) {
+  background: color-mix(in srgb, var(--cream) 92%, white);
+  border-color: var(--line-on-cream); color: var(--ink);
+}
+.is-on-violet :is(.jury-card__text, .related-card__text) { color: var(--paper-soft); }
+.is-on-cream :is(.jury-card__text, .related-card__text) { color: var(--ink-soft); }
+
+/* ---- responsive ---- */
+@media (max-width: 760px) {
+  .film__grid, .event__grid { grid-template-columns: 1fr; }
+  .film__poster { max-width: 340px; }
+  .film-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}
+
+/* ============================================================
+   Timeline scroll animation (Program)
+   The faint track (::before) stays put; a bright fill (::after)
+   grows downward as you scroll, and each item lights up the moment
+   the fill front reaches its node. Driven by app.js (initTimeline).
+   With no JS / reduced motion everything is simply shown.
+   ============================================================ */
+.timeline__list { --t-fill: 0; }
+.timeline__list::after {
+  content: ""; position: absolute; left: 1px; top: 6px; width: 2px;
+  height: calc((100% - 12px) * var(--t-fill));
+  background: linear-gradient(180deg,
+              color-mix(in srgb, var(--violet-bright) 30%, transparent),
+              var(--violet-bright));
+  border-radius: 2px; pointer-events: none;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--violet-bright) 55%, transparent);
+  will-change: height;
+}
+.is-on-violet .timeline__list::after {
+  background: linear-gradient(180deg,
+              color-mix(in srgb, var(--cream) 25%, transparent), var(--cream));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--cream) 45%, transparent);
+}
+/* animated state (added by JS): items enter as the line reaches them */
+.timeline.is-anim .t-item {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+.timeline.is-anim .t-item.is-lit { opacity: 1; transform: none; }
+.timeline.is-anim .t-node {
+  transform: translateX(-4px) scale(0.1);
+  transition: transform 0.45s var(--ease), box-shadow 0.3s;
+}
+.timeline.is-anim .t-item.is-lit .t-node { transform: translateX(-4px) scale(1); }
+
+/* ============================================================
+   Custom desktop cursor (pointer:fine only; app.js initCursor)
+   Two white elements using mix-blend-mode:difference so they stay
+   legible over both the cream and violet backgrounds. A small dot
+   tracks the pointer 1:1; a ring follows with a soft lag and grows
+   over interactive elements.
+   ============================================================ */
+.mff-cursor-dot, .mff-cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none; border-radius: 50%;
+  opacity: 0; transition: opacity 0.3s var(--ease);
+  will-change: transform;
+}
+html.mff-cursor-ready .mff-cursor-dot,
+html.mff-cursor-ready .mff-cursor-ring { opacity: 1; }
+/* Default (light / cream / white backgrounds): black ring, violet dot */
+.mff-cursor-dot {
+  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+  background: var(--violet);
+  transition: background 0.25s var(--ease), opacity 0.3s var(--ease);
+}
+.mff-cursor-ring {
+  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border: 1.5px solid #0F0F12;
+  transition: width 0.25s var(--ease), height 0.25s var(--ease),
+              margin 0.25s var(--ease), background 0.25s var(--ease),
+              border-color 0.25s var(--ease), opacity 0.3s var(--ease);
+}
+.mff-cursor-ring.is-hover {
+  width: 54px; height: 54px; margin: -27px 0 0 -27px;
+  background: rgba(15, 15, 18, 0.10);
+}
+.mff-cursor-ring.is-down { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
+/* Over violet backgrounds: white ring, complementary (lime) dot */
+.mff-cursor-dot.on-violet { background: #B4D17C; }
+.mff-cursor-ring.on-violet { border-color: #fff; }
+.mff-cursor-ring.on-violet.is-hover { background: rgba(255, 255, 255, 0.14); }
+/* hide the native arrow once the custom cursor is live */
+html.mff-cursor-ready, html.mff-cursor-ready * { cursor: none !important; }
+html.mff-cursor-ready :is(input, textarea, [contenteditable="true"]) { cursor: text !important; }
+
+/* ============================================================
+   Home intro / opening animation (first visit per session)
+   Full-screen violet curtain with the brand mark, wordmark and a
+   thin loading line; it plays once, then lifts to reveal the hero.
+   Gated by <html class="intro-armed"> (set inline in index.html) so
+   there is no flash on repeat visits. app.js initIntro() runs it.
+   ============================================================ */
+#introOverlay { display: none; }
+html.intro-armed { overflow: hidden; }
+html.intro-armed #introOverlay {
+  display: flex; position: fixed; inset: 0; z-index: 4000;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px; background: var(--violet-deep); color: var(--paper);
+  overflow: hidden;
+}
+#introOverlay .intro__mark {
+  width: 72px; height: 72px; border-radius: 20px; overflow: hidden;
+  opacity: 0; transform: translateY(14px) scale(0.9);
+  animation: introMark 0.9s var(--ease) 0.15s forwards;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+#introOverlay .intro__mark img { width: 100%; height: 100%; object-fit: cover; }
+#introOverlay .intro__word {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.4rem, 4vw, 2.4rem); letter-spacing: 0.02em;
+  opacity: 0; transform: translateY(12px);
+  animation: introWord 0.9s var(--ease) 0.4s forwards;
+}
+#introOverlay .intro__line {
+  width: min(220px, 50vw); height: 2px; border-radius: 2px;
+  background: color-mix(in srgb, var(--paper) 24%, transparent);
+  overflow: hidden; position: relative;
+}
+#introOverlay .intro__line::after {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 0;
+  background: var(--paper); border-radius: 2px;
+  animation: introLine 1.25s var(--ease) 0.5s forwards;
+}
+@keyframes introMark { to { opacity: 1; transform: none; } }
+@keyframes introWord { to { opacity: 1; transform: none; } }
+@keyframes introLine { to { width: 100%; } }
+#introOverlay.is-done { transform: translateY(-100%); transition: transform 0.9s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.intro-armed { overflow: auto; }
+  html.intro-armed #introOverlay { display: none; }
 }

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>The Lego Movie — Merge Film Festival</title>
+  <meta name="description" content="The Lego Movie — film in competition — Merge Film Festival." />
+
+  <link rel="stylesheet" href="../../assets/css/style.css?v=10" />
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+</head>
+
+<body>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
+    </a>
+    <div class="nav__actions">
+      <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
+        <span class="nav__cta-long" data-i18n="nav.submitLong">Submit your film</span>
+        <span class="nav__cta-short" data-i18n="nav.submitShort">Submit</span>
+      </a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
+      </div>
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <div class="nav__panel">
+          <a href="../../index.html" data-i18n="nav.home">Home</a>
+          <!-- <a href="../../program/index.html" data-i18n="nav.program">Program</a> -->
+          <!-- <a href="../index.html" data-i18n="nav.inCompetition">In Competition</a> -->
+          <a href="../../press/index.html" data-i18n="nav.press">Press</a>
+          <a href="../../contact/index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
+          </div>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Film -->
+    <section class="section is-on-cream film" data-bg="photo" id="top" style="padding-top: clamp(120px, 18vh, 200px);">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container">
+        <div class="film__header reveal">
+          <p class="film__kicker" data-i18n="film.kicker">Film in Competition</p>
+          <h1 class="film__title">The Lego Movie</h1>
+          <ul class="film__meta" aria-label="Film meta">
+            <li><strong data-i18n="film.mYear">Year</strong> <span>2014</span></li>
+            <li><strong data-i18n="film.mDirectors">Directors</strong> <span>Phil Lord, Christopher Miller</span></li>
+            <li><strong data-i18n="film.mCountry">Country</strong> <span>USA</span></li>
+          </ul>
+        </div>
+
+        <div class="film__grid">
+          <figure class="film__poster reveal" data-delay="1">
+            <img src="../../assets/img/films/posters/film-01.jpg" alt="Poster: The Lego Movie" loading="eager" />
+          </figure>
+
+          <div class="film__content reveal" data-delay="2">
+            <section class="film__block" aria-label="Plot">
+              <h2 class="film__h" data-i18n="film.hPlot">Plot</h2>
+              <p class="film__p" data-i18n="film.plot">An ordinary LEGO minifigure is mistakenly identified as the key to saving the world and is swept into an epic adventure to stop a tyrant from gluing the universe together.</p>
+            </section>
+
+            <section class="film__block" aria-label="Crew">
+              <h2 class="film__h" data-i18n="film.hCrew">Crew</h2>
+              <ul class="film__list">
+                <li><strong data-i18n="film.cCast">Key Cast</strong> — Chris Pratt, Will Ferrell, Elizabeth Banks</li>
+                <li><strong data-i18n="film.cCinema">Cinematography</strong> — Animation / Virtual Camera</li>
+                <li><strong data-i18n="film.cEditor">Editor</strong> — David Burrows, Chris McKay</li>
+                <li><strong data-i18n="film.cMusic">Music</strong> — Mark Mothersbaugh</li>
+              </ul>
+            </section>
+
+            <section class="film__block" aria-label="Nominations">
+              <h2 class="film__h" data-i18n="film.hNominations">Nominations</h2>
+              <div role="list" aria-label="Awards nominated">
+                <span class="pill" role="listitem" data-i18n="film.nom1">Best Visual Craft</span>
+              </div>
+            </section>
+
+            <div class="film__actions">
+              <a class="btn btn--ghost" href="../index.html" data-i18n="film.navComp">← Go to In Competition</a>
+              <a class="btn" href="https://www.jfcinema.ch" target="_blank" rel="noopener noreferrer" data-i18n="comp.jury3Btn">Buy your ticket</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related films -->
+    <section class="section is-on-violet related related--films section--pre-footer" data-bg="violet">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container related__wrap">
+        <header class="related__header reveal">
+          <p class="related__eyebrow" data-i18n="film.relEyebrow">More from this category</p>
+          <h2 class="section__title" data-i18n="film.relTitle">Related films</h2>
+          <p class="section__desc" data-i18n="film.relDesc">Other films suggested from the same competition category.</p>
+        </header>
+        <div class="related__grid">
+          <a class="related-card reveal" data-delay="1" href="../index.html#full">
+            <img class="related-card__img" src="../../assets/img/films/posters/film-02.jpg" alt="Poster: No Other Choice" loading="lazy" />
+            <div class="related-card__body">
+              <span class="related-card__meta" data-i18n="film.relMeta">Full • Competition</span>
+              <span class="related-card__title">No Other Choice</span>
+              <span class="related-card__text" data-i18n="film.relText1">A tense and visually precise drama driven by moral conflict.</span>
+            </div>
+          </a>
+          <a class="related-card reveal" data-delay="2" href="../index.html#hybrid">
+            <img class="related-card__img" src="../../assets/img/films/posters/film-05.jpg" alt="Poster: Pulp Fiction" loading="lazy" />
+            <div class="related-card__body">
+              <span class="related-card__meta" data-i18n="film.relMeta">Full • Competition</span>
+              <span class="related-card__title">Pulp Fiction</span>
+              <span class="related-card__text" data-i18n="film.relText2">Fragmented storytelling, sharp dialogue and iconic rhythm.</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer" data-bg="violet">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
+          <div class="footer__cta">
+            <a class="btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer" data-i18n="nav.submitLong">Submit your film</a>
+          </div>
+        </div>
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links">
+                <li><a href="../../index.html" data-i18n="nav.home">Home</a></li>
+                <!-- <li><a href="../../program/index.html" data-i18n="nav.program">Program</a></li> -->
+                <!-- <li><a href="../index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
+              <ul class="footer__links">
+                <li><a href="../../press/index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../../contact/index.html" data-i18n="nav.contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+              <p class="footer__tiny">
+                <a href="../../legal/terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="../../legal/privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+              </p>
+            </div>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/translations.js?v=5"></script>
+  <script src="../../assets/js/app.js?v=9"></script>
+</body>
+</html>

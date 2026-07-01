@@ -4,7 +4,7 @@
   <!-- Home -->
   <url>
     <loc>https://mergefestival.ch/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,7 +12,7 @@
   <!-- Press -->
   <url>
     <loc>https://mergefestival.ch/press/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -20,7 +20,7 @@
   <!-- Contact -->
   <url>
     <loc>https://mergefestival.ch/contact/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -28,7 +28,7 @@
   <!-- About / Authors -->
   <url>
     <loc>https://mergefestival.ch/contact/authors/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -36,7 +36,7 @@
   <!-- Privacy -->
   <url>
     <loc>https://mergefestival.ch/legal/privacy.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -44,7 +44,7 @@
   <!-- Terms -->
   <url>
     <loc>https://mergefestival.ch/legal/terms.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

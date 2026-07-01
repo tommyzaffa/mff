@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Program — Merge Film Festival</title>
+  <meta name="description" content="Program — screenings, encounters and festival activities — Merge Film Festival." />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=10" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+</head>
+
+<body>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
+    </a>
+    <div class="nav__actions">
+      <a class="nav__cta-btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer">
+        <span class="nav__cta-long" data-i18n="nav.submitLong">Submit your film</span>
+        <span class="nav__cta-short" data-i18n="nav.submitShort">Submit</span>
+      </a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
+      </div>
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <div class="nav__panel">
+          <a href="../index.html" data-i18n="nav.home">Home</a>
+          <!-- <a href="index.html" data-i18n="nav.program">Program</a> -->
+          <!-- <a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a> -->
+          <a href="../press/index.html" data-i18n="nav.press">Press</a>
+          <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
+          </div>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Intro -->
+    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container reveal">
+        <p class="page-hero__kicker" data-i18n="program.kicker">4 Days • Screenings • Events</p>
+        <h1 class="page-hero__title" data-i18n="program.title">Program</h1>
+        <p class="page-hero__subtitle" data-i18n="program.subtitle">Screenings, encounters and festival activities.</p>
+        <nav class="program-index" aria-label="Program days">
+          <a class="program-index__item" href="#day-1" data-i18n="program.idxDay1">Day 1</a>
+          <a class="program-index__item" href="#day-2" data-i18n="program.idxDay2">Day 2</a>
+          <a class="program-index__item" href="#day-3" data-i18n="program.idxDay3">Day 3</a>
+          <a class="program-index__item" href="#day-4" data-i18n="program.idxDay4">Day 4</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- DAY 1 -->
+    <section class="section is-on-violet" data-bg="violet" id="day-1">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+        <header class="day__copy day__copy--wide reveal">
+          <p class="day__eyebrow" data-i18n="program.idxDay1">Day 1</p>
+          <h2 class="section__title" data-i18n="program.day1Title">Thursday 1 Oct • Festival Opening</h2>
+          <p class="section__desc" data-i18n="program.day1Desc">Opening ceremony and first screening.</p>
+        </header>
+        <div class="timeline reveal" data-delay="1" aria-label="Day 1 schedule">
+          <ol class="timeline__list">
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-01T20:30">20:30</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card" href="event/masterclass-01.html">
+                <img class="t-card__img" src="../assets/img/events/future.jpg" alt="Opening ceremony" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">20:30 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tOpening">Opening Ceremony</span>
+                </span>
+              </a>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-01T21:00">21:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card" href="../in_competition/full/film-01.html">
+                <img class="t-card__img" src="../assets/img/films/posters/film-01.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">21:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tRetro">Retrospective</span>
+                </span>
+              </a>
+            </li>
+            <li class="t-item">
+              <span class="t-time" aria-hidden="true"></span>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card t-card--end" href="#day-2">
+                <span class="t-card__body">
+                  <span class="t-card__meta" data-i18n="program.upNext">Up next</span>
+                  <span class="t-card__title" data-i18n="program.toDay2">Continue to Day 2 →</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 2 -->
+    <section class="section is-on-cream" data-bg="cream" id="day-2">
+      <div class="container">
+        <header class="day__copy day__copy--wide reveal">
+          <p class="day__eyebrow" data-i18n="program.idxDay2">Day 2</p>
+          <h2 class="section__title" data-i18n="program.day2Title">Friday 2 Oct</h2>
+          <p class="section__desc" data-i18n="program.day2Desc">The competition begins with screenings and encounters.</p>
+        </header>
+        <div class="timeline reveal" data-delay="1" aria-label="Day 2 schedule">
+          <ol class="timeline__list">
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T10:00">10:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-03.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">10:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tRetro">Retrospective</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T14:00">14:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-04.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">14:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompExp">Competition: Experimental</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T16:00">16:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-04.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">16:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompFull">Competition: Full</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T18:00">18:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Food and beverages" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">18:00 • <span data-i18n="program.venuePiazza">Piazza</span></span>
+                  <span class="t-card__title" data-i18n="program.tFood">Food &amp; Beverages</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T18:30">18:30</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Conference" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">18:30 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tConf">Conference</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-02T20:30">20:30</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-05.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">20:30 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompHybrid">Competition: Hybrid</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <span class="t-time" aria-hidden="true"></span>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card t-card--end" href="#day-3">
+                <span class="t-card__body">
+                  <span class="t-card__meta" data-i18n="program.upNext">Up next</span>
+                  <span class="t-card__title" data-i18n="program.toDay3">Continue to Day 3 →</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 3 -->
+    <section class="section is-on-violet" data-bg="violet" id="day-3">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container">
+        <header class="day__copy day__copy--wide reveal">
+          <p class="day__eyebrow" data-i18n="program.idxDay3">Day 3</p>
+          <h2 class="section__title" data-i18n="program.day3Title">Saturday 3 Oct</h2>
+          <p class="section__desc" data-i18n="program.day3Desc">A packed day of masterclasses, encounters and screenings.</p>
+        </header>
+        <div class="timeline reveal" data-delay="1" aria-label="Day 3 schedule">
+          <ol class="timeline__list">
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T10:00">10:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-03.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">10:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tRetro">Retrospective</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T10:00">10:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Public lecture" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">10:00 • <span data-i18n="program.venueAula">Aula Magna</span></span>
+                  <span class="t-card__title" data-i18n="program.tLecture">Public Lecture</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T11:00">11:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Food and beverages" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">11:00 • <span data-i18n="program.venuePiazza">Piazza</span></span>
+                  <span class="t-card__title" data-i18n="program.tFood">Food &amp; Beverages</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T14:00">14:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-04.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">14:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompExp">Competition: Experimental</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T14:00">14:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Public roundtable" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">14:00 • <span data-i18n="program.venueAula">Aula Magna</span></span>
+                  <span class="t-card__title" data-i18n="program.tRoundtable">Public Roundtable</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T16:00">16:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-04.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">16:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompFull">Competition: Full</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T16:00">16:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-04.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">16:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompHybrid">Competition: Hybrid</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T18:30">18:30</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Conference" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">18:30 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tConf">Conference</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T20:30">20:30</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-05.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">20:30 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tCompFull">Competition: Full</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-03T22:00">22:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/ai_tools.jpg.webp" alt="Merge Official Party" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">22:00 • <span data-i18n="program.venuePiazza">Piazza</span></span>
+                  <span class="t-card__title" data-i18n="program.tParty">Merge Official Party</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <span class="t-time" aria-hidden="true"></span>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card t-card--end" href="#day-4">
+                <span class="t-card__body">
+                  <span class="t-card__meta" data-i18n="program.upNext">Up next</span>
+                  <span class="t-card__title" data-i18n="program.toDay4">Continue to Day 4 →</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 4 -->
+    <section class="section is-on-cream section--pre-footer" data-bg="cream" id="day-4">
+      <div class="container">
+        <header class="day__copy day__copy--wide reveal">
+          <p class="day__eyebrow" data-i18n="program.idxDay4">Day 4</p>
+          <h2 class="section__title" data-i18n="program.day4Title">Sunday 4 Oct • Festival Closing</h2>
+          <p class="section__desc" data-i18n="program.day4Desc">Awards ceremony and closing screening.</p>
+        </header>
+        <div class="timeline reveal" data-delay="1" aria-label="Day 4 schedule">
+          <ol class="timeline__list">
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-04T10:00">10:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/films/posters/film-03.jpg" alt="Film poster" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">10:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tRetro">Retrospective</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-04T14:00">14:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/audience.png" alt="Awards ceremony" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">14:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tAwards">Awards Ceremony</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <time class="t-time" datetime="2026-10-04T16:00">16:00</time>
+              <span class="t-node" aria-hidden="true"></span>
+              <div class="t-card">
+                <img class="t-card__img" src="../assets/img/events/behind_scenes.jpg.webp" alt="Screening of winners" loading="lazy" />
+                <span class="t-card__body">
+                  <span class="t-card__meta">16:00 • <span data-i18n="program.venueLux">Cinema Lux</span></span>
+                  <span class="t-card__title" data-i18n="program.tWinners">Screening of Winners</span>
+                </span>
+              </div>
+            </li>
+            <li class="t-item">
+              <span class="t-time" aria-hidden="true"></span>
+              <span class="t-node" aria-hidden="true"></span>
+              <a class="t-card t-card--end" href="#footer">
+                <span class="t-card__body">
+                  <span class="t-card__meta" data-i18n="program.thatsWrap">That's a wrap</span>
+                  <span class="t-card__title" data-i18n="program.see2027">See you in 2027 →</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer" data-bg="violet">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
+          <div class="footer__cta">
+            <a class="btn" href="https://filmfreeway.com/MergeFilmFestival" target="_blank" rel="noopener noreferrer" data-i18n="nav.submitLong">Submit your film</a>
+          </div>
+        </div>
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links">
+                <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
+                <!-- <li><a href="index.html" data-i18n="nav.program">Program</a></li> -->
+                <!-- <li><a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
+              <ul class="footer__links">
+                <li><a href="../press/index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../contact/index.html" data-i18n="nav.contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+              <p class="footer__tiny">
+                <a href="../legal/terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="../legal/privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+              </p>
+            </div>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/translations.js?v=5"></script>
+  <script src="../assets/js/app.js?v=9"></script>
+</body>
+</html>
