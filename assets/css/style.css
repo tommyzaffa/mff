@@ -977,6 +977,8 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .authors-index {
   display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem;
 }
+.authors-index--compact { gap: 10px; margin-top: 1.35rem; }
+.authors-index--compact .authors-index__item { font-size: 0.86rem; padding: 0.44em 0.95em; }
 .authors-index__item {
   font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
   padding: 0.55em 1.1em; border-radius: 999px;
@@ -987,10 +989,17 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .is-on-violet .authors-index__item:hover { background: var(--cream); color: var(--violet); }
 .is-on-cream .authors-index__item:hover { background: var(--violet); color: var(--cream); }
 
+.author-group__header { max-width: 72ch; margin-bottom: clamp(34px, 5vw, 64px); }
+.author-group__list { display: grid; gap: clamp(48px, 7vw, 96px); }
 .author__copy { max-width: 60ch; margin-bottom: clamp(24px, 4vw, 40px); }
 .author__eyebrow {
   font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.2em;
   text-transform: uppercase; opacity: 0.65; margin: 0 0 0.8rem;
+}
+.author__body .author__eyebrow { font-size: 0.74rem; margin-bottom: 0.6rem; }
+.author__name {
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  margin-bottom: 0.45rem;
 }
 .author__card {
   display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(24px, 4vw, 56px);
