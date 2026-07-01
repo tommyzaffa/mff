@@ -1573,7 +1573,8 @@ html.mff-cursor-ready :is(input, textarea, [contenteditable="true"]) { cursor: t
    Full-screen violet curtain with the brand mark, wordmark and a
    thin loading line; it plays once, then lifts to reveal the hero.
    Gated by <html class="intro-armed"> (set inline in index.html) so
-   there is no flash on repeat visits. app.js initIntro() runs it.
+   there is no flash on repeat visits. app.js initIntro() starts the
+   animation only after the page load event.
    ============================================================ */
 #introOverlay { display: none; }
 html.intro-armed { overflow: hidden; }
@@ -1586,7 +1587,6 @@ html.intro-armed #introOverlay {
 #introOverlay .intro__mark {
   width: 72px; height: 72px; border-radius: 20px; overflow: hidden;
   opacity: 0; transform: translateY(14px) scale(0.9);
-  animation: introMark 0.9s var(--ease) 0.15s forwards;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 #introOverlay .intro__mark img { width: 100%; height: 100%; object-fit: cover; }
@@ -1594,7 +1594,6 @@ html.intro-armed #introOverlay {
   font-family: var(--font-display); font-weight: 700;
   font-size: clamp(1.4rem, 4vw, 2.4rem); letter-spacing: 0.02em;
   opacity: 0; transform: translateY(12px);
-  animation: introWord 0.9s var(--ease) 0.4s forwards;
 }
 #introOverlay .intro__line {
   width: min(220px, 50vw); height: 2px; border-radius: 2px;
@@ -1604,6 +1603,14 @@ html.intro-armed #introOverlay {
 #introOverlay .intro__line::after {
   content: ""; position: absolute; inset: 0 auto 0 0; width: 0;
   background: var(--paper); border-radius: 2px;
+}
+#introOverlay.is-playing .intro__mark {
+  animation: introMark 0.9s var(--ease) 0.15s forwards;
+}
+#introOverlay.is-playing .intro__word {
+  animation: introWord 0.9s var(--ease) 0.4s forwards;
+}
+#introOverlay.is-playing .intro__line::after {
   animation: introLine 1.25s var(--ease) 0.5s forwards;
 }
 @keyframes introMark { to { opacity: 1; transform: none; } }

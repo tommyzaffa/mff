@@ -834,7 +834,8 @@
   /* ---------------- home intro / opening animation ----------------
      Plays once per browsing session (armed inline in index.html via
      sessionStorage, so there's no flash on repeat visits). The violet
-     curtain holds briefly, then lifts to reveal the hero. */
+     curtain is visible immediately, but the animation itself starts only
+     after window.load, when the new page has finished loading. */
   function initIntro() {
     var overlay = document.getElementById("introOverlay");
     var root = document.documentElement;
@@ -850,13 +851,28 @@
       return;
     }
 
-    window.setTimeout(function () {
-      overlay.classList.add("is-done");
-      var done = false;
-      function finish() { if (done) return; done = true; clear(); }
-      overlay.addEventListener("transitionend", finish, { once: true });
-      window.setTimeout(finish, 1200); /* failsafe if transitionend is missed */
-    }, 2100);
+    function play() {
+      overlay.classList.add("is-playing");
+      window.setTimeout(function () {
+        overlay.classList.add("is-done");
+        var done = false;
+        function finish() { if (done) return; done = true; clear(); }
+        overlay.addEventListener("transitionend", finish, { once: true });
+        window.setTimeout(finish, 1200); /* failsafe if transitionend is missed */
+      }, 2100);
+    }
+
+    function startAfterPaint() {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(play);
+      });
+    }
+
+    if (document.readyState === "complete") {
+      startAfterPaint();
+    } else {
+      window.addEventListener("load", startAfterPaint, { once: true });
+    }
   }
 
   /* ---------------- boot ---------------- */
