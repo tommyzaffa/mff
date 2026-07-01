@@ -1002,6 +1002,7 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   aspect-ratio: 4 / 5; background: var(--violet-deep);
 }
 .author__media img { width: 100%; height: 100%; object-fit: cover; }
+.author__media--manila img { object-position: center 42%; }
 .author__body p { font-size: 1.05rem; }
 .is-on-violet .author__body p { color: var(--paper-soft); }
 .is-on-cream .author__body p { color: var(--ink-soft); }
