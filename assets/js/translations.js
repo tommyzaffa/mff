@@ -32,6 +32,9 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Festival updates and news",
+      news0Title: "The four film selectors have been announced",
+      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali and Fabiana Marino will curate the film selection of the Merge Film Festival.",
+      news0Link: "Meet the selectors",
       news1Title: "Submissions are now open",
       news1Text: "Submit your AI short film to the Merge Film Festival. Submissions are open on FilmFreeway.",
       news1Link: "Submit your film",
@@ -329,6 +332,9 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Aggiornamenti e novità del festival",
+      news0Title: "Annunciati i quattro selezionatori",
+      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali e Fabiana Marino cureranno la selezione dei film del Merge Film Festival.",
+      news0Link: "Scopri i selezionatori",
       news1Title: "Le candidature sono aperte",
       news1Text: "Invia il tuo cortometraggio AI al Merge Film Festival. Le candidature sono aperte su FilmFreeway.",
       news1Link: "Invia il tuo film",
@@ -626,6 +632,9 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Mises à jour et actualités du festival",
+      news0Title: "Les quatre sélectionneurs ont été annoncés",
+      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali et Fabiana Marino assureront la sélection des films du Merge Film Festival.",
+      news0Link: "Découvrir l’équipe",
       news1Title: "Les soumissions sont ouvertes",
       news1Text: "Soumettez votre court-métrage IA au Merge Film Festival. Les soumissions sont ouvertes sur FilmFreeway.",
       news1Link: "Soumettez votre film",
@@ -923,6 +932,9 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Festivalaktuelles und Neuigkeiten",
+      news0Title: "Die vier Filmkuratorinnen und Filmkuratoren wurden bekannt gegeben",
+      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali und Fabiana Marino kuratieren die Filmauswahl des Merge Film Festivals.",
+      news0Link: "Das Auswahlteam entdecken",
       news1Title: "Einreichungen sind jetzt geöffnet",
       news1Text: "Reichen Sie Ihren KI-Kurzfilm beim Merge Film Festival ein. Einreichungen sind über FilmFreeway möglich.",
       news1Link: "Reichen Sie Ihren Film ein",
