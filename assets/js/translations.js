@@ -30,6 +30,9 @@ window.MFF_I18N = {
       aboutP4: "Merge was born out of the need to give space to a new form of cinematic language, while also serving as a space for reflection on the cultural phenomenon of artificial intelligence. A transformation that is challenging our relationship with reality.",
       aboutCta: "About us",
 
+      mapConsentText: "The map is provided by Google Maps. If you load it, data such as your IP address will be transmitted to Google (USA). See our Privacy Policy for details.",
+      mapConsentBtn: "Load map",
+
       newsTitle: "News",
       newsDesc: "Festival updates and news",
       news0Title: "The four film selectors have been announced",
@@ -329,6 +332,9 @@ window.MFF_I18N = {
       aboutP3: "Un’occasione per interrogarci sul ruolo dell’intelligenza artificiale nei processi creativi e nella trasformazione più ampia del nostro rapporto con le immagini.",
       aboutP4: "Il Merge nasce dalla necessità di dare spazio a una nuova forma di linguaggio cinematografico, allo stesso tempo funge da spazio di riflessione sul fenomeno culturale dell’intelligenza artificiale. Una trasformazione che sta mettendo in discussione il nostro rapporto con la realtà.",
       aboutCta: "Chi siamo",
+
+      mapConsentText: "La mappa è fornita da Google Maps. Caricandola, dati come il tuo indirizzo IP verranno trasmessi a Google (USA). Per i dettagli consulta la nostra Privacy Policy.",
+      mapConsentBtn: "Carica mappa",
 
       newsTitle: "News",
       newsDesc: "Aggiornamenti e novità del festival",
@@ -630,6 +636,9 @@ window.MFF_I18N = {
       aboutP4: "Merge est né de la nécessité de donner de l’espace à une nouvelle forme de langage cinématographique, tout en servant d’espace de réflexion sur le phénomène culturel de l’intelligence artificielle. Une transformation qui remet en question notre rapport à la réalité.",
       aboutCta: "Qui sommes-nous",
 
+      mapConsentText: "La carte est fournie par Google Maps. En la chargeant, des données telles que votre adresse IP seront transmises à Google (USA). Consultez notre politique de confidentialité pour plus de détails.",
+      mapConsentBtn: "Charger la carte",
+
       newsTitle: "News",
       newsDesc: "Mises à jour et actualités du festival",
       news0Title: "Les quatre sélectionneurs ont été annoncés",
@@ -929,6 +938,9 @@ window.MFF_I18N = {
       aboutP3: "Eine Gelegenheit, uns mit der Rolle der künstlichen Intelligenz in kreativen Prozessen und in der umfassenderen Transformation unseres Verhältnisses zu Bildern auseinanderzusetzen.",
       aboutP4: "Merge entstand aus dem Bedürfnis, einer neuen Form der filmischen Sprache Raum zu geben, und dient zugleich als Raum für die Reflexion über das kulturelle Phänomen der künstlichen Intelligenz. Eine Transformation, die unser Verhältnis zur Wirklichkeit in Frage stellt.",
       aboutCta: "Über uns",
+
+      mapConsentText: "Die Karte wird von Google Maps bereitgestellt. Beim Laden werden Daten wie deine IP-Adresse an Google (USA) übermittelt. Details findest du in unserer Datenschutzerklärung.",
+      mapConsentBtn: "Karte laden",
 
       newsTitle: "News",
       newsDesc: "Festivalaktuelles und Neuigkeiten",

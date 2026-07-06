@@ -186,7 +186,12 @@
         </header>
 
         <div class="map-card reveal" data-delay="1">
-          <div id="festival-map" class="festival-map" aria-label="Festival locations map"></div>
+          <div id="festival-map" class="festival-map" aria-label="Festival locations map" style="position:relative;">
+            <div id="festival-map-consent" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;background:rgba(10,10,14,.88);z-index:2;">
+              <p style="max-width:440px;margin:0;font-size:.9rem;line-height:1.5;opacity:.85;" data-i18n="home.mapConsentText">The map is provided by Google Maps. If you load it, data such as your IP address will be transmitted to Google (USA). See our Privacy Policy for details.</p>
+              <button id="festival-map-load" type="button" style="cursor:pointer;padding:10px 22px;border-radius:999px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;" data-i18n="home.mapConsentBtn">Load map</button>
+            </div>
+          </div>
           <div class="map-card__info">
             <p class="map-card__eyebrow" data-i18n="home.mapEyebrow">Main venues</p>
             <ul class="map-list">
@@ -358,13 +363,23 @@
   <script src="assets/js/maps-config.js"></script>
   <script>
     (function () {
-      var key = window.MFF_GOOGLE_MAPS_API_KEY;
+      // Privacy: the Google Maps script is only loaded after explicit user consent (click-to-load).
       var mapEl = document.getElementById('festival-map');
-      if (!key) { if (mapEl) mapEl.dataset.mapStatus = 'missing-key'; return; }
-      var script = document.createElement('script');
-      script.async = true; script.defer = true;
-      script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&callback=initFestivalMap';
-      document.head.appendChild(script);
+      var consentEl = document.getElementById('festival-map-consent');
+      var btn = document.getElementById('festival-map-load');
+      var loaded = false;
+      function loadMap() {
+        if (loaded) return;
+        var key = window.MFF_GOOGLE_MAPS_API_KEY;
+        if (!key) { if (mapEl) mapEl.dataset.mapStatus = 'missing-key'; return; }
+        loaded = true;
+        if (consentEl) consentEl.remove();
+        var script = document.createElement('script');
+        script.async = true; script.defer = true;
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&callback=initFestivalMap';
+        document.head.appendChild(script);
+      }
+      if (btn) btn.addEventListener('click', loadMap);
     })();
   </script>
 </body>
