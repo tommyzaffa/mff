@@ -1303,6 +1303,10 @@ main :where(h1, h2, h3, h4),
   opacity: 0.7; transform: none !important; animation: none !important;
 }
 .nav__panel-lang a.is-active, .nav__panel-lang a:hover { opacity: 1; background: var(--cream); color: var(--violet); }
+/* Language buttons are pills, so suppress the animated underline that other
+   panel links use (it lingers on touch after tapping a language). */
+.nav__panel-lang a::after { display: none; }
+.nav__panel-lang a:hover { transform: none !important; }
 @media (max-width: 700px) { .nav__panel-lang { display: flex; } }
 
 /* Reduced motion */
