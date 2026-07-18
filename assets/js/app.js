@@ -507,8 +507,8 @@
     if (!v) return;
     var base = v.getAttribute("data-base") || "";
     var root = document.documentElement;
-    var LOOP_START_DESKTOP = 22.0;
-    var LOOP_START_MOBILE = 22.90;
+    var LOOP_START_DESKTOP = 0;
+    var LOOP_START_MOBILE = 0;
     function device() { return window.matchMedia("(max-width: 700px)").matches ? "mobile" : "desktop"; }
     function loopStartSeconds() { return device() === "mobile" ? LOOP_START_MOBILE : LOOP_START_DESKTOP; }
 
