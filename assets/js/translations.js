@@ -19,6 +19,7 @@ window.MFF_I18N = {
       about: "About us",
       program: "Program",
       inCompetition: "In Competition",
+      youngJury: "Youth Jury",
     },
 
     home: {
@@ -47,6 +48,9 @@ window.MFF_I18N = {
       news3Title: "Merge Festival is officially open",
       news3Text: "The Merge Film Festival is officially launched — see you in October.",
       news3Link: "About us",
+      news4Title: "Youth Jury open call",
+      news4Text: "Applications for the Merge Film Festival Youth Jury are now open. Young people, students and film enthusiasts can apply to join.",
+      news4Link: "Apply now",
 
       mapTitle: "Map",
       mapDesc: "Discover all the venues of the Merge Film Festival.",
@@ -322,6 +326,7 @@ window.MFF_I18N = {
       about: "Chi siamo",
       program: "Programma",
       inCompetition: "In Competizione",
+      youngJury: "Giuria Giovani",
     },
 
     home: {
@@ -350,6 +355,9 @@ window.MFF_I18N = {
       news3Title: "Merge Festival è ufficialmente aperto",
       news3Text: "Il Merge Film Festival è ufficialmente aperto — ci vediamo a ottobre.",
       news3Link: "Chi siamo",
+      news4Title: "Open call Giuria Giovani",
+      news4Text: "Le candidature per la Giuria Giovani del Merge Film Festival sono aperte. Giovani, studenti e appassionati di cinema possono candidarsi.",
+      news4Link: "Candidati ora",
 
       mapTitle: "Mappa",
       mapDesc: "Scopri tutti i luoghi del Merge Film Festival.",
@@ -625,6 +633,7 @@ window.MFF_I18N = {
       about: "Qui sommes-nous",
       program: "Programme",
       inCompetition: "En Compétition",
+      youngJury: "Jury Jeunes",
     },
 
     home: {
@@ -653,6 +662,9 @@ window.MFF_I18N = {
       news3Title: "Le Merge Festival est officiellement ouvert",
       news3Text: "Le Merge Film Festival est officiellement lancé — rendez-vous en octobre.",
       news3Link: "À propos",
+      news4Title: "Appel à candidatures — Jury Jeunes",
+      news4Text: "Les candidatures pour le Jury Jeunes du Merge Film Festival sont ouvertes. Jeunes, étudiants et passionnés de cinéma peuvent postuler.",
+      news4Link: "Postuler",
 
       mapTitle: "Carte",
       mapDesc: "Découvrez tous les lieux du Merge Film Festival.",
@@ -928,6 +940,7 @@ window.MFF_I18N = {
       about: "Über uns",
       program: "Programm",
       inCompetition: "Im Wettbewerb",
+      youngJury: "Jugendjury",
     },
 
     home: {
@@ -956,6 +969,9 @@ window.MFF_I18N = {
       news3Title: "Merge Festival ist offiziell eröffnet",
       news3Text: "Das Merge Film Festival ist offiziell eröffnet — wir sehen uns im Oktober.",
       news3Link: "Über uns",
+      news4Title: "Jugendjury — Bewerbung offen",
+      news4Text: "Die Bewerbungen für die Jugendjury des Merge Film Festival sind geöffnet. Jugendliche, Studierende und Filmbegeisterte können sich bewerben.",
+      news4Link: "Jetzt bewerben",
 
       mapTitle: "Karte",
       mapDesc: "Entdecken Sie alle Orte des Merge Film Festivals.",
