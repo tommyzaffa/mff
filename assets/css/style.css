@@ -284,6 +284,8 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .is-on-violet .btn { --btn-bg: var(--cream); --btn-fg: var(--violet); }
 .is-on-violet .btn--ghost { --btn-bg: transparent; --btn-fg: var(--paper); }
 .btn--apply, .is-on-violet .btn--apply { --btn-bg: var(--violet); --btn-fg: #fff; }
+.legal-card a.btn--apply { color: #fff; text-decoration: none; }
+.legal-card a.btn--apply:hover { color: #fff; }
 
 /* ============================================================
    Header
