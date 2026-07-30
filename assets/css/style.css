@@ -848,6 +848,15 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 148px;
   max-height: 68px;
 }
+/* These three logos ship with their own solid/gradient background plate, so
+   round the corners to make the rectangle read as an intentional badge. */
+.supporters__logo img[src*="sdj"],
+.supporters__logo img[src*="output"],
+.supporters__logo img[src*="SwissaiWeek"] {
+  max-width: 130px;
+  max-height: 56px;
+  border-radius: 8px;
+}
 .supporters__logo:hover { transform: scale(1.06); }
 
 /* ============================================================
