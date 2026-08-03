@@ -64,6 +64,7 @@ window.MFF_I18N = {
       supportersDesc: "They make the Merge Film Festival possible.",
       labelSponsors: "Sponsors",
       labelEdu: "Educational Sponsor",
+      labelMobility: "Mobility Partner",
       labelPartners: "Partners",
     },
 
@@ -371,6 +372,7 @@ window.MFF_I18N = {
       supportersDesc: "Coloro che rendono possibile il Merge Film Festival.",
       labelSponsors: "Sponsor",
       labelEdu: "Sponsor educativo",
+      labelMobility: "Mobility partner",
       labelPartners: "Partner",
     },
 
@@ -678,6 +680,7 @@ window.MFF_I18N = {
       supportersDesc: "Ils rendent possible le Merge Film Festival.",
       labelSponsors: "Sponsors",
       labelEdu: "Sponsor éducatif",
+      labelMobility: "Partenaire mobilité",
       labelPartners: "Partenaires",
     },
 
@@ -985,6 +988,7 @@ window.MFF_I18N = {
       supportersDesc: "Sie machen das Merge Film Festival möglich.",
       labelSponsors: "Sponsoren",
       labelEdu: "Bildungssponsor",
+      labelMobility: "Mobilitätspartner",
       labelPartners: "Partner",
     },
 

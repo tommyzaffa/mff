@@ -843,6 +843,10 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 148px;
   max-height: 68px;
 }
+.supporters__logo img[src*="arcobaleno"] {
+  max-width: 186px;
+  max-height: 46px;
+}
 .supporters__logo img[src*="ortega"] {
   width: 128px;
   max-width: 148px;
