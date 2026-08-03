@@ -847,6 +847,12 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 186px;
   max-height: 46px;
 }
+/* The FFS lockup is ~9:1, so it is width- not height-constrained: give it a
+   wider box so it does not read as tiny next to the other marks. */
+.supporters__logo img[src*="ffs"] {
+  max-width: 210px;
+  max-height: 46px;
+}
 .supporters__logo img[src*="ortega"] {
   width: 128px;
   max-width: 148px;
