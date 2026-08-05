@@ -269,14 +269,34 @@
             </ul>
           </div>
 
-          <div class="supporters__group">
-            <p class="supporters__label" data-i18n="home.labelPartners">Partners</p>
+          <!-- The Città di Lugano mark is governed by the city's patronage manual:
+               black, transparent over a plain background, preceded by the
+               "Con il sostegno di" wording, and surrounded by a clear space of
+               half a shield width. The --support modifier enforces that spacing. -->
+          <div class="supporters__group supporters__group--support">
+            <p class="supporters__label" data-i18n="home.labelSupport">With the support of</p>
             <ul class="supporters__grid">
+              <li class="supporters__item">
+                <a class="supporters__logo" href="https://www.lugano.ch" target="_blank" rel="noopener noreferrer" aria-label="Città di Lugano">
+                  <img src="assets/img/logos/lugano.png" alt="Città di Lugano" loading="lazy" />
+                </a>
+              </li>
               <li class="supporters__item">
                 <a class="supporters__logo" href="https://www.massagno.ch" target="_blank" rel="noopener noreferrer" aria-label="Comune di Massagno">
                   <img src="assets/img/logos/massagno.png" alt="Comune di Massagno" loading="lazy" />
                 </a>
               </li>
+              <li class="supporters__item">
+                <a class="supporters__logo" href="https://www.ti.ch/infogiovani" target="_blank" rel="noopener noreferrer" aria-label="Infogiovani">
+                  <img src="assets/img/logos/infogiovani.png" alt="Infogiovani" loading="lazy" />
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="supporters__group">
+            <p class="supporters__label" data-i18n="home.labelPartners">Partners</p>
+            <ul class="supporters__grid">
               <li class="supporters__item">
                 <a class="supporters__logo" href="https://www.jfcinema.ch" target="_blank" rel="noopener noreferrer" aria-label="Lux">
                   <img src="assets/img/logos/lux.png" alt="Lux" loading="lazy" />

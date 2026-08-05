@@ -65,6 +65,7 @@ window.MFF_I18N = {
       labelSponsors: "Sponsors",
       labelEdu: "Educational Sponsor",
       labelMobility: "Mobility Partner",
+      labelSupport: "With the support of",
       labelPartners: "Partners",
     },
 
@@ -373,6 +374,7 @@ window.MFF_I18N = {
       labelSponsors: "Sponsor",
       labelEdu: "Sponsor educativo",
       labelMobility: "Mobility partner",
+      labelSupport: "Con il sostegno di",
       labelPartners: "Partner",
     },
 
@@ -681,6 +683,7 @@ window.MFF_I18N = {
       labelSponsors: "Sponsors",
       labelEdu: "Sponsor éducatif",
       labelMobility: "Partenaire mobilité",
+      labelSupport: "Avec le soutien de",
       labelPartners: "Partenaires",
     },
 
@@ -989,6 +992,7 @@ window.MFF_I18N = {
       labelSponsors: "Sponsoren",
       labelEdu: "Bildungssponsor",
       labelMobility: "Mobilitätspartner",
+      labelSupport: "Mit der Unterstützung von",
       labelPartners: "Partner",
     },
 

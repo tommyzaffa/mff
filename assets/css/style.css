@@ -853,6 +853,23 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 210px;
   max-height: 46px;
 }
+/* Città di Lugano, per the city's patronage manual: the shield must stay at
+   least 10mm (~38px) wide, and a clear space of X = half a shield width must be
+   kept from the wording and from any neighbouring logo. At 150px the shield is
+   ~56px, so X is ~28px — hence the wider grid gap and label margin below. */
+.supporters__logo img[src*="lugano"] {
+  max-width: 150px;
+  max-height: 68px;
+}
+.supporters__group--support .supporters__grid { gap: 40px; }
+.supporters__group--support .supporters__label { margin-bottom: 2rem; }
+
+/* Infogiovani is the only portrait lockup in the row, so cap it by height and
+   let the width follow to keep its optical weight in line with the others. */
+.supporters__logo img[src*="infogiovani"] {
+  max-width: 70px;
+  max-height: 86px;
+}
 .supporters__logo img[src*="ortega"] {
   width: 128px;
   max-width: 148px;
