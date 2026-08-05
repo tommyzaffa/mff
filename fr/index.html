@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <link rel="canonical" href="https://mergefestival.ch/" />
+  <title>Merge Film Festival</title>
+  <script>
+    // /fr/ was the French home of the previous site and is still indexed.
+    // Keep the language choice, then hand the visitor to the single-page site.
+    try { localStorage.setItem("mff_lang", "fr"); } catch (e) {}
+    location.replace("/");
+  </script>
+</head>
+<body>
+  <p><a href="/">mergefestival.ch</a></p>
+</body>
+</html>

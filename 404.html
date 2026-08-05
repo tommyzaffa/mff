@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Page not found — Merge Film Festival</title>
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #4b2e83;
+      color: #f3f2ef;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+    a { color: #f3f2ef; }
+  </style>
+  <script>
+    (function () {
+      // The previous site kept a copy of every page under /it/, /de/ and /fr/.
+      // Those URLs are still in Google's index, so instead of a dead end we map
+      // them onto the closest page that exists today and remember the language.
+      var LIVE = [
+        "/",
+        "/press/",
+        "/contact/",
+        "/contact/authors/",
+        "/program/",
+        "/in_competition/",
+        "/in_competition/jury/main.html",
+        "/in_competition/jury/young.html",
+        "/legal/privacy.html",
+        "/legal/terms.html"
+      ];
+
+      var path = location.pathname;
+      var lang = path.match(/^\/(it|de|fr)(\/|$)/);
+      if (lang) {
+        try { localStorage.setItem("mff_lang", lang[1]); } catch (e) {}
+        path = path.slice(lang[1].length + 1) || "/";
+      }
+
+      // Walk up the path until something still served today is found.
+      var target = "/";
+      var probe = path;
+      while (probe.length > 1) {
+        if (LIVE.indexOf(probe) !== -1) { target = probe; break; }
+        probe = probe.replace(/[^/]*\/?$/, "");
+      }
+
+      location.replace(target);
+    })();
+  </script>
+</head>
+<body>
+  <p>
+    This page has moved.
+    <a href="/">Go to mergefestival.ch</a>
+  </p>
+</body>
+</html>
