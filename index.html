@@ -7,7 +7,7 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=13" />
+  <link rel="stylesheet" href="assets/css/style.css?v=14" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -94,10 +94,14 @@
 
     <!-- HERO -->
     <section class="hero" id="top" data-bg="hero">
-      <div class="container hero__content">
-        <!-- The hero video already burns in the festival dates, so this line
-             only carries the venue — the piece viewers said was unclear. -->
-        <p class="hero__meta" data-i18n="home.heroPlace">Cinema Lux, Massagno (Lugano)</p>
+      <!-- The title block is burned into the hero video, so the venue line is
+           placed inside a box that reproduces the video's object-fit: cover
+           crop. That way it stays glued under the baked-in subtitle at every
+           viewport size instead of floating on its own. -->
+      <div class="hero__stage">
+        <div class="hero__frame">
+          <p class="hero__venue" data-i18n="home.heroPlace">Cinema Lux, Massagno (Lugano)</p>
+        </div>
       </div>
       <a class="hero__scroll" href="#about" aria-label="Scroll down">Scroll</a>
     </section>
