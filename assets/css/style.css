@@ -631,8 +631,19 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   position: relative;
   color: var(--paper);
 }
-.hero .container { padding-bottom: clamp(48px, 9vh, 110px); }
+/* Extra bottom room so the venue line clears the centred scroll cue. */
+.hero .container { padding-bottom: clamp(84px, 13vh, 150px); }
 .hero__content { width: 100%; }
+.hero__meta {
+  font-family: var(--font-display);
+  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+  text-shadow: 0 2px 18px rgba(15,15,18,0.65);
+}
+@media (max-width: 700px) { .hero__meta { letter-spacing: 0.12em; } }
 .hero__title-spacer { height: 0; }
 .hero__lead {
   font-family: var(--font-display);

@@ -23,6 +23,7 @@ window.MFF_I18N = {
     },
 
     home: {
+      heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Festival presentation",
       aboutTitle: "The first film festival in Switzerland entirely dedicated to AI",
       aboutP1: "The Merge Film Festival, running from 1 to 4 October, is Switzerland's first film festival dedicated to artificial intelligence.",
@@ -332,6 +333,7 @@ window.MFF_I18N = {
     },
 
     home: {
+      heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Presentazione festival",
       aboutTitle: "Primo festival cinematografico interamente dedicato all’AI in Svizzera",
       aboutP1: "Il Merge Film Festival, dall’1 al 4 ottobre, è il primo festival cinematografico in Svizzera dedicato all’intelligenza artificiale.",
@@ -641,6 +643,7 @@ window.MFF_I18N = {
     },
 
     home: {
+      heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Présentation du festival",
       aboutTitle: "Premier festival de cinéma entièrement dédié à l’IA en Suisse",
       aboutP1: "Le Merge Film Festival, du 1er au 4 octobre, est le premier festival de cinéma en Suisse dédié à l’intelligence artificielle.",
@@ -950,6 +953,7 @@ window.MFF_I18N = {
     },
 
     home: {
+      heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Festivalpräsentation",
       aboutTitle: "Das erste Filmfestival in der Schweiz, das vollständig der KI gewidmet ist",
       aboutP1: "Das Merge Film Festival, vom 1. bis 4. Oktober, ist das erste Filmfestival in der Schweiz, das der künstlichen Intelligenz gewidmet ist.",
