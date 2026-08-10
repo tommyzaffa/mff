@@ -6,7 +6,7 @@
    ============================================================ */
 
 /* ---------- Fonts ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ---------- Design tokens ---------- */
 :root {
@@ -620,6 +620,48 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   background:
     linear-gradient(180deg, rgba(15,15,18,0.30), rgba(46,27,84,0.20) 45%, rgba(15,15,18,0.55));
 }
+
+/* Venue line, welded to the type burned into the hero video.
+   .hero__frame is sized with the same rule the browser applies for
+   object-fit: cover on a 16:9 (desktop) / 9:16 (mobile) source, so a
+   percentage inside it lands on the same pixel as in the footage. It sits
+   under .bg__overlay so it picks up exactly the same tint as the footage. */
+.hero__stage {
+  position: absolute; inset: 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero__frame {
+  position: relative; flex: none;
+  width: max(100%, 177.7778svh);
+  height: max(100%, 56.25vw);
+}
+/* Type matched to the subtitle in the footage: Sora 400, cap height 16px at
+   the native 1920px width, tracked to the same measured line widths. With
+   line-height 1 the cap top sits 0.11em below the box top, which is what the
+   top offsets below already account for. */
+.hero__venue {
+  position: absolute;
+  left: 7.708%;
+  top: 66.906%;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(max(100vw, 177.7778svh) * 0.011417);
+  line-height: 1;
+  letter-spacing: 0.088em;
+  text-transform: uppercase;
+  color: #675f76;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .hero__frame { width: max(100%, 56.25svh); height: max(100%, 177.7778vw); }
+  .hero__venue {
+    left: 50%; top: 35.015%;
+    transform: translateX(-50%);
+    font-size: calc(max(100vw, 56.25svh) * 0.022833);
+    letter-spacing: 0.078em;
+  }
+}
 /* On the home page the fixed video IS the hero backdrop. The crossfade
    canvas starts transparent over the hero and fades in (cream <-> violet)
    as the content sections scroll up — driven by app.js. */
@@ -633,44 +675,6 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 }
 .hero .container { padding-bottom: clamp(48px, 9vh, 110px); }
 .hero__content { width: 100%; }
-
-/* Venue line, anchored to the type burned into the hero video.
-   .hero__frame is sized with the same rule the browser uses for
-   object-fit: cover on a 16:9 (desktop) / 9:16 (mobile) source, so a
-   percentage inside it lands on the same pixel as in the footage. */
-.hero__stage {
-  position: absolute; inset: 0; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  pointer-events: none;
-}
-.hero__frame {
-  position: relative; flex: none;
-  width: max(100vw, 177.7778vh);
-  height: max(100vh, 56.25vw);
-}
-.hero__venue {
-  position: absolute;
-  left: 7.71%;
-  top: 67.1%;
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 500;
-  /* 22.9px at the video's native 1920px width */
-  font-size: calc(max(100vw, 177.7778vh) * 0.01193);
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-  color: #1f1c27;
-  white-space: nowrap;
-}
-@media (max-width: 700px) {
-  .hero__frame { width: max(100vw, 56.25vh); height: max(100vh, 177.7778vw); }
-  .hero__venue {
-    left: 50%; top: 35.2%;
-    transform: translateX(-50%);
-    /* 17px at the mobile video's native 720px width */
-    font-size: calc(max(100vw, 56.25vh) * 0.02361);
-  }
-}
 .hero__title-spacer { height: 0; }
 .hero__lead {
   font-family: var(--font-display);

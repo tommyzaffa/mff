@@ -7,7 +7,7 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=14" />
+  <link rel="stylesheet" href="assets/css/style.css?v=16" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -41,12 +41,21 @@
   <div id="bgMesh"></div>
   <div id="bgGrain"></div>
 
-  <!-- Hero video (language-specific, desktop + mobile via app.js) -->
-  <div class="bg" aria-hidden="true">
-    <video class="bg__video" id="heroVideo" muted playsinline preload="auto"
+  <!-- Hero video (language-specific, desktop + mobile via app.js).
+       The venue line lives in here rather than in <main> so it is pinned with
+       the footage instead of scrolling away from it, and .hero__frame repeats
+       the video's object-fit: cover crop so the line stays welded to the
+       title that is burned into the footage. -->
+  <div class="bg">
+    <video class="bg__video" id="heroVideo" muted playsinline preload="auto" aria-hidden="true"
            data-base="assets/video/hero"
            poster="assets/img/hero-poster.jpg"></video>
-    <div class="bg__overlay"></div>
+    <div class="hero__stage">
+      <div class="hero__frame">
+        <p class="hero__venue" data-i18n="home.heroPlace">Cinema Lux, Massagno (Lugano)</p>
+      </div>
+    </div>
+    <div class="bg__overlay" aria-hidden="true"></div>
   </div>
 
   <!-- Header -->
@@ -94,15 +103,6 @@
 
     <!-- HERO -->
     <section class="hero" id="top" data-bg="hero">
-      <!-- The title block is burned into the hero video, so the venue line is
-           placed inside a box that reproduces the video's object-fit: cover
-           crop. That way it stays glued under the baked-in subtitle at every
-           viewport size instead of floating on its own. -->
-      <div class="hero__stage">
-        <div class="hero__frame">
-          <p class="hero__venue" data-i18n="home.heroPlace">Cinema Lux, Massagno (Lugano)</p>
-        </div>
-      </div>
       <a class="hero__scroll" href="#about" aria-label="Scroll down">Scroll</a>
     </section>
 
