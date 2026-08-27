@@ -914,6 +914,11 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 70px;
   max-height: 86px;
 }
+/* Stacked mark over wordmark, so it is also height-constrained. */
+.supporters__logo img[src*="pestalozzi"] {
+  max-width: 128px;
+  max-height: 84px;
+}
 .supporters__logo img[src*="ortega"] {
   width: 128px;
   max-width: 148px;
