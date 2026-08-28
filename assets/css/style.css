@@ -886,10 +886,9 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 148px;
   max-height: 68px;
 }
-/* Portrait lockup (disc over wordmark), so it is height-constrained. */
 .supporters__logo img[src*="centro_generativo"] {
-  max-width: 80px;
-  max-height: 92px;
+  max-width: 148px;
+  max-height: 68px;
 }
 .supporters__logo img[src*="linkfloyd"] {
   max-width: 152px;
