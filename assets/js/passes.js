@@ -41,11 +41,12 @@
 
   // --- panels ---------------------------------------------------------------
 
+  // Swapping the panel leaves the page where it is: jumping back to the hero on
+  // every step made the form feel like it had reloaded.
   function show(name) {
     Object.keys(panels).forEach(function (key) {
       panels[key].hidden = key !== name;
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function t(key, fallback) {

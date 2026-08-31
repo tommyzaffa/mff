@@ -4,5 +4,7 @@ Disallow: /vote/
 # Personal pages: a badge and a payment receipt belong to one person each.
 Disallow: /badge/
 Disallow: /passes/success.html
+# Staff only: the approve/reject page for press and industry requests.
+Disallow: /passes/review.html
 
 Sitemap: https://mergefestival.ch/sitemap.xml

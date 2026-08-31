@@ -206,7 +206,7 @@ async function submit(req: Request): Promise<Response> {
       org: org || null,
       locale,
       amountCents: amount,
-      reviewUrl: `${env.supabaseUrl}/functions/v1/pass-review?t=${pass.review_token}`,
+      reviewUrl: `${env.siteUrl}/passes/review.html?t=${pass.review_token}`,
       photoUrl,
     });
 

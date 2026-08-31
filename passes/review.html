@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- The token is the credential, so it must not leak in a Referer header when
+       the signed photo is loaded from Supabase. -->
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Richiesta di accredito — Merge Film Festival</title>
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png" />
+  <style>
+    :root { --violet:#4B2E83; --cream:#F3F2EF; --ink:#0F0F12; --muted:#6b6b75; }
+    * { box-sizing: border-box }
+    body { margin:0; padding:32px 18px; background:var(--cream); color:var(--ink);
+           font:16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif }
+    .card { max-width:560px; margin:0 auto; background:#fff; border-radius:22px; padding:30px }
+    h1 { font-size:24px; margin:0 0 18px }
+    .kicker { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--violet); margin:0 0 6px }
+    table.kv { width:100%; border-collapse:collapse; margin:0 0 18px; font-size:15px }
+    table.kv th { text-align:left; font-weight:400; color:var(--muted); padding:6px 14px 6px 0;
+                  white-space:nowrap; vertical-align:top }
+    table.kv td { padding:6px 0; font-weight:600 }
+    .photo { width:130px; border-radius:14px; display:block; margin:0 0 18px }
+    .note { display:block; font-size:13.5px; color:var(--muted); margin:22px 0 16px }
+    textarea { width:100%; margin-top:6px; padding:11px 12px; border:1px solid #ddd9d2; border-radius:12px;
+               font:inherit; font-size:14.5px; resize:vertical }
+    .actions { display:flex; gap:10px; flex-wrap:wrap }
+    button { flex:1 1 150px; padding:14px 20px; border:0; border-radius:16px; font:inherit; font-weight:600;
+             font-size:15px; cursor:pointer }
+    button[disabled] { opacity:.55; cursor:default }
+    .ok { background:var(--violet); color:var(--cream) }
+    .no { background:#fff; color:#B3232B; border:1px solid #e3cfd0 }
+    a { color:var(--violet) }
+    .error { color:#B3232B }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p class="kicker">Merge Film Festival — Accrediti</p>
+    <h1 id="title">Richiesta di accredito</h1>
+    <div id="body"><p>Caricamento…</p></div>
+  </div>
+
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/review.js?v=1"></script>
+</body>
+</html>
