@@ -1,0 +1,21 @@
+project_id = "merge-film-festival"
+
+# These endpoints are reached by people who are not logged in — a visitor filling
+# in the accreditation form, Stripe posting a webhook, the festival office
+# clicking a link in an email — so the platform's JWT gate has to be off. Each
+# function does its own checking: a signature for the webhook, a 48-character
+# token for the review page, an unguessable badge number for the badge.
+[functions.pass-submit]
+verify_jwt = false
+
+[functions.pass-badge]
+verify_jwt = false
+
+[functions.pass-review]
+verify_jwt = false
+
+[functions.pass-wallet]
+verify_jwt = false
+
+[functions.pass-stripe-webhook]
+verify_jwt = false

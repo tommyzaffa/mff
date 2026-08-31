@@ -7,7 +7,7 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=20" />
+  <link rel="stylesheet" href="assets/css/style.css?v=30" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -66,9 +66,9 @@
     </a>
 
     <div class="nav__actions">
-      <a class="nav__cta-btn" href="in_competition/jury/young.html">
-        <span class="nav__cta-long" data-i18n="nav.juryLong">Join the Youth Jury</span>
-        <span class="nav__cta-short" data-i18n="nav.juryShort">Join</span>
+      <a class="nav__cta-btn" href="passes/index.html">
+        <span class="nav__cta-long" data-i18n="nav.passesLong">Get your pass</span>
+        <span class="nav__cta-short" data-i18n="nav.passesShort">Pass</span>
       </a>
 
       <div class="nav__lang-switch" aria-label="Language switch">
@@ -82,6 +82,7 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="index.html" data-i18n="nav.home">Home</a>
+          <a href="passes/index.html" data-i18n="nav.passes">Passes</a>
           <!-- <a href="program/index.html" data-i18n="nav.program">Program</a> -->
           <!-- <a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a> -->
           <a href="press/index.html" data-i18n="nav.press">Press</a>
@@ -117,6 +118,7 @@
         <p class="about__desc" data-i18n="home.aboutP3">An opportunity to question the role of artificial intelligence in creative processes and in the wider transformation of our relationship with images.</p>
         <p class="about__desc" data-i18n="home.aboutP4">Merge was born out of the need to give space to a new form of cinematic language, while also serving as a space for reflection on the cultural phenomenon of artificial intelligence. A transformation that is challenging our relationship with reality.</p>
         <div class="about__actions">
+          <a class="btn btn--apply" href="passes/index.html" data-i18n="home.passesCta">Buy your pass</a>
           <a class="btn" href="contact/authors/index.html" data-i18n="home.aboutCta">About us</a>
         </div>
       </div>
@@ -134,6 +136,16 @@
         <div class="carousel carousel--news reveal" data-delay="1" aria-label="News carousel" tabindex="0">
           <div class="carousel__stage">
             <div class="carousel__track news-track">
+            <article class="card news-card">
+              <img class="news__img" src="assets/img/news/badges-are-out.jpg" alt="Badges are out" loading="lazy" />
+              <div class="news__body">
+                <p class="news__meta"><span data-i18n="home.news6Date">September 2026</span> • News</p>
+                <h3 class="news__title" data-i18n="home.news6Title">Accreditation pre-sales are open</h3>
+                <p class="news__text" data-i18n="home.news6Text">Festival passes are on sale: choose the one that suits you, upload your photo and receive your digital badge by email.</p>
+                <a class="btn news__link" href="passes/index.html" data-i18n="home.news6Link">Get your pass</a>
+              </div>
+            </article>
+
             <article class="card news-card">
               <img class="news__img" src="assets/img/news/corriere-della-sera.png" alt="Corriere della Sera" loading="lazy" />
               <div class="news__body">
@@ -367,7 +379,7 @@
           <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
           <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
           <div class="footer__cta">
-            <a class="btn" href="in_competition/jury/young.html" data-i18n="nav.juryLong">Join the Youth Jury</a>
+            <a class="btn" href="passes/index.html" data-i18n="nav.passesLong">Get your pass</a>
           </div>
         </div>
 
@@ -377,6 +389,7 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="passes/index.html" data-i18n="nav.passes">Passes</a></li>
                 <!-- <li><a href="program/index.html" data-i18n="nav.program">Program</a></li> -->
                 <!-- <li><a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
               </ul>
@@ -417,7 +430,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/js/translations.js?v=12"></script>
+  <script src="assets/js/translations.js?v=16"></script>
   <script src="assets/js/app.js?v=10"></script>
 
   <!-- Google Maps -->

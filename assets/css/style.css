@@ -716,7 +716,7 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .about__title { font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 800; margin-bottom: 1.2rem; }
 .about__desc { font-size: 1.08rem; margin-bottom: 1rem; }
 .is-on-violet .about__desc { color: var(--paper-soft); }
-.about__actions { margin-top: 2rem; }
+.about__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 14px; }
 
 /* ============================================================
    News carousel
@@ -1731,4 +1731,410 @@ html.intro-armed #introOverlay {
 @media (prefers-reduced-motion: reduce) {
   html.intro-armed { overflow: auto; }
   html.intro-armed #introOverlay { display: none; }
+}
+
+/* ============================================================
+   Audience award voting (/vote/)
+   Read on a phone, in the dark, by someone who wants to be done
+   in five seconds: one card, one question, ten big targets.
+   ============================================================ */
+.vote { display: flex; align-items: center; min-height: 100vh; min-height: 100svh; }
+.vote__card { max-width: 620px; margin: 0 auto; width: 100%; }
+.vote__panel { display: grid; gap: 1rem; }
+/* The class above outranks the browser's own [hidden] rule, so restate it. */
+.vote__panel[hidden] { display: none; }
+.vote__panel--center { justify-items: center; text-align: center; }
+
+/* Inner pages flip cream to violet on phones (initMobileInnerColors), so every
+   colour here is derived from currentColor instead of the ink tokens — that way
+   the card reads correctly on both backgrounds without a second rule set. */
+.vote__eyebrow {
+  margin: 0; font-family: var(--font-body); font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.6;
+}
+.vote__film {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.8rem, 6vw, 2.8rem); line-height: 1.1; letter-spacing: -0.01em;
+}
+.vote__headline {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.5rem, 5vw, 2.2rem); line-height: 1.15;
+}
+.vote__where { margin: 0; opacity: 0.72; }
+.vote__ask { margin: 1rem 0 0; font-weight: 600; font-size: 1.05rem; }
+.vote__status { margin: 0; opacity: 0.5; }
+
+.vote__scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.vote__score {
+  appearance: none; cursor: pointer;
+  aspect-ratio: 1; min-height: 56px;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  border-radius: 14px;
+  background: transparent; color: inherit;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.1rem;
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.vote__score:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.vote__score:active,
+.vote__score.is-chosen {
+  background: var(--pick-bg, var(--violet)); color: var(--pick-fg, var(--paper));
+  border-color: transparent; transform: scale(0.94);
+}
+.is-on-violet .vote__score { --pick-bg: var(--cream); --pick-fg: var(--violet); }
+.vote__scale[aria-busy="true"] .vote__score { pointer-events: none; opacity: 0.45; }
+.vote__scale[aria-busy="true"] .vote__score.is-chosen { opacity: 1; }
+
+.vote__legend {
+  display: flex; justify-content: space-between; margin: 0;
+  font-size: 0.78rem; opacity: 0.55;
+}
+.vote__fine { margin: 0; font-size: 0.85rem; opacity: 0.55; }
+
+.vote__big {
+  margin: 0; font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(4rem, 22vw, 7rem); line-height: 1; color: inherit;
+}
+
+/* Elsewhere the switch moves into the menu overlay on phones, but this page has
+   no menu, so it has to stay in the header. */
+@media (max-width: 700px) {
+  .page-vote .nav__lang-switch { display: inline-flex; }
+}
+
+@media (max-width: 380px) {
+  .vote__scale { gap: 8px; }
+  .vote__score { min-height: 48px; font-size: 1rem; }
+}
+
+/* ==========================================================================
+   Accreditation — /passes/ and /badge/
+
+   Colours here come from currentColor and color-mix, never from the --ink
+   tokens: initMobileInnerColors flips inner pages from cream to violet below
+   700px, and anything that hardcodes ink ends up dark-on-dark there.
+   ========================================================================== */
+
+/* ---- the chooser -------------------------------------------------------- */
+
+.pass-cards {
+  display: grid; gap: 18px; margin: 0 0 34px; padding: 0; list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+}
+
+/* The plate is SOLID and carries its own ink. The section sits on the fixed
+   canvas while it is still crossfading from cream to violet, so a translucent
+   card inherits white text over a cream background and disappears for the whole
+   first screenful. Owning both colours makes the cards readable at any scroll
+   position and on both the desktop and the phone-inverted palette. */
+.pass-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 26px 24px 24px; border-radius: 22px;
+  background: #2E1B52;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #F5F3F8;
+}
+
+/* The stripe down the left is the pass colour — the same one the badge and the
+   physical card use, so the choice you make here is the object you get. */
+.pass-card::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 6px;
+  background: var(--pass-colour, var(--violet));
+}
+/* Lightened versions of the three badge colours: the plate underneath is dark,
+   so the printed #4B2E83 and #4A4A52 would sink into it. */
+.pass-card--violet { --pass-colour: #C7B7EA; --pass-ink: #241640; }
+.pass-card--red    { --pass-colour: #E8636D; --pass-ink: #3A0A0E; }
+.pass-card--grey   { --pass-colour: #C3C3CF; --pass-ink: #24242B; }
+
+/* The letter is the one printed on the physical badge, so it is shown as the
+   same small solid chip rather than a giant watermark. */
+.pass-card__letter {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; margin: 0 0 16px; border-radius: 12px;
+  background: var(--pass-colour); color: var(--pass-ink);
+  font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; line-height: 1;
+}
+
+.pass-card__name {
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 700;
+  font-size: 1.6rem; line-height: 1.1;
+}
+.pass-card__desc { margin: 0 0 18px; font-size: 0.95rem; line-height: 1.55; opacity: 0.78; }
+.pass-card__price {
+  margin: 0 0 4px; font-family: var(--font-display); font-weight: 700; font-size: 1.35rem;
+}
+.pass-card__note { margin: 0 0 20px; font-size: 0.82rem; line-height: 1.5; opacity: 0.6; }
+/* The plate is dark whatever the section is doing, so the button is always the
+   light-on-dark variant instead of the violet-on-violet default. */
+.pass-card .btn { margin-top: auto; --btn-bg: var(--cream); --btn-fg: var(--violet); }
+
+.pass-invite {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px;
+  padding: 22px 24px; border-radius: 20px;
+  background: #2E1B52; color: #F5F3F8;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+.pass-invite .btn--ghost { --btn-fg: #F5F3F8; border-color: rgba(255, 255, 255, 0.55); }
+.pass-invite__text { flex: 1 1 260px; margin: 0; font-size: 0.95rem; line-height: 1.55; opacity: 0.8; }
+
+/* ---- the form ----------------------------------------------------------- */
+
+.pass-form { max-width: 620px; }
+.pass-form__back {
+  border: 0; background: none; padding: 0; margin: 0 0 18px; cursor: pointer;
+  font: inherit; font-size: 0.9rem; color: inherit; opacity: 0.65;
+}
+.pass-form__back:hover { opacity: 1; }
+
+.pass-form__title {
+  margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 1.9rem;
+}
+.pass-form__legend { padding: 0; margin: 0 0 10px; font-size: 0.85rem; opacity: 0.65; }
+.pass-form__label { display: block; margin: 0 0 4px; font-size: 0.9rem; font-weight: 600; }
+.pass-form__hint { margin: 0 0 10px; font-size: 0.82rem; line-height: 1.5; opacity: 0.6; }
+
+.pass-form__row { display: grid; gap: 0 14px; grid-template-columns: 1fr 1fr; }
+.pass-form__row[hidden] { display: none; }
+@media (max-width: 520px) { .pass-form__row { grid-template-columns: 1fr; } }
+
+.pass-form select {
+  width: 100%; padding: 14px; border-radius: 14px; font: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: color-mix(in srgb, currentColor 5%, transparent); color: inherit;
+}
+
+.pass-fare { display: flex; flex-wrap: wrap; gap: 10px; border: 0; padding: 0; margin: 0 0 18px; }
+.pass-fare[hidden] { display: none; }
+
+.pass-radio {
+  display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+  padding: 11px 16px; border-radius: 14px; font-size: 0.92rem;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+.pass-radio:has(input:checked) {
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 9%, transparent);
+}
+
+.pass-photo__row { display: flex; align-items: center; gap: 16px; }
+.pass-photo__preview {
+  flex: 0 0 auto; width: 62px; height: 78px; border-radius: 12px;
+  background: color-mix(in srgb, currentColor 10%, transparent) center / cover no-repeat;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+.pass-photo__input { flex: 1 1 auto; min-width: 0; font-size: 0.86rem; }
+
+.pass-form input[type="file"] { color: inherit; }
+
+.pass-consent {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin: 6px 0 20px; font-size: 0.86rem; line-height: 1.55; opacity: 0.8;
+}
+.pass-consent input { margin-top: 3px; flex: 0 0 auto; }
+.pass-consent a { color: inherit; text-decoration: underline; }
+
+.pass-form__code-state { margin: 8px 0 0; font-size: 0.84rem; min-height: 1.2em; }
+.pass-form__code-state.is-ok  { color: #2e9e5b; }
+.pass-form__code-state.is-bad { color: #d24b4b; }
+.is-on-violet .pass-form__code-state.is-ok  { color: #9be3b4; }
+.is-on-violet .pass-form__code-state.is-bad { color: #f2a9a9; }
+
+.pass-result h2 {
+  margin: 0 0 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.8rem;
+}
+.pass-result p { margin: 0 0 22px; line-height: 1.6; }
+
+/* ==========================================================================
+   The badge
+
+   Its own page: no header, no menu, no animated background. It gets opened on
+   a phone at the door of a cinema, so it loads in one paint and prints to a
+   single page.
+   ========================================================================== */
+
+/* Written as body.badge-page, not .badge-page: the generic inner-page rule is
+   `body:not(.home-page)`, which outranks a bare class and would paint the cream
+   wash + head photo behind the badge, leaving every label white on white. */
+body.badge-page {
+  margin: 0; min-height: 100dvh;
+  background-image: none;
+  background-color: var(--violet-deep, #2E1B54);
+  color: var(--paper, #F3F2EF);
+}
+
+.badge-stage {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 22px;
+  padding: 28px 18px calc(28px + env(safe-area-inset-bottom));
+}
+
+.badge-state {
+  width: 100%; max-width: 380px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.badge-state[hidden] { display: none; }
+.badge-state h1 {
+  margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.7rem;
+}
+.badge-state p { margin: 0; line-height: 1.6; opacity: 0.82; }
+
+.badge-spinner {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor; animation: badge-spin 0.8s linear infinite;
+}
+@keyframes badge-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .badge-spinner { animation: none; } }
+
+/* ---- the card ----------------------------------------------------------- */
+
+.badge {
+  --badge-colour: #4B2E83;
+  width: 100%; max-width: 360px; overflow: hidden;
+  display: flex; flex-direction: column;
+  border-radius: 26px; background: #fff; color: #0F0F12;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.34);
+}
+
+/* The masthead is the festival's, not the pass type's: it stays violet on every
+   badge so the card is recognisable before the type is read. The type colour
+   lives in the chip beside it and in the QR. */
+.badge__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  overflow: hidden;
+  padding: 20px 22px 18px; background: #2E1B54; color: #F3F2EF;
+}
+.badge__head-text { min-width: 0; flex: 1 1 auto; }
+/* The wordmark is a name: it may never hyphenate or break across two lines, so
+   it is pinned to one line and the type mark beside it gives way instead. */
+.badge__festival {
+  margin: 0; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.9;
+  white-space: nowrap; hyphens: none;
+}
+.badge__edition { margin: 3px 0 0; font-size: 0.84rem; opacity: 0.72; }
+
+/* The mark a volunteer reads across a foyer: the single letter printed on the
+   physical badge, on a plate in the colour of the pass. The hairline ring keeps
+   the plate legible when its colour is close to the violet behind it. */
+.badge__type {
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border-radius: 16px;
+  background: var(--badge-colour); box-shadow: inset 0 0 0 1px rgba(243, 242, 239, 0.28);
+  font-family: var(--font-display); font-weight: 800; font-size: 2rem;
+  line-height: 1; text-transform: uppercase; white-space: nowrap;
+  color: #F3F2EF;
+}
+/* Staff is the one type spelled out in full, so it drops to a readable size. */
+.badge__type--word { font-size: 0.78rem; letter-spacing: 0.04em; }
+
+.badge__body { padding: 22px 22px 18px; text-align: center; }
+
+.badge__photo {
+  width: 132px; height: 166px; margin: 0 auto 16px; overflow: hidden;
+  border-radius: 16px; background: #ecebe7;
+}
+.badge__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.badge__name {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: 1.42rem; line-height: 1.15; text-wrap: balance;
+}
+.badge__org { margin: 7px 0 0; font-size: 0.9rem; opacity: 0.66; }
+.badge__org[hidden] { display: none; }
+
+.badge__code {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 22px; border-top: 1px solid #eae8e3; border-bottom: 1px solid #eae8e3;
+}
+.badge__qr { flex: 0 0 auto; width: 76px; height: 76px; }
+.badge__qr canvas, .badge__qr svg { width: 100%; height: 100%; display: block; }
+.badge__code-text { text-align: left; min-width: 0; }
+.badge__code-label {
+  display: block; font-size: 0.66rem; letter-spacing: 0.11em;
+  text-transform: uppercase; opacity: 0.5;
+}
+.badge__code-value {
+  display: block; margin-top: 3px; font-size: 1.02rem;
+  letter-spacing: 0.06em; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Full black on the white card, not the muted grey used for the sponsor label:
+   this line has to survive being read at arm's length on a bus. */
+.badge__transport {
+  margin: 0; padding: 12px 22px;
+  border-bottom: 1px solid #eae8e3;
+  font-size: 0.63rem; line-height: 1.5; text-align: center;
+  color: #0F0F12; text-wrap: pretty; hyphens: none;
+}
+
+.badge__sponsors { padding: 15px 22px 19px; }
+.badge__sponsors-label {
+  margin: 0 0 10px; font-size: 0.6rem; letter-spacing: 0.13em;
+  text-transform: uppercase; opacity: 0.42; text-align: center;
+}
+.badge__logos {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 12px 16px; margin: 0; padding: 0; list-style: none;
+}
+.badge__logos img {
+  max-width: 62px; max-height: 20px; width: auto; height: auto;
+  object-fit: contain; opacity: 0.62;
+}
+/* The two civic marks carry more detail than a wordmark, so they get room. */
+.badge__logos img[src*="lugano"], .badge__logos img[src*="massagno"] { max-height: 26px; }
+/* Tall marks would otherwise come out half the width of a wordmark. */
+.badge__logos img[src*="infogiovani"], .badge__logos img[src*="pestalozzi"] { max-height: 26px; }
+/* An SVG with only a viewBox has no intrinsic size, so width/height:auto inside
+   a max-* box resolves to zero and the logo silently vanishes. Pin one axis. */
+.badge__logos img[src$=".svg"] { height: 22px; }
+/* "SBB CFF FFS" is nearly 9:1, so the shared cap would shrink it to 7px tall. */
+.badge__logos img[src*="ffs"] { height: auto; max-width: 80px; }
+
+/* ---- actions ------------------------------------------------------------ */
+
+.badge-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+.badge-action {
+  appearance: none; cursor: pointer; text-decoration: none;
+  padding: 12px 20px; border-radius: 15px; font: inherit; font-size: 0.9rem;
+  color: inherit; background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.badge-action[hidden] { display: none; }
+.badge-action:hover { background: rgba(255, 255, 255, 0.18); transform: translateY(-2px); }
+
+.badge-hint {
+  max-width: 360px; margin: 0; text-align: center;
+  font-size: 0.8rem; line-height: 1.6; opacity: 0.55;
+}
+
+/* ---- printing ----------------------------------------------------------- */
+
+/* "Save as PDF" is the browser's own print-to-PDF: it stays sharp at any size,
+   needs no library and works with no connection. */
+@media print {
+  /* Generous margins so the card sits in the middle of the sheet rather than
+     hard against the browser's own header and footer. */
+  @page { margin: 18mm; }
+
+  body.badge-page { background-image: none; background-color: #fff; color: #000; }
+  .badge-stage { min-height: 0; padding: 0; display: block; }
+  /* On screen the stage centres this with flex; once the stage is a plain block
+     the 380px cap would strand the card against the left edge of the sheet. */
+  .badge-state { max-width: none; }
+  .badge-actions, .badge-hint { display: none !important; }
+  /* 92mm ≈ 348px, near enough to the 360px the card is designed for that every
+     string keeps the line breaks it has on screen. The old 74mm was ~280px, and
+     both the wordmark and the accreditation code wrapped inside it. It is also
+     about the width of a real lanyard badge, so it can be cut out and worn. */
+  .badge {
+    max-width: 92mm; margin: 0 auto; box-shadow: none;
+    border: 1px solid #ddd; break-inside: avoid;
+  }
+  .badge__head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge__logos img { opacity: 1; }
 }

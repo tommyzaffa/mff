@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /vote/
+# Personal pages: a badge and a payment receipt belong to one person each.
+Disallow: /badge/
+Disallow: /passes/success.html
 
 Sitemap: https://mergefestival.ch/sitemap.xml

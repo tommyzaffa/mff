@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audience Award QR sheet — staff</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <style>
+    /* Deliberately standalone: this sheet exists to be printed and taped up in
+       the room, so it must not inherit the site's scroll and colour machinery. */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 32px;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #0F0F12; background: #fff;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    .lead { margin: 0 0 24px; color: rgba(15,15,18,0.6); font-size: 0.9rem; }
+    .status { color: #b00; font-size: 0.9rem; }
+
+    .sheet { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .card {
+      border: 1px solid rgba(15,15,18,0.15); border-radius: 12px; padding: 20px;
+      text-align: center; break-inside: avoid; page-break-inside: avoid;
+    }
+    .card__qr { line-height: 0; }
+    .card__qr canvas { width: 100%; height: auto; max-width: 220px; }
+    .card__title { font-weight: 600; font-size: 1rem; margin: 12px 0 2px; }
+    .card__meta { font-size: 0.8rem; color: rgba(15,15,18,0.55); margin: 0; }
+    .card__code { font-family: ui-monospace, monospace; font-size: 0.75rem; color: rgba(15,15,18,0.45); margin: 8px 0 0; }
+    .card__cta { font-weight: 600; font-size: 0.95rem; margin: 14px 0 0; }
+
+    @media print {
+      body { padding: 0; }
+      h1, .lead { display: none; }
+      .sheet { grid-template-columns: repeat(2, 1fr); gap: 0; }
+      .card { border: none; padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Audience Award — QR sheet</h1>
+  <p class="lead">
+    One card per published screening, straight from Supabase. Print this and put the
+    right card up in the room as the credits roll. Ctrl/Cmd+P.
+  </p>
+  <p class="status" id="status"></p>
+  <div class="sheet" id="sheet"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
+          integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
+          crossorigin="anonymous"></script>
+  <script src="../assets/js/vote-config.js"></script>
+  <script src="../assets/js/vote-qr.js"></script>
+</body>
+</html>

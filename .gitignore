@@ -37,5 +37,8 @@ coverage/
 .claude/projects/
 .claude/cache/
 
+# Supabase CLI local state (project link, cached versions)
+supabase/.temp/
+
 # Docs
 /docs

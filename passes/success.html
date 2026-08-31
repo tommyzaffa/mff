@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Thank you — Merge Film Festival</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=30" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+</head>
+
+<body class="badge-page">
+  <main class="badge-stage">
+
+    <div class="badge-state" data-panel="waiting">
+      <h1 data-i18n="success.waitingTitle">Payment received</h1>
+      <p data-i18n="success.waitingBody">We are issuing your badge — this takes a few seconds.</p>
+      <p class="badge-spinner" aria-hidden="true"></p>
+    </div>
+
+    <div class="badge-state" data-panel="done" hidden>
+      <h1 data-i18n="success.doneTitle">You're in</h1>
+      <p data-i18n="success.doneBody">Your badge is ready and a copy is on its way to your inbox.</p>
+      <a class="btn btn--apply" href="#" data-badge-link data-i18n="success.openBadge">Open my badge</a>
+    </div>
+
+    <!-- TWINT and some cards settle after the fact, so a pass can legitimately
+         still be pending when the customer lands here. -->
+    <div class="badge-state" data-panel="slow" hidden>
+      <h1 data-i18n="success.slowTitle">Almost there</h1>
+      <p data-i18n="success.slowBody">Your payment is still being confirmed by the bank. As soon as it clears we email you the badge — there is nothing else you need to do.</p>
+      <a class="btn btn--ghost" href="../index.html" data-i18n="success.backHome">Back to the site</a>
+    </div>
+
+    <div class="badge-state" data-panel="missing" hidden>
+      <h1 data-i18n="success.missingTitle">We can't find this order</h1>
+      <p data-i18n="success.missingBody">If you were charged, write to us and we will sort it out.</p>
+      <a class="btn btn--ghost" href="../contact/index.html" data-i18n="success.contact">Contact us</a>
+    </div>
+
+  </main>
+
+  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script>
+  /* Stripe sends the customer back here the moment they pay, but the badge is
+     only issued when the webhook lands, a beat later. So: poll, briefly, and
+     tell the truth if it is taking longer than that. */
+  (function () {
+    "use strict";
+    var CFG = window.MFF_PASSES || {};
+    var BASE = (CFG.url || "").replace(/\/+$/, "") + "/functions/v1";
+
+    var lang = (function () {
+      try { var s = localStorage.getItem("mff_lang"); if (s) return s; } catch (e) {}
+      var n = (navigator.language || "en").slice(0, 2);
+      return ["it", "en", "fr", "de"].indexOf(n) >= 0 ? n : "en";
+    })();
+
+    var dict = (window.MFF_I18N || {})[lang] || (window.MFF_I18N || {}).en || {};
+    document.documentElement.setAttribute("lang", lang);
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var node = dict, parts = el.getAttribute("data-i18n").split(".");
+      for (var i = 0; i < parts.length && node; i++) node = node[parts[i]];
+      if (typeof node === "string") el.textContent = node;
+    });
+
+    var panels = {};
+    document.querySelectorAll("[data-panel]").forEach(function (el) {
+      panels[el.getAttribute("data-panel")] = el;
+    });
+    function show(name) {
+      Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
+    }
+
+    var passId = new URLSearchParams(location.search).get("p");
+    if (!passId) return show("missing");
+
+    var tries = 0;
+    (function poll() {
+      fetch(BASE + "/pass-badge?p=" + encodeURIComponent(passId))
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.ok) return show("missing");
+          if (res.status === "issued" && res.badge_code) {
+            var link = document.querySelector("[data-badge-link]");
+            if (link) link.href = "../badge/?c=" + encodeURIComponent(res.badge_code);
+            return show("done");
+          }
+          if (++tries > 12) return show("slow");
+          setTimeout(poll, 2000);
+        })
+        .catch(function () { show("slow"); });
+    })();
+  })();
+  </script>
+</body>
+</html>

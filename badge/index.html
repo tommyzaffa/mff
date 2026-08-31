@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Badge — Merge Film Festival</title>
+  <!-- A badge is personal. Keep it out of search results even though the code
+       itself is unguessable. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Merge Film Festival digital badge." />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=30" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+  <!-- Standalone on the home screen, so it opens like an app at the door. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body class="badge-page">
+
+  <main class="badge-stage">
+
+    <div class="badge-state" data-panel="loading">
+      <p data-i18n="badge.loading">Loading your badge…</p>
+    </div>
+
+    <div class="badge-state" data-panel="missing" hidden>
+      <h1 data-i18n="badge.missingTitle">Badge not found</h1>
+      <p data-i18n="badge.missingBody">This link does not match any badge. Check the link in your confirmation email, or write to us.</p>
+      <a class="btn btn--apply" href="../passes/index.html" data-i18n="badge.getPass">Get a pass</a>
+    </div>
+
+    <div class="badge-state" data-panel="badge" hidden>
+
+      <!-- The badge itself. This block, and only this block, is what prints. -->
+      <article class="badge" data-badge>
+        <header class="badge__head">
+          <div class="badge__head-text">
+            <p class="badge__festival">Merge Film Festival</p>
+            <p class="badge__edition">2026 — Lugano</p>
+          </div>
+          <!-- The pass type spelled out: it is what a volunteer reads across a
+               foyer to know what the holder may enter. -->
+          <span class="badge__type" data-type>Guest</span>
+        </header>
+
+        <div class="badge__body">
+          <div class="badge__photo"><img data-photo alt="" /></div>
+          <p class="badge__name" data-name>—</p>
+          <p class="badge__org" data-org hidden>—</p>
+        </div>
+
+        <div class="badge__code">
+          <div class="badge__qr" data-qr aria-hidden="true"></div>
+          <div class="badge__code-text">
+            <span class="badge__code-label" data-i18n="badge.codeLabel">Accreditation code</span>
+            <strong class="badge__code-value" data-code>MFF-0000-0000</strong>
+          </div>
+        </div>
+
+        <!-- Arcobaleno's prescribed wording. It is what makes the badge valid on
+             public transport, so a controller has to be able to read it: it is
+             NOT translated and NOT dimmed, and it prints with the badge. -->
+        <p class="badge__transport">
+          Titolo di trasporto valido quale carta giornaliera speciale dal 01.10.2026
+          al 04.10.2026, in tutte le zone della Comunità Tariffale Arcobaleno,
+          in seconda classe, (L)(TK)(V)
+        </p>
+
+        <footer class="badge__sponsors">
+          <p class="badge__sponsors-label" data-i18n="badge.sponsorsLabel">With the support of</p>
+          <ul class="badge__logos">
+            <li><img src="../assets/img/logos/migros.png" alt="Percento culturale Migros Ticino" /></li>
+            <li><img src="../assets/img/logos/ubs.png" alt="UBS" /></li>
+            <li><img src="../assets/img/logos/ortega.svg" alt="Ortega Schule" /></li>
+            <li><img src="../assets/img/logos/lugano.png" alt="Città di Lugano" /></li>
+            <li><img src="../assets/img/logos/massagno.png" alt="Comune di Massagno" /></li>
+            <li><img src="../assets/img/logos/infogiovani.png" alt="Infogiovani" /></li>
+            <li><img src="../assets/img/logos/arcobaleno.png" alt="Arcobaleno" /></li>
+            <li><img src="../assets/img/logos/ffs.svg" alt="FFS" /></li>
+            <li><img src="../assets/img/logos/pestalozzi.png" alt="Hotel Pestalozzi Lugano" /></li>
+          </ul>
+        </footer>
+      </article>
+
+      <div class="badge-actions">
+        <button class="badge-action" type="button" data-print>
+          <span data-i18n="badge.savePdf">Save as PDF</span>
+        </button>
+        <a class="badge-action" data-wallet-google hidden>
+          <span data-i18n="badge.googleWallet">Add to Google Wallet</span>
+        </a>
+      </div>
+
+      <p class="badge-hint" data-i18n="badge.hint">Add this page to your home screen and you will have the badge with you offline. A physical badge can be collected at Cinema Lux from the first day of the festival.</p>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
+          integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
+          crossorigin="anonymous"></script>
+  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/badge.js?v=4"></script>
+</body>
+</html>

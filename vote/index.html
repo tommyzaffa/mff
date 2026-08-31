@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Audience Award — Merge Film Festival</title>
+  <meta name="description" content="Rate the film you have just watched and help pick the Merge Film Festival Audience Award." />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=30" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+</head>
+
+<body class="page-vote">
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
+    </a>
+    <div class="nav__actions">
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section vote is-on-cream" data-bg="cream" id="top">
+      <div class="container">
+        <div class="vote__card" data-vote>
+
+          <!-- Waiting on the schedule lookup -->
+          <div class="vote__panel" data-panel="loading">
+            <p class="vote__status" data-i18n="vote.loading">Loading…</p>
+          </div>
+
+          <!-- The voting window is open -->
+          <div class="vote__panel" data-panel="open" hidden>
+            <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
+            <h1 class="vote__film" data-film></h1>
+            <p class="vote__where" data-where></p>
+            <p class="vote__ask" data-i18n="vote.ask">How much did you like it?</p>
+            <div class="vote__scale" data-scale role="group" aria-label="Score from 1 to 10">
+              <button class="vote__score" type="button" data-score="1">1</button>
+              <button class="vote__score" type="button" data-score="2">2</button>
+              <button class="vote__score" type="button" data-score="3">3</button>
+              <button class="vote__score" type="button" data-score="4">4</button>
+              <button class="vote__score" type="button" data-score="5">5</button>
+              <button class="vote__score" type="button" data-score="6">6</button>
+              <button class="vote__score" type="button" data-score="7">7</button>
+              <button class="vote__score" type="button" data-score="8">8</button>
+              <button class="vote__score" type="button" data-score="9">9</button>
+              <button class="vote__score" type="button" data-score="10">10</button>
+            </div>
+            <p class="vote__legend">
+              <span data-i18n="vote.low">Not for me</span>
+              <span data-i18n="vote.high">Loved it</span>
+            </p>
+            <p class="vote__fine" data-i18n="vote.fine">One vote per device. Anonymous — we only store the number.</p>
+          </div>
+
+          <!-- Vote accepted -->
+          <div class="vote__panel vote__panel--center" data-panel="thanks" hidden>
+            <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
+            <p class="vote__big" data-chosen></p>
+            <h1 class="vote__headline" data-i18n="vote.thanksTitle">Thank you, your vote is in.</h1>
+            <p class="vote__where" data-film></p>
+            <p class="vote__fine" data-i18n="vote.thanksText">The winner is announced at the awards ceremony.</p>
+            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
+          </div>
+
+          <!-- This device already voted for this screening -->
+          <div class="vote__panel vote__panel--center" data-panel="already" hidden>
+            <h1 class="vote__headline" data-i18n="vote.alreadyTitle">You already voted for this one.</h1>
+            <p class="vote__where" data-film></p>
+            <p class="vote__fine" data-i18n="vote.alreadyText">Every screening has its own code, so scan the next one when it ends.</p>
+            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
+          </div>
+
+          <!-- Scanned before the screening ended -->
+          <div class="vote__panel vote__panel--center" data-panel="early" hidden>
+            <h1 class="vote__headline" data-i18n="vote.earlyTitle">Voting is not open yet.</h1>
+            <p class="vote__where" data-film></p>
+            <p class="vote__fine">
+              <span data-i18n="vote.earlyText">You can vote from</span>
+              <strong data-opens></strong>
+            </p>
+          </div>
+
+          <!-- Window closed -->
+          <div class="vote__panel vote__panel--center" data-panel="closed" hidden>
+            <h1 class="vote__headline" data-i18n="vote.closedTitle">Voting for this screening is closed.</h1>
+            <p class="vote__where" data-film></p>
+            <p class="vote__fine" data-i18n="vote.closedText">Votes are only taken in the minutes right after the screening.</p>
+            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
+          </div>
+
+          <!-- Bad or missing code -->
+          <div class="vote__panel vote__panel--center" data-panel="unknown" hidden>
+            <h1 class="vote__headline" data-i18n="vote.unknownTitle">This code doesn't match a screening.</h1>
+            <p class="vote__fine" data-i18n="vote.unknownText">Scan the QR code shown in the room at the end of the screening.</p>
+            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
+          </div>
+
+          <!-- Network or configuration failure -->
+          <div class="vote__panel vote__panel--center" data-panel="error" hidden>
+            <h1 class="vote__headline" data-i18n="vote.errorTitle">Something went wrong.</h1>
+            <p class="vote__fine" data-i18n="vote.errorText">Check your connection and try scanning again.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/app.js?v=10"></script>
+  <script src="../assets/js/vote-config.js"></script>
+  <script src="../assets/js/vote.js"></script>
+</body>
+</html>

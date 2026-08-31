@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Passes — Merge Film Festival</title>
+  <meta name="description" content="Buy your Merge Film Festival pass — guest, industry and press accreditations." />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=30" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+</head>
+
+<body>
+  <div id="bgCanvas"></div>
+  <div id="bgMesh"></div>
+  <div id="bgGrain"></div>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Home">
+      <span class="brand__mark"><img src="../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
+      <span class="brand__text">Merge Film Festival</span>
+    </a>
+    <div class="nav__actions">
+      <a class="nav__cta-btn" href="index.html">
+        <span class="nav__cta-long" data-i18n="nav.passesLong">Get your pass</span>
+        <span class="nav__cta-short" data-i18n="nav.passesShort">Pass</span>
+      </a>
+      <div class="nav__lang-switch" aria-label="Language switch">
+        <a class="nav__lang-option" data-lang="it" href="#">IT</a>
+        <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
+        <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
+        <a class="nav__lang-option" data-lang="de" href="#">DE</a>
+      </div>
+      <div class="nav__dropdown">
+        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <div class="nav__panel">
+          <a href="../index.html" data-i18n="nav.home">Home</a>
+          <a href="index.html" data-i18n="nav.passes">Passes</a>
+          <a href="../press/index.html" data-i18n="nav.press">Press</a>
+          <a href="../in_competition/jury/young.html" data-i18n="nav.youngJury">Youth Jury</a>
+          <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
+          <div class="nav__panel-lang" aria-label="Language switch">
+            <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
+          </div>
+          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+      <span class="stain stain--br" aria-hidden="true"></span>
+      <div class="container reveal">
+        <p class="page-hero__kicker" data-i18n="passes.kicker">Accreditation • Festival 2026</p>
+        <h1 class="page-hero__title" data-i18n="passes.title">Passes</h1>
+        <p class="page-hero__subtitle" data-i18n="passes.intro">One pass, four days: every screening, every masterclass, the opening and the awards night. Choose the one that fits you.</p>
+        <div class="page-hero__actions">
+          <a class="btn btn--apply" href="#choose" data-i18n="passes.heroCta">See the passes</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section is-on-violet section--pre-footer" data-bg="violet" id="choose">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+
+        <!-- 1. Choose a pass ------------------------------------------------ -->
+        <div class="pass-flow" data-panel="choose">
+          <ul class="pass-cards reveal">
+            <li class="pass-card pass-card--violet">
+              <span class="pass-card__letter" aria-hidden="true">G</span>
+              <h2 class="pass-card__name" data-i18n="passes.guestName">Guest</h2>
+              <p class="pass-card__desc" data-i18n="passes.guestDesc">For everyone who simply wants to be there. Full access to screenings and public events.</p>
+              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
+              <p class="pass-card__note" data-i18n="passes.guestStudentNote">CHF 30.– for students, with proof of enrolment.</p>
+              <button class="btn btn--apply" type="button" data-choose="guest" data-i18n="passes.choose">Choose</button>
+            </li>
+
+            <li class="pass-card pass-card--red">
+              <span class="pass-card__letter" aria-hidden="true">I</span>
+              <h2 class="pass-card__name" data-i18n="passes.industryName">Industry</h2>
+              <p class="pass-card__desc" data-i18n="passes.industryDesc">For people working in film and production. Includes the industry programme and networking sessions.</p>
+              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
+              <p class="pass-card__note" data-i18n="passes.reviewNote">Subject to approval by the festival before payment.</p>
+              <button class="btn btn--apply" type="button" data-choose="industry" data-i18n="passes.request">Request</button>
+            </li>
+
+            <li class="pass-card pass-card--red">
+              <span class="pass-card__letter" aria-hidden="true">P</span>
+              <h2 class="pass-card__name" data-i18n="passes.pressName">Press</h2>
+              <p class="pass-card__desc" data-i18n="passes.pressDesc">For accredited journalists and critics. Includes press screenings and interview requests.</p>
+              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
+              <p class="pass-card__note" data-i18n="passes.reviewNote">Subject to approval by the festival before payment.</p>
+              <button class="btn btn--apply" type="button" data-choose="press" data-i18n="passes.request">Request</button>
+            </li>
+          </ul>
+
+          <div class="pass-invite reveal">
+            <p class="pass-invite__text" data-i18n="passes.inviteText">Delegation, sponsor, staff and media passes are issued by invitation. If we gave you a code, use it here.</p>
+            <button class="btn btn--ghost" type="button" data-choose="invite" data-i18n="passes.inviteCta">I have a code</button>
+          </div>
+        </div>
+
+        <!-- 2. The form ----------------------------------------------------- -->
+        <div class="pass-flow" data-panel="form" hidden>
+          <form class="form-card pass-form" id="passForm" novalidate>
+            <button class="pass-form__back" type="button" data-back data-i18n="passes.back">← Back</button>
+
+            <h2 class="pass-form__title" data-pass-title>Guest</h2>
+            <p class="form__desc" data-i18n="passes.formDesc">Your name and photo go on the badge. Everything else stays with the festival office.</p>
+
+            <!-- Guest only: full fare or student fare -->
+            <fieldset class="pass-fare" data-when="fare" hidden>
+              <legend class="pass-form__legend" data-i18n="passes.fareLegend">Fare</legend>
+              <label class="pass-radio">
+                <input type="radio" name="fare" value="guest" checked />
+                <span><span data-i18n="passes.fareFull">Full</span> — CHF 40.–</span>
+              </label>
+              <label class="pass-radio">
+                <input type="radio" name="fare" value="guest_student" />
+                <span><span data-i18n="passes.fareStudent">Student</span> — CHF 30.–</span>
+              </label>
+            </fieldset>
+
+            <!-- Invite only: which pass the code unlocks -->
+            <div class="form__field" data-when="invite-type" hidden>
+              <label class="pass-form__label" for="inviteType" data-i18n="passes.inviteTypeLabel">Which pass</label>
+              <select id="inviteType" name="invite_type">
+                <option value="delegation" data-i18n="passes.typeDelegation">Delegation</option>
+                <option value="sponsor" data-i18n="passes.typeSponsor">Sponsor</option>
+                <option value="staff" data-i18n="passes.typeStaff">Staff</option>
+                <option value="media" data-i18n="passes.typeMedia">Media</option>
+              </select>
+            </div>
+
+            <div class="pass-form__row">
+              <div class="form__field">
+                <input type="text" name="first_name" autocomplete="given-name" required
+                       placeholder="First name" data-i18n-attr="placeholder:passes.phFirst" />
+              </div>
+              <div class="form__field">
+                <input type="text" name="last_name" autocomplete="family-name" required
+                       placeholder="Last name" data-i18n-attr="placeholder:passes.phLast" />
+              </div>
+            </div>
+
+            <div class="form__field">
+              <input type="email" name="email" autocomplete="email" required
+                     placeholder="Email address" data-i18n-attr="placeholder:passes.phEmail" />
+            </div>
+
+            <div class="form__field" data-when="org" hidden>
+              <input type="text" name="org" data-org-input
+                     placeholder="Production company" data-i18n-attr="placeholder:passes.phOrgIndustry" />
+            </div>
+
+            <!-- Photo, resized in the browser before it is ever sent -->
+            <div class="form__field pass-photo">
+              <label class="pass-form__label" for="passPhoto" data-i18n="passes.photoLabel">Photo</label>
+              <p class="pass-form__hint" data-i18n="passes.photoHint">A clear portrait, like a passport photo. It is printed on your badge.</p>
+              <div class="pass-photo__row">
+                <span class="pass-photo__preview" data-photo-preview aria-hidden="true"></span>
+                <input class="pass-photo__input" id="passPhoto" type="file" name="photo"
+                       accept="image/jpeg,image/png,image/webp,image/heic" required />
+              </div>
+            </div>
+
+            <div class="form__field" data-when="proof" hidden>
+              <label class="pass-form__label" for="passProof" data-i18n="passes.proofLabel">Proof of enrolment</label>
+              <p class="pass-form__hint" data-i18n="passes.proofHint">Student card or enrolment certificate — image or PDF.</p>
+              <input id="passProof" type="file" name="proof"
+                     accept="image/jpeg,image/png,image/webp,image/heic,application/pdf" />
+            </div>
+
+            <div class="form__field" data-when="code">
+              <label class="pass-form__label" for="passCode" data-i18n="passes.codeLabel">Access code</label>
+              <p class="pass-form__hint" data-code-hint data-i18n="passes.codeHintOptional">If the festival gave you a code, enter it here and the pass is free.</p>
+              <input id="passCode" type="text" name="access_code" autocomplete="off" spellcheck="false"
+                     placeholder="MERGE-XXXX" data-i18n-attr="placeholder:passes.phCode" />
+              <p class="pass-form__code-state" data-code-state role="status" aria-live="polite"></p>
+            </div>
+
+            <label class="pass-consent">
+              <input type="checkbox" name="consent" required />
+              <span data-i18n-html="passes.consent">I agree to the processing of my data for the accreditation, as described in the privacy policy.</span>
+            </label>
+
+            <button class="btn" type="submit" data-submit-label data-i18n="passes.submitPay">Continue to payment</button>
+            <p class="form__status" data-status role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <!-- 3. Outcomes ----------------------------------------------------- -->
+        <div class="pass-flow" data-panel="issued" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="passes.issuedTitle">Your pass is ready</h2>
+            <p data-i18n="passes.issuedBody">We have sent the badge to your inbox. You can open it right now.</p>
+            <a class="btn btn--apply" href="#" data-badge-link data-i18n="passes.issuedCta">Open my badge</a>
+          </div>
+        </div>
+
+        <div class="pass-flow" data-panel="review" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="passes.reviewTitle">Request received</h2>
+            <p data-i18n="passes.reviewBody">We review press and industry requests within a few working days and write to you as soon as we decide. If it is approved you will get a link to complete the payment.</p>
+            <a class="btn btn--ghost" href="../index.html" data-i18n="passes.backHome">Back to the site</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer" data-bg="violet">
+    <div class="footer__wrap">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__eyebrow">Merge Film Festival</p>
+          <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
+          <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
+          <div class="footer__cta">
+            <a class="btn" href="index.html" data-i18n="nav.passesLong">Get your pass</a>
+          </div>
+        </div>
+        <div class="footer__panel">
+          <div class="footer__grid">
+            <div>
+              <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
+              <ul class="footer__links">
+                <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="index.html" data-i18n="nav.passes">Passes</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colInfo">Info</p>
+              <ul class="footer__links">
+                <li><a href="../press/index.html" data-i18n="nav.press">Press</a></li>
+                <li><a href="../contact/index.html" data-i18n="nav.contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer__title" data-i18n="footer.colUpdates">Get updates</p>
+              <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
+              <form class="nl-form nl-form--violet" novalidate>
+                <input class="nl-form__input" type="email" name="email" autocomplete="email" required
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
+                <p class="nl-form__status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <p class="footer__tiny">© <span>2026</span> Merge Film Festival</p>
+              <p class="footer__tiny"><span data-i18n="footer.credit">Website design &amp; development —</span> <a href="https://www.tommyzaffa.com" target="_blank" rel="noopener noreferrer">Thomas Zaffalon</a></p>
+              <p class="footer__tiny">
+                <a href="../legal/terms.html" data-i18n="footer.terms">Terms &amp; Conditions</a> —
+                <a href="../legal/privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+              </p>
+            </div>
+            <a class="footer__tiny" href="#top" data-i18n="footer.backTop">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/app.js?v=10"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/passes.js?v=1"></script>
+</body>
+</html>
