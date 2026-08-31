@@ -61,7 +61,17 @@
     return ["it", "en", "fr", "de"].indexOf(nav) >= 0 ? nav : "en";
   }
 
-  applyTranslations(initialLang());
+  var LANG = initialLang();
+  applyTranslations(LANG);
+
+  // For strings that are written from script rather than sitting in the markup.
+  function t(key, fallback) {
+    var dict = (window.MFF_I18N || {})[LANG] || (window.MFF_I18N || {}).en || {};
+    var node = dict;
+    var parts = key.split(".");
+    for (var i = 0; i < parts.length && node; i++) node = node[parts[i]];
+    return typeof node === "string" ? node : fallback;
+  }
 
   // --- load -----------------------------------------------------------------
 
@@ -72,8 +82,9 @@
     return;
   }
 
-  // The dashboard links here with ?print=1 to get artwork for the printer.
-  var cutSheet = new URLSearchParams(location.search).get("print") === "1";
+  // The dashboard links here with ?print=1 to get the artwork for the printer
+  // without anyone having to press anything.
+  var autoSave = new URLSearchParams(location.search).get("print") === "1";
 
   fetch(BASE + "/pass-badge?c=" + encodeURIComponent(code))
     .then(function (r) { return r.json(); })
@@ -81,7 +92,7 @@
       if (!res.ok) return show("missing");
       render(res.badge);
       show("badge");
-      if (cutSheet) prepareCutSheet();
+      if (autoSave) whenPhotoReady(savePdf);
     })
     .catch(function () { show("missing"); });
 
@@ -151,36 +162,161 @@
 
   // --- PDF ------------------------------------------------------------------
 
-  // Print rather than a generated file: the print stylesheet lays the badge out
-  // on one page and every browser turns that into a PDF. It stays vector-sharp,
-  // needs no library, and works offline.
-  var printBtn = document.querySelector("[data-print]");
-  if (printBtn) printBtn.addEventListener("click", function () { window.print(); });
+  // The browser's print dialog cannot be told a page size — Safari ignores
+  // `@page { size }` outright — so printing always dropped the card in the
+  // middle of an A4 and left someone to trim it by hand. Instead the card is
+  // rasterised at print resolution and wrapped in a one-page PDF that IS the
+  // card: 54 x 85 mm, full bleed, nothing to crop before it reaches a printer.
+  var MM_W = 54;
+  var MM_H = 85;
+  var DPI = 600;
+  var PT_W = MM_W * 72 / 25.4;
+  var PT_H = MM_H * 72 / 25.4;
 
-  // Artwork for the print shop, reached from the dashboard with ?print=1: the
-  // PDF page becomes the card itself — 54 x 85 mm, no margin, no trim border, no
-  // rounded corner (the rounding is a die, not part of the artwork). So the file
-  // can go straight to the printer with nothing to crop.
-  //
-  // @page cannot be reached from a class, hence a stylesheet built here rather
-  // than a rule in style.css.
-  function prepareCutSheet() {
-    var css = document.createElement("style");
-    css.textContent =
-      "@media print{" +
-        "@page{size:54mm 85mm;margin:0}" +
-        ".badge{border:0!important;border-radius:0!important}" +
-      "}";
-    document.head.appendChild(css);
+  // Fetched only when the file is actually asked for: at the door the badge has
+  // to open on one bar of signal, and showing it needs none of this.
+  var SHOT_URL = "https://cdn.jsdelivr.net/npm/modern-screenshot@4.6.0/dist/index.js";
+  var SHOT_SRI = "sha384-gGN1lMNOLP39es/9RsdeQtXj8dH/UyIcMRtuOf14OHZjXYzt7gsYXVcJ5enPlRbz";
 
-    // Wait for the portrait, or the printed card comes out with an empty frame.
-    var photo = document.querySelector("[data-photo]");
-    if (photo && photo.src && !photo.complete) {
-      photo.addEventListener("load", print, { once: true });
-      photo.addEventListener("error", print, { once: true });
-    } else {
-      print();
-    }
-    function print() { setTimeout(function () { window.print(); }, 120); }
+  function loadShot() {
+    if (window.modernScreenshot) return Promise.resolve(window.modernScreenshot);
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = SHOT_URL;
+      s.integrity = SHOT_SRI;
+      s.crossOrigin = "anonymous";
+      s.onload = function () {
+        window.modernScreenshot ? resolve(window.modernScreenshot) : reject(new Error("lib"));
+      };
+      s.onerror = function () { reject(new Error("lib")); };
+      document.head.appendChild(s);
+    });
   }
+
+  // Everything on the card is sized in cqw, so asking for 54 mm worth of pixels
+  // is the same drawing at a larger scale rather than a different layout. At
+  // 600 dpi the portrait and the QR are both scaled down, never up.
+  function cardImage() {
+    var card = document.querySelector("[data-badge]");
+    var px = Math.round(MM_W / 25.4 * DPI);
+    return loadShot().then(function (shot) {
+      return shot.domToCanvas(card, {
+        scale: px / card.getBoundingClientRect().width,
+        backgroundColor: "#ffffff",
+        // The rounded corner is a die and the shadow belongs to the screen: the
+        // sheet handed to a printer has to be a plain rectangle.
+        style: { borderRadius: "0", boxShadow: "none" },
+      });
+    }).then(function (canvas) {
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (blob) {
+          blob ? resolve({ blob: blob, w: canvas.width, h: canvas.height })
+               : reject(new Error("encode"));
+        }, "image/jpeg", 0.95);
+      });
+    });
+  }
+
+  // One page, one image, five objects. Writing the file out by hand instead of
+  // pulling in a PDF library keeps this page as light as the rest of it.
+  function pdfWithImage(jpeg, pxW, pxH) {
+    var enc = new TextEncoder();
+    var parts = [];
+    var offsets = [];
+    var len = 0;
+
+    function put(chunk) {
+      var bytes = typeof chunk === "string" ? enc.encode(chunk) : chunk;
+      parts.push(bytes);
+      len += bytes.length;
+    }
+    function obj(n, dict, stream) {
+      offsets[n] = len;
+      put(n + " 0 obj\n" + dict + "\n");
+      if (stream) { put("stream\n"); put(stream); put("\nendstream\n"); }
+      put("endobj\n");
+    }
+
+    // Scale the unit image up to the whole page: no margin, no offset.
+    var content = "q " + PT_W.toFixed(4) + " 0 0 " + PT_H.toFixed(4) + " 0 0 cm /Im0 Do Q";
+
+    // The binary comment stops anything downstream treating the file as text.
+    put(new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a,
+                        0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
+    obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+    obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+    obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " +
+           PT_W.toFixed(4) + " " + PT_H.toFixed(4) +
+           "] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>");
+    // DCTDecode is the JPEG the canvas already produced, stored byte for byte.
+    obj(4, "<< /Type /XObject /Subtype /Image /Width " + pxW + " /Height " + pxH +
+           " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " +
+           jpeg.length + " >>", jpeg);
+    obj(5, "<< /Length " + content.length + " >>", content);
+
+    var xref = len;
+    var table = "xref\n0 6\n0000000000 65535 f \n";
+    for (var i = 1; i <= 5; i++) {
+      table += ("0000000000" + offsets[i]).slice(-10) + " 00000 n \n";
+    }
+    put(table + "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n");
+
+    return new Blob(parts, { type: "application/pdf" });
+  }
+
+  function fileName() {
+    var name = (document.querySelector("[data-name]").textContent || "").trim();
+    var value = (document.querySelector("[data-code]").textContent || "").trim();
+    return ("Badge " + value + " " + name).replace(/[\\/:*?"<>|]+/g, "").trim() + ".pdf";
+  }
+
+  function save(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+  }
+
+  // The portrait comes over the network, so without this the card can be
+  // captured with an empty photo frame.
+  function whenPhotoReady(done) {
+    var photo = document.querySelector("[data-photo]");
+    if (!photo || !photo.getAttribute("src") || photo.complete) return done();
+    photo.addEventListener("load", done, { once: true });
+    photo.addEventListener("error", done, { once: true });
+  }
+
+  var saving = false;
+  var printBtn = document.querySelector("[data-print]");
+  var printLabel = printBtn && printBtn.querySelector("span");
+
+  function savePdf() {
+    if (saving) return;
+    saving = true;
+    var idle = printLabel && printLabel.textContent;
+    if (printBtn) printBtn.disabled = true;
+    if (printLabel) printLabel.textContent = t("badge.preparingPdf", "Preparing the file…");
+
+    cardImage()
+      .then(function (out) {
+        return out.blob.arrayBuffer().then(function (buf) {
+          save(pdfWithImage(new Uint8Array(buf), out.w, out.h), fileName());
+        });
+      })
+      .catch(function () {
+        if (printLabel) printLabel.textContent = t("badge.pdfError", "The file could not be prepared.");
+        return new Promise(function (r) { setTimeout(r, 6000); });
+      })
+      .then(function () {
+        saving = false;
+        if (printBtn) printBtn.disabled = false;
+        if (printLabel) printLabel.textContent = idle;
+      });
+  }
+
+  if (printBtn) printBtn.addEventListener("click", savePdf);
 })();
