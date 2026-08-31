@@ -10,7 +10,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="description" content="Merge Film Festival digital badge." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=31" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=34" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -36,16 +36,18 @@
 
     <div class="badge-state" data-panel="badge" hidden>
 
-      <!-- The badge itself. This block, and only this block, is what prints. -->
+      <!-- The badge itself. This block, and only this block, is what prints, and
+           it is exactly 54 x 85 mm so it can be cut out and worn on a lanyard. -->
       <article class="badge" data-badge>
         <header class="badge__head">
           <div class="badge__head-text">
             <p class="badge__festival">Merge Film Festival</p>
-            <p class="badge__edition">2026 — Lugano</p>
+            <p class="badge__edition" data-i18n="badge.edition">First edition</p>
+            <p class="badge__contact">info@mergefestival.ch</p>
           </div>
-          <!-- The pass type spelled out: it is what a volunteer reads across a
-               foyer to know what the holder may enter. -->
-          <span class="badge__type" data-type>Guest</span>
+          <!-- The mark a volunteer reads across a foyer to know what the holder
+               may enter. -->
+          <span class="badge__type" data-type>G</span>
         </header>
 
         <div class="badge__body">
@@ -70,21 +72,6 @@
           al 04.10.2026, in tutte le zone della Comunità Tariffale Arcobaleno,
           in seconda classe, (L)(TK)(V)
         </p>
-
-        <footer class="badge__sponsors">
-          <p class="badge__sponsors-label" data-i18n="badge.sponsorsLabel">With the support of</p>
-          <ul class="badge__logos">
-            <li><img src="../assets/img/logos/migros.png" alt="Percento culturale Migros Ticino" /></li>
-            <li><img src="../assets/img/logos/ubs.png" alt="UBS" /></li>
-            <li><img src="../assets/img/logos/ortega.svg" alt="Ortega Schule" /></li>
-            <li><img src="../assets/img/logos/lugano.png" alt="Città di Lugano" /></li>
-            <li><img src="../assets/img/logos/massagno.png" alt="Comune di Massagno" /></li>
-            <li><img src="../assets/img/logos/infogiovani.png" alt="Infogiovani" /></li>
-            <li><img src="../assets/img/logos/arcobaleno.png" alt="Arcobaleno" /></li>
-            <li><img src="../assets/img/logos/ffs.svg" alt="FFS" /></li>
-            <li><img src="../assets/img/logos/pestalozzi.png" alt="Hotel Pestalozzi Lugano" /></li>
-          </ul>
-        </footer>
       </article>
 
       <div class="badge-actions">
@@ -104,8 +91,8 @@
   <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
           integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
           crossorigin="anonymous"></script>
-  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/translations.js?v=18"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/badge.js?v=4"></script>
+  <script src="../assets/js/badge.js?v=5"></script>
 </body>
 </html>

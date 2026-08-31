@@ -72,12 +72,16 @@
     return;
   }
 
+  // The dashboard links here with ?print=1 to get artwork for the printer.
+  var cutSheet = new URLSearchParams(location.search).get("print") === "1";
+
   fetch(BASE + "/pass-badge?c=" + encodeURIComponent(code))
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) return show("missing");
       render(res.badge);
       show("badge");
+      if (cutSheet) prepareCutSheet();
     })
     .catch(function () { show("missing"); });
 
@@ -152,4 +156,31 @@
   // needs no library, and works offline.
   var printBtn = document.querySelector("[data-print]");
   if (printBtn) printBtn.addEventListener("click", function () { window.print(); });
+
+  // Artwork for the print shop, reached from the dashboard with ?print=1: the
+  // PDF page becomes the card itself — 54 x 85 mm, no margin, no trim border, no
+  // rounded corner (the rounding is a die, not part of the artwork). So the file
+  // can go straight to the printer with nothing to crop.
+  //
+  // @page cannot be reached from a class, hence a stylesheet built here rather
+  // than a rule in style.css.
+  function prepareCutSheet() {
+    var css = document.createElement("style");
+    css.textContent =
+      "@media print{" +
+        "@page{size:54mm 85mm;margin:0}" +
+        ".badge{border:0!important;border-radius:0!important}" +
+      "}";
+    document.head.appendChild(css);
+
+    // Wait for the portrait, or the printed card comes out with an empty frame.
+    var photo = document.querySelector("[data-photo]");
+    if (photo && photo.src && !photo.complete) {
+      photo.addEventListener("load", print, { once: true });
+      photo.addEventListener("error", print, { once: true });
+    } else {
+      print();
+    }
+    function print() { setTimeout(function () { window.print(); }, 120); }
+  }
 })();

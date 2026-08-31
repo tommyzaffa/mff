@@ -1826,6 +1826,20 @@ html.intro-armed #introOverlay {
 
 /* ---- the chooser -------------------------------------------------------- */
 
+/* The Arcobaleno day ticket is worth more than the pass itself, so it is stated
+   before the prices rather than buried in the small print. Solid plate for the
+   same reason as .pass-card below. */
+.pass-perk {
+  display: flex; flex-direction: column; gap: 6px;
+  margin: 0 0 18px; padding: 18px 22px; border-radius: 18px;
+  background: #2E1B52; color: #F5F3F8;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.pass-perk__label {
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.62;
+}
+.pass-perk__text { font-size: 0.98rem; line-height: 1.55; text-wrap: pretty; }
+
 .pass-cards {
   display: grid; gap: 18px; margin: 0 0 34px; padding: 0; list-style: none;
   grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
@@ -1904,6 +1918,15 @@ html.intro-armed #introOverlay {
 .pass-form__label { display: block; margin: 0 0 4px; font-size: 0.9rem; font-weight: 600; }
 .pass-form__hint { margin: 0 0 10px; font-size: 0.82rem; line-height: 1.5; opacity: 0.6; }
 
+/* Repeated right above the pay button so nobody reaches Stripe without knowing
+   the transport is in the price. */
+.pass-form__perk {
+  margin: 0 0 16px; padding: 12px 15px; border-radius: 14px;
+  font-size: 0.86rem; line-height: 1.5;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
 .pass-form__row { display: grid; gap: 0 14px; grid-template-columns: 1fr 1fr; }
 .pass-form__row[hidden] { display: none; }
 @media (max-width: 520px) { .pass-form__row { grid-template-columns: 1fr; } }
@@ -1927,13 +1950,37 @@ html.intro-armed #introOverlay {
   background: color-mix(in srgb, currentColor 9%, transparent);
 }
 
-.pass-photo__row { display: flex; align-items: center; gap: 16px; }
-.pass-photo__preview {
-  flex: 0 0 auto; width: 62px; height: 78px; border-radius: 12px;
-  background: color-mix(in srgb, currentColor 10%, transparent) center / cover no-repeat;
-  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+.pass-photo__input { display: block; width: 100%; font-size: 0.86rem; }
+
+/* The frame has the badge's photo proportions (36 x 45 mm): the crop made here
+   is the crop that is printed, so a wide snapshot with the face off to one side
+   can simply be dragged into place. */
+.pass-crop { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+.pass-crop[hidden] { display: none; }
+
+.pass-crop__frame {
+  flex: 0 0 auto; position: relative; overflow: hidden;
+  width: 132px; height: 165px; border-radius: 12px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  /* Without this the browser claims the gesture for scrolling and the photo
+     never moves on a phone — which is the case this whole control exists for. */
+  touch-action: none; cursor: grab;
 }
-.pass-photo__input { flex: 1 1 auto; min-width: 0; font-size: 0.86rem; }
+.pass-crop__frame.is-dragging { cursor: grabbing; }
+.pass-crop__img {
+  position: absolute; top: 0; left: 0; max-width: none;
+  user-select: none; -webkit-user-drag: none;
+}
+
+.pass-crop__side { flex: 1 1 190px; min-width: 0; }
+.pass-crop__side .pass-form__hint { margin-bottom: 12px; }
+.pass-crop__zoom { width: 100%; accent-color: currentColor; }
+
+@media (max-width: 460px) {
+  .pass-crop { flex-direction: column; align-items: stretch; }
+  .pass-crop__frame { align-self: center; }
+}
 
 .pass-form input[type="file"] { color: inherit; }
 
@@ -1999,11 +2046,25 @@ body.badge-page {
 
 /* ---- the card ----------------------------------------------------------- */
 
+/* A real 54 x 85 mm card, the size it is printed and worn at. Every measurement
+   inside is in cqw — 1cqw is 1% of the card's width — so the screen preview and
+   the printed card are the same drawing at two scales, and there is no second
+   set of print sizes to keep in step. (cqw resolves against the nearest
+   container ancestor, so the card sets `container-type` for its children and
+   sizes itself in ordinary units.) */
 .badge {
   --badge-colour: #4B2E83;
-  width: 100%; max-width: 360px; overflow: hidden;
+  /* The card's own width, restated as a variable: an element cannot use its own
+     container units, so `2.4cqw` here would silently resolve against the
+     viewport instead. Everything the card measures on ITSELF derives from this;
+     everything measured on a child is free to use cqw. */
+  --badge-w: min(84vw, 300px);
+  container-type: inline-size;
+  width: var(--badge-w); aspect-ratio: 54 / 85; overflow: hidden;
   display: flex; flex-direction: column;
-  border-radius: 26px; background: #fff; color: #0F0F12;
+  /* A printed card is die-cut, not a screen surface: 2.4% of the width is
+     1.3 mm, the softened corner of a real card rather than a UI pill. */
+  border-radius: calc(var(--badge-w) * 0.024); background: #fff; color: #0F0F12;
   box-shadow: 0 26px 60px rgba(0, 0, 0, 0.34);
 }
 
@@ -2011,18 +2072,31 @@ body.badge-page {
    badge so the card is recognisable before the type is read. The type colour
    lives in the chip beside it and in the QR. */
 .badge__head {
-  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex: 0 0 auto; position: relative;
+  display: flex; align-items: center; justify-content: space-between; gap: 3cqw;
   overflow: hidden;
-  padding: 20px 22px 18px; background: #2E1B54; color: #F3F2EF;
+  padding: 13cqw 5.5cqw 4.5cqw; background: #2E1B54; color: #F3F2EF;
+}
+/* The lanyard slot is punched through the top of the masthead, so the strip
+   above the wordmark has to stay empty. The outline is the punch guide for
+   whoever prints the card: 15 x 2.7 mm, centred, 2.7 mm down from the edge. */
+.badge__head::before {
+  content: ""; position: absolute; left: 50%; top: 5cqw;
+  width: 28cqw; height: 5cqw; transform: translateX(-50%);
+  border: 0.3cqw solid rgba(243, 242, 239, 0.3); border-radius: 2.5cqw;
 }
 .badge__head-text { min-width: 0; flex: 1 1 auto; }
 /* The wordmark is a name: it may never hyphenate or break across two lines, so
    it is pinned to one line and the type mark beside it gives way instead. */
 .badge__festival {
-  margin: 0; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.9;
-  white-space: nowrap; hyphens: none;
+  margin: 0; font-size: 4cqw; letter-spacing: 0.09em; text-transform: uppercase;
+  font-weight: 700; white-space: nowrap; hyphens: none;
 }
-.badge__edition { margin: 3px 0 0; font-size: 0.84rem; opacity: 0.72; }
+.badge__edition { margin: 1.4cqw 0 0; font-size: 3.5cqw; opacity: 0.74; }
+.badge__contact {
+  margin: 0.8cqw 0 0; font-size: 3.2cqw; opacity: 0.62;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 
 /* The mark a volunteer reads across a foyer: the single letter printed on the
    physical badge, on a plate in the colour of the pass. The hairline ring keeps
@@ -2030,78 +2104,65 @@ body.badge-page {
 .badge__type {
   flex: 0 0 auto;
   display: flex; align-items: center; justify-content: center;
-  width: 56px; height: 56px; border-radius: 16px;
-  background: var(--badge-colour); box-shadow: inset 0 0 0 1px rgba(243, 242, 239, 0.28);
-  font-family: var(--font-display); font-weight: 800; font-size: 2rem;
+  width: 19cqw; height: 19cqw; border-radius: 2.4cqw;
+  background: var(--badge-colour); box-shadow: inset 0 0 0 0.4cqw rgba(243, 242, 239, 0.28);
+  font-family: var(--font-display); font-weight: 800; font-size: 10.5cqw;
   line-height: 1; text-transform: uppercase; white-space: nowrap;
   color: #F3F2EF;
 }
 /* Staff is the one type spelled out in full, so it drops to a readable size. */
-.badge__type--word { font-size: 0.78rem; letter-spacing: 0.04em; }
+.badge__type--word { font-size: 3.4cqw; letter-spacing: 0.03em; }
 
-.badge__body { padding: 22px 22px 18px; text-align: center; }
+/* Takes the slack: whatever the header, code strip and transport line leave
+   over goes here, so the card always fills exactly 85 mm. */
+.badge__body {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2.6cqw; padding: 3.5cqw 5.5cqw; text-align: center;
+}
 
+/* Passport proportions (35 x 45 mm). It may shrink if a very long name takes a
+   third line, which is why the height is a basis rather than a fixed size. */
 .badge__photo {
-  width: 132px; height: 166px; margin: 0 auto 16px; overflow: hidden;
-  border-radius: 16px; background: #ecebe7;
+  width: 36cqw; height: 45cqw; flex: 0 1 auto; min-height: 0; overflow: hidden;
+  border-radius: 2.4cqw; background: #ecebe7;
 }
 .badge__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .badge__name {
   margin: 0; font-family: var(--font-display); font-weight: 700;
-  font-size: 1.42rem; line-height: 1.15; text-wrap: balance;
+  font-size: 6cqw; line-height: 1.15; text-wrap: balance;
 }
-.badge__org { margin: 7px 0 0; font-size: 0.9rem; opacity: 0.66; }
+.badge__org { margin: 0; font-size: 3.4cqw; opacity: 0.66; }
 .badge__org[hidden] { display: none; }
 
 .badge__code {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 22px; border-top: 1px solid #eae8e3; border-bottom: 1px solid #eae8e3;
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 4cqw;
+  padding: 3.5cqw 5.5cqw; border-top: 0.3cqw solid #eae8e3;
 }
-.badge__qr { flex: 0 0 auto; width: 76px; height: 76px; }
+.badge__qr { flex: 0 0 auto; width: 22cqw; height: 22cqw; }
 .badge__qr canvas, .badge__qr svg { width: 100%; height: 100%; display: block; }
 .badge__code-text { text-align: left; min-width: 0; }
 .badge__code-label {
-  display: block; font-size: 0.66rem; letter-spacing: 0.11em;
+  display: block; font-size: 2.9cqw; letter-spacing: 0.09em;
   text-transform: uppercase; opacity: 0.5;
 }
 .badge__code-value {
-  display: block; margin-top: 3px; font-size: 1.02rem;
-  letter-spacing: 0.06em; font-variant-numeric: tabular-nums;
+  display: block; margin-top: 1cqw; font-size: 5cqw;
+  letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-/* Full black on the white card, not the muted grey used for the sponsor label:
-   this line has to survive being read at arm's length on a bus. */
+/* Full black, not a muted grey: this line has to survive being read at arm's
+   length on a bus, and it is what makes the badge valid on public transport. */
 .badge__transport {
-  margin: 0; padding: 12px 22px;
-  border-bottom: 1px solid #eae8e3;
-  font-size: 0.63rem; line-height: 1.5; text-align: center;
+  flex: 0 0 auto;
+  margin: 0; padding: 2.8cqw 5cqw 3.4cqw;
+  border-top: 0.3cqw solid #eae8e3;
+  font-size: 2.7cqw; line-height: 1.4; text-align: center;
   color: #0F0F12; text-wrap: pretty; hyphens: none;
 }
-
-.badge__sponsors { padding: 15px 22px 19px; }
-.badge__sponsors-label {
-  margin: 0 0 10px; font-size: 0.6rem; letter-spacing: 0.13em;
-  text-transform: uppercase; opacity: 0.42; text-align: center;
-}
-.badge__logos {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 12px 16px; margin: 0; padding: 0; list-style: none;
-}
-.badge__logos img {
-  max-width: 62px; max-height: 20px; width: auto; height: auto;
-  object-fit: contain; opacity: 0.62;
-}
-/* The two civic marks carry more detail than a wordmark, so they get room. */
-.badge__logos img[src*="lugano"], .badge__logos img[src*="massagno"] { max-height: 26px; }
-/* Tall marks would otherwise come out half the width of a wordmark. */
-.badge__logos img[src*="infogiovani"], .badge__logos img[src*="pestalozzi"] { max-height: 26px; }
-/* An SVG with only a viewBox has no intrinsic size, so width/height:auto inside
-   a max-* box resolves to zero and the logo silently vanishes. Pin one axis. */
-.badge__logos img[src$=".svg"] { height: 22px; }
-/* "SBB CFF FFS" is nearly 9:1, so the shared cap would shrink it to 7px tall. */
-.badge__logos img[src*="ffs"] { height: auto; max-width: 80px; }
 
 /* ---- actions ------------------------------------------------------------ */
 
@@ -2137,14 +2198,15 @@ body.badge-page {
      the 380px cap would strand the card against the left edge of the sheet. */
   .badge-state { max-width: none; }
   .badge-actions, .badge-hint { display: none !important; }
-  /* 92mm ≈ 348px, near enough to the 360px the card is designed for that every
-     string keeps the line breaks it has on screen. The old 74mm was ~280px, and
-     both the wordmark and the accreditation code wrapped inside it. It is also
-     about the width of a real lanyard badge, so it can be cut out and worn. */
+  /* The finished size, so it can be cut out and worn. Everything inside is in
+     cqw, so the whole card simply rescales — nothing needs restating here. */
   .badge {
-    max-width: 92mm; margin: 0 auto; box-shadow: none;
+    --badge-w: 54mm;
+    width: var(--badge-w); height: 85mm; aspect-ratio: auto;
+    margin: 0 auto; box-shadow: none;
     border: 1px solid #ddd; break-inside: avoid;
   }
-  .badge__head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .badge__logos img { opacity: 1; }
+  .badge__head, .badge__type, .badge__qr {
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
 }

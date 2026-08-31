@@ -25,7 +25,6 @@
   var submitBtn = form.querySelector("[data-submit-label]");
   var titleEl = form.querySelector("[data-pass-title]");
   var photoInput = form.querySelector('input[name="photo"]');
-  var previewEl = form.querySelector("[data-photo-preview]");
   var codeInput = form.querySelector('input[name="access_code"]');
   var codeState = form.querySelector("[data-code-state]");
   var codeHint = form.querySelector("[data-code-hint]");
@@ -34,9 +33,9 @@
 
   // What the user picked on the chooser: guest | industry | press | invite.
   var choice = "guest";
-  // The photo, already shrunk. Kept apart from the file input because the
-  // browser will not let us write back to it.
-  var photoBlob = null;
+  // The file exactly as it was picked. Kept because a browser that cannot decode
+  // it (HEIC, mostly) gets no cropper, and then this is what we send.
+  var rawFile = null;
   var codeOk = false;
 
   // --- panels ---------------------------------------------------------------
@@ -167,53 +166,143 @@
 
   // --- photo ----------------------------------------------------------------
 
-  // Shrinking here rather than server-side keeps a 12 MP phone photo off the
-  // wire entirely: what leaves the browser is around 150 KB.
-  function shrink(file) {
+  // A phone photo is almost never a passport portrait: it is wide, and the face
+  // is off to one side. So the frame is the badge's own photo box and the
+  // applicant drags the image inside it — what they line up is what is printed.
+  // Cropping and re-encoding here also keeps a 12 MP original off the wire:
+  // what leaves the browser is a ~720 x 900 JPEG, around 150 KB.
+  var OUT_W = 720;
+  var OUT_H = 900;
+
+  var cropBox = form.querySelector("[data-crop]");
+  var cropFrame = form.querySelector("[data-crop-frame]");
+  var cropImg = form.querySelector("[data-crop-img]");
+  var cropZoom = form.querySelector("[data-crop-zoom]");
+
+  // The image's natural size, the zoom, and the offset of its top-left corner
+  // from the frame's, in frame pixels. Null while there is nothing to crop.
+  var view = null;
+
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+  // The scale at which the image just covers the frame is zoom 1, so the frame
+  // is never left with a gap however the photo is shaped.
+  function place() {
+    if (!view) return;
+    var fw = cropFrame.clientWidth;
+    var fh = cropFrame.clientHeight;
+    view.scale = Math.max(fw / view.w, fh / view.h) * view.zoom;
+    var dw = view.w * view.scale;
+    var dh = view.h * view.scale;
+    view.x = clamp(view.x, fw - dw, 0);
+    view.y = clamp(view.y, fh - dh, 0);
+    cropImg.style.width = dw + "px";
+    cropImg.style.height = dh + "px";
+    cropImg.style.transform = "translate(" + view.x + "px," + view.y + "px)";
+  }
+
+  function cropped() {
     return new Promise(function (resolve, reject) {
-      var url = URL.createObjectURL(file);
-      var img = new Image();
-      img.onload = function () {
-        URL.revokeObjectURL(url);
-        var max = 1000;
-        var scale = Math.min(1, max / Math.max(img.width, img.height));
-        var w = Math.round(img.width * scale);
-        var h = Math.round(img.height * scale);
-        var canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        canvas.toBlob(function (blob) {
-          blob ? resolve(blob) : reject(new Error("encode"));
-        }, "image/jpeg", 0.85);
-      };
-      img.onerror = function () {
-        URL.revokeObjectURL(url);
-        reject(new Error("decode"));
-      };
-      img.src = url;
+      var fw = cropFrame.clientWidth;
+      var fh = cropFrame.clientHeight;
+      var canvas = document.createElement("canvas");
+      canvas.width = OUT_W;
+      canvas.height = OUT_H;
+      // The visible window, expressed back in the original image's pixels.
+      canvas.getContext("2d").drawImage(
+        cropImg,
+        -view.x / view.scale, -view.y / view.scale,
+        fw / view.scale, fh / view.scale,
+        0, 0, OUT_W, OUT_H
+      );
+      canvas.toBlob(function (blob) {
+        blob ? resolve(blob) : reject(new Error("encode"));
+      }, "image/jpeg", 0.85);
     });
+  }
+
+  function hasPhoto() { return !!(view || rawFile); }
+
+  // Rendered at submit time rather than on every drag, so the blob can never be
+  // one gesture behind what the applicant is looking at.
+  function photo() {
+    if (!view) return Promise.resolve(rawFile);
+    return cropped().catch(function () { return rawFile; });
   }
 
   if (photoInput) {
     photoInput.addEventListener("change", function () {
       var file = photoInput.files && photoInput.files[0];
-      photoBlob = null;
-      if (previewEl) previewEl.style.backgroundImage = "";
-      if (!file) return;
+      view = null;
+      rawFile = file || null;
+      if (cropBox) cropBox.hidden = true;
+      if (!file || !cropBox) return;
 
-      shrink(file).then(function (blob) {
-        photoBlob = blob;
-        if (previewEl) {
-          previewEl.style.backgroundImage = 'url("' + URL.createObjectURL(blob) + '")';
-        }
-      }).catch(function () {
-        // HEIC on a browser that cannot decode it: send the original and let
-        // the server keep it as-is rather than blocking the application.
-        photoBlob = file;
+      var url = URL.createObjectURL(file);
+      var probe = new Image();
+      probe.onload = function () {
+        if (cropImg.src) URL.revokeObjectURL(cropImg.src);
+        cropImg.src = url;
+        cropBox.hidden = false;
+        if (cropZoom) cropZoom.value = "1";
+        view = { w: probe.naturalWidth, h: probe.naturalHeight, zoom: 1, x: 0, y: 0, scale: 1 };
+        // Start centred: the middle of a snapshot is the best guess we have.
+        var fw = cropFrame.clientWidth;
+        var fh = cropFrame.clientHeight;
+        var base = Math.max(fw / view.w, fh / view.h);
+        view.x = (fw - view.w * base) / 2;
+        view.y = (fh - view.h * base) / 2;
+        place();
+      };
+      probe.onerror = function () {
+        // HEIC on a browser that cannot decode it: no cropping is possible, so
+        // the original goes up as-is rather than blocking the application.
+        URL.revokeObjectURL(url);
+      };
+      probe.src = url;
+    });
+  }
+
+  var drag = null;
+  if (cropFrame) {
+    cropFrame.addEventListener("pointerdown", function (e) {
+      if (!view) return;
+      drag = { id: e.pointerId, x: e.clientX - view.x, y: e.clientY - view.y };
+      cropFrame.setPointerCapture(e.pointerId);
+      cropFrame.classList.add("is-dragging");
+      e.preventDefault();
+    });
+    cropFrame.addEventListener("pointermove", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      view.x = e.clientX - drag.x;
+      view.y = e.clientY - drag.y;
+      place();
+    });
+    ["pointerup", "pointercancel"].forEach(function (name) {
+      cropFrame.addEventListener(name, function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        drag = null;
+        cropFrame.classList.remove("is-dragging");
       });
     });
   }
+
+  if (cropZoom) {
+    cropZoom.addEventListener("input", function () {
+      if (!view) return;
+      // Zoom about the middle of the frame, so the face stays where it was put.
+      var fw = cropFrame.clientWidth;
+      var fh = cropFrame.clientHeight;
+      var next = parseFloat(cropZoom.value);
+      var k = next / view.zoom;
+      view.x = fw / 2 - (fw / 2 - view.x) * k;
+      view.y = fh / 2 - (fh / 2 - view.y) * k;
+      view.zoom = next;
+      place();
+    });
+  }
+
+  window.addEventListener("resize", place);
 
   // --- access code ----------------------------------------------------------
 
@@ -282,9 +371,7 @@
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(data.get("email"))) return bad("email_invalid");
     if (orgInput && orgInput.required && !orgInput.value.trim()) return bad("org_required");
     if (!form.consent.checked) return bad("consent_required");
-    if (!photoBlob) return bad("photo_required");
-
-    data.set("photo", photoBlob, "photo.jpg");
+    if (!hasPhoto()) return bad("photo_required");
 
     var proof = form.querySelector('input[name="proof"]');
     if (proof && !proof.closest("[data-when]").hidden) {
@@ -296,7 +383,10 @@
     submitBtn.disabled = true;
     statusEl.textContent = t("passes.sending", "Sending…");
 
-    fetch(ENDPOINT, { method: "POST", body: data })
+    photo().then(function (blob) {
+      data.set("photo", blob, "photo.jpg");
+      return fetch(ENDPOINT, { method: "POST", body: data });
+    })
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (!res.ok) {

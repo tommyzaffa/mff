@@ -7,7 +7,7 @@
   <title>Passes — Merge Film Festival</title>
   <meta name="description" content="Buy your Merge Film Festival pass — guest, industry and press accreditations." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=31" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=34" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -70,6 +70,13 @@
 
         <!-- 1. Choose a pass ------------------------------------------------ -->
         <div class="pass-flow" data-panel="choose">
+          <!-- Every pass doubles as an Arcobaleno day ticket, which is worth more
+               than the pass itself. Say it before the price, not after. -->
+          <p class="pass-perk reveal">
+            <span class="pass-perk__label" data-i18n="passes.perkLabel">Included with every pass</span>
+            <span class="pass-perk__text" data-i18n="passes.perkTransport">Free travel on all public transport in Ticino — trains, buses and funiculars in every Arcobaleno zone — from 1 to 4 October 2026.</span>
+          </p>
+
           <ul class="pass-cards reveal">
             <li class="pass-card pass-card--violet">
               <span class="pass-card__letter" aria-hidden="true">G</span>
@@ -158,14 +165,24 @@
                      placeholder="Production company" data-i18n-attr="placeholder:passes.phOrgIndustry" />
             </div>
 
-            <!-- Photo, resized in the browser before it is ever sent -->
+            <!-- Photo, cropped and resized in the browser before it is ever sent -->
             <div class="form__field pass-photo">
               <label class="pass-form__label" for="passPhoto" data-i18n="passes.photoLabel">Photo</label>
               <p class="pass-form__hint" data-i18n="passes.photoHint">A clear portrait, like a passport photo. It is printed on your badge.</p>
-              <div class="pass-photo__row">
-                <span class="pass-photo__preview" data-photo-preview aria-hidden="true"></span>
-                <input class="pass-photo__input" id="passPhoto" type="file" name="photo"
-                       accept="image/jpeg,image/png,image/webp,image/heic" required />
+              <input class="pass-photo__input" id="passPhoto" type="file" name="photo"
+                     accept="image/jpeg,image/png,image/webp,image/heic" required />
+
+              <!-- The frame has the badge's photo proportions, so whatever is
+                   lined up here is exactly what gets printed. -->
+              <div class="pass-crop" data-crop hidden>
+                <div class="pass-crop__frame" data-crop-frame>
+                  <img class="pass-crop__img" data-crop-img alt="" draggable="false" />
+                </div>
+                <div class="pass-crop__side">
+                  <p class="pass-form__hint" data-i18n="passes.cropHint">Drag the photo to centre your face, and use the slider to zoom in.</p>
+                  <input class="pass-crop__zoom" type="range" min="1" max="3" step="0.01" value="1"
+                         data-crop-zoom aria-label="Zoom" data-i18n-attr="aria-label:passes.cropZoom" />
+                </div>
               </div>
             </div>
 
@@ -188,6 +205,8 @@
               <input type="checkbox" name="consent" required />
               <span data-i18n-html="passes.consent">I agree to the processing of my data for the accreditation, as described in the privacy policy.</span>
             </label>
+
+            <p class="pass-form__perk" data-i18n="passes.perkTransportShort">Your pass is also a day ticket for every public transport in Ticino, 1–4 October 2026.</p>
 
             <button class="btn" type="submit" data-submit-label data-i18n="passes.submitPay">Continue to payment</button>
             <p class="form__status" data-status role="status" aria-live="polite"></p>
@@ -269,9 +288,9 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=16"></script>
+  <script src="../assets/js/translations.js?v=18"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/passes.js?v=2"></script>
+  <script src="../assets/js/passes.js?v=3"></script>
 </body>
 </html>
