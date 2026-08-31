@@ -77,7 +77,32 @@ window.MFF_LEGAL.terms.en = `
 <p>Access to exclusive areas is guaranteed only when in possession of a valid entry ticket or written confirmation from the Festival. One of these must be presented at the entrance in printed form or on a digital device.</p>
 <h4>3.9. Data Protection</h4>
 <p>To facilitate purchases on the website without inconvenience, the Festival requests basic information such as the purchaser's name, address, phone number and email address, as well as the purchaser's credit card details and certain information relating to orders and deliveries. The Festival may communicate personal data to its affiliates or to trusted companies or individuals to process it on its behalf, in accordance with the instructions given by the Festival and in compliance with the Festival's data protection and privacy policy.</p>
-<h3>4. Festival Products</h3>
+<h3>4. Accreditations (Passes) and the Digital Badge</h3>
+<h4>4.1. Scope</h4>
+<p>In addition to tickets for individual events, the Festival issues personal accreditations ("passes") granting access, for the whole duration of the edition, to the events provided for the chosen accreditation category as described on the website at the time of the request. These provisions apply to all accreditations, whether free of charge or paid.</p>
+<h4>4.2. Application and Issuance</h4>
+<p>An accreditation is requested by completing the relevant form on the website, which asks for a first and last name, a valid email address and a passport-style photograph in which the applicant is clearly recognisable. Submitting a request does not constitute acceptance: the contract is concluded when the Festival issues the badge.</p>
+<p>The badge is digital. At the end of the procedure the Festival sends a personal link to the email address provided, showing the badge together with the holder's name, photograph, accreditation category and QR code. It is the applicant's responsibility to provide a correct email address and to check that it works; the Festival is not liable for non-delivery caused by an incorrect address or by spam filters.</p>
+<h4>4.3. Accreditations Subject to Review and Invitation-Only Accreditations</h4>
+<p>Press and Industry accreditation requests are reviewed by the organisation, which communicates the outcome by email. No amount is charged before approval. The Festival decides at its sole discretion and is not required to give reasons for a refusal.</p>
+<p>Delegation, Sponsor, Staff and Media accreditations cannot be purchased and are obtained solely through an access code issued by the Festival.</p>
+<h4>4.4. Reduced Student Fare</h4>
+<p>The reduced student fare is reserved for persons duly enrolled at an educational institution and requires a document attesting to that status to be uploaded. Obtaining the reduced fare on the basis of untrue statements or documents entails the immediate revocation of the accreditation without any right to a refund.</p>
+<h4>4.5. Access Codes</h4>
+<p>Access codes issued by the Festival are reserved for the person to whom they were given, may not be transferred to third parties and may carry a maximum number of uses and an expiry date. The Festival may deactivate them at any time in the event of improper use or unauthorised distribution.</p>
+<h4>4.6. Payment</h4>
+<p>Paid accreditations are paid for online through the payment service provider appointed by the Festival. Payment details are entered directly on the provider's pages and neither pass through nor are stored by the Festival's systems. The badge is issued only once confirmation of payment has been received.</p>
+<h4>4.7. Personal Nature and Use of the Badge</h4>
+<p>The accreditation is strictly personal and non-transferable. The transfer, resale, sharing, reproduction and any alteration of the badge or of the QR code it contains are prohibited. The Festival may request identification in order to verify that the bearer is the holder and may refuse access in the event of a discrepancy, without any right to a refund.</p>
+<p>The accreditation grants access subject to the seats available and does not guarantee admission to events that are already full. The Festival may reserve seats or restrict access to certain events for organisational reasons.</p>
+<h4>4.8. Refunds and Revocation</h4>
+<p>Once issued, an accreditation is non-refundable, non-returnable and non-exchangeable, and no right of withdrawal applies, save as provided in article 6 in the event of the Festival being cancelled. A change to the programme does not give rise to any right to a refund.</p>
+<p>The Festival may revoke an accreditation, without a refund, in the event of a breach of these GTC, of untrue information given at the time of the request, of improper use of the badge, or of conduct that jeopardises the running of the Festival or the safety of those present.</p>
+<h4>4.9. Loss of the Badge</h4>
+<p>As the badge is digital, it can be reopened at any time from the link received by email. Should that link be lost, the holder may contact the Festival, which will send it again to the registered email address.</p>
+<h4>4.10. Data Protection</h4>
+<p>The processing of the data collected in order to issue accreditations, including the photograph and any document attesting to student status, is described in the Festival's privacy policy.</p>
+<h3>5. Festival Products</h3>
 <p>All products purchased from the Festival, online or in person, may be returned by the customer within 30 days. The date of the postmark or the date on which the item is returned in person will be considered as the return date.</p>
 <p>To be eligible for return, the item must not have been used or worn and must be in its original packaging. The following items will not be accepted for return:</p>
 <ul>
@@ -89,27 +114,27 @@ window.MFF_LEGAL.terms.en = `
 </ul>
 <p>The product must be sent by post, together with proof of purchase, to: PoPaCi Pictures SNC, Strada dra Caveta 14, 6967 Dino. The postal costs for returning the product are the customer's responsibility.</p>
 <p>Upon receipt and inspection of the return, the Festival will inform the customer as to whether their return request has been accepted or rejected. If the request is approved, the amount paid will be refunded and a credit will be automatically applied to the original payment method used.</p>
-<h3>5. Cancellation of the Festival, Its Services or an Event due to Force Majeure</h3>
+<h3>6. Cancellation of the Festival, Its Services or an Event due to Force Majeure</h3>
 <p>Cancellation of the Festival for legal, cantonal, federal or international decree or regulatory reasons shall result in automatic cancellation of any contractual restrictions with visitors, without further consequences for the Festival.</p>
 <p>The Festival may also be cancelled for urgent reasons, or to safeguard overriding public or private interests. In doing so, it will automatically withdraw from the contractual relationship with its visitors, without further consequences for the Festival.</p>
 <p>In such circumstances, the Festival undertakes to promptly inform visitors whose obligations remain fully in force, to the extent that their rights are not materially affected. Tickets or subscriptions already sold will be refunded in accordance with the provisions of these GTC.</p>
-<h3>6. Website</h3>
-<h4>6.1. Website Functionality</h4>
+<h3>7. Website</h3>
+<h4>7.1. Website Functionality</h4>
 <p>The Festival takes all reasonable care to ensure that the information provided on the website is complete, accurate and up to date. However, the Festival cannot be held responsible for the completeness, accuracy and currency of the information on the website or for errors in data transmission, and disclaims any liability for damages or complications arising therefrom, to the extent that such damages or complications are not intentionally caused or do not arise from gross negligence on the part of the Festival.</p>
 <p>The visitor also authorises the Festival to use images and footage taken during the Festival for promotional purposes, without entitlement to compensation.</p>
-<h4>6.2. Protection of Copyright relating to the Website and its Content</h4>
+<h4>7.2. Protection of Copyright relating to the Website and its Content</h4>
 <p>All website content is protected by copyright and, unless specifically stated otherwise, belongs exclusively and entirely to the Festival. The website may contain references to third-party protection rights and use by third parties that must likewise be respected.</p>
 <p>Reproduction, in whole or in part, dissemination, transmission by electronic or other means, alteration, linking or use for public or commercial purposes of the Festival's website without the prior written authorisation of the Festival is prohibited.</p>
 <p>All content in electronic format and/or on the website in the form of texts, graphics, logos, icon buttons, images, audio files, digital downloads, data archives and software is the property of the Festival and is protected by copyright law. Any unauthorised or unlawful use may be prosecuted.</p>
-<h3>7. Civil and Criminal Liability</h3>
+<h3>8. Civil and Criminal Liability</h3>
 <p>To the extent permitted by applicable law, the Festival disclaims any liability, including for negligence, material damage, injury or other damage to property of visitors or ticket holders resulting from the organisation of an event or the provision of services. In particular, the Festival shall not be held responsible or liable in any way for damages caused by the cancellation or poor organisation of an event or the unsatisfactory provision of services.</p>
 <p>The right to exercise further legal remedies and to seek compensation for breach of the GTC remains unaffected.</p>
-<h3>8. Food and Beverages</h3>
+<h3>9. Food and Beverages</h3>
 <p>The Festival is not responsible for allergies or reactions to food products or beverages.</p>
-<h3>9. Exercise of Rights, Waiver Clause, Applicable Law and Jurisdiction</h3>
+<h3>10. Exercise of Rights, Waiver Clause, Applicable Law and Jurisdiction</h3>
 <p>The fact that the Festival may not exercise one of the rights or enforce one of the provisions set out in these GTC shall not be construed as a waiver of the right to exercise those rights. If any provision of the GTC should be found invalid or unenforceable by a court, the remaining provisions shall continue to be effective.</p>
 <p>Legal obligations not specified in these GTC are governed by and shall be interpreted in accordance with Swiss law. The ordinary courts of Lugano have exclusive jurisdiction to settle any dispute arising from or in connection with these GTC.</p>
-<h3>10. Amendments and Updates to the GTC</h3>
+<h3>11. Amendments and Updates to the GTC</h3>
 <p>The Festival has the right to correct or amend the GTC at any time. Amendments to these GTC will be published on the website.</p>
 <p><strong>Last updated:</strong> 22/03/2026</p>
 `;
@@ -186,7 +211,32 @@ window.MFF_LEGAL.terms.it = `
 <p>L'accesso ai settori esclusivi è garantito unicamente se in possesso di un biglietto d'ingresso valido o di una conferma scritta del Festival. Uno di questi elementi deve essere mostrata all'ingresso in versione stampata oppure su un supporto digitale.</p>
 <h4>3.9. Protezione dei dati</h4>
 <p>Per semplificare gli acquisti sul sito web senza che si verifichino inconvenienti inopportuni, il Festival richiede la comunicazione di informazioni elementari come il nome, l'indirizzo, il numero di telefono e l'indirizzo e-mail dell'acquirente, oltre alle coordinate della carta di credito dell'acquirente e ad alcune informazioni in relazione a ordini e consegne. Il Festival potrebbe comunicare dati personali a proprie società consociate o ad aziende o soggetti affidabili affinché li elaborino per suo conto, secondo le istruzioni impartite dal Festival e conformemente a quanto disposto dalla Policy sulla protezione dei dati e sulla privacy del Festival.</p>
-<h3>4. Prodotti del Festival</h3>
+<h3>4. Accrediti (pass) e badge digitale</h3>
+<h4>4.1. Oggetto</h4>
+<p>Oltre ai biglietti per i singoli eventi, il Festival emette accrediti nominativi ("pass") che danno accesso, per l'intera durata dell'edizione, agli eventi previsti per la categoria di accredito scelta, come descritti sul sito web al momento della richiesta. Le presenti disposizioni si applicano a tutti gli accrediti, gratuiti o a pagamento.</p>
+<h4>4.2. Richiesta ed emissione</h4>
+<p>L'accredito si richiede compilando l'apposito modulo sul sito web, che richiede nome e cognome, un indirizzo e-mail valido e una fotografia in formato tessera che ritragga il richiedente in modo riconoscibile. L'inoltro della richiesta non costituisce accettazione: il contratto si perfeziona con l'emissione del badge da parte del Festival.</p>
+<p>Il badge è digitale. Al termine della procedura il Festival invia all'indirizzo e-mail indicato un collegamento personale che mostra il badge, comprensivo di nome, fotografia, categoria di accredito e codice QR. È onere del richiedente indicare un indirizzo e-mail corretto e verificarne il funzionamento; il Festival non risponde della mancata ricezione dovuta a un indirizzo errato o a filtri antispam.</p>
+<h4>4.3. Accrediti soggetti a valutazione e accrediti su invito</h4>
+<p>Le richieste di accredito Press e Industry sono sottoposte a valutazione da parte dell'organizzazione, che ne comunica l'esito via e-mail. Nessun importo viene addebitato prima dell'approvazione. Il Festival decide a proprio insindacabile giudizio e non è tenuto a motivare un rifiuto.</p>
+<p>Gli accrediti Delegation, Sponsor, Staff e Media non sono acquistabili e si ottengono unicamente tramite un codice di accesso rilasciato dal Festival.</p>
+<h4>4.4. Tariffa ridotta per studenti</h4>
+<p>La tariffa ridotta per studenti è riservata a chi risulta regolarmente iscritto a un istituto di formazione e richiede il caricamento di un documento che ne attesti lo status. L'ottenimento della tariffa ridotta sulla base di dichiarazioni o documenti non veritieri comporta la revoca immediata dell'accredito senza diritto ad alcun rimborso.</p>
+<h4>4.5. Codici di accesso</h4>
+<p>I codici di accesso rilasciati dal Festival sono riservati al soggetto cui sono stati consegnati, non sono cedibili a terzi e possono prevedere un numero massimo di utilizzi e una data di scadenza. Il Festival può disattivarli in qualsiasi momento in caso di uso improprio o di diffusione non autorizzata.</p>
+<h4>4.6. Pagamento</h4>
+<p>Il pagamento degli accrediti a pagamento avviene online tramite il prestatore di servizi di pagamento incaricato dal Festival. I dati del mezzo di pagamento sono inseriti direttamente sulle pagine del prestatore e non transitano né sono conservati dai sistemi del Festival. Il badge viene emesso soltanto una volta ricevuta la conferma dell'avvenuto pagamento.</p>
+<h4>4.7. Carattere personale e uso del badge</h4>
+<p>L'accredito è strettamente personale e non cedibile. Sono vietati la cessione, la rivendita, la condivisione, la riproduzione e qualsiasi alterazione del badge o del codice QR in esso contenuto. Il Festival può chiedere l'esibizione di un documento d'identità per verificare la corrispondenza tra il detentore e l'intestatario e rifiutare l'accesso in caso di difformità, senza diritto ad alcun rimborso.</p>
+<p>L'accredito dà diritto all'accesso nei limiti dei posti disponibili e non garantisce l'ammissione a eventi già al completo. Il Festival può riservare posti o limitare l'accesso a determinati eventi per esigenze organizzative.</p>
+<h4>4.8. Rimborsi e revoca</h4>
+<p>Una volta emesso, l'accredito non è rimborsabile, restituibile o sostituibile e non è previsto alcun diritto di recesso, salvo quanto disposto all'articolo 6 in caso di annullamento del Festival. Una variazione del programma non dà diritto ad alcun rimborso.</p>
+<p>Il Festival può revocare un accredito, senza rimborso, in caso di violazione dei presenti TCG, di informazioni non veritiere fornite al momento della richiesta, di uso improprio del badge o di comportamenti che compromettano lo svolgimento del Festival o la sicurezza delle persone.</p>
+<h4>4.9. Smarrimento del badge</h4>
+<p>Poiché il badge è digitale, può essere riaperto in qualsiasi momento dal collegamento ricevuto per e-mail. In caso di perdita di tale collegamento il titolare può contattare il Festival, che lo invia nuovamente all'indirizzo e-mail registrato.</p>
+<h4>4.10. Protezione dei dati</h4>
+<p>Il trattamento dei dati raccolti per l'emissione degli accrediti, compresi la fotografia e l'eventuale documento attestante lo status di studente, è descritto nell'informativa sulla privacy del Festival.</p>
+<h3>5. Prodotti del Festival</h3>
 <p>Tutti i prodotti acquistati presso il Festival, online o fisicamente, potranno essere restituiti dal cliente entro 30 giorni. Come data del reso si considererà la data del timbro postale o quella in cui l'articolo è restituito di persona.</p>
 <p>Per poter essere reso, l'articolo non deve essere stato utilizzato o indossato e deve essere contenuto nella confezione originale. Non si accetterà la restituzione di quanto elencato di seguito:</p>
 <ul>
@@ -198,27 +248,27 @@ window.MFF_LEGAL.terms.it = `
 </ul>
 <p>Il prodotto dovrà essere inviato per posta, corredato del suo giustificativo d'acquisto a: PoPaCi Pictures SNC, Strada dra Caveta 14, 6967 Dino. Le spese postali per la spedizione dei prodotti resi sono a carico del cliente.</p>
 <p>Ricevuto e ispezionato il reso, il Festival informerà il cliente in merito all'accettazione o al rifiuto della sua richiesta di reso. Se la richiesta è approvata, il prezzo pagato sarà rimborsato e un credito sarà applicato automaticamente al metodo di pagamento originario utilizzato.</p>
-<h3>5. Annullamento del Festival, di suoi servizi o di un evento per cause di forza maggiore</h3>
+<h3>6. Annullamento del Festival, di suoi servizi o di un evento per cause di forza maggiore</h3>
 <p>L'annullamento del Festival, per motivi legali, decreti o disposizioni cantonali, federali o internazionali, determinerà il recesso automatico da qualsivoglia restrizione contrattuale con i visitatori, senza ulteriori conseguenze per il Festival.</p>
 <p>Anche per motivi di urgenza, necessità o salvaguardia di prevalenti interessi di carattere pubblico o privato, il Festival verrà annullato. In tal modo recederà in automatico dalla relazione contrattuale con i suoi visitatori, senza ulteriori conseguenze per il Festival.</p>
 <p>In siffatte eventualità il Festival si impegna a informare tempestivamente i visitatori i cui obblighi rimangono totalmente in essere, nelle misure in cui i loro diritti non siano sensibilmente limitati. I biglietti o abbonamenti già venduti verranno restituiti secondo le disposizioni presenti in questi TCG.</p>
-<h3>6. Sito web</h3>
-<h4>6.1. Funzionalità del sito web</h4>
+<h3>7. Sito web</h3>
+<h4>7.1. Funzionalità del sito web</h4>
 <p>Il Festival adotta tutta la ragionevole attenzione per garantire che le informazioni fornite dal sito web siano complete, accurate e aggiornate. Tuttavia, il Festival non può rispondere in merito alla completezza, alla precisione e all'aggiornamento delle informazioni riportate sul sito web o per errori nella trasmissione dei dati e declina qualsiasi responsabilità per danni o complicazioni da ciò insorgenti, nella misura in cui detti danni o complicazioni non siano intenzionalmente causati o insorgano da gravi negligenze da parte del Festival.</p>
 <p>Il visitatore autorizza inoltre il Festival a utilizzare immagini e riprese effettuate durante il Festival per finalità promozionali, senza diritto a compenso.</p>
-<h4>6.2. Protezione del diritto d'autore relativo al sito web e al suo contenuto</h4>
+<h4>7.2. Protezione del diritto d'autore relativo al sito web e al suo contenuto</h4>
 <p>Tutti i contenuti del sito web sono tutelati dal diritto d'autore e, a meno che non sia specificatamente dichiarato diversamente, appartengono esclusivamente e interamente al Festival. Il sito web potrebbe contenere indicazioni concernenti diritti di protezione di terzi e uso da parte di terzi che devono essere parimenti rispettati.</p>
 <p>La riproduzione, per intero o in parte, la divulgazione, la trasmissione per via elettronica o tramite altri mezzi, l'alterazione, il collegamento o l'uso per fini di carattere pubblico o commerciale del sito web del Festival senza la previa autorizzazione scritta del Festival sono proibiti.</p>
 <p>Tutti i contenuti in formato elettronico e/o riportati sul sito web sotto forma di testi, grafica, loghi, pulsanti con icone, immagini, file audio, download digitali, archivi dati e software sono proprietà del Festival e protetti dalle norme sul diritto d'autore. Qualsiasi utilizzo non autorizzato o illecito è perseguibile per legge.</p>
-<h3>7. Responsabilità civile e penale</h3>
+<h3>8. Responsabilità civile e penale</h3>
 <p>Nella misura consentita dalle leggi vigenti, il Festival declina qualsiasi responsabilità, anche per casi di colpa, danni materiali, lesioni o altri danni alle cose nei confronti di visitatori o detentori di biglietti risultanti dall'organizzazione di un evento o dall'erogazione di servizi. In particolare, il Festival non sarà ritenuto responsabile o perseguibile in alcun modo per danni causati dall'annullamento o da un'organizzazione scadente di un evento o dalla prestazione insoddisfacente di servizi.</p>
 <p>Si fanno salvi l'esercizio di ulteriori diritti e la richiesta di risarcimenti derivanti da violazioni dei TCG.</p>
-<h3>8. Cibo e bevande</h3>
+<h3>9. Cibo e bevande</h3>
 <p>Il Festival non risponde di allergie o reazioni a prodotti alimentari o bevande.</p>
-<h3>9. Esercizio di diritti, clausola liberatoria, diritto applicabile e foro competente</h3>
+<h3>10. Esercizio di diritti, clausola liberatoria, diritto applicabile e foro competente</h3>
 <p>Il fatto che il Festival potrebbe non avvalersi di uno dei diritti o non applicare una delle disposizioni enunciati nei presenti TCG non può essere considerato una rinuncia ad avvalersi dell'esercizio di detti diritti. Se una clausola delle TCG dovesse essere ritenuta invalida o inapplicabile da un tribunale, le rimanenti disposizioni continueranno a essere produttive di effetti.</p>
 <p>Gli obblighi di legge non specificati nei presenti TCG sono disciplinati dal diritto svizzero e saranno interpretati conformemente ad esso. I tribunali ordinari di Lugano hanno giurisdizione esclusiva di comporre qualsivoglia controversia insorga in virtù dei presenti TCG o in relazione ad esse.</p>
-<h3>10. Modifiche e adeguamenti dei TCG</h3>
+<h3>11. Modifiche e adeguamenti dei TCG</h3>
 <p>Il Festival ha il diritto di correggere o modificare le TCG in qualsiasi momento. Le modifiche apportate alle presenti TCG saranno pubblicate sul sito web.</p>
 <p><strong>Ultimo aggiornamento:</strong> 22/03/2026</p>
 `;
@@ -295,7 +345,32 @@ window.MFF_LEGAL.terms.fr = `
 <p>L'accès aux secteurs exclusifs est garanti uniquement si l'on est en possession d'un billet d'entrée valide ou d'une confirmation écrite du Festival. L'un de ces éléments doit être présenté à l'entrée en version imprimée ou sur un support numérique.</p>
 <h4>3.9. Protection des données</h4>
 <p>Pour faciliter les achats sur le site web sans inconvénients inopportuns, le Festival demande la communication d'informations élémentaires telles que le nom, l'adresse, le numéro de téléphone et l'adresse e-mail de l'acheteur, ainsi que les coordonnées de la carte de crédit de l'acheteur et quelques informations relatives aux commandes et aux livraisons. Le Festival pourrait communiquer des données personnelles à ses sociétés affiliées ou à des entreprises ou sujets de confiance afin qu'ils les traitent en son nom, selon les instructions données par le Festival et conformément à sa Politique de protection des données et de la vie privée.</p>
-<h3>4. Produits du Festival</h3>
+<h3>4. Accréditations (pass) et badge numérique</h3>
+<h4>4.1. Objet</h4>
+<p>Outre les billets pour des événements isolés, le Festival délivre des accréditations nominatives (« pass ») donnant accès, pendant toute la durée de l'édition, aux événements prévus pour la catégorie d'accréditation choisie, tels que décrits sur le site web au moment de la demande. Les présentes dispositions s'appliquent à toutes les accréditations, gratuites ou payantes.</p>
+<h4>4.2. Demande et délivrance</h4>
+<p>L'accréditation se demande en remplissant le formulaire prévu à cet effet sur le site web, qui requiert un nom et un prénom, une adresse e-mail valable et une photographie d'identité sur laquelle le demandeur est clairement reconnaissable. L'envoi de la demande ne vaut pas acceptation : le contrat est conclu lors de la délivrance du badge par le Festival.</p>
+<p>Le badge est numérique. Au terme de la procédure, le Festival envoie à l'adresse e-mail indiquée un lien personnel affichant le badge, avec le nom, la photographie, la catégorie d'accréditation et le code QR. Il incombe au demandeur d'indiquer une adresse e-mail correcte et d'en vérifier le bon fonctionnement ; le Festival ne répond pas d'une non-réception due à une adresse erronée ou à des filtres antispam.</p>
+<h4>4.3. Accréditations soumises à évaluation et accréditations sur invitation</h4>
+<p>Les demandes d'accréditation Press et Industry sont soumises à l'évaluation de l'organisation, qui en communique le résultat par e-mail. Aucun montant n'est débité avant l'approbation. Le Festival décide à sa libre appréciation et n'est pas tenu de motiver un refus.</p>
+<p>Les accréditations Delegation, Sponsor, Staff et Media ne peuvent pas être achetées et s'obtiennent uniquement au moyen d'un code d'accès délivré par le Festival.</p>
+<h4>4.4. Tarif réduit pour les étudiants</h4>
+<p>Le tarif réduit pour les étudiants est réservé aux personnes régulièrement inscrites dans un établissement de formation et exige le téléchargement d'un document attestant ce statut. L'obtention du tarif réduit sur la base de déclarations ou de documents mensongers entraîne la révocation immédiate de l'accréditation, sans droit à un quelconque remboursement.</p>
+<h4>4.5. Codes d'accès</h4>
+<p>Les codes d'accès délivrés par le Festival sont réservés à la personne à laquelle ils ont été remis, ne sont pas cessibles à des tiers et peuvent prévoir un nombre maximal d'utilisations ainsi qu'une date d'expiration. Le Festival peut les désactiver à tout moment en cas d'usage abusif ou de diffusion non autorisée.</p>
+<h4>4.6. Paiement</h4>
+<p>Le paiement des accréditations payantes s'effectue en ligne auprès du prestataire de services de paiement mandaté par le Festival. Les données du moyen de paiement sont saisies directement sur les pages du prestataire et ne transitent ni ne sont conservées par les systèmes du Festival. Le badge n'est délivré qu'une fois la confirmation du paiement reçue.</p>
+<h4>4.7. Caractère personnel et usage du badge</h4>
+<p>L'accréditation est strictement personnelle et incessible. La cession, la revente, le partage, la reproduction et toute altération du badge ou du code QR qu'il contient sont interdits. Le Festival peut exiger la présentation d'une pièce d'identité afin de vérifier que le porteur est bien le titulaire et refuser l'accès en cas de divergence, sans droit à un quelconque remboursement.</p>
+<p>L'accréditation donne accès dans la limite des places disponibles et ne garantit pas l'admission à des événements déjà complets. Le Festival peut réserver des places ou limiter l'accès à certains événements pour des motifs d'organisation.</p>
+<h4>4.8. Remboursements et révocation</h4>
+<p>Une fois délivrée, l'accréditation n'est ni remboursable, ni reprise, ni échangeable, et aucun droit de rétractation ne s'applique, sous réserve de l'article 6 en cas d'annulation du Festival. Une modification du programme ne donne droit à aucun remboursement.</p>
+<p>Le Festival peut révoquer une accréditation, sans remboursement, en cas de violation des présentes CG, d'informations mensongères fournies lors de la demande, d'usage abusif du badge ou de comportements compromettant le déroulement du Festival ou la sécurité des personnes.</p>
+<h4>4.9. Perte du badge</h4>
+<p>Le badge étant numérique, il peut être rouvert à tout moment depuis le lien reçu par e-mail. En cas de perte de ce lien, le titulaire peut contacter le Festival, qui le renvoie à l'adresse e-mail enregistrée.</p>
+<h4>4.10. Protection des données</h4>
+<p>Le traitement des données collectées en vue de la délivrance des accréditations, y compris la photographie et l'éventuel document attestant le statut d'étudiant, est décrit dans la politique de confidentialité du Festival.</p>
+<h3>5. Produits du Festival</h3>
 <p>Tous les produits achetés auprès du Festival, en ligne ou physiquement, pourront être retournés par le client dans un délai de 30 jours. La date de retour sera considérée comme étant la date du cachet postal ou celle à laquelle l'article est retourné en personne.</p>
 <p>Pour pouvoir être retourné, l'article ne doit pas avoir été utilisé ou porté et doit être contenu dans son emballage d'origine. Le retour des éléments suivants ne sera pas accepté :</p>
 <ul>
@@ -307,27 +382,27 @@ window.MFF_LEGAL.terms.fr = `
 </ul>
 <p>Le produit devra être envoyé par courrier, accompagné de son justificatif d'achat à : PoPaCi Pictures SNC, Strada dra Caveta 14, 6967 Dino. Les frais postaux pour l'envoi des produits retournés sont à la charge du client.</p>
 <p>Une fois le retour reçu et inspecté, le Festival informera le client de l'acceptation ou du refus de sa demande de retour. Si la demande est approuvée, le prix payé sera remboursé et un crédit sera appliqué automatiquement au mode de paiement original utilisé.</p>
-<h3>5. Annulation du Festival, de ses services ou d'un événement pour cas de force majeure</h3>
+<h3>6. Annulation du Festival, de ses services ou d'un événement pour cas de force majeure</h3>
 <p>L'annulation du Festival, pour des raisons légales, décrets ou dispositions cantonaux, fédéraux ou internationaux, entraînera la résiliation automatique de toute restriction contractuelle avec les visiteurs, sans autres conséquences pour le Festival.</p>
 <p>Aussi pour des raisons d'urgence, de nécessité ou de sauvegarde d'intérêts prépondérants de caractère public ou privé, le Festival sera annulé. Il se retirera ainsi automatiquement de la relation contractuelle avec ses visiteurs, sans autres conséquences pour le Festival.</p>
 <p>En de telles éventualités, le Festival s'engage à informer promptement les visiteurs dont les obligations restent totalement en vigueur, dans la mesure où leurs droits ne sont pas sensiblement limités. Les billets ou abonnements déjà vendus seront restitués conformément aux dispositions présentes dans ces CG.</p>
-<h3>6. Site web</h3>
-<h4>6.1. Fonctionnalités du site web</h4>
+<h3>7. Site web</h3>
+<h4>7.1. Fonctionnalités du site web</h4>
 <p>Le Festival prend toutes les précautions raisonnables pour garantir que les informations fournies par le site web soient complètes, exactes et actualisées. Cependant, le Festival ne peut répondre de l'exhaustivité, de l'exactitude et de la mise à jour des informations figurant sur le site web ou d'erreurs dans la transmission des données, et décline toute responsabilité pour les dommages ou complications en résultant, dans la mesure où ces dommages ou complications ne sont pas intentionnellement causés ou ne résultent pas de négligences graves de la part du Festival.</p>
 <p>Le visiteur autorise en outre le Festival à utiliser des images et des enregistrements réalisés pendant le Festival à des fins promotionnelles, sans droit à rémunération.</p>
-<h4>6.2. Protection du droit d'auteur relatif au site web et à son contenu</h4>
+<h4>7.2. Protection du droit d'auteur relatif au site web et à son contenu</h4>
 <p>Tous les contenus du site web sont protégés par le droit d'auteur et, sauf mention contraire spécifique, appartiennent exclusivement et entièrement au Festival. Le site web pourrait contenir des indications concernant des droits de protection de tiers et leur utilisation par des tiers qui doivent être pareillement respectés.</p>
 <p>La reproduction, en tout ou en partie, la divulgation, la transmission par voie électronique ou par d'autres moyens, l'altération, la liaison ou l'utilisation à des fins de caractère public ou commercial du site web du Festival sans l'autorisation écrite préalable du Festival sont interdites.</p>
 <p>Tous les contenus en format électronique et/ou figurant sur le site web sous forme de textes, graphiques, logos, boutons avec icônes, images, fichiers audio, téléchargements numériques, archives de données et logiciels sont la propriété du Festival et protégés par les normes sur le droit d'auteur. Toute utilisation non autorisée ou illicite est poursuivable par la loi.</p>
-<h3>7. Responsabilité civile et pénale</h3>
+<h3>8. Responsabilité civile et pénale</h3>
 <p>Dans la mesure permise par les lois en vigueur, le Festival décline toute responsabilité, même en cas de faute, de dommages matériels, de blessures ou d'autres dommages aux biens à l'égard des visiteurs ou des détenteurs de billets résultant de l'organisation d'un événement ou de la prestation de services. En particulier, le Festival ne sera pas tenu responsable ou poursuivable de quelque manière que ce soit pour les dommages causés par l'annulation ou par une mauvaise organisation d'un événement ou par la prestation insuffisante de services.</p>
 <p>L'exercice de droits supplémentaires et la demande d'indemnisations résultant de violations des CG restent réservés.</p>
-<h3>8. Nourriture et boissons</h3>
+<h3>9. Nourriture et boissons</h3>
 <p>Le Festival n'est pas responsable des allergies ou des réactions aux produits alimentaires ou aux boissons.</p>
-<h3>9. Exercice des droits, clause libératoire, droit applicable et for compétent</h3>
+<h3>10. Exercice des droits, clause libératoire, droit applicable et for compétent</h3>
 <p>Le fait que le Festival pourrait ne pas se prévaloir d'un des droits ou ne pas appliquer une des dispositions énoncés dans les présentes CG ne peut être considéré comme une renonciation à exercer ces droits. Si une clause des CG devait être jugée invalide ou inapplicable par un tribunal, les dispositions restantes continueront à produire leurs effets.</p>
 <p>Les obligations légales non spécifiées dans les présentes CG sont régies par le droit suisse et seront interprétées conformément à celui-ci. Les tribunaux ordinaires de Lugano ont juridiction exclusive pour régler tout litige naissant en vertu des présentes CG ou en relation avec celles-ci.</p>
-<h3>10. Modifications et adaptations des CG</h3>
+<h3>11. Modifications et adaptations des CG</h3>
 <p>Le Festival a le droit de corriger ou de modifier les CG à tout moment. Les modifications apportées aux présentes CG seront publiées sur le site web.</p>
 <p><strong>Dernière mise à jour :</strong> 22/03/2026</p>
 `;
@@ -404,7 +479,32 @@ window.MFF_LEGAL.terms.de = `
 <p>Der Zugang zu exklusiven Bereichen ist nur garantiert, wenn ein gültiges Eintrittsbillet oder eine schriftliche Bestätigung des Festivals vorhanden ist. Eines dieser Elemente muss am Einlass in gedruckter Form oder auf einem digitalen Träger vorgezeigt werden.</p>
 <h4>3.9. Datenschutz</h4>
 <p>Um Einkäufe auf der Website ohne störende Unannehmlichkeiten zu vereinfachen, verlangt das Festival die Übermittlung grundlegender Informationen wie Name, Adresse, Telefonnummer und E-Mail-Adresse des Käufers, sowie die Kreditkartendaten des Käufers und einige Informationen zu Bestellungen und Lieferungen. Das Festival könnte personenbezogene Daten an eigene verbundene Unternehmen oder an vertrauenswürdige Firmen oder Personen weitergeben, damit diese sie in seinem Namen gemäß den Anweisungen des Festivals und im Einklang mit der Datenschutz- und Privatsphären-Richtlinie des Festivals verarbeiten.</p>
-<h3>4. Festivalprodukte</h3>
+<h3>4. Akkreditierungen (Pässe) und digitales Badge</h3>
+<h4>4.1. Gegenstand</h4>
+<p>Neben Tickets für einzelne Veranstaltungen gibt das Festival personalisierte Akkreditierungen („Pässe“) aus, die für die gesamte Dauer der Ausgabe Zugang zu den für die gewählte Akkreditierungskategorie vorgesehenen Veranstaltungen gewähren, wie sie zum Zeitpunkt der Anfrage auf der Website beschrieben sind. Diese Bestimmungen gelten für alle Akkreditierungen, ob kostenlos oder kostenpflichtig.</p>
+<h4>4.2. Antrag und Ausstellung</h4>
+<p>Die Akkreditierung wird über das entsprechende Formular auf der Website beantragt, das Vor- und Nachname, eine gültige E-Mail-Adresse und ein Passfoto verlangt, auf dem die antragstellende Person klar erkennbar ist. Die Einreichung des Antrags stellt keine Annahme dar: Der Vertrag kommt mit der Ausstellung des Badges durch das Festival zustande.</p>
+<p>Das Badge ist digital. Am Ende des Vorgangs sendet das Festival an die angegebene E-Mail-Adresse einen persönlichen Link, der das Badge mit Name, Foto, Akkreditierungskategorie und QR-Code anzeigt. Es obliegt der antragstellenden Person, eine korrekte E-Mail-Adresse anzugeben und deren Funktion zu prüfen; das Festival haftet nicht für einen Nichterhalt aufgrund einer falschen Adresse oder von Spamfiltern.</p>
+<h4>4.3. Prüfungspflichtige Akkreditierungen und Akkreditierungen auf Einladung</h4>
+<p>Anfragen für Press- und Industry-Akkreditierungen werden von der Organisation geprüft, die das Ergebnis per E-Mail mitteilt. Vor der Genehmigung wird kein Betrag belastet. Das Festival entscheidet nach freiem Ermessen und ist nicht verpflichtet, eine Ablehnung zu begründen.</p>
+<p>Die Akkreditierungen Delegation, Sponsor, Staff und Media können nicht gekauft werden und sind ausschliesslich über einen vom Festival ausgegebenen Zugangscode erhältlich.</p>
+<h4>4.4. Ermässigter Studierendentarif</h4>
+<p>Der ermässigte Studierendentarif ist Personen vorbehalten, die ordentlich an einer Bildungseinrichtung eingeschrieben sind, und setzt das Hochladen eines entsprechenden Nachweises voraus. Wird der ermässigte Tarif aufgrund unwahrer Angaben oder Dokumente erlangt, führt dies zum sofortigen Entzug der Akkreditierung ohne Anspruch auf Rückerstattung.</p>
+<h4>4.5. Zugangscodes</h4>
+<p>Die vom Festival ausgegebenen Zugangscodes sind der Person vorbehalten, der sie ausgehändigt wurden, sind nicht an Dritte übertragbar und können eine Höchstzahl an Verwendungen sowie ein Ablaufdatum vorsehen. Das Festival kann sie bei missbräuchlicher Verwendung oder unbefugter Verbreitung jederzeit deaktivieren.</p>
+<h4>4.6. Bezahlung</h4>
+<p>Kostenpflichtige Akkreditierungen werden online über den vom Festival beauftragten Zahlungsdienstleister bezahlt. Die Zahlungsdaten werden direkt auf den Seiten des Dienstleisters eingegeben; sie durchlaufen die Systeme des Festivals nicht und werden dort nicht gespeichert. Das Badge wird erst ausgestellt, nachdem die Zahlungsbestätigung eingegangen ist.</p>
+<h4>4.7. Persönlicher Charakter und Nutzung des Badges</h4>
+<p>Die Akkreditierung ist streng persönlich und nicht übertragbar. Die Weitergabe, der Weiterverkauf, das Teilen, die Vervielfältigung und jede Veränderung des Badges oder des darin enthaltenen QR-Codes sind untersagt. Das Festival kann die Vorlage eines Ausweises verlangen, um zu prüfen, ob die vorweisende Person die Inhaberin ist, und bei Abweichungen den Zutritt ohne Anspruch auf Rückerstattung verweigern.</p>
+<p>Die Akkreditierung gewährt Zutritt im Rahmen der verfügbaren Plätze und garantiert keinen Einlass zu bereits ausgebuchten Veranstaltungen. Das Festival kann aus organisatorischen Gründen Plätze reservieren oder den Zutritt zu bestimmten Veranstaltungen beschränken.</p>
+<h4>4.8. Rückerstattung und Entzug</h4>
+<p>Eine einmal ausgestellte Akkreditierung ist weder rückerstattbar noch rückgabe- oder umtauschfähig, und es besteht kein Widerrufsrecht, vorbehalten Artikel 6 im Falle einer Absage des Festivals. Eine Programmänderung begründet keinen Anspruch auf Rückerstattung.</p>
+<p>Das Festival kann eine Akkreditierung ohne Rückerstattung entziehen bei Verstössen gegen diese AGB, bei unwahren Angaben im Antrag, bei missbräuchlicher Nutzung des Badges oder bei Verhalten, das den Ablauf des Festivals oder die Sicherheit der Anwesenden gefährdet.</p>
+<h4>4.9. Verlust des Badges</h4>
+<p>Da das Badge digital ist, kann es jederzeit über den per E-Mail erhaltenen Link erneut geöffnet werden. Geht dieser Link verloren, kann sich die Inhaberin oder der Inhaber an das Festival wenden, das ihn erneut an die registrierte E-Mail-Adresse sendet.</p>
+<h4>4.10. Datenschutz</h4>
+<p>Die Bearbeitung der für die Ausstellung der Akkreditierungen erhobenen Daten, einschliesslich des Fotos und eines allfälligen Studiennachweises, ist in der Datenschutzerklärung des Festivals beschrieben.</p>
+<h3>5. Festivalprodukte</h3>
 <p>Alle beim Festival gekauften Produkte, online oder physisch, können vom Kunden innerhalb von 30 Tagen zurückgegeben werden. Als Rückgabedatum gilt das Datum des Poststempels oder das Datum, an dem der Artikel persönlich zurückgegeben wird.</p>
 <p>Um zurückgegeben werden zu können, darf der Artikel weder benutzt noch getragen worden sein und muss in der Originalverpackung enthalten sein. Die Rückgabe der folgenden Artikel wird nicht akzeptiert:</p>
 <ul>
@@ -416,27 +516,27 @@ window.MFF_LEGAL.terms.de = `
 </ul>
 <p>Das Produkt muss per Post zusammen mit dem Kaufbeleg an folgende Adresse gesendet werden: PoPaCi Pictures SNC, Strada dra Caveta 14, 6967 Dino. Die Portokosten für die Rücksendung von zurückgegebenen Produkten gehen zu Lasten des Kunden.</p>
 <p>Nach Erhalt und Prüfung der Rücksendung wird das Festival den Kunden über die Annahme oder Ablehnung seines Rückgabegesuchs informieren. Wird dem Gesuch entsprochen, wird der bezahlte Preis erstattet und eine Gutschrift automatisch auf die ursprünglich verwendete Zahlungsmethode angewendet.</p>
-<h3>5. Absage des Festivals, seiner Dienstleistungen oder einer Veranstaltung aufgrund höherer Gewalt</h3>
+<h3>6. Absage des Festivals, seiner Dienstleistungen oder einer Veranstaltung aufgrund höherer Gewalt</h3>
 <p>Die Absage des Festivals aus rechtlichen Gründen, Erlässen oder kantonalen, föderalen oder internationalen Bestimmungen führt zur automatischen Aufhebung jeglicher vertraglicher Bindung mit den Besuchern, ohne weitere Folgen für das Festival.</p>
 <p>Auch aus Gründen der Dringlichkeit, Notwendigkeit oder des Schutzes überwiegender öffentlicher oder privater Interessen wird das Festival abgesagt. Es löst damit automatisch die Vertragsbeziehung mit seinen Besuchern auf, ohne weitere Folgen für das Festival.</p>
 <p>In solchen Fällen verpflichtet sich das Festival, die Besucher, deren Verpflichtungen vollständig bestehen bleiben, so weit rechtzeitig zu informieren, als ihre Rechte nicht erheblich eingeschränkt werden. Bereits verkaufte Tickets oder Abonnements werden gemäß den Bestimmungen in diesen AGB zurückerstattet.</p>
-<h3>6. Website</h3>
-<h4>6.1. Funktionalität der Website</h4>
+<h3>7. Website</h3>
+<h4>7.1. Funktionalität der Website</h4>
 <p>Das Festival wendet alle vernünftige Sorgfalt auf, um sicherzustellen, dass die von der Website bereitgestellten Informationen vollständig, genau und aktuell sind. Das Festival kann jedoch keine Gewähr für die Vollständigkeit, Genauigkeit und Aktualität der auf der Website enthaltenen Informationen oder für Fehler bei der Datenübertragung übernehmen und lehnt jede Haftung für daraus entstehende Schäden oder Komplikationen ab, sofern diese Schäden oder Komplikationen nicht absichtlich verursacht werden oder aus schwerwiegender Fahrlässigkeit des Festivals resultieren.</p>
 <p>Der Besucher ermächtigt das Festival außerdem, während des Festivals aufgenommene Bilder und Aufnahmen zu Werbezwecken zu verwenden, ohne Anspruch auf eine Vergütung.</p>
-<h4>6.2. Schutz des Urheberrechts in Bezug auf die Website und ihren Inhalt</h4>
+<h4>7.2. Schutz des Urheberrechts in Bezug auf die Website und ihren Inhalt</h4>
 <p>Alle Inhalte der Website sind urheberrechtlich geschützt und gehören, sofern nicht ausdrücklich anders angegeben, ausschließlich und vollständig dem Festival. Die Website könnte Hinweise auf Schutzrechte Dritter und deren Nutzung durch Dritte enthalten, die gleichermassen zu respektieren sind.</p>
 <p>Die Reproduktion, ganz oder teilweise, die Verbreitung, die elektronische oder anderweitige Übertragung, die Veränderung, die Verlinkung oder die Nutzung der Festival-Website zu öffentlichen oder kommerziellen Zwecken ohne die vorherige schriftliche Genehmigung des Festivals sind verboten.</p>
 <p>Alle Inhalte in elektronischem Format und/oder auf der Website in Form von Texten, Grafiken, Logos, Schaltflächen mit Symbolen, Bildern, Audiodateien, digitalen Downloads, Datenarchiven und Software sind Eigentum des Festivals und durch Urheberrechtsvorschriften geschützt. Jede unbefugte oder rechtswidrige Nutzung ist gesetzlich strafbar.</p>
-<h3>7. Zivil- und strafrechtliche Haftung</h3>
+<h3>8. Zivil- und strafrechtliche Haftung</h3>
 <p>Soweit nach geltendem Recht zulässig, lehnt das Festival jede Haftung ab, auch für Fälle von Verschulden, Sachschäden, Verletzungen oder andere Sachschäden gegenüber Besuchern oder Ticketinhabern, die sich aus der Organisation einer Veranstaltung oder der Erbringung von Dienstleistungen ergeben. Insbesondere wird das Festival in keiner Weise für Schäden haftbar gemacht, die durch die Absage oder eine mangelhafte Organisation einer Veranstaltung oder durch die unzureichende Erbringung von Dienstleistungen verursacht wurden.</p>
 <p>Die Ausübung weiterer Rechte und die Geltendmachung von Schadensersatzansprüchen aus Verstößen gegen die AGB bleiben vorbehalten.</p>
-<h3>8. Speisen und Getränke</h3>
+<h3>9. Speisen und Getränke</h3>
 <p>Das Festival übernimmt keine Verantwortung für Allergien oder Reaktionen auf Lebensmittel oder Getränke.</p>
-<h3>9. Ausübung von Rechten, Freistellungsklausel, anwendbares Recht und zuständiges Gericht</h3>
+<h3>10. Ausübung von Rechten, Freistellungsklausel, anwendbares Recht und zuständiges Gericht</h3>
 <p>Der Umstand, dass das Festival möglicherweise eines der Rechte oder eine der in diesen AGB dargelegten Bestimmungen nicht in Anspruch nimmt oder anwendet, kann nicht als Verzicht auf die Ausübung dieser Rechte angesehen werden. Sollte eine Klausel der AGB von einem Gericht als ungültig oder nicht durchsetzbar angesehen werden, bleiben die verbleibenden Bestimmungen weiterhin wirksam.</p>
 <p>Die in diesen AGB nicht spezifizierten gesetzlichen Verpflichtungen unterliegen dem Schweizer Recht und werden gemäß diesem ausgelegt. Die ordentlichen Gerichte von Lugano haben ausschliessliche Zuständigkeit zur Beilegung jeglicher Streitigkeiten, die aufgrund dieser AGB oder im Zusammenhang mit diesen entstehen.</p>
-<h3>10. Änderungen und Anpassungen der AGB</h3>
+<h3>11. Änderungen und Anpassungen der AGB</h3>
 <p>Das Festival hat das Recht, die AGB jederzeit zu berichtigen oder zu ändern. Die an diesen AGB vorgenommenen Änderungen werden auf der Website veröffentlicht.</p>
 <p><strong>Letzte Aktualisierung:</strong> 22/03/2026</p>
 `;

@@ -283,7 +283,11 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .btn--ghost:hover { box-shadow: none; }
 .is-on-violet .btn { --btn-bg: var(--cream); --btn-fg: var(--violet); }
 .is-on-violet .btn--ghost { --btn-bg: transparent; --btn-fg: var(--paper); }
-.btn--apply, .is-on-violet .btn--apply { --btn-bg: var(--violet); --btn-fg: #fff; }
+/* The primary call to action: violet on a cream section. On violet it keeps the
+   ordinary inversion (`.is-on-violet .btn` above) — forcing violet here made the
+   button vanish into the background on phones, where inner heroes flip to
+   violet. */
+.btn--apply { --btn-bg: var(--violet); --btn-fg: #fff; }
 .legal-card a.btn--apply { color: #fff; text-decoration: none; }
 .legal-card a.btn--apply:hover { color: #fff; }
 
@@ -365,6 +369,12 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   white-space: normal;
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
   box-shadow: 0 6px 18px rgba(46, 27, 84, 0.25);
+}
+/* Over a violet hero the violet pill dissolves into the background, so it flips
+   to cream — but only while the bar itself is transparent: once scrolled the
+   header wears a cream wash and the violet pill is the readable one again. */
+.site-header:not([data-header-theme="cream"]):not(.is-scrolled) .nav__cta-btn {
+  background: var(--cream); color: var(--violet);
 }
 .nav__cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(46, 27, 84, 0.35); }
 .nav__cta-short { display: none; }

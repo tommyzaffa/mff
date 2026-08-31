@@ -48,6 +48,26 @@ Deno.serve(async (req) => {
         return ok();
       }
 
+      // A pass we already withdrew must not come back to life because an old
+      // checkout link was finally opened and paid.
+      if (pass.status !== "awaiting_payment" && pass.status !== "paid") {
+        await logEvent(passId, "error", `paid while ${pass.status}, ignored`, "stripe");
+        return ok();
+      }
+
+      // The session has to be the one we opened for this pass, and it has to
+      // carry the price we asked for. Only our own account can produce a
+      // correctly signed event, so this is belt and braces — but the belt is
+      // what stops a stale or mismatched session from issuing a badge.
+      if (pass.stripe_session_id && session.id !== pass.stripe_session_id) {
+        await logEvent(passId, "error", `session mismatch: ${String(session.id)}`, "stripe");
+        return ok();
+      }
+      if (Number(session.amount_total ?? 0) < pass.amount_cents) {
+        await logEvent(passId, "error", `underpaid: ${String(session.amount_total)}`, "stripe");
+        return ok();
+      }
+
       await db().from("passes").update({
         status: "paid",
         paid_at: new Date().toISOString(),

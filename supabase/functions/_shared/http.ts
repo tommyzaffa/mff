@@ -29,8 +29,13 @@ export function json(req: Request, body: unknown, status = 200): Response {
 
 // Errors carry a machine-readable `code` so the page can show a translated
 // message instead of whatever English string happens to be in here.
+//
+// The `detail` is whatever Postgres or Storage said, which is useful in the
+// function log and nobody else's business: a 500 tells the caller only that it
+// broke, while a 4xx is about something they typed and can be explained.
 export function fail(req: Request, code: string, status = 400, detail?: string): Response {
-  return json(req, { ok: false, error: code, detail }, status);
+  if (detail && status >= 500) console.error(`${code}: ${detail}`);
+  return json(req, { ok: false, error: code, ...(status < 500 && detail ? { detail } : {}) }, status);
 }
 
 export function html(body: string, status = 200): Response {
