@@ -2260,6 +2260,135 @@ html.intro-armed #introOverlay {
 .door-step:disabled { opacity: 0.35; cursor: default; }
 
 /* ==========================================================================
+   The door of the room — /scan/
+
+   Held at arm's length in a dark corridor while a queue moves past, so the
+   verdict is the whole screen and the camera is only what feeds it.
+   ========================================================================== */
+
+.scan { max-width: 560px; margin: 0 auto; padding: 26px 18px calc(30px + env(safe-area-inset-bottom)); }
+.scan__panel[hidden] { display: none; }
+
+.scan__title {
+  margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem;
+}
+.scan__lead { margin: 0 0 20px; opacity: 0.75; font-size: 0.95rem; line-height: 1.5; }
+
+.scan__login { display: grid; gap: 12px; }
+.scan__login input {
+  width: 100%; padding: 15px 16px; border-radius: 14px; font: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08); color: inherit;
+}
+.scan__login input::placeholder { color: currentColor; opacity: 0.5; }
+.scan__error { margin: 0; min-height: 1.2em; font-size: 0.9rem; color: #F2A9A9; }
+.scan__status { margin: 18px 0 0; min-height: 1.2em; font-size: 0.9rem; color: #F2A9A9; }
+
+.scan__list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.scan__empty { padding: 22px; text-align: center; opacity: 0.6; }
+
+.scan__choice {
+  display: grid; gap: 4px; width: 100%; min-height: 76px; padding: 16px 18px;
+  border-radius: 16px; cursor: pointer; text-align: left; font: inherit; color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.scan__choice-when {
+  font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65;
+}
+.scan__choice-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; line-height: 1.2;
+}
+
+/* --- the live panel ------------------------------------------------------ */
+
+.scan__panel--live { display: grid; gap: 14px; }
+.scan__panel--live[hidden] { display: none; }
+
+.scan__bar { display: flex; align-items: center; gap: 12px; }
+.scan__back {
+  flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  font: inherit; font-size: 1.6rem; line-height: 1; color: inherit;
+  background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.scan__bar-text { flex: 1 1 auto; min-width: 0; }
+.scan__bar-title {
+  margin: 0; font-weight: 700; font-size: 0.98rem; line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.scan__bar-when {
+  margin: 2px 0 0; font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.6;
+}
+.scan__count { flex: 0 0 auto; margin: 0; text-align: right; line-height: 1.05; }
+.scan__count strong {
+  display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem;
+}
+.scan__count span { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; }
+
+.scan__stage {
+  position: relative; border-radius: 20px; overflow: hidden;
+  background: #000; aspect-ratio: 3 / 4;
+}
+.scan__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* A frame to aim at, so people hold the phone still instead of sweeping it. */
+.scan__reticle {
+  position: absolute; inset: 18% 12%; border-radius: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.35);
+}
+.scan__hint {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 12px 16px;
+  font-size: 0.85rem; text-align: center; color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+}
+
+/* --- the verdict --------------------------------------------------------- */
+
+/* Covers the picture rather than sitting beside it: while a queue moves, the
+   only thing anyone reads is the word. */
+.scan__verdict {
+  position: fixed; inset: 0; z-index: 20;
+  display: grid; align-content: center; justify-items: center; gap: 10px;
+  padding: 32px 24px calc(32px + env(safe-area-inset-bottom)); text-align: center;
+}
+.scan__verdict[hidden] { display: none; }
+.scan__verdict.is-ok   { background: #12833F; color: #fff; }
+.scan__verdict.is-bad  { background: #A81F2B; color: #fff; }
+.scan__verdict.is-warn { background: #B7791F; color: #fff; }
+
+.scan__verdict-word {
+  margin: 0; font-family: var(--font-display); font-weight: 800; line-height: 1;
+  font-size: clamp(2.4rem, 13vw, 4rem); letter-spacing: -0.01em;
+}
+.scan__verdict-name { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.scan__verdict-name:empty { display: none; }
+.scan__verdict-note { margin: 0; max-width: 24rem; font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
+.scan__verdict-note:empty { display: none; }
+.scan__verdict-close {
+  margin-top: 18px; padding: 14px 30px; min-height: 52px; border-radius: 999px;
+  cursor: pointer; font: inherit; font-weight: 700;
+  background: rgba(255, 255, 255, 0.16); color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* --- typing a code by hand ------------------------------------------------ */
+
+.scan__manual { display: grid; gap: 8px; }
+.scan__manual label { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
+.scan__manual-row { display: flex; gap: 10px; }
+.scan__manual input {
+  flex: 1 1 auto; min-width: 0; padding: 14px 16px; border-radius: 14px;
+  font: inherit; font-family: var(--font-mono, ui-monospace, monospace);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08); color: inherit;
+}
+/* The placeholder is an example, not something to shout. */
+.scan__manual input::placeholder { text-transform: none; letter-spacing: normal; color: currentColor; opacity: 0.45; }
+
+/* ==========================================================================
    The badge
 
    Its own page: no header, no menu, no animated background. It gets opened on

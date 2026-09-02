@@ -66,7 +66,12 @@
       .then(function (res) {
         loginForm.querySelector("button").disabled = false;
         if (!res.ok) {
-          loginError.textContent = "Password sbagliata.";
+          // A refused password and a broken server look the same from here
+          // unless we say so, and whoever is holding the queue has no way to
+          // guess which of the two they are looking at.
+          loginError.textContent = res.error === "server_error"
+            ? "Il server non risponde. Avvisa l'organizzazione."
+            : "Password sbagliata.";
           return;
         }
         try { sessionStorage.setItem("mff_door", password); } catch (e2) {}

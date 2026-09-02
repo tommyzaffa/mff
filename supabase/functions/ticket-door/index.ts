@@ -1,9 +1,10 @@
 // POST /functions/v1/ticket-door
 //
-// The Lux box office's own page. Two actions, both behind one shared password:
+// The Lux staff's own page. Three actions, all behind one shared password:
 //
 //   board — what is on today, and how many seats each screening still has
 //   sell  — append +1 / -1 to a screening's door ledger
+//   scan  — admit one person at the door of the room
 //
 // The board is the important half. Online sales stop 60 minutes before a
 // screening, so from that moment the number here is simply how many tickets the
@@ -15,6 +16,13 @@
 // own till is what actually counts its sales. It is a ledger of movements rather
 // than a total precisely because two people on the same shift will tap it at the
 // same moment, and a total would let one overwrite the other.
+//
+// `scan` is the door of the room rather than the counter, and it is the one
+// action that decides something about a person standing there. Note the two
+// levels of `ok`: the outer one says the request was understood and authorised,
+// `scan.ok` says whether to let them in. Collapsing them would let a dropped
+// connection read as a refusal, which is exactly the mistake that gets someone
+// turned away from a film they paid for.
 
 import { db } from "../_shared/db.ts";
 import { env } from "../_shared/env.ts";
@@ -40,6 +48,22 @@ Deno.serve(async (req) => {
       // run expensive.
       await new Promise((r) => setTimeout(r, 700));
       return fail(req, "unauthorised", 401);
+    }
+
+    if (body.action === "scan") {
+      const code = String(body.code ?? "").trim();
+      const screening = String(body.screening ?? "").trim();
+      if (!code) return fail(req, "code_required");
+      // Always sent by the page, because a check-in that does not know which
+      // door it is standing at cannot refuse the wrong film.
+      if (!screening) return fail(req, "screening_required");
+
+      const { data, error } = await db().rpc("ticket_check_in", {
+        p_code: code,
+        p_screening: screening,
+      });
+      if (error) return fail(req, "server_error", 500, error.message);
+      return json(req, { ok: true, scan: data });
     }
 
     if (body.action === "sell") {

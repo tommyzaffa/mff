@@ -6,9 +6,10 @@ Disallow: /badge/
 Disallow: /passes/success.html
 Disallow: /tickets/success.html
 Disallow: /tickets/ticket.html
-# Staff only: the approve/reject page for press and industry requests, and the
-# Lux box office's own counter.
+# Staff only: the approve/reject page for press and industry requests, the Lux
+# box office's own counter, and the scanner at the door of the room.
 Disallow: /passes/review.html
 Disallow: /door/
+Disallow: /scan/
 
 Sitemap: https://mergefestival.ch/sitemap.xml

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2E1B54" />
+  <title>Ingresso sala — Merge Film Festival</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=39" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<!-- Italian only and with no language switch, like /door/: this is held by the
+     Lux staff at the door of the room, not by the public. -->
+<body class="badge-page">
+
+  <main class="scan">
+
+    <div class="scan__panel" data-panel="login">
+      <h1 class="scan__title">Ingresso sala</h1>
+      <p class="scan__lead">Inserisci la password del turno.</p>
+      <form class="scan__login" data-login novalidate>
+        <input type="password" name="password" autocomplete="current-password"
+               placeholder="Password" aria-label="Password" required />
+        <button class="btn btn--apply" type="submit">Entra</button>
+        <p class="scan__error" data-login-error role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div class="scan__panel" data-panel="pick" hidden>
+      <h1 class="scan__title">Quale proiezione?</h1>
+      <p class="scan__lead">
+        Scegli la sala che stai presidiando. I biglietti di un'altra proiezione
+        verranno rifiutati senza essere consumati.
+      </p>
+      <ul class="scan__list" data-list></ul>
+      <p class="scan__status" data-pick-status role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="scan__panel scan__panel--live" data-panel="scan" hidden>
+
+      <header class="scan__bar">
+        <button class="scan__back" type="button" data-back aria-label="Cambia proiezione">‹</button>
+        <div class="scan__bar-text">
+          <p class="scan__bar-title" data-show-title></p>
+          <p class="scan__bar-when" data-show-when></p>
+        </div>
+        <p class="scan__count"><strong data-count>—</strong><span>entrati</span></p>
+      </header>
+
+      <div class="scan__stage">
+        <video class="scan__video" data-video playsinline muted autoplay></video>
+        <div class="scan__reticle" aria-hidden="true"></div>
+        <p class="scan__hint" data-hint>Inquadra il QR del biglietto o del badge.</p>
+      </div>
+
+      <!-- The verdict, not the camera, is the thing the staff actually read, so
+           it covers the picture instead of sitting beside it. -->
+      <div class="scan__verdict" data-verdict hidden role="status" aria-live="assertive">
+        <p class="scan__verdict-word" data-verdict-word></p>
+        <p class="scan__verdict-name" data-verdict-name></p>
+        <p class="scan__verdict-note" data-verdict-note></p>
+        <button class="scan__verdict-close" type="button" data-verdict-close>Continua</button>
+      </div>
+
+      <form class="scan__manual" data-manual novalidate>
+        <label for="scan-code">QR rovinato? Scrivi il codice</label>
+        <div class="scan__manual-row">
+          <input id="scan-code" name="code" type="text" inputmode="latin"
+                 autocapitalize="characters" autocomplete="off" spellcheck="false"
+                 placeholder="MFF-T-XXXXXXXX" />
+          <button class="btn btn--apply btn--small" type="submit">Verifica</button>
+        </div>
+      </form>
+
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
+          integrity="sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx"
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/scan.js?v=1"></script>
+</body>
+</html>

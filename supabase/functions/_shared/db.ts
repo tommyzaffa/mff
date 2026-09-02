@@ -1,7 +1,12 @@
 // Service-role Supabase client. RLS denies everything on the pass tables, so
 // this is the only way in — which is exactly why it lives server-side only.
 
-import { createClient, type SupabaseClient } from "jsr:@supabase/supabase-js@2";
+// Pinned, not a `@2` range. On 2 Sep 2026 supabase-js 2.114.0 was published to
+// jsr depending on an auth-js 2.114.0 that never reached npm, and every deploy
+// started failing to bundle — with the range, code that had not changed became
+// undeployable overnight. During the festival that would be the difference
+// between a fixable bug and a dead box office.
+import { createClient, type SupabaseClient } from "jsr:@supabase/supabase-js@2.113.0";
 import { env } from "./env.ts";
 
 let cached: SupabaseClient | null = null;
