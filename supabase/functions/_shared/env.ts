@@ -31,6 +31,12 @@ export const env = {
   // like spoofing to the recipient's own filter.
   mailReviewTo: optional("MAIL_REVIEW_TO", "info@mergefestival.ch"),
 
+  // The one shared password the Lux box office types into /door/. It guards a
+  // page that shows seat counts and no personal data, and it is typed by people
+  // on a shift rather than held by one person, so a passphrase everyone can be
+  // told over the counter is the right shape here — not an account each.
+  doorPassword: () => need("DOOR_PASSWORD"),
+
   // Google Wallet (optional — the save button hides itself when unset).
   googleIssuerId: () => Deno.env.get("GOOGLE_WALLET_ISSUER_ID") || "",
   googleServiceAccount: () => Deno.env.get("GOOGLE_WALLET_SERVICE_ACCOUNT") || "",

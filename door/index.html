@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2E1B54" />
+  <title>Cassa — Merge Film Festival</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=38" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<!-- Deliberately in Italian only and with no language switch: this page is used
+     by the Cinema Lux counter staff during a shift, not by the public. -->
+<body class="badge-page">
+
+  <main class="door">
+
+    <div class="door__panel" data-panel="login">
+      <h1 class="door__title">Cassa Merge</h1>
+      <p class="door__lead">Inserisci la password del turno.</p>
+      <form class="door__login" data-login novalidate>
+        <input type="password" name="password" autocomplete="current-password"
+               placeholder="Password" aria-label="Password" required />
+        <button class="btn btn--apply" type="submit">Entra</button>
+        <p class="door__error" data-login-error role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <div class="door__panel" data-panel="board" hidden>
+      <header class="door__head">
+        <h1 class="door__title">Proiezioni di oggi</h1>
+        <button class="door__refresh" type="button" data-refresh>Aggiorna</button>
+      </header>
+
+      <p class="door__rule">
+        Alla cassa si vendono biglietti solo a partire da <strong>un'ora prima</strong>
+        dell'inizio di ogni proiezione. Prima di quel momento la vendita è online:
+        chi arriva presto va indirizzato al sito o fatto tornare dopo.
+      </p>
+
+      <ul class="door__list" data-list></ul>
+
+      <p class="door__status" data-status role="status" aria-live="polite"></p>
+    </div>
+
+  </main>
+
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/door.js?v=1"></script>
+</body>
+</html>

@@ -1,16 +1,21 @@
 // POST /functions/v1/pass-stripe-webhook
 //
-// Stripe is the only thing that may tell us a pass was paid for — the success
-// page cannot be trusted, since anyone can open it with any pass id. Two events
-// matter:
+// Stripe is the only thing that may tell us something was paid for — the success
+// page cannot be trusted, since anyone can open it with any id. Two events
+// matter, and they mean something slightly different for each product:
 //
-//   checkout.session.completed  -> mark paid, claim a badge number, send it
-//   checkout.session.expired    -> give a limited access code its seat back
+//   checkout.session.completed  passes  -> claim a badge number and send it
+//                               tickets -> confirm the seats and send them
+//   checkout.session.expired    passes  -> give a limited access code its seat back
+//                               tickets -> put the seats back in the room
 //
+// Both live here rather than on two endpoints so there is a single signature
+// check and a single place in the codebase allowed to decide something is paid.
 // Retries are expected, so everything below is safe to run twice.
 
 import { db, logEvent, type Pass } from "../_shared/db.ts";
 import { issuePass } from "../_shared/issue.ts";
+import { emailTickets } from "../_shared/ticket-mail.ts";
 import { verifyWebhook } from "../_shared/stripe.ts";
 
 Deno.serve(async (req) => {
@@ -32,8 +37,18 @@ Deno.serve(async (req) => {
 
   try {
     const session = event.data.object;
-    const passId = (session.metadata as Record<string, string> | null)?.pass_id ??
-      (session.client_reference_id as string | null);
+    const meta = (session.metadata as Record<string, string> | null) ?? {};
+
+    // Seat reservations ride the same endpoint. One webhook to register with
+    // Stripe, one signature check, and one place in the codebase that is allowed
+    // to decide something was paid for.
+    if (meta.kind === "ticket" || meta.order_id) {
+      const orderId = meta.order_id ?? (session.client_reference_id as string | null);
+      if (orderId) await ticketOrder(event.type, session, orderId);
+      return ok();
+    }
+
+    const passId = meta.pass_id ?? (session.client_reference_id as string | null);
     if (!passId) return ok();
 
     const { data } = await db().from("passes").select("*").eq("id", passId).maybeSingle();
@@ -99,6 +114,55 @@ Deno.serve(async (req) => {
     return new Response("Handler failed", { status: 500 });
   }
 });
+
+// --- seat reservations ------------------------------------------------------
+
+// The seats are already held by the order, so a completed payment only has to
+// promote it and send the tickets. An expired session has to hand the seats
+// back at once: waiting for the hold to lapse would keep a busy screening
+// looking fuller than it is.
+async function ticketOrder(
+  type: string,
+  session: Record<string, unknown>,
+  orderId: string,
+): Promise<void> {
+  const { data: order } = await db()
+    .from("ticket_orders")
+    .select("id, status, amount_cents, stripe_session_id")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (!order) return;
+
+  if (type === "checkout.session.completed") {
+    // TWINT and some cards settle asynchronously; seats are only confirmed once
+    // the money is actually there, not when the customer leaves the page.
+    if (session.payment_status !== "paid") return;
+    if (order.status === "issued") return;
+    if (order.stripe_session_id && session.id !== order.stripe_session_id) {
+      console.error(`ticket order ${orderId}: session mismatch ${String(session.id)}`);
+      return;
+    }
+    if (Number(session.amount_total ?? 0) < order.amount_cents) {
+      console.error(`ticket order ${orderId}: underpaid ${String(session.amount_total)}`);
+      return;
+    }
+
+    const { data: issued } = await db().rpc("ticket_order_issue", {
+      p_id: orderId,
+      p_intent: (session.payment_intent as string) ?? null,
+    });
+
+    // `already` means a retry of an event we handled: the tickets went out the
+    // first time, and sending them again would be the second copy of something
+    // that admits one person.
+    if (issued?.ok && !issued.already) await emailTickets(orderId);
+    return;
+  }
+
+  if (type === "checkout.session.expired" && order.status === "held") {
+    await db().rpc("ticket_order_cancel", { p_id: orderId });
+  }
+}
 
 function ok() {
   return new Response(JSON.stringify({ received: true }), {

@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
-  <title>Contact — Merge Film Festival</title>
-  <meta name="description" content="Contact — Merge Film Festival." />
+  <title>Tickets — Merge Film Festival</title>
+  <meta name="description" content="Book your seat for a Merge Film Festival screening. Accredited holders reserve for free." />
 
   <link rel="stylesheet" href="../assets/css/style.css?v=38" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
@@ -38,12 +38,11 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="../index.html" data-i18n="nav.home">Home</a>
+          <a href="index.html" data-i18n="nav.tickets">Tickets</a>
           <a href="../passes/index.html" data-i18n="nav.passes">Passes</a>
-          <!-- <a href="../program/index.html" data-i18n="nav.program">Program</a> -->
-          <!-- <a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a> -->
           <a href="../press/index.html" data-i18n="nav.press">Press</a>
           <a href="../in_competition/jury/young.html" data-i18n="nav.youngJury">Youth Jury</a>
-          <a href="index.html" data-i18n="nav.contact">Contact</a>
+          <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
             <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
           </div>
@@ -57,59 +56,99 @@
     <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
       <span class="stain stain--br" aria-hidden="true"></span>
       <div class="container reveal">
-        <p class="page-hero__kicker" data-i18n="contact.kicker">Get in touch • Press • Partnerships</p>
-        <h1 class="page-hero__title" data-i18n="contact.title">Contact</h1>
-        <p class="page-hero__subtitle" data-i18n="contact.subtitle">For information, partnerships and enquiries.</p>
+        <p class="page-hero__kicker" data-i18n="tickets.kicker">Screenings • Festival 2026</p>
+        <h1 class="page-hero__title" data-i18n="tickets.title">Tickets</h1>
+        <p class="page-hero__subtitle" data-i18n="tickets.intro">Book a seat for a single screening. If you have an accreditation, your seat is free — one per screening.</p>
         <div class="page-hero__actions">
-          <a class="btn" href="mailto:info@mergefestival.ch?subject=AI%20Short%20Film%20Festival%20%E2%80%94%20Hello" data-i18n="contact.btnEmail">Email us</a>
-          <a class="btn btn--ghost" href="#reach-us" data-i18n="contact.btnChannels">All channels</a>
+          <a class="btn btn--apply" href="#choose" data-i18n="tickets.heroCta">See the screenings</a>
         </div>
       </div>
     </section>
 
-    <section class="section is-on-violet" data-bg="violet" id="reach-us">
+    <section class="section is-on-violet section--pre-footer" data-bg="violet" id="choose">
       <span class="stain stain--tl" aria-hidden="true"></span>
       <div class="container">
-        <header class="section__header reveal">
-          <p class="eyebrow" data-i18n="contact.eyebrow">Channels</p>
-          <h2 class="section__title" data-i18n="contact.heading">Reach the team</h2>
-          <p class="section__desc" data-i18n="contact.desc">For press kits, sponsorship, volunteering, or a simple “hey”.</p>
-        </header>
 
-        <div class="contact-grid reveal" data-delay="1" role="list">
-          <a class="contact-card" role="listitem" href="mailto:info@mergefestival.ch?subject=AI%20Short%20Film%20Festival%20%E2%80%94%20Contact">
-            <span class="contact-card__label">Email</span>
-            <span class="contact-card__value">info@mergefestival.ch</span>
-            <span class="contact-card__hint" data-i18n="contact.hintEmail">Opens your mail app</span>
-          </a>
-          <a class="contact-card" role="listitem" href="https://www.instagram.com/mergefilmfestival?igsh=OWxiOXZrazFxbTFr" target="_blank" rel="noopener noreferrer">
-            <span class="contact-card__label">Instagram</span>
-            <span class="contact-card__value">@mergefilmfestival</span>
-            <span class="contact-card__hint" data-i18n="contact.hintIg">Behind the scenes + updates</span>
-          </a>
-          <a class="contact-card" role="listitem" href="https://www.facebook.com/profile.php?id=61589967523112" target="_blank" rel="noopener noreferrer">
-            <span class="contact-card__label">Facebook</span>
-            <span class="contact-card__value">Merge Film Festival</span>
-            <span class="contact-card__hint" data-i18n="contact.hintFb">Community updates</span>
-          </a>
-          <a class="contact-card" role="listitem" href="https://linkedin.com/company/merge-film-festival" target="_blank" rel="noopener noreferrer">
-            <span class="contact-card__label">LinkedIn</span>
-            <span class="contact-card__value">Merge Film Festival</span>
-            <span class="contact-card__hint" data-i18n="contact.hintLi">Partners, press, announcements</span>
-          </a>
+        <!-- 0. While the programme loads ------------------------------------- -->
+        <div class="pass-flow" data-panel="loading">
+          <p class="ticket-note reveal" data-i18n="tickets.loading">Loading the screenings…</p>
         </div>
 
-        <div class="newsletter-block reveal" data-delay="2" aria-label="Newsletter signup">
-          <h3 data-i18n="contact.nlTitle">Newsletter</h3>
-          <p data-i18n="contact.nlText">Program drops, workshops, winners — no spam.</p>
-          <form class="nl-form nl-form--cream" novalidate>
-            <input class="nl-form__input" type="email" name="email" autocomplete="email" required
-                   placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
-            <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
-            <p class="nl-form__status" role="status" aria-live="polite"></p>
+        <!-- 0b. No programme published yet ----------------------------------- -->
+        <div class="pass-flow" data-panel="soon" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="tickets.soonTitle">The programme is on its way</h2>
+            <p data-i18n="tickets.soonBody">Screening dates and times go online as soon as the selection is closed. Accreditations are already available, and every pass includes a seat at each screening.</p>
+            <a class="btn btn--apply" href="../passes/index.html" data-i18n="tickets.soonCta">Get your accreditation</a>
+          </div>
+        </div>
+
+        <!-- 1. Pick a screening ---------------------------------------------- -->
+        <div class="pass-flow" data-panel="choose" hidden>
+          <p class="pass-perk reveal">
+            <span class="pass-perk__label" data-i18n="tickets.perkLabel">Accredited?</span>
+            <span class="pass-perk__text" data-i18n="tickets.perkText">Enter your badge number when you book and the seat costs nothing — one seat per badge, per screening.</span>
+          </p>
+
+          <ul class="screening-list reveal" data-list></ul>
+
+          <p class="ticket-note reveal" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+        </div>
+
+        <!-- 2. The form ------------------------------------------------------ -->
+        <div class="pass-flow" data-panel="form" hidden>
+          <form class="form-card pass-form" id="ticketForm" novalidate>
+            <button class="pass-form__back" type="button" data-back data-i18n="tickets.back">← Back</button>
+
+            <p class="ticket-form__show" data-show-title></p>
+            <p class="ticket-form__when" data-show-when></p>
+
+            <div class="pass-form__row">
+              <div class="form__field">
+                <label class="pass-form__label" for="tkFirst" data-i18n="tickets.firstName">First name</label>
+                <input id="tkFirst" type="text" name="first_name" autocomplete="given-name" required />
+              </div>
+              <div class="form__field">
+                <label class="pass-form__label" for="tkLast" data-i18n="tickets.lastName">Last name</label>
+                <input id="tkLast" type="text" name="last_name" autocomplete="family-name" required />
+              </div>
+            </div>
+
+            <div class="form__field">
+              <label class="pass-form__label" for="tkEmail" data-i18n="tickets.email">Email</label>
+              <p class="pass-form__hint" data-i18n="tickets.emailHint">We send the tickets here.</p>
+              <input id="tkEmail" type="email" name="email" autocomplete="email" required />
+            </div>
+
+            <p class="pass-form__label" data-i18n="tickets.seatsLabel">Seats</p>
+            <ul class="seat-list" data-seats></ul>
+
+            <button class="btn btn--ghost btn--small" type="button" data-add-seat data-i18n="tickets.addSeat">+ Add a seat</button>
+
+            <p class="ticket-total" data-total role="status" aria-live="polite"></p>
+
+            <label class="pass-consent">
+              <input type="checkbox" name="consent" required />
+              <span data-i18n-html="tickets.consent">I agree to the processing of my data for this booking, as described in the privacy policy.</span>
+            </label>
+
+            <p class="pass-form__perk" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+
+            <button class="btn" type="submit" data-submit-label data-i18n="tickets.submitPay">Continue to payment</button>
+            <p class="form__status" data-status role="status" aria-live="polite"></p>
           </form>
-          <p class="footer__tiny" style="color:var(--ink-soft)" data-i18n-html="contact.nlTiny">Prefer email only? <a href="mailto:info@mergefestival.ch?subject=Newsletter%20%E2%80%94%20Subscribe">Ask to be added manually</a>.</p>
         </div>
+
+        <!-- 3. Done ---------------------------------------------------------- -->
+        <div class="pass-flow" data-panel="done" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="tickets.doneTitle">Your seat is booked</h2>
+            <p data-i18n="tickets.doneBody">We have sent the tickets to your inbox. Show them at the door — each one admits one person.</p>
+            <ul class="ticket-codes" data-codes></ul>
+            <a class="btn btn--ghost" href="../index.html" data-i18n="tickets.backHome">Back to the site</a>
+          </div>
+        </div>
+
       </div>
     </section>
   </main>
@@ -131,16 +170,15 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="index.html" data-i18n="nav.tickets">Tickets</a></li>
                 <li><a href="../passes/index.html" data-i18n="nav.passes">Passes</a></li>
-                <!-- <li><a href="../program/index.html" data-i18n="nav.program">Program</a></li> -->
-                <!-- <li><a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
               </ul>
             </div>
             <div>
               <p class="footer__title" data-i18n="footer.colInfo">Info</p>
               <ul class="footer__links">
                 <li><a href="../press/index.html" data-i18n="nav.press">Press</a></li>
-                <li><a href="index.html" data-i18n="nav.contact">Contact</a></li>
+                <li><a href="../contact/index.html" data-i18n="nav.contact">Contact</a></li>
               </ul>
             </div>
             <div>
@@ -172,5 +210,7 @@
 
   <script src="../assets/js/translations.js?v=20"></script>
   <script src="../assets/js/app.js?v=10"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/tickets.js?v=1"></script>
 </body>
 </html>

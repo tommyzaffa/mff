@@ -59,6 +59,54 @@ export async function createCheckoutSession(o: {
   return { id: data.id as string, url: data.url as string };
 }
 
+// Seats for one screening. The line item is the number of *paying* seats: an
+// accredited holder in the same party costs nothing and is simply not counted
+// here, which is why the caller passes a quantity rather than us deriving one.
+//
+// `expires_at` is deliberately short. Every minute this session stays open is a
+// minute the seats behind it are held out of the pool, so unlike a pass — where
+// an abandoned checkout costs nobody anything — it is capped near the database
+// hold rather than a day out.
+export async function createTicketCheckoutSession(o: {
+  orderId: string;
+  screeningTitle: string;
+  locale: Locale;
+  email: string;
+  unitAmountCents: number;
+  quantity: number;
+  holdMinutes: number;
+}): Promise<{ id: string; url: string }> {
+  const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${env.stripeSecretKey()}`,
+      "content-type": "application/x-www-form-urlencoded",
+      "idempotency-key": `ticket-${o.orderId}`,
+    },
+    body: form({
+      mode: "payment",
+      "line_items[0][quantity]": o.quantity,
+      "line_items[0][price_data][currency]": "chf",
+      "line_items[0][price_data][unit_amount]": o.unitAmountCents,
+      "line_items[0][price_data][product_data][name]": o.screeningTitle,
+      customer_email: o.email,
+      client_reference_id: o.orderId,
+      "metadata[order_id]": o.orderId,
+      "metadata[kind]": "ticket",
+      locale: CHECKOUT_LOCALE[o.locale],
+      // Stripe requires at least 30 minutes, so the database hold is set from
+      // this rather than the other way round — see ticket-reserve.
+      expires_at: Math.floor(Date.now() / 1000) + 60 * o.holdMinutes,
+      success_url: `${env.siteUrl}/tickets/success.html?o=${o.orderId}`,
+      cancel_url: `${env.siteUrl}/tickets/?cancelled=1`,
+    }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(`Stripe checkout: ${data?.error?.message ?? res.status}`);
+  return { id: data.id as string, url: data.url as string };
+}
+
 // Verifies the `Stripe-Signature` header. Without this anyone who finds the
 // webhook URL could mark any pass as paid, so it is not optional.
 export async function verifyWebhook(payload: string, header: string | null): Promise<boolean> {

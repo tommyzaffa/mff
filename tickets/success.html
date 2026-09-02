@@ -17,29 +17,30 @@
   <main class="badge-stage">
 
     <div class="badge-state" data-panel="waiting">
-      <h1 data-i18n="success.waitingTitle">Payment received</h1>
-      <p data-i18n="success.waitingBody">We are issuing your badge — this takes a few seconds.</p>
+      <h1 data-i18n="ticket.waitingTitle">Payment received</h1>
+      <p data-i18n="ticket.waitingBody">We are issuing your tickets — this takes a few seconds.</p>
       <p class="badge-spinner" aria-hidden="true"></p>
     </div>
 
     <div class="badge-state" data-panel="done" hidden>
-      <h1 data-i18n="success.doneTitle">You're in</h1>
-      <p data-i18n="success.doneBody">Your badge is ready and a copy is on its way to your inbox.</p>
-      <a class="btn btn--apply" href="#" data-badge-link data-i18n="success.openBadge">Open my badge</a>
+      <h1 data-i18n="ticket.doneTitle">Your seats are booked</h1>
+      <p data-i18n="ticket.doneBody">A copy is on its way to your inbox. Each ticket admits one person.</p>
+      <ul class="ticket-codes" data-codes></ul>
+      <a class="btn btn--ghost" href="../index.html" data-i18n="ticket.backHome">Back to the site</a>
     </div>
 
-    <!-- TWINT and some cards settle after the fact, so a pass can legitimately
-         still be pending when the customer lands here. -->
+    <!-- TWINT and some cards settle after the fact, so an order can legitimately
+         still be held when the customer lands here. -->
     <div class="badge-state" data-panel="slow" hidden>
-      <h1 data-i18n="success.slowTitle">Almost there</h1>
-      <p data-i18n="success.slowBody">Your payment is still being confirmed by the bank. As soon as it clears we email you the badge — there is nothing else you need to do.</p>
-      <a class="btn btn--ghost" href="../index.html" data-i18n="success.backHome">Back to the site</a>
+      <h1 data-i18n="ticket.slowTitle">Almost there</h1>
+      <p data-i18n="ticket.slowBody">Your payment is still being confirmed by the bank. As soon as it clears we email you the tickets — there is nothing else you need to do.</p>
+      <a class="btn btn--ghost" href="../index.html" data-i18n="ticket.backHome">Back to the site</a>
     </div>
 
     <div class="badge-state" data-panel="missing" hidden>
-      <h1 data-i18n="success.missingTitle">We can't find this order</h1>
-      <p data-i18n="success.missingBody">If you were charged, write to us and we will sort it out.</p>
-      <a class="btn btn--ghost" href="../contact/index.html" data-i18n="success.contact">Contact us</a>
+      <h1 data-i18n="ticket.orderMissingTitle">We can't find this order</h1>
+      <p data-i18n="ticket.orderMissingBody">If you were charged, write to us and we will sort it out.</p>
+      <a class="btn btn--ghost" href="../contact/index.html" data-i18n="ticket.contact">Contact us</a>
     </div>
 
   </main>
@@ -47,8 +48,8 @@
   <script src="../assets/js/translations.js?v=20"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script>
-  /* Stripe sends the customer back here the moment they pay, but the badge is
-     only issued when the webhook lands, a beat later. So: poll, briefly, and
+  /* Stripe sends the customer back here the moment they pay, but the seats are
+     only confirmed when the webhook lands, a beat later. So: poll, briefly, and
      tell the truth if it is taking longer than that. */
   (function () {
     "use strict";
@@ -77,20 +78,29 @@
       Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
     }
 
-    var passId = new URLSearchParams(location.search).get("p");
-    if (!passId) return show("missing");
+    var orderId = new URLSearchParams(location.search).get("o");
+    if (!orderId) return show("missing");
 
     var tries = 0;
     (function poll() {
-      fetch(BASE + "/pass-badge?p=" + encodeURIComponent(passId))
+      fetch(BASE + "/ticket-show?o=" + encodeURIComponent(orderId))
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (!res.ok) return show("missing");
-          if (res.status === "issued" && res.badge_code) {
-            var link = document.querySelector("[data-badge-link]");
-            if (link) link.href = "../badge/?c=" + encodeURIComponent(res.badge_code);
+          if (res.status === "issued") {
+            var list = document.querySelector("[data-codes]");
+            list.innerHTML = "";
+            (res.codes || []).forEach(function (code) {
+              var li = document.createElement("li");
+              var a = document.createElement("a");
+              a.href = "ticket.html?c=" + encodeURIComponent(code);
+              a.textContent = code;
+              li.appendChild(a);
+              list.appendChild(li);
+            });
             return show("done");
           }
+          if (res.status === "cancelled") return show("missing");
           if (++tries > 12) return show("slow");
           setTimeout(poll, 2000);
         })

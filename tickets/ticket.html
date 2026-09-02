@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4B2E83" />
+  <title>Ticket — Merge Film Festival</title>
+  <!-- The code is the admission, so keep it out of search results. -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="../assets/css/style.css?v=38" />
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+  <!-- Opened at the door of a cinema, usually on a phone, often offline. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body class="badge-page">
+
+  <main class="badge-stage">
+
+    <div class="badge-state" data-panel="loading">
+      <p data-i18n="ticket.loading">Loading your ticket…</p>
+    </div>
+
+    <div class="badge-state" data-panel="missing" hidden>
+      <h1 data-i18n="ticket.missingTitle">Ticket not found</h1>
+      <p data-i18n="ticket.missingBody">This link does not match any ticket. Check the link in your confirmation email, or write to us.</p>
+      <a class="btn btn--apply" href="index.html" data-i18n="ticket.book">Book a seat</a>
+    </div>
+
+    <div class="badge-state" data-panel="ticket" hidden>
+      <article class="tkt" data-status-class>
+        <header class="tkt__head">
+          <p class="tkt__festival">Merge Film Festival</p>
+          <p class="tkt__state" data-state>—</p>
+        </header>
+
+        <div class="tkt__body">
+          <p class="tkt__when" data-when>—</p>
+          <h1 class="tkt__title" data-title>—</h1>
+          <p class="tkt__venue" data-venue>—</p>
+          <p class="tkt__holder" data-holder hidden>—</p>
+          <p class="tkt__chair" data-chair hidden data-i18n="ticket.wheelchair">Wheelchair space</p>
+        </div>
+
+        <div class="tkt__code">
+          <div class="tkt__qr" data-qr aria-hidden="true"></div>
+          <span class="tkt__code-label" data-i18n="ticket.codeLabel">Ticket code</span>
+          <strong class="tkt__code-value" data-code>MFF-T-00000000</strong>
+        </div>
+
+        <p class="tkt__note" data-i18n="ticket.note">Admits one person. Seats are not numbered: sit wherever you like.</p>
+      </article>
+
+      <p class="badge-hint" data-i18n="ticket.hint">Show this screen at the door. Add the page to your home screen and you will have the ticket with you offline.</p>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
+          integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
+          crossorigin="anonymous"></script>
+  <script src="../assets/js/translations.js?v=20"></script>
+  <script src="../assets/js/passes-config.js?v=2"></script>
+  <script src="../assets/js/ticket.js?v=1"></script>
+</body>
+</html>

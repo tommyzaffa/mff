@@ -4,7 +4,11 @@ Disallow: /vote/
 # Personal pages: a badge and a payment receipt belong to one person each.
 Disallow: /badge/
 Disallow: /passes/success.html
-# Staff only: the approve/reject page for press and industry requests.
+Disallow: /tickets/success.html
+Disallow: /tickets/ticket.html
+# Staff only: the approve/reject page for press and industry requests, and the
+# Lux box office's own counter.
 Disallow: /passes/review.html
+Disallow: /door/
 
 Sitemap: https://mergefestival.ch/sitemap.xml

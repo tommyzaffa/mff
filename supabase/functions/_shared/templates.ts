@@ -344,3 +344,161 @@ export function reviewRequestEmail(o: {
     }),
   };
 }
+
+// --- the ticket email -------------------------------------------------------
+
+// Times are always written in the festival's own timezone, never the reader's:
+// somebody booking from Paris must not be told the film starts at 19:30.
+const ZONE = "Europe/Zurich";
+const DATE_LOCALE: Record<Locale, string> = {
+  it: "it-CH",
+  en: "en-GB",
+  fr: "fr-CH",
+  de: "de-CH",
+};
+
+export function whenText(iso: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(DATE_LOCALE[locale], {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: ZONE,
+  }).format(new Date(iso));
+}
+
+const TICKET_COPY: Record<Locale, {
+  subject: (title: string) => string;
+  heading: string;
+  hi: (n: string) => string;
+  body: (n: number) => string;
+  seatsLabel: string;
+  freeSeat: string;
+  cta: string;
+  foot: string;
+}> = {
+  it: {
+    subject: (t) => `Il tuo posto — ${t}`,
+    heading: "Posto confermato",
+    hi: (n) => `Ciao ${n},`,
+    body: (n) =>
+      n === 1
+        ? "il tuo posto è prenotato. Mostra il biglietto qui sotto all'ingresso della sala."
+        : `i tuoi ${n} posti sono prenotati. Mostra i biglietti qui sotto all'ingresso della sala.`,
+    seatsLabel: "I tuoi biglietti",
+    freeSeat: "Incluso nell'accredito",
+    cta: "Apri il biglietto",
+    foot:
+      `Il posto in sala è garantito ma non numerato: puoi sederti dove preferisci.
+       Ti consigliamo di arrivare qualche minuto prima. Ogni biglietto vale per una
+       persona e può essere usato una volta sola.`,
+  },
+  en: {
+    subject: (t) => `Your seat — ${t}`,
+    heading: "Seat confirmed",
+    hi: (n) => `Hi ${n},`,
+    body: (n) =>
+      n === 1
+        ? "your seat is booked. Show the ticket below at the door."
+        : `your ${n} seats are booked. Show the tickets below at the door.`,
+    seatsLabel: "Your tickets",
+    freeSeat: "Included with your accreditation",
+    cta: "Open the ticket",
+    foot:
+      `Your place in the room is guaranteed but not numbered — sit wherever you like.
+       Please arrive a few minutes early. Each ticket admits one person and can only
+       be used once.`,
+  },
+  fr: {
+    subject: (t) => `Votre place — ${t}`,
+    heading: "Place confirmée",
+    hi: (n) => `Bonjour ${n},`,
+    body: (n) =>
+      n === 1
+        ? "votre place est réservée. Présentez le billet ci-dessous à l'entrée de la salle."
+        : `vos ${n} places sont réservées. Présentez les billets ci-dessous à l'entrée de la salle.`,
+    seatsLabel: "Vos billets",
+    freeSeat: "Inclus dans votre accréditation",
+    cta: "Ouvrir le billet",
+    foot:
+      `Votre place est garantie mais non numérotée : asseyez-vous où vous voulez.
+       Merci d'arriver quelques minutes en avance. Chaque billet admet une personne
+       et ne peut être utilisé qu'une seule fois.`,
+  },
+  de: {
+    subject: (t) => `Dein Platz — ${t}`,
+    heading: "Platz bestätigt",
+    hi: (n) => `Hallo ${n},`,
+    body: (n) =>
+      n === 1
+        ? "dein Platz ist reserviert. Zeig das Ticket unten am Saaleingang."
+        : `deine ${n} Plätze sind reserviert. Zeig die Tickets unten am Saaleingang.`,
+    seatsLabel: "Deine Tickets",
+    freeSeat: "In deiner Akkreditierung enthalten",
+    cta: "Ticket öffnen",
+    foot:
+      `Dein Platz im Saal ist garantiert, aber nicht nummeriert — setz dich, wohin du
+       möchtest. Bitte komm ein paar Minuten früher. Jedes Ticket gilt für eine Person
+       und kann nur einmal verwendet werden.`,
+  },
+};
+
+// One email for the whole order, but one block per ticket: the people on it may
+// well arrive separately, so each has to be forwardable on its own.
+export function ticketsEmail(o: {
+  name: string;
+  locale: Locale;
+  screeningTitle: string;
+  startsAt: string;
+  venue: string | null;
+  amountCents: number;
+  tickets: { code: string; url: string; holder: string | null; badge: string | null }[];
+}) {
+  const t = TICKET_COPY[o.locale];
+
+  const blocks = o.tickets
+    .map((tk) => {
+      const who = tk.holder
+        ? `<div style="font-size:13px;color:#6b6b75;margin:0 0 2px">${esc(tk.holder)}</div>`
+        : "";
+      const free = tk.badge
+        ? `<div style="font-size:12.5px;color:#6b6b75;margin:6px 0 0">${esc(t.freeSeat)} · ${
+          esc(tk.badge)
+        }</div>`
+        : "";
+      return `<table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                     style="margin:0 0 10px;background:#f6f4f0;border-radius:14px">
+                <tr><td style="padding:14px 16px">
+                  ${who}
+                  <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+                              font-size:19px;font-weight:700;letter-spacing:.06em">${esc(tk.code)}</div>
+                  <div style="margin:8px 0 0"><a href="${esc(tk.url)}"
+                       style="color:#2E1B54;font-weight:600;font-size:14px">${esc(t.cta)} →</a></div>
+                  ${free}
+                </td></tr>
+              </table>`;
+    })
+    .join("");
+
+  const where = o.venue ? ` · ${o.venue}` : "";
+
+  return {
+    subject: t.subject(o.screeningTitle),
+    html: layout({
+      locale: o.locale,
+      preheader: `${o.screeningTitle} · ${whenText(o.startsAt, o.locale)}`,
+      heading: t.heading,
+      body:
+        `<p style="margin:0 0 12px">${esc(t.hi(o.name))}</p>
+         <p style="margin:0 0 18px">${esc(t.body(o.tickets.length))}</p>
+         <p style="margin:0 0 4px;font-size:17px;font-weight:700">${esc(o.screeningTitle)}</p>
+         <p style="margin:0 0 18px;color:#6b6b75">${
+          esc(whenText(o.startsAt, o.locale) + where)
+        }</p>
+         <p style="margin:0 0 8px;font-weight:600">${esc(t.seatsLabel)}</p>
+         ${blocks}`,
+      footnote: t.foot,
+    }),
+  };
+}
