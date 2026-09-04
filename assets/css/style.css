@@ -948,6 +948,15 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 158px;
   max-height: 74px;
 }
+/* The file carries only a viewBox, so it has no intrinsic size and would
+   resolve to 0x0 — the width is pinned, not merely capped. Held tall for a
+   ~2.3:1 mark because the four lines of small type beside the disc close up
+   before the disc itself looks big. */
+.supporters__logo img[src*="usi.svg"] {
+  width: 166px;
+  max-width: 166px;
+  max-height: 72px;
+}
 /* Stacked mark over wordmark, so it is also height-constrained. */
 .supporters__logo img[src*="pestalozzi"] {
   max-width: 128px;
