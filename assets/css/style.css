@@ -2492,19 +2492,15 @@ body.badge-page {
 /* The masthead is the festival's, not the pass type's: it stays violet on every
    badge so the card is recognisable before the type is read. The type colour
    lives in the chip beside it and in the QR. */
+/* The 13cqw of top padding is the lanyard slot: about 7 mm of empty violet
+   where the card gets punched. It is left unmarked on purpose — a printed
+   guide would still be on the card after the hole is made, and the punch is
+   aligned by eye anyway. Nothing may be placed in that strip. */
 .badge__head {
   flex: 0 0 auto; position: relative;
   display: flex; align-items: center; justify-content: space-between; gap: 3cqw;
   overflow: hidden;
   padding: 13cqw 5.5cqw 4.5cqw; background: #2E1B54; color: #F3F2EF;
-}
-/* The lanyard slot is punched through the top of the masthead, so the strip
-   above the wordmark has to stay empty. The outline is the punch guide for
-   whoever prints the card: 15 x 2.7 mm, centred, 2.7 mm down from the edge. */
-.badge__head::before {
-  content: ""; position: absolute; left: 50%; top: 5cqw;
-  width: 28cqw; height: 5cqw; transform: translateX(-50%);
-  border: 0.3cqw solid rgba(243, 242, 239, 0.3); border-radius: 2.5cqw;
 }
 .badge__head-text { min-width: 0; flex: 1 1 auto; }
 /* The wordmark is a name: it may never hyphenate or break across two lines, so
