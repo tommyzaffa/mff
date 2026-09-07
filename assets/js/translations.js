@@ -256,7 +256,7 @@ window.MFF_I18N = {
       soon: "Details coming soon",
       instagram: "Instagram",
       ctyChina: "China",
-      ctyItaly: "Italy",
+      ctyGermany: "Germany", ctyItaly: "Italy",
       ctyUSA: "United States",
       ctyUK: "United Kingdom",
       ctyPoland: "Poland",
@@ -286,6 +286,8 @@ window.MFF_I18N = {
     },
 
     exp: {
+      dataBio: "Marlene Hessemer, born in Germany in 1996, lives and works in Kassel. She is currently studying at the Kunsthochschule Kassel, after the LUCA School of Arts in Brussels, the University of the Arts Bremen and the Zurich University of the Arts.",
+      dataSyn: "What happens behind the closed gates of a data centre? What kind of place is it, really, at the other end of the network socket in your living room?<br><br>With speculative intuition and the help of generative AI, Marlene Hessemer approaches that mystery. Data Center by Night does not report facts: it weaves a possible fairy tale about the hidden world of digital infrastructure.",
       doorBio: "John Gardner is a motion graphics artist, animator and composer based in Raleigh, North Carolina. With more than twenty years of experience in animation and video production, he is known for visually rich work that deepens and elevates storytelling. His inventive use of Adobe After Effects, Blender and AI-generated imagery shaped the award-winning Lunavox music video “What’s Locked Behind That Door?”, blending experimental vision with emotionally driven visual design.",
       doorSyn: "In the visually arresting music video for Lunavox’s “What’s Locked Behind That Door?”, a series of metaphorical doors open onto the full spectrum of human emotion, drawing the viewer into a surreal journey through fear, desire and obsession. The same portals frame the chilling descent of a scientist whose relentless experiments lead him into darkness. Guided by the pulsing rhythm of the song, the two narratives intertwine until human vulnerability and scientific ambition collapse into a single vision of corruption and revelation.",
       flowerBio: "Ben Skea is an artist and filmmaker living and working in Glasgow, Scotland. Selected screenings and exhibitions include 8DAY — Exit CODE — 8 Mediations at the BWA Contemporary Art Gallery in Poland (2023), Second Nature at Glasgow International (2018), the Chicago Underground Film Festival (2018), the Encounters Short Film & Animation Festival in Bristol (2016) and Technonatural at Gossamer Fog in London (2016). Solo shows: Bounds. Ends. Limits. at The Telfer Gallery in Glasgow (2016) and Re-adjuster at Inverness Museum & Art Gallery (2015).",
@@ -840,7 +842,7 @@ window.MFF_I18N = {
       soon: "Scheda in arrivo",
       instagram: "Instagram",
       ctyChina: "Cina",
-      ctyItaly: "Italia",
+      ctyGermany: "Germania", ctyItaly: "Italia",
       ctyUSA: "Stati Uniti",
       ctyUK: "Regno Unito",
       ctyPoland: "Polonia",
@@ -870,6 +872,8 @@ window.MFF_I18N = {
     },
 
     exp: {
+      dataBio: "Marlene Hessemer, nata in Germania nel 1996, vive e lavora a Kassel. Studia attualmente alla Kunsthochschule Kassel, dopo essere passata dalla LUCA School of Arts di Bruxelles, dalla Hochschule für Künste di Brema e dalla Zürcher Hochschule der Künste.",
+      dataSyn: "Cosa succede dietro i cancelli chiusi di un data center? Che luogo è davvero, all’altro capo della presa di rete del salotto?<br><br>Con intuizione speculativa e l’aiuto dell’intelligenza artificiale generativa, Marlene Hessemer si avvicina a quel mistero. Data Center by Night non racconta fatti: intreccia piuttosto una possibile fiaba sul mondo nascosto delle infrastrutture digitali.",
       doorBio: "John Gardner è motion graphics artist, animatore e compositore, vive a Raleigh, nella Carolina del Nord. Con oltre vent’anni di esperienza nell’animazione e nella produzione video, è noto per un lavoro visivamente ricco che approfondisce e sostiene il racconto. L’uso inventivo di Adobe After Effects, Blender e immagini generate con l’IA ha dato forma al pluripremiato videoclip dei Lunavox “What’s Locked Behind That Door?”, in cui la visione sperimentale incontra un design visivo guidato dall’emozione.",
       doorSyn: "Nel videoclip di grande impatto visivo per “What’s Locked Behind That Door?” dei Lunavox, una serie di porte metaforiche si apre sull’intero spettro delle emozioni umane e trascina lo spettatore in un viaggio surreale fra paura, desiderio e ossessione. Le stesse soglie incorniciano la discesa agghiacciante di uno scienziato che i suoi esperimenti implacabili conducono nell’oscurità. Guidate dal ritmo pulsante del brano, le due narrazioni si intrecciano fino a far collassare vulnerabilità umana e ambizione scientifica in un’unica visione di corruzione e rivelazione.",
       flowerBio: "Ben Skea è artista e regista, vive e lavora a Glasgow, in Scozia. Fra proiezioni e mostre selezionate: 8DAY — Exit CODE — 8 Mediations alla BWA Contemporary Art Gallery in Polonia (2023), Second Nature a Glasgow International (2018), il Chicago Underground Film Festival (2018), l’Encounters Short Film & Animation Festival di Bristol (2016) e Technonatural da Gossamer Fog a Londra (2016). Personali: Bounds. Ends. Limits. alla Telfer Gallery di Glasgow (2016) e Re-adjuster all’Inverness Museum & Art Gallery (2015).",
@@ -1424,7 +1428,7 @@ window.MFF_I18N = {
       soon: "Fiche à venir",
       instagram: "Instagram",
       ctyChina: "Chine",
-      ctyItaly: "Italie",
+      ctyGermany: "Allemagne", ctyItaly: "Italie",
       ctyUSA: "États-Unis",
       ctyUK: "Royaume-Uni",
       ctyPoland: "Pologne",
@@ -1454,6 +1458,8 @@ window.MFF_I18N = {
     },
 
     exp: {
+      dataBio: "Marlene Hessemer, née en Allemagne en 1996, vit et travaille à Kassel. Elle étudie actuellement à la Kunsthochschule Kassel, après être passée par la LUCA School of Arts de Bruxelles, la Hochschule für Künste de Brême et la Zürcher Hochschule der Künste.",
+      dataSyn: "Que se passe-t-il derrière les portes closes d’un centre de données ? Quel lieu est-ce vraiment, à l’autre bout de la prise réseau du salon ?<br><br>Avec une intuition spéculative et l’aide de l’intelligence artificielle générative, Marlene Hessemer s’approche de ce mystère. Data Center by Night ne rapporte pas des faits : il tisse un conte possible sur le monde caché des infrastructures numériques.",
       doorBio: "John Gardner est motion designer, animateur et compositeur, installé à Raleigh, en Caroline du Nord. Fort de plus de vingt ans d’expérience en animation et en production vidéo, il est reconnu pour un travail visuellement riche qui approfondit et élève le récit. Son usage inventif d’Adobe After Effects, de Blender et d’images générées par IA a façonné le clip primé de Lunavox « What’s Locked Behind That Door? », où la vision expérimentale rencontre un design visuel guidé par l’émotion.",
       doorSyn: "Dans le clip visuellement saisissant de « What’s Locked Behind That Door? » de Lunavox, une série de portes métaphoriques s’ouvre sur tout le spectre des émotions humaines et entraîne le spectateur dans un voyage surréaliste à travers la peur, le désir et l’obsession. Ces mêmes seuils encadrent la descente glaçante d’un scientifique que ses expériences implacables conduisent dans les ténèbres. Portés par le rythme pulsant du morceau, les deux récits s’entrelacent jusqu’à ce que la vulnérabilité humaine et l’ambition scientifique s’effondrent en une seule vision de corruption et de révélation.",
       flowerBio: "Ben Skea est artiste et cinéaste, il vit et travaille à Glasgow, en Écosse. Parmi ses projections et expositions : 8DAY — Exit CODE — 8 Mediations à la BWA Contemporary Art Gallery en Pologne (2023), Second Nature à Glasgow International (2018), le Chicago Underground Film Festival (2018), le festival Encounters de Bristol (2016) et Technonatural chez Gossamer Fog à Londres (2016). Expositions personnelles : Bounds. Ends. Limits. à la Telfer Gallery de Glasgow (2016) et Re-adjuster à l’Inverness Museum & Art Gallery (2015).",
@@ -2008,7 +2014,7 @@ window.MFF_I18N = {
       soon: "Details folgen",
       instagram: "Instagram",
       ctyChina: "China",
-      ctyItaly: "Italien",
+      ctyGermany: "Deutschland", ctyItaly: "Italien",
       ctyUSA: "USA",
       ctyUK: "Vereinigtes Königreich",
       ctyPoland: "Polen",
@@ -2038,6 +2044,8 @@ window.MFF_I18N = {
     },
 
     exp: {
+      dataBio: "Marlene Hessemer, 1996 in Deutschland geboren, lebt und arbeitet in Kassel. Zurzeit studiert sie an der Kunsthochschule Kassel; zuvor war sie an der LUCA School of Arts in Brüssel, an der Hochschule für Künste Bremen und an der Zürcher Hochschule der Künste.",
+      dataSyn: "Was geschieht hinter den verschlossenen Toren eines Rechenzentrums? Was für ein Ort ist das eigentlich, am anderen Ende der Netzwerkdose im Wohnzimmer?<br><br>Mit spekulativer Intuition und der Hilfe generativer KI nähert sich Marlene Hessemer diesem Rätsel. Data Center by Night erzählt keine Fakten, sondern spinnt ein mögliches Märchen über die verborgene Welt der digitalen Infrastruktur.",
       doorBio: "John Gardner ist Motion-Graphics-Künstler, Animator und Komponist und lebt in Raleigh, North Carolina. Mit über zwanzig Jahren Erfahrung in Animation und Videoproduktion ist er für visuell dichte Arbeiten bekannt, die das Erzählen vertiefen und tragen. Sein einfallsreicher Umgang mit Adobe After Effects, Blender und KI-generierten Bildern prägte das preisgekrönte Lunavox-Video „What’s Locked Behind That Door?“, in dem experimenteller Blick auf emotional geführtes Bilddesign trifft.",
       doorSyn: "Im visuell eindringlichen Musikvideo zu „What’s Locked Behind That Door?“ von Lunavox öffnet sich eine Reihe metaphorischer Türen auf das gesamte Spektrum menschlicher Gefühle und zieht die Zuschauer in eine surreale Reise durch Angst, Begehren und Besessenheit. Dieselben Schwellen rahmen den frostigen Abstieg eines Wissenschaftlers, den seine unerbittlichen Experimente ins Dunkel führen. Vom pulsierenden Rhythmus des Stücks getragen, verflechten sich beide Erzählungen, bis menschliche Verletzlichkeit und wissenschaftlicher Ehrgeiz in einer einzigen Vision aus Verderben und Offenbarung zusammenfallen.",
       flowerBio: "Ben Skea ist Künstler und Filmemacher, er lebt und arbeitet in Glasgow, Schottland. Ausgewählte Screenings und Ausstellungen: 8DAY — Exit CODE — 8 Mediations in der BWA Contemporary Art Gallery in Polen (2023), Second Nature bei Glasgow International (2018), Chicago Underground Film Festival (2018), Encounters Short Film & Animation Festival in Bristol (2016) und Technonatural bei Gossamer Fog in London (2016). Einzelausstellungen: Bounds. Ends. Limits. in der Telfer Gallery Glasgow (2016) und Re-adjuster im Inverness Museum & Art Gallery (2015).",

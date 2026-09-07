@@ -43,6 +43,12 @@
 
   <!-- Experimental competition — film pages -->
   <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/data-center-by-night.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://mergefestival.ch/in_competition/experimental/pillow-men.html</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
