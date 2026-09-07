@@ -1487,7 +1487,10 @@ main :where(h1, h2, h3, h4),
 /* ---- film poster grid (In Competition categories) ---- */
 .film-grid {
   display: grid; gap: clamp(16px, 2vw, 24px);
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  /* Fixed-width tracks rather than 1fr, so a short last row can be centred by
+     justify-content instead of hugging the left edge. */
+  grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
+  justify-content: center;
   margin-top: clamp(20px, 3vw, 36px);
 }
 .film-card {
@@ -1604,6 +1607,10 @@ a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,
 .event__media { aspect-ratio: 3 / 2; }
 .film__poster img, .event__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .film__block, .event__block { margin-bottom: clamp(20px, 3vw, 32px); }
+.film__video {
+  width: 100%; aspect-ratio: 16 / 9; display: block; background: var(--violet-deep);
+  border-radius: var(--radius-lg); box-shadow: 0 24px 60px rgba(15,15,18,0.28);
+}
 .film__h, .event__h { font-size: 1.3rem; font-weight: 700; margin: 0 0 0.6rem; }
 .film__p, .event__p { font-size: 1.05rem; line-height: 1.6; }
 .is-on-violet .film__p, .is-on-violet .event__p { color: var(--paper-soft); }
