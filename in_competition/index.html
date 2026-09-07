@@ -7,7 +7,7 @@
   <title>In Competition — Merge Film Festival</title>
   <meta name="description" content="In Competition — Official Selection — Merge Film Festival." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=40" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=41" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -40,7 +40,7 @@
           <a href="../index.html" data-i18n="nav.home">Home</a>
           <a href="../passes/index.html" data-i18n="nav.passes">Passes</a>
           <!-- <a href="../program/index.html" data-i18n="nav.program">Program</a> -->
-          <!-- <a href="index.html" data-i18n="nav.inCompetition">In Competition</a> -->
+          <a href="index.html" data-i18n="nav.inCompetition">In Competition</a>
           <a href="../press/index.html" data-i18n="nav.press">Press</a>
           <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
@@ -61,86 +61,15 @@
         <h1 class="page-hero__title" data-i18n="comp.title">In Competition</h1>
         <p class="page-hero__subtitle" data-i18n="comp.subtitle">Official Festival Selection</p>
         <nav class="comp-index" aria-label="Competition index">
-          <a class="comp-index__item" href="#full" data-i18n="comp.idxFull">Full</a>
-          <a class="comp-index__item" href="#hybrid" data-i18n="comp.idxHybrid">Hybrid</a>
           <a class="comp-index__item" href="#experimental" data-i18n="comp.idxExperimental">Experimental</a>
           <a class="comp-index__item" href="#juries" data-i18n="comp.idxJuries">Juries</a>
         </nav>
       </div>
     </section>
 
-    <!-- Category 1: Full -->
-    <section class="section is-on-violet" data-bg="violet" id="full">
-      <span class="stain stain--tl" aria-hidden="true"></span>
-      <div class="container">
-        <header class="section__header reveal">
-          <p class="block-eyebrow" data-i18n="comp.awardEyebrow">Award</p>
-          <h2 class="section__title" data-i18n="comp.cat1Title">Full</h2>
-          <p class="section__desc" data-i18n="comp.cat1Desc">Works created entirely using artificial intelligence tools.</p>
-        </header>
-        <div class="film-grid reveal" data-delay="1">
-          <a class="film-card" href="full/film-01.html">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-01.jpg" alt="Poster: The Lego Movie" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">The Lego Movie</span>
-              <span class="film-card__meta">Phil Lord, Christopher Miller</span>
-            </div>
-          </a>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-02.jpg" alt="Poster: No Other Choice" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">No Other Choice</span>
-              <span class="film-card__meta">Park Chan-wook</span>
-            </div>
-          </div>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-03.jpg" alt="Poster: One Flew Over the Cuckoo's Nest" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">One Flew Over the Cuckoo's Nest</span>
-              <span class="film-card__meta">Miloš Forman</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Category 2: Hybrid -->
-    <section class="section is-on-cream" data-bg="cream" id="hybrid">
-      <div class="container">
-        <header class="section__header reveal">
-          <p class="block-eyebrow" data-i18n="comp.awardEyebrow">Award</p>
-          <h2 class="section__title" data-i18n="comp.cat2Title">Hybrid</h2>
-          <p class="section__desc" data-i18n="comp.cat2Desc">Films that combine traditional techniques with artificial intelligence tools.</p>
-        </header>
-        <div class="film-grid reveal" data-delay="1">
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-04.jpg" alt="Poster: Back to the Future" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">Back to the Future</span>
-              <span class="film-card__meta">Robert Zemeckis</span>
-            </div>
-          </div>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-05.jpg" alt="Poster: Pulp Fiction" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">Pulp Fiction</span>
-              <span class="film-card__meta">Quentin Tarantino</span>
-            </div>
-          </div>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-06.jpg" alt="Poster: Matrix" loading="lazy" /></div>
-            <div class="film-card__body">
-              <span class="film-card__title">Matrix</span>
-              <span class="film-card__meta">The Wachowskis</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Category 3: Experimental -->
+    <!-- Category: Experimental -->
     <section class="section is-on-violet" data-bg="violet" id="experimental">
-      <span class="stain stain--br" aria-hidden="true"></span>
+      <span class="stain stain--tl" aria-hidden="true"></span>
       <div class="container">
         <header class="section__header reveal">
           <p class="block-eyebrow" data-i18n="comp.awardEyebrow">Award</p>
@@ -148,25 +77,63 @@
           <p class="section__desc" data-i18n="comp.cat3Desc">Video art and experimental works created using artificial intelligence.</p>
         </header>
         <div class="film-grid reveal" data-delay="1">
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-07.jpg.webp" alt="Poster: Shrek 2" loading="lazy" /></div>
+          <div class="film-card film-card--soon">
+            <div class="film-card__media" aria-hidden="true"></div>
             <div class="film-card__body">
-              <span class="film-card__title">Shrek 2</span>
-              <span class="film-card__meta">Adamson, Vernon, Asbury</span>
+              <span class="film-card__title">broken</span>
+              <span class="film-card__meta">Felipe Valério</span>
+              <span class="film-card__soon" data-i18n="film.soon">Details coming soon</span>
             </div>
           </div>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-08.JPG" alt="Poster: Il buono, il brutto, il cattivo" loading="lazy" /></div>
+          <a class="film-card" href="experimental/pillow-men.html">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/pillow-men.jpg" alt="Poster: Pillow Men" loading="lazy" /></div>
             <div class="film-card__body">
-              <span class="film-card__title">Il buono, il brutto, il cattivo</span>
-              <span class="film-card__meta">Sergio Leone</span>
+              <span class="film-card__title">Pillow Men</span>
+              <span class="film-card__meta">Jacky Wong</span>
+            </div>
+          </a>
+          <a class="film-card" href="experimental/unum.html">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/unum.jpg" alt="Poster: Unum" loading="lazy" /></div>
+            <div class="film-card__body">
+              <span class="film-card__title">Unum</span>
+              <span class="film-card__meta">Francesco D’Isa</span>
+            </div>
+          </a>
+          <div class="film-card film-card--soon">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/data-center-by-night.jpg" alt="Poster: Data Center by Night" loading="lazy" /></div>
+            <div class="film-card__body">
+              <span class="film-card__title">Data Center by Night</span>
+              <span class="film-card__meta">Marlene Hessemer</span>
+              <span class="film-card__soon" data-i18n="film.soon">Details coming soon</span>
             </div>
           </div>
-          <div class="film-card">
-            <div class="film-card__media"><img src="../assets/img/films/posters/film-09.jpg" alt="Poster: The Big Lebowski" loading="lazy" /></div>
+          <a class="film-card" href="experimental/whats-locked-behind-that-door.html">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/whats-locked-behind-that-door.jpg" alt="Poster: What’s Locked Behind That Door?" loading="lazy" /></div>
             <div class="film-card__body">
-              <span class="film-card__title">The Big Lebowski</span>
-              <span class="film-card__meta">Coen Brothers</span>
+              <span class="film-card__title">What’s Locked Behind That Door?</span>
+              <span class="film-card__meta">John Gardner</span>
+            </div>
+          </a>
+          <a class="film-card" href="experimental/the-listening-flower.html">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/the-listening-flower.jpg" alt="Poster: The Listening Flower" loading="lazy" /></div>
+            <div class="film-card__body">
+              <span class="film-card__title">The Listening Flower</span>
+              <span class="film-card__meta">Ben Skea</span>
+            </div>
+          </a>
+          <a class="film-card" href="experimental/the-howl.html">
+            <div class="film-card__media"><img src="../assets/img/films/experimental/the-howl.jpg" alt="Poster: The Howl" loading="lazy" /></div>
+            <div class="film-card__body">
+              <span class="film-card__title">The Howl</span>
+              <span class="film-card__meta">Sohei Szincza</span>
+            </div>
+          </a>
+          <div class="film-card film-card--soon">
+            <div class="film-card__media film-card__media--wide"><img src="../assets/img/films/experimental/malignant-catatonic.jpg" alt="Poster: Malignant / Catatonic" loading="lazy" /></div>
+            <div class="film-card__body">
+              <span class="film-card__title">Malignant / Catatonic</span>
+              <span class="film-card__meta">Mike Bennion</span>
+              <span class="film-card__soon" data-i18n="film.soon">Details coming soon</span>
             </div>
           </div>
         </div>
@@ -187,7 +154,7 @@
             <div class="jury-card__body">
               <h3 class="jury-card__title" data-i18n="comp.jury1Title">Main Jury</h3>
               <p class="jury-card__text" data-i18n="comp.jury1Text">Comprising four professional members who evaluate the works in competition.</p>
-              <div class="jury-card__cta"><a class="btn" href="jury/main.html" data-i18n="comp.jury1Btn">Meet the jury</a></div>
+              <div class="jury-card__cta"><span class="btn btn--disabled" aria-disabled="true" data-i18n="comp.jury1Btn">To be announced</span></div>
             </div>
           </article>
           <article class="jury-card reveal" data-delay="2">
@@ -203,7 +170,7 @@
             <div class="jury-card__body">
               <h3 class="jury-card__title" data-i18n="comp.jury3Title">Audience Jury</h3>
               <p class="jury-card__text" data-i18n="comp.jury3Text">Viewers are invited to actively participate in the evaluation process.</p>
-              <div class="jury-card__cta"><a class="btn" href="https://www.jfcinema.ch" target="_blank" rel="noopener noreferrer" data-i18n="comp.jury3Btn">Buy your ticket</a></div>
+              <div class="jury-card__cta"><a class="btn" href="../passes/index.html" data-i18n="comp.jury3Btn">Get your pass</a></div>
             </div>
           </article>
         </div>
@@ -230,7 +197,7 @@
                 <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
                 <li><a href="../passes/index.html" data-i18n="nav.passes">Passes</a></li>
                 <!-- <li><a href="../program/index.html" data-i18n="nav.program">Program</a></li> -->
-                <!-- <li><a href="index.html" data-i18n="nav.inCompetition">In Competition</a></li> -->
+                <li><a href="index.html" data-i18n="nav.inCompetition">In Competition</a></li>
               </ul>
             </div>
             <div>
@@ -267,7 +234,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=21"></script>
+  <script src="../assets/js/translations.js?v=22"></script>
   <script src="../assets/js/app.js?v=10"></script>
 </body>
 </html>

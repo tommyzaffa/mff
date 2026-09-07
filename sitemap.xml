@@ -33,6 +33,46 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- In Competition -->
+  <url>
+    <loc>https://mergefestival.ch/in_competition/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Experimental competition — film pages -->
+  <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/pillow-men.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/unum.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/whats-locked-behind-that-door.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/the-listening-flower.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/experimental/the-howl.html</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Privacy -->
   <url>
     <loc>https://mergefestival.ch/legal/privacy.html</loc>

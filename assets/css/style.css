@@ -281,6 +281,10 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   box-shadow: none;
 }
 .btn--ghost:hover { box-shadow: none; }
+/* A CTA whose destination does not exist yet (rendered as a span, not a link). */
+.btn--disabled { opacity: 0.45; box-shadow: none; cursor: default; }
+.btn--disabled:hover { transform: none; box-shadow: none; }
+.btn--disabled::after { content: none; }
 .is-on-violet .btn { --btn-bg: var(--cream); --btn-fg: var(--violet); }
 .is-on-violet .btn--ghost { --btn-bg: transparent; --btn-fg: var(--paper); }
 /* The primary call to action: violet on a cream section. On violet it keeps the
@@ -1497,6 +1501,17 @@ main :where(h1, h2, h3, h4),
 .film-card__body { padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 3px; }
 .film-card__title { font-family: var(--font-display); font-weight: 700; font-size: 0.98rem; }
 .film-card__meta { font-size: 0.8rem; opacity: 0.62; }
+/* Film whose detail page is not published yet: the card is a div, so it must not
+   pretend to be clickable. */
+.film-card--soon { cursor: default; }
+.film-card--soon:hover { transform: none; box-shadow: none; }
+.film-card--soon .film-card__media { opacity: 0.55; }
+.film-card__soon {
+  font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.5; margin-top: 5px;
+}
+/* Poster delivered in 16:9 — letterbox it rather than crop it down to 2:3. */
+.film-card__media--wide img { object-fit: contain; }
 
 /* ---- juries grid (In Competition) ---- */
 .juries__grid {
