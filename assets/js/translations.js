@@ -247,7 +247,7 @@ window.MFF_I18N = {
     },
 
     film: {
-      hSynopsis: "Synopsis",
+      hSynopsis: "Synopsis", hTrailer: "Trailer",
       hDirector: "Director",
       mDirector: "Director",
       mRuntime: "Runtime",
@@ -831,7 +831,7 @@ window.MFF_I18N = {
     },
 
     film: {
-      hSynopsis: "Sinossi",
+      hSynopsis: "Sinossi", hTrailer: "Trailer",
       hDirector: "Regista",
       mDirector: "Regia",
       mRuntime: "Durata",
@@ -1415,7 +1415,7 @@ window.MFF_I18N = {
     },
 
     film: {
-      hSynopsis: "Synopsis",
+      hSynopsis: "Synopsis", hTrailer: "Bande-annonce",
       hDirector: "Réalisateur",
       mDirector: "Réalisation",
       mRuntime: "Durée",
@@ -1999,7 +1999,7 @@ window.MFF_I18N = {
     },
 
     film: {
-      hSynopsis: "Synopsis",
+      hSynopsis: "Synopsis", hTrailer: "Trailer",
       hDirector: "Regisseur",
       mDirector: "Regie",
       mRuntime: "Laufzeit",
