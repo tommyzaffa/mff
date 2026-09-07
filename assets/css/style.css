@@ -1525,8 +1525,12 @@ main :where(h1, h2, h3, h4),
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
 }
 .jury-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(15,15,18,0.22); }
-.jury-card__media { aspect-ratio: 4 / 3; background: var(--violet-deep); }
-.jury-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* No portraits on the jury cards — the members are not announced and the only
+   pictures around are other people's. A colour band identifies each jury instead. */
+.jury-card__band { height: 10px; }
+.jury-card__band--1 { background: var(--violet-deep); }
+.jury-card__band--2 { background: var(--violet-bright); }
+.jury-card__band--3 { background: var(--violet); }
 .jury-card__body { display: flex; flex-direction: column; gap: 8px; padding: 20px 22px 24px; flex: 1 1 auto; }
 .jury-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; }
 .jury-card__text { font-size: 0.95rem; line-height: 1.5; flex: 1 1 auto; }
