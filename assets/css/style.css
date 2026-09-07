@@ -74,25 +74,39 @@ body {
   -ms-overflow-style: none;
 }
 body:not(.home-page) {
-  /* The hero photo is a FIXED, viewport-anchored layer (it stays put while you
-     scroll). The horizontal cream wash for text legibility is baked into the
-     SAME fixed layer. Because the photo + wash are fixed and uniform, and the
-     scroll-driven #bgCanvas that rises over them (cream -> violet) is also fixed
-     and uniform, there is no section boundary anywhere — so the next section
-     covers the still photo smoothly, with no hard seam. */
   background-color: var(--cream);
+  /* The hero photo (a fixed background) paints instantly, but the page
+     entrance fade (pageFadeIn on body) kept fading the text in *after* it,
+     making the hero copy lag the photo. Disable the entrance fade on the
+     photo sub-pages so text and photo appear together. */
+  animation: none;
+}
+/* The hero photo is a FIXED, viewport-anchored layer (it stays put while you
+   scroll). The horizontal cream wash for text legibility is baked into the
+   SAME fixed layer. Because the photo + wash are fixed and uniform, and the
+   scroll-driven #bgCanvas that rises over them (cream -> violet) is also fixed
+   and uniform, there is no section boundary anywhere — so the next section
+   covers the still photo smoothly, with no hard seam.
+
+   This used to be a `background-attachment: fixed` on `body` itself, but `body`
+   also carries `overflow-x: hidden`, and Safari then resolved `cover` against
+   the wrong box on the FIRST paint of a page — the photo came out as a band
+   with a hard vertical edge, and nothing ever repainted it. A reload looked
+   fine because the image was cached by then. A real fixed element has no such
+   quirk: its background box is its own border box, which `inset: 0` pins to the
+   viewport. It sits at -4, i.e. under the #bgCanvas (-3) that fades over it. */
+body:not(.home-page)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
   background-image:
     linear-gradient(90deg, rgba(243, 242, 239, 0.98) 0%, rgba(243, 242, 239, 0.88) 36%, rgba(243, 242, 239, 0.38) 70%, rgba(243, 242, 239, 0.08) 100%),
     url("../img/bg/testa.jpg");
   background-position: center center, center center;
   background-size: cover, cover;
   background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
-  /* The hero photo (a fixed background) paints instantly, but the page
-     entrance fade (pageFadeIn on body) kept fading the text in *after* it,
-     making the hero copy lag the photo. Disable the entrance fade on the
-     photo sub-pages so text and photo appear together. */
-  animation: none;
 }
 html.is-menu-open,
 body.is-menu-open {
@@ -1428,9 +1442,9 @@ main :where(h1, h2, h3, h4),
      inversion of each section is handled in app.js (initMobileInnerColors);
      here we just remove the photo + cream wash so the violet canvas shows. */
   body:not(.home-page) {
-    background-image: none;
     background-color: var(--safari-ui-bg, var(--violet));
   }
+  body:not(.home-page)::before { display: none; }
 }
 
 /* In-menu language switch (mobile) appears inside the overlay */
@@ -2612,6 +2626,9 @@ body.badge-page {
   @page { margin: 18mm; }
 
   body.badge-page { background-image: none; background-color: #fff; color: #000; }
+  /* The head photo now lives on a fixed ::before layer, so blanking the body
+     background alone would no longer keep it off the sheet. */
+  body::before { display: none !important; }
   .badge-stage { min-height: 0; padding: 0; display: block; }
   /* On screen the stage centres this with flex; once the stage is a plain block
      the 380px cap would strand the card against the left edge of the sheet. */
