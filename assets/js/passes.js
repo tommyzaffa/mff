@@ -161,7 +161,13 @@
   });
 
   form.addEventListener("change", function (e) {
-    if (e.target.name === "fare" || e.target.name === "invite_type") refresh();
+    if (e.target.name !== "fare" && e.target.name !== "invite_type") return;
+    refresh();
+    // A code is only valid for certain types, so changing the type invalidates
+    // whatever the green tick said a moment ago. Ask again rather than let
+    // somebody reach the submit button on a stale "this pass is free".
+    var value = codeInput ? codeInput.value.trim() : "";
+    if (value.length >= 4) verifyCode(value);
   });
 
   // --- photo ----------------------------------------------------------------
