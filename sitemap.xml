@@ -41,6 +41,56 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Hybrid competition — film pages -->
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/short-circuit.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/home.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/you-will-always-be-welcome-here.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/the-descent-of-species.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/ai-manifesto-2026.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/symptoms-of-multiple-sclerosis.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/bronze-bust-digital-guard.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergefestival.ch/in_competition/hybrid/railbound.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Experimental competition — film pages -->
   <url>
     <loc>https://mergefestival.ch/in_competition/experimental/broken.html</loc>

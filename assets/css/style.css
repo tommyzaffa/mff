@@ -1171,6 +1171,7 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .author__body p { font-size: 1.05rem; }
 .is-on-violet .author__body p { color: var(--paper-soft); }
 .is-on-cream .author__body p { color: var(--ink-soft); }
+.author__card + .author__card { margin-top: clamp(28px, 4vw, 56px); }
 .author__nav { display: flex; gap: 12px; margin-top: 1.6rem; }
 
 /* ============================================================
@@ -1626,6 +1627,7 @@ a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,
   width: 100%; aspect-ratio: 16 / 9; display: block; background: var(--violet-deep);
   border-radius: var(--radius-lg); box-shadow: 0 24px 60px rgba(15,15,18,0.28);
 }
+.film__video--portrait { aspect-ratio: 9 / 16; max-width: 300px; margin-inline: auto; }
 .film__h, .event__h { font-size: 1.3rem; font-weight: 700; margin: 0 0 0.6rem; }
 .film__p, .event__p { font-size: 1.05rem; line-height: 1.6; }
 .is-on-violet .film__p, .is-on-violet .event__p { color: var(--paper-soft); }
