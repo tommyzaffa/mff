@@ -166,9 +166,9 @@
   // `@page { size }` outright — so printing always dropped the card in the
   // middle of an A4 and left someone to trim it by hand. Instead the card is
   // rasterised at print resolution and wrapped in a one-page PDF that IS the
-  // card: 54 x 85 mm, full bleed, nothing to crop before it reaches a printer.
+  // card: 54 x 85.5 mm, full bleed, nothing to crop before it reaches a printer.
   var MM_W = 54;
-  var MM_H = 85;
+  var MM_H = 85.5;
   var DPI = 600;
   var PT_W = MM_W * 72 / 25.4;
   var PT_H = MM_H * 72 / 25.4;
