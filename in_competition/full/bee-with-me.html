@@ -54,7 +54,7 @@
 
   <main>
     <!-- Film -->
-    <section class="section is-on-cream film section--pre-footer" data-bg="photo" id="top" style="padding-top: clamp(120px, 18vh, 200px);">
+    <section class="section is-on-cream film" data-bg="photo" id="top" style="padding-top: clamp(120px, 18vh, 200px);">
       <span class="stain stain--br" aria-hidden="true"></span>
       <div class="container">
         <div class="film__header reveal">
@@ -62,6 +62,7 @@
           <h1 class="film__title">Bee With Me</h1>
           <ul class="film__meta" aria-label="Film meta">
             <li><strong data-i18n="film.mDirector">Director</strong> <span>Emile Pison</span></li>
+            <li><strong data-i18n="film.mCountry">Country</strong> <span data-i18n="film.ctySouthKorea">South Korea</span></li>
             <li><strong data-i18n="film.mRuntime">Runtime</strong> <span>9:12</span></li>
             <li><strong data-i18n="film.mGenre">Genre</strong> <span data-i18n="film.genLive">Live action</span></li>
           </ul>
@@ -81,6 +82,27 @@
             <div class="film__actions">
               <a class="btn btn--ghost" href="../index.html#full" data-i18n="film.navComp">← Go to In Competition</a>
               <a class="btn btn--ghost" href="https://www.instagram.com/mipi______/" target="_blank" rel="noopener noreferrer" data-i18n="film.instagram">Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Director -->
+    <section class="section is-on-violet author section--pre-footer" data-bg="violet" id="director">
+      <span class="stain stain--tl" aria-hidden="true"></span>
+      <div class="container">
+        <header class="author__copy reveal">
+          <p class="author__eyebrow" data-i18n="film.hDirector">Director</p>
+          <h2 class="section__title">Emile Pison</h2>
+        </header>
+        <div class="author__card reveal" data-delay="1">
+          <div class="author__media"><img src="../../assets/img/films/full/bee-with-me-director.jpg" alt="Portrait of Emile Pison" loading="lazy" /></div>
+          <div class="author__body">
+            <p data-i18n-html="full.beeBio">Biography coming soon.</p>
+            <div class="author__nav">
+              <a class="btn btn--ghost" href="../index.html#full" data-i18n="film.navComp">← Go to In Competition</a>
+              <a class="btn" href="../../passes/index.html" data-i18n="nav.passesLong">Get your pass</a>
             </div>
           </div>
         </div>
@@ -144,7 +166,7 @@
     </div>
   </footer>
 
-  <script src="../../assets/js/translations.js?v=29"></script>
+  <script src="../../assets/js/translations.js?v=30"></script>
   <script src="../../assets/js/app.js?v=10"></script>
 </body>
 </html>
