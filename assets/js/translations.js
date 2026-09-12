@@ -482,7 +482,7 @@ window.MFF_I18N = {
       industryName: "Industry",
       industryDesc: "For people working in film and production. Includes the industry programme and networking sessions.",
       pressName: "Press",
-      pressDesc: "For accredited journalists and critics. Includes press screenings and interview requests.",
+      pressDesc: "For accredited journalists and critics. Full festival access and interview requests.",
       reviewNote: "Subject to approval by the festival before payment.",
 
       perkLabel: "Included with every pass",
@@ -1155,7 +1155,7 @@ window.MFF_I18N = {
       industryName: "Industry",
       industryDesc: "Per chi lavora nel cinema e nella produzione. Include il programma industry e i momenti di networking.",
       pressName: "Press",
-      pressDesc: "Per giornalisti e critici accreditati. Include le proiezioni stampa e le richieste di intervista.",
+      pressDesc: "Per giornalisti e critici accreditati. Accesso completo al festival e richieste di intervista.",
       reviewNote: "Soggetto ad approvazione del festival prima del pagamento.",
 
       perkLabel: "Incluso in ogni pass",
@@ -1828,7 +1828,7 @@ window.MFF_I18N = {
       industryName: "Industry",
       industryDesc: "Pour les professionnels du cinéma et de la production. Inclut le programme industry et les rencontres networking.",
       pressName: "Presse",
-      pressDesc: "Pour les journalistes et critiques accrédités. Inclut les projections presse et les demandes d'interview.",
+      pressDesc: "Pour les journalistes et critiques accrédités. Accès complet au festival et demandes d'interview.",
       reviewNote: "Soumis à l'approbation du festival avant le paiement.",
 
       perkLabel: "Inclus dans chaque pass",
@@ -2501,7 +2501,7 @@ window.MFF_I18N = {
       industryName: "Industry",
       industryDesc: "Für Menschen aus Film und Produktion. Inklusive Industry-Programm und Networking.",
       pressName: "Presse",
-      pressDesc: "Für akkreditierte Journalistinnen und Kritiker. Inklusive Pressevorführungen und Interviewanfragen.",
+      pressDesc: "Für akkreditierte Journalistinnen und Kritiker. Voller Festivalzugang und Interviewanfragen.",
       reviewNote: "Vor der Zahlung durch das Festival zu bestätigen.",
 
       perkLabel: "In jedem Pass enthalten",
