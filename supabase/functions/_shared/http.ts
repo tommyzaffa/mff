@@ -23,7 +23,7 @@ export function preflight(req: Request): Response | null {
 export function json(req: Request, body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders(req), "content-type": "application/json; charset=utf-8" },
+    headers: { ...corsHeaders(req), "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "referrer-policy": "no-referrer", "x-content-type-options": "nosniff" },
   });
 }
 

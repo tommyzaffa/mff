@@ -605,6 +605,9 @@ Email: info@mergefestival.ch</p>
 <p>Press and Industry pass requests are reviewed by the organisation, which communicates the outcome by email. Accreditation data is retained for up to twelve months after the close of the edition, subject to any longer periods imposed by accounting or tax obligations.</p>
 <h4>7.1. Audience Award voting</h4>
 <p>During screenings the audience may cast a vote by scanning a QR code. Voting is anonymous: no name, email address or other identifying data is requested or collected. To limit repeat voting the site stores a random device identifier in the browser; it cannot be traced back to an individual and can be removed at any time by clearing browser data.</p>
+<h4>7.2. Tickets, entry checks and security</h4>
+<p>For individual tickets and day passes we process the purchaser's name and email address, any holder names, selected screenings, tariff, any wheelchair-space request, payment references and entry-check timestamps. These data are used to fulfil the booking, respect capacity and prevent duplicate admission. Supabase hosts these records, Stripe processes payments and Resend delivers tickets by email. Badge and ticket links are access credentials: anyone who has a link can view its associated details. Keep them private.</p>
+<p>Staff pages store a signed session token in session storage, valid for at most eight hours; the shared password is not stored there. Camera frames used for QR scanning are processed on the device. To limit abusive requests, the backend uses temporary counters associated with a keyed hash of the network address. Expired counters are removed during subsequent requests. Hosting providers also process technical connection data under their own policies.</p>
 <h3>8. Cookies, Technical Information and Third-Party Services</h3>
 <p>The Merge Film Festival's website does not use proprietary cookies for profiling or tracking purposes and does not employ analytics or advertising platforms (such as Google Analytics, Facebook Pixel or similar). The festival uses browser local storage for two technical purposes only: remembering the chosen language, and holding the anonymous device identifier described in section 7.1. These technologies are never used to identify or profile visitors.</p>
 <p>In order to deliver certain functionalities, the website integrates the following third-party services, which may set their own cookies or use local storage on the user's device in accordance with their own privacy policies:</p>
@@ -622,7 +625,7 @@ Email: info@mergefestival.ch</p>
 <h3>9. Amendments to This Policy</h3>
 <p>The Merge Film Festival reserves the right to update or amend this policy at any time in order to reflect any changes in its practices or regulatory obligations.</p>
 <p>The updated version will be published on the festival's official channels. Visitors are therefore encouraged to periodically consult the policy to remain informed about personal data processing practices.</p>
-<p><strong>Last updated:</strong> 28/08/2026</p>
+<p><strong>Last updated:</strong> 12/09/2026</p>
 `;
 
 /* ---------------- PRIVACY — IT ---------------- */
@@ -689,6 +692,9 @@ E-mail: info@mergefestival.ch</p>
 <p>Le richieste di pass Press e Industry sono sottoposte a valutazione da parte dell'organizzazione, che comunica l'esito via e-mail. I dati relativi agli accrediti sono conservati fino a dodici mesi dalla chiusura dell'edizione, salvi i termini più lunghi imposti da obblighi contabili o fiscali.</p>
 <h4>7.1. Votazione del premio del pubblico</h4>
 <p>Durante le proiezioni il pubblico può esprimere un voto tramite un codice QR. La votazione è anonima: non vengono richiesti né raccolti nome, indirizzo e-mail o altri dati identificativi. Per limitare i voti ripetuti il sito memorizza nel browser un identificativo casuale del dispositivo, non riconducibile a una persona ed eliminabile in qualsiasi momento svuotando i dati del browser.</p>
+<h4>7.2. Biglietti, controlli all'ingresso e sicurezza</h4>
+<p>Per biglietti singoli e giornaliere trattiamo nome e indirizzo e-mail dell'acquirente, eventuali nominativi degli intestatari, proiezioni scelte, tariffa, eventuale richiesta di posto per sedia a rotelle, riferimenti del pagamento e orari di verifica all'ingresso. Questi dati servono a eseguire la prenotazione, rispettare la capienza e impedire ingressi duplicati. Supabase ospita i dati, Stripe gestisce i pagamenti e Resend invia i biglietti via e-mail. I link a badge e biglietti sono credenziali di accesso: chi possiede un link può vedere i relativi dati. Vanno conservati privatamente.</p>
+<p>Le pagine del personale conservano nella memoria di sessione un token firmato, valido per un massimo di otto ore; la password condivisa non viene conservata in quella memoria. Le immagini della fotocamera per la lettura dei QR sono elaborate sul dispositivo. Per limitare richieste abusive, il backend usa contatori temporanei associati a un hash con chiave dell'indirizzo di rete. I contatori scaduti sono rimossi durante le richieste successive. Anche i fornitori di hosting trattano dati tecnici di connessione secondo le proprie informative.</p>
 <h3>8. Cookie, informazioni tecniche e servizi di terze parti</h3>
 <p>Il sito web del Merge Film Festival non utilizza cookie proprietari a fini di profilazione o tracciamento e non si avvale di piattaforme di analisi o pubblicità (come Google Analytics, Facebook Pixel o simili). Il festival ricorre all'archiviazione locale del browser (localStorage) soltanto per due scopi tecnici: ricordare la lingua scelta e conservare l'identificativo anonimo di dispositivo descritto al punto 7.1. In nessun caso queste tecnologie sono impiegate per identificare o profilare i visitatori.</p>
 <p>Per offrire alcune funzionalità, il sito integra i seguenti servizi di terze parti, che possono impostare propri cookie o utilizzare l'archiviazione locale sul dispositivo dell'utente in conformità alle rispettive informative sulla privacy:</p>
@@ -706,7 +712,7 @@ E-mail: info@mergefestival.ch</p>
 <h3>9. Modifiche della presente informativa</h3>
 <p>Il Merge Film Festival si riserva il diritto di aggiornare o modificare la presente informativa in qualsiasi momento, al fine di riflettere eventuali cambiamenti nelle pratiche adottate o negli obblighi normativi.</p>
 <p>La versione aggiornata sarà pubblicata sui canali ufficiali del festival. Si invita pertanto a consultare periodicamente l'informativa per rimanere informati sulle modalità di trattamento dei dati personali.</p>
-<p><strong>Ultimo aggiornamento:</strong> 28/08/2026</p>
+<p><strong>Ultimo aggiornamento:</strong> 12/09/2026</p>
 `;
 
 /* ---------------- PRIVACY — FR ---------------- */
@@ -773,6 +779,9 @@ E-mail : info@mergefestival.ch</p>
 <p>Les demandes de pass Presse et Industry sont examinées par l'organisation, qui communique la décision par e-mail. Les données d'accréditation sont conservées jusqu'à douze mois après la clôture de l'édition, sous réserve de délais plus longs imposés par des obligations comptables ou fiscales.</p>
 <h4>7.1. Vote du prix du public</h4>
 <p>Pendant les projections, le public peut voter au moyen d'un QR code. Le vote est anonyme : aucun nom, adresse e-mail ou autre donnée identifiante n'est demandé ni collecté. Afin de limiter les votes répétés, le site conserve dans le navigateur un identifiant aléatoire de l'appareil, non rattachable à une personne et supprimable à tout moment en effaçant les données du navigateur.</p>
+<h4>7.2. Billets, contrôles à l'entrée et sécurité</h4>
+<p>Pour les billets et pass journée, nous traitons le nom et l'adresse e-mail de l'acheteur, les éventuels noms des titulaires, les séances choisies, le tarif, une éventuelle demande de place pour fauteuil roulant, les références du paiement et les heures de contrôle à l'entrée. Ces données servent à exécuter la réservation, respecter la capacité et empêcher les entrées multiples. Supabase héberge ces données, Stripe traite les paiements et Resend envoie les billets par e-mail. Les liens des badges et billets sont des identifiants d'accès : toute personne possédant un lien peut consulter les données associées. Conservez-les de manière privée.</p>
+<p>Les pages du personnel conservent un jeton de session signé, valable au maximum huit heures, dans le stockage de session ; le mot de passe partagé n'y est pas conservé. Les images de la caméra utilisées pour lire les QR sont traitées sur l'appareil. Pour limiter les requêtes abusives, le backend utilise des compteurs temporaires associés à un hachage avec clé de l'adresse réseau. Les compteurs expirés sont supprimés lors des requêtes suivantes. Les hébergeurs traitent aussi les données techniques de connexion selon leurs propres politiques.</p>
 <h3>8. Cookies, informations techniques et services tiers</h3>
 <p>Le site web du Merge Film Festival n'utilise pas de cookies propriétaires à des fins de profilage ou de suivi et ne recourt à aucune plateforme d'analyse ou de publicité (telles que Google Analytics, Facebook Pixel ou similaires). Le festival n'utilise le stockage local du navigateur qu'à deux fins techniques : mémoriser la langue choisie et conserver l'identifiant anonyme d'appareil décrit au point 7.1. Ces technologies ne sont en aucun cas employées pour identifier ou profiler les visiteurs.</p>
 <p>Afin d'offrir certaines fonctionnalités, le site intègre les services tiers suivants, qui peuvent déposer leurs propres cookies ou utiliser le stockage local sur l'appareil de l'utilisateur conformément à leurs politiques de confidentialité respectives :</p>
@@ -790,7 +799,7 @@ E-mail : info@mergefestival.ch</p>
 <h3>9. Modifications de la présente politique</h3>
 <p>Le Merge Film Festival se réserve le droit de mettre à jour ou de modifier la présente politique à tout moment, afin de refléter d'éventuels changements dans les pratiques adoptées ou les obligations réglementaires.</p>
 <p>La version mise à jour sera publiée sur les canaux officiels du festival. Il est donc conseillé de consulter régulièrement cette politique pour rester informé des modalités de traitement des données personnelles.</p>
-<p><strong>Dernière mise à jour :</strong> 28/08/2026</p>
+<p><strong>Dernière mise à jour :</strong> 12/09/2026</p>
 `;
 
 /* ---------------- PRIVACY — DE ---------------- */
@@ -857,6 +866,9 @@ E-Mail: info@mergefestival.ch</p>
 <p>Anfragen für Presse- und Industry-Pässe werden von der Organisation geprüft, die das Ergebnis per E-Mail mitteilt. Die Akkreditierungsdaten werden bis zu zwölf Monate nach Abschluss der Ausgabe aufbewahrt, vorbehaltlich längerer Fristen aufgrund buchhalterischer oder steuerlicher Pflichten.</p>
 <h4>7.1. Abstimmung für den Publikumspreis</h4>
 <p>Während der Vorführungen kann das Publikum über einen QR-Code abstimmen. Die Abstimmung ist anonym: Es werden weder Name noch E-Mail-Adresse oder andere identifizierende Daten erfragt oder erhoben. Um wiederholte Stimmabgaben einzuschränken, speichert die Website im Browser eine zufällige Gerätekennung, die keiner Person zugeordnet werden kann und sich jederzeit durch Löschen der Browserdaten entfernen lässt.</p>
+<h4>7.2. Tickets, Einlasskontrollen und Sicherheit</h4>
+<p>Für Einzeltickets und Tagespässe verarbeiten wir Namen und E-Mail-Adresse der kaufenden Person, gegebenenfalls Namen der Ticketinhaber, gewählte Vorführungen, Tarif, einen allfälligen Rollstuhlplatzwunsch, Zahlungsreferenzen und Zeitpunkte der Einlasskontrolle. Diese Daten dienen der Buchungsabwicklung, der Einhaltung der Kapazität und der Verhinderung mehrfachen Einlasses. Supabase speichert diese Daten, Stripe verarbeitet Zahlungen und Resend versendet Tickets per E-Mail. Badge- und Ticketlinks sind Zugangsdaten: Wer einen Link besitzt, kann die zugehörigen Angaben sehen. Bewahren Sie diese Links vertraulich auf.</p>
+<p>Die Personalseiten speichern im Sitzungsspeicher ein signiertes Sitzungstoken für höchstens acht Stunden; das gemeinsame Passwort wird dort nicht gespeichert. Kamerabilder zum Lesen der QR-Codes werden auf dem Gerät verarbeitet. Zur Begrenzung missbräuchlicher Anfragen verwendet das Backend vorübergehende Zähler, die einem schlüsselbasierten Hash der Netzwerkadresse zugeordnet sind. Abgelaufene Zähler werden bei nachfolgenden Anfragen entfernt. Hosting-Anbieter verarbeiten technische Verbindungsdaten nach ihren eigenen Richtlinien.</p>
 <h3>8. Cookies, technische Informationen und Dienste Dritter</h3>
 <p>Die Website des Merge Film Festival verwendet keine eigenen Cookies zu Profiling- oder Tracking-Zwecken und nutzt keine Analyse- oder Werbeplattformen (wie Google Analytics, Facebook Pixel oder Ähnliches). Den lokalen Browserspeicher nutzt das Festival nur für zwei technische Zwecke: die gewählte Sprache zu merken und die unter Punkt 7.1 beschriebene anonyme Gerätekennung zu halten. Zur Identifizierung oder Profilbildung von Besuchern werden diese Technologien nie eingesetzt.</p>
 <p>Um bestimmte Funktionen bereitzustellen, bindet die Website folgende Dienste Dritter ein, die gemäß ihren eigenen Datenschutzrichtlinien eigene Cookies setzen oder den lokalen Speicher des Geräts des Nutzers verwenden können:</p>
@@ -874,5 +886,5 @@ E-Mail: info@mergefestival.ch</p>
 <h3>9. Änderungen dieser Datenschutzrichtlinie</h3>
 <p>Das Merge Film Festival behält sich das Recht vor, diese Datenschutzrichtlinie jederzeit zu aktualisieren oder zu ändern, um etwaige Änderungen in den angewandten Praktiken oder den gesetzlichen Verpflichtungen widerzuspiegeln.</p>
 <p>Die aktualisierte Version wird auf den offiziellen Kanälen des Festivals veröffentlicht. Es wird daher empfohlen, die Datenschutzrichtlinie regelmäßig zu überprüfen, um über die Modalitäten der Verarbeitung personenbezogener Daten informiert zu bleiben.</p>
-<p><strong>Letzte Aktualisierung:</strong> 28/08/2026</p>
+<p><strong>Letzte Aktualisierung:</strong> 12/09/2026</p>
 `;

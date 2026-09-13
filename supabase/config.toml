@@ -19,3 +19,15 @@ verify_jwt = false
 
 [functions.pass-stripe-webhook]
 verify_jwt = false
+
+[functions.ticket-door]
+verify_jwt = false
+
+[functions.ticket-reserve]
+verify_jwt = false
+
+[functions.ticket-show]
+verify_jwt = false
+
+[functions.ticket-screenings]
+verify_jwt = false

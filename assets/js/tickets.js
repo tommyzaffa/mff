@@ -1,12 +1,18 @@
 /* ============================================================
    Merge Film Festival — seat reservation
 
-   Four panels (loading / soon / choose / form / done). The page
+   Five panels (loading / soon / choose / form / done). The page
    never counts anything: it shows what ticket-screenings says is
    left and lets ticket-reserve decide, under the screening's row
    lock, whether the seats are actually there. Everything here is
    presentation, so a stale count on screen can only ever produce
    an honest refusal, never an oversold room.
+
+   Two things are on sale and they share the whole flow, because
+   they only differ in what is sent: a screening posts `screening`,
+   a day pass posts `day`. Each seat carries its own tariff, full
+   or reduced — declared here, checked at the door, which is why
+   the word travels all the way to the scanner.
    ============================================================ */
 (function () {
   "use strict";
@@ -14,15 +20,23 @@
   var CFG = window.MFF_PASSES || {};
   var BASE = (CFG.url || "").replace(/\/+$/, "") + "/functions/v1/";
 
-  var listEl = document.querySelector("[data-list]");
-  if (!listEl) return;
+  var form = document.getElementById("ticketForm");
+  if (!form) return;
+
+  // Tickets sit under the accreditations on the same page, and both flows call
+  // their panels `choose` and `form`. Everything is therefore looked up inside
+  // this flow's own block, never across the whole document.
+  var scope = form.closest("[data-flow]") || document;
+
+  var listEl = scope.querySelector("[data-list]");
+  var daysEl = scope.querySelector("[data-days]");
+  var dayGroupEl = scope.querySelector("[data-day-group]");
 
   var panels = {};
-  document.querySelectorAll("[data-panel]").forEach(function (el) {
+  scope.querySelectorAll("[data-panel]").forEach(function (el) {
     panels[el.getAttribute("data-panel")] = el;
   });
 
-  var form = document.getElementById("ticketForm");
   var seatsEl = form.querySelector("[data-seats]");
   var totalEl = form.querySelector("[data-total]");
   var statusEl = form.querySelector("[data-status]");
@@ -30,11 +44,17 @@
   var showTitleEl = form.querySelector("[data-show-title]");
   var showWhenEl = form.querySelector("[data-show-when]");
   var addSeatBtn = form.querySelector("[data-add-seat]");
-  var codesEl = document.querySelector("[data-codes]");
+  var codesEl = scope.querySelector("[data-codes]");
 
   var MAX_SEATS = 10;
 
   var screenings = [];
+  var days = [];
+
+  // Whatever is being bought, reduced to the three things the form needs: what
+  // to call it, what a seat costs, and which key to post it under. Keeping the
+  // rest of the page blind to which of the two it is holding is what stops the
+  // day pass from becoming a second copy of the booking flow.
   var current = null;
 
   function show(name) {
@@ -73,8 +93,32 @@
     }
   }
 
+  function dayText(day) {
+    try {
+      return new Intl.DateTimeFormat(LOCALES[lang()] || "en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "Europe/Zurich",
+      }).format(new Date(day + "T12:00:00Z"));
+    } catch (e) {
+      return day;
+    }
+  }
+
   function money(cents) {
     return "CHF " + (cents / 100).toFixed(2).replace(/\.00$/, ".–");
+  }
+
+  // "CHF 15.– · ridotto 10.–", or just "Free". The reduced price is only worth
+  // printing when it is actually different from the full one.
+  function priceText(full, reduced) {
+    if (!(full > 0)) return t("tickets.free", "Free");
+    var out = money(full);
+    if (reduced > 0 && reduced !== full) {
+      out += " · " + t("tickets.reducedShort", "reduced") + " " + money(reduced);
+    }
+    return out;
   }
 
   // --- the programme --------------------------------------------------------
@@ -83,81 +127,152 @@
     .then(function (r) { return r.json(); })
     .then(function (res) {
       screenings = (res.screenings || []).filter(function (s) { return s.is_ticketed; });
+      days = res.days || [];
       if (!screenings.length) return show("soon");
       render();
       show("choose");
+      deepLink();
     })
     .catch(function () {
       show("soon");
     });
 
+  // Coming from the programme page, which links straight at one screening or
+  // one day. Nothing is skipped: the form simply opens already filled in.
+  function deepLink() {
+    var q = new URLSearchParams(window.location.search);
+    var s = q.get("s");
+    var d = q.get("d");
+    var pick = s
+      ? screenings.filter(function (x) { return x.code === s && x.sales_open && x.seats_left > 0; })[0]
+      : d
+      ? days.filter(function (x) { return x.day === d && x.sales_open && x.seats_left > 0; })[0]
+      : null;
+    if (pick) openForm(s ? asScreening(pick) : asDay(pick));
+  }
+
+  function asScreening(s) {
+    return {
+      key: "screening",
+      value: s.code,
+      title: s.title,
+      when: whenText(s.starts_at) + (s.venue ? " • " + s.venue : ""),
+      full: Number(s.price_cents),
+      reduced: Number(s.price_reduced_cents),
+      badges: true,
+    };
+  }
+
+  function asDay(d) {
+    return {
+      key: "day",
+      value: d.day,
+      title: t("tickets.dayPass", "Day pass") + " · " + dayText(d.day),
+      // How many doors it opens is the only thing that makes a day pass worth
+      // more than a ticket, so it is what the header says.
+      when: d.screenings.length + " " + t("tickets.dayScreenings", "screenings"),
+      full: Number(d.price_cents),
+      reduced: Number(d.price_reduced_cents),
+      // An accreditation already admits its holder to every screening, so a
+      // badge on a day pass would be money for nothing — the server refuses it
+      // and the field is simply not offered.
+      badges: false,
+    };
+  }
+
+  function card(o) {
+    var li = document.createElement("li");
+    li.className = "screening" + (o.closed || o.soldOut ? " is-closed" : "");
+
+    var info = document.createElement("div");
+    info.className = "screening__info";
+
+    var when = document.createElement("p");
+    when.className = "screening__when";
+    when.textContent = o.when;
+    info.appendChild(when);
+
+    var title = document.createElement("h3");
+    title.className = "screening__title";
+    title.textContent = o.title;
+    info.appendChild(title);
+
+    var meta = document.createElement("p");
+    meta.className = "screening__meta";
+    meta.textContent = [o.meta, o.price].filter(Boolean).join(" • ");
+    info.appendChild(meta);
+
+    var seats = document.createElement("p");
+    seats.className = "screening__seats";
+    seats.textContent = o.soldOut
+      ? t("tickets.soldOut", "Sold out")
+      : o.closed
+      ? t("tickets.closed", "Online sales are closed — ask at the box office.")
+      : o.left + " " + t("tickets.seatsLeft", "seats left");
+    info.appendChild(seats);
+
+    li.appendChild(info);
+
+    if (!o.closed && !o.soldOut) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn btn--apply btn--small";
+      btn.textContent = t("tickets.book", "Book");
+      btn.addEventListener("click", o.book);
+      li.appendChild(btn);
+    }
+
+    return li;
+  }
+
   function render() {
     listEl.innerHTML = "";
     screenings.forEach(function (s) {
-      var left = Number(s.seats_left);
-      var closed = !s.sales_open;
-      var soldOut = left <= 0;
+      listEl.appendChild(card({
+        when: whenText(s.starts_at),
+        title: s.title,
+        meta: s.venue,
+        price: priceText(Number(s.price_cents), Number(s.price_reduced_cents)),
+        left: Number(s.seats_left),
+        closed: !s.sales_open,
+        soldOut: Number(s.seats_left) <= 0,
+        book: function () { openForm(asScreening(s)); },
+      }));
+    });
 
-      var li = document.createElement("li");
-      li.className = "screening" + (closed || soldOut ? " is-closed" : "");
-
-      var info = document.createElement("div");
-      info.className = "screening__info";
-
-      var when = document.createElement("p");
-      when.className = "screening__when";
-      when.textContent = whenText(s.starts_at);
-      info.appendChild(when);
-
-      var title = document.createElement("h3");
-      title.className = "screening__title";
-      title.textContent = s.title;
-      info.appendChild(title);
-
-      var meta = document.createElement("p");
-      meta.className = "screening__meta";
-      meta.textContent = [
-        s.venue,
-        s.price_cents > 0 ? money(s.price_cents) : t("tickets.free", "Free"),
-      ].filter(Boolean).join(" • ");
-      info.appendChild(meta);
-
-      var seats = document.createElement("p");
-      seats.className = "screening__seats";
-      seats.textContent = soldOut
-        ? t("tickets.soldOut", "Sold out")
-        : closed
-        ? t("tickets.closed", "Online sales are closed — ask at the box office.")
-        : left + " " + t("tickets.seatsLeft", "seats left");
-      info.appendChild(seats);
-
-      li.appendChild(info);
-
-      if (!closed && !soldOut) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "btn btn--apply btn--small";
-        btn.textContent = t("tickets.book", "Book");
-        btn.addEventListener("click", function () { openForm(s); });
-        li.appendChild(btn);
-      }
-
-      listEl.appendChild(li);
+    if (!daysEl) return;
+    daysEl.innerHTML = "";
+    var open = days.filter(function (d) { return d.sales_open; });
+    if (dayGroupEl) dayGroupEl.hidden = open.length === 0;
+    open.forEach(function (d) {
+      daysEl.appendChild(card({
+        when: dayText(d.day),
+        title: t("tickets.dayPass", "Day pass"),
+        meta: d.screenings.length + " " + t("tickets.dayScreenings", "screenings"),
+        price: priceText(Number(d.price_cents), Number(d.price_reduced_cents)),
+        left: Number(d.seats_left),
+        closed: false,
+        soldOut: Number(d.seats_left) <= 0,
+        book: function () { openForm(asDay(d)); },
+      }));
     });
   }
 
   // --- the form -------------------------------------------------------------
 
-  function openForm(s) {
-    current = s;
-    showTitleEl.textContent = s.title;
-    showWhenEl.textContent = whenText(s.starts_at) + " • " + (s.venue || "");
+  function openForm(item) {
+    current = item;
+    showTitleEl.textContent = item.title;
+    showWhenEl.textContent = item.when;
     seatsEl.innerHTML = "";
     addSeat();
     statusEl.textContent = "";
     statusEl.className = "form__status";
     show("form");
-    window.scrollTo({ top: document.querySelector("[data-panel='form']").offsetTop - 80, behavior: "smooth" });
+    // The section is positioned, so `offsetTop` is measured from it and not from
+    // the page — and the form no longer starts the page anyway.
+    var y = panels.form.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: y, behavior: "smooth" });
   }
 
   function seatRows() {
@@ -199,16 +314,37 @@
     holder.placeholder = t("tickets.phHolder", "Name on the ticket (optional)");
     li.appendChild(holder);
 
-    var badge = document.createElement("input");
-    badge.type = "text";
-    badge.className = "seat__badge";
-    badge.setAttribute("data-badge", "");
-    badge.placeholder = t("tickets.phBadge", "Badge number (optional)");
-    badge.addEventListener("input", function () {
-      badge.value = badge.value.toUpperCase();
-      updateTotal();
+    // Declared, not proven: the door asks for the student card or the ID. The
+    // word travels with the seat all the way to the scanner, which is the only
+    // reason it is a field and not a price the buyer picks.
+    var tariff = document.createElement("select");
+    tariff.className = "seat__tariff";
+    tariff.setAttribute("data-tariff", "");
+    tariff.setAttribute("aria-label", t("tickets.tariffLabel", "Tariff"));
+    [
+      ["full", "tickets.tariffFull", "Full"],
+      ["reduced", "tickets.tariffReduced", "Reduced — student / 65+"],
+    ].forEach(function (o) {
+      var opt = document.createElement("option");
+      opt.value = o[0];
+      opt.textContent = t(o[1], o[2]);
+      tariff.appendChild(opt);
     });
-    li.appendChild(badge);
+    tariff.addEventListener("change", updateTotal);
+    li.appendChild(tariff);
+
+    if (!current || current.badges) {
+      var badge = document.createElement("input");
+      badge.type = "text";
+      badge.className = "seat__badge";
+      badge.setAttribute("data-badge", "");
+      badge.placeholder = t("tickets.phBadge", "Badge number (optional)");
+      badge.addEventListener("input", function () {
+        badge.value = badge.value.toUpperCase();
+        updateTotal();
+      });
+      li.appendChild(badge);
+    }
 
     var chair = document.createElement("label");
     chair.className = "seat__chair";
@@ -231,29 +367,43 @@
     rows.forEach(function (li, i) {
       li.querySelector(".seat__n").textContent = t("tickets.seat", "Seat") + " " + (i + 1);
       li.querySelector(".seat__remove").hidden = rows.length <= 1;
+      // The options were written by hand, so a language switch has to come back
+      // for them; the chosen value is preserved because only the labels change.
+      var sel = li.querySelector("[data-tariff]");
+      if (sel) {
+        sel.options[0].textContent = t("tickets.tariffFull", "Full");
+        sel.options[1].textContent = t("tickets.tariffReduced", "Reduced — student / 65+");
+      }
+      var holder = li.querySelector("[data-holder]");
+      if (holder) holder.placeholder = t("tickets.phHolder", "Name on the ticket (optional)");
+      var badge = li.querySelector("[data-badge]");
+      if (badge) badge.placeholder = t("tickets.phBadge", "Badge number (optional)");
     });
     if (addSeatBtn) addSeatBtn.hidden = rows.length >= MAX_SEATS;
   }
 
   function collect() {
     return seatRows().map(function (li) {
+      var badge = li.querySelector("[data-badge]");
       return {
-        badge: li.querySelector("[data-badge]").value.trim().toUpperCase() || null,
+        badge: badge ? badge.value.trim().toUpperCase() || null : null,
         holder: li.querySelector("[data-holder]").value.trim() || null,
         wheelchair: li.querySelector("[data-wheelchair]").checked,
+        tariff: li.querySelector("[data-tariff]").value,
       };
     });
   }
 
-  // A badge covers exactly one seat, so the sum is simply the seats without one.
-  // The server checks each badge for real; this is only what the buyer is told
-  // to expect, and a badge that turns out to be invalid stops the booking rather
-  // than quietly charging for it.
+  // A badge covers exactly one seat, so the sum is simply the seats without one,
+  // each at the tariff it declared. The server checks each badge for real; this
+  // is only what the buyer is told to expect, and a badge that turns out to be
+  // invalid stops the booking rather than quietly charging for it.
   function updateTotal() {
     if (!current) return;
-    var seats = collect();
-    var paying = seats.filter(function (s) { return !s.badge; }).length;
-    var cents = paying * current.price_cents;
+    var cents = collect().reduce(function (sum, s) {
+      if (s.badge) return sum;
+      return sum + (s.tariff === "reduced" ? current.reduced : current.full);
+    }, 0);
 
     totalEl.textContent = cents > 0
       ? t("tickets.total", "Total") + ": " + money(cents)
@@ -280,13 +430,15 @@
     statusEl.textContent = "";
 
     var body = {
-      screening: current.code,
       first_name: form.first_name.value.trim(),
       last_name: form.last_name.value.trim(),
       email: form.email.value.trim(),
       locale: lang(),
       seats: collect(),
     };
+    // One or the other, never both — the function refuses a request carrying
+    // two, because it would have to guess which the buyer meant.
+    body[current.key] = current.value;
 
     if (!body.first_name || !body.last_name) return bad("name_required");
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(body.email)) return bad("email_invalid");
@@ -319,7 +471,9 @@
     list.forEach(function (code) {
       var li = document.createElement("li");
       var a = document.createElement("a");
-      a.href = "ticket.html?c=" + encodeURIComponent(code);
+      // The booking lives on /passes/ but the ticket itself is still served from
+      // /tickets/, next to the page Stripe returns to.
+      a.href = "../tickets/ticket.html?c=" + encodeURIComponent(code);
       a.textContent = code;
       li.appendChild(a);
       codesEl.appendChild(li);

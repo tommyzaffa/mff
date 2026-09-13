@@ -92,18 +92,53 @@
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok || !res.ticket) return show("missing");
-      paint(res.ticket, res.screening || {});
+      paint(res.ticket, res.screening || {}, res.screenings || []);
       show("ticket");
     })
     .catch(function () { show("missing"); });
 
-  function paint(ticket, screening) {
-    document.querySelector("[data-title]").textContent = screening.title || "—";
+  function dayText(iso) {
+    try {
+      return new Intl.DateTimeFormat(LOCALES[LANG] || "en-GB", {
+        weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { return iso; }
+  }
+
+  function hourText(iso) {
+    try {
+      return new Intl.DateTimeFormat(LOCALES[LANG] || "en-GB", {
+        hour: "2-digit", minute: "2-digit", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { return iso; }
+  }
+
+  function paint(ticket, screening, screenings) {
+    // A day pass is named after its day, not after the first film on it: the
+    // first film is only where it happens to start.
+    document.querySelector("[data-title]").textContent = ticket.day_pass
+      ? t("ticket.dayPass", "Day pass")
+      : screening.title || "—";
     document.querySelector("[data-when]").textContent = screening.starts_at
-      ? whenText(screening.starts_at)
+      ? (ticket.day_pass ? dayText(screening.starts_at) : whenText(screening.starts_at))
       : "";
     document.querySelector("[data-venue]").textContent = screening.venue || "";
     document.querySelector("[data-code]").textContent = ticket.code;
+
+    var tariff = document.querySelector("[data-tariff]");
+    if (tariff) tariff.hidden = ticket.tariff !== "reduced";
+
+    var shows = document.querySelector("[data-shows]");
+    if (shows) {
+      shows.innerHTML = "";
+      shows.hidden = !ticket.day_pass || !screenings.length;
+      screenings.forEach(function (s) {
+        var li = document.createElement("li");
+        li.textContent = hourText(s.starts_at) + " · " + s.title;
+        if (s.used) li.className = "is-used";
+        shows.appendChild(li);
+      });
+    }
 
     var holder = document.querySelector("[data-holder]");
     holder.textContent = ticket.holder || "";

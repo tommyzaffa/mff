@@ -18,14 +18,11 @@ export function badgeUrl(code: string): string {
 export async function issuePass(pass: Pass, actor?: string): Promise<string> {
   if (pass.status === "issued" && pass.badge_code) return pass.badge_code;
 
-  const { data: code, error } = await db()
-    .rpc("pass_claim_badge_code", { p_pass: pass.id });
-  if (error || !code) throw new Error(`badge code: ${error?.message ?? "none available"}`);
-
-  await db()
-    .from("passes")
-    .update({ status: "issued", issued_at: new Date().toISOString() })
-    .eq("id", pass.id);
+  const { data: result, error } = await db()
+    .rpc("pass_issue", { p_pass: pass.id });
+  if (error || !result?.code) throw new Error(`badge issue: ${error?.message ?? "no code"}`);
+  const code = result.code as string;
+  if (result.already) return code;
 
   await logEvent(pass.id, "issued", code, actor);
 

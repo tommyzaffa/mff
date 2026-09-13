@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta name="referrer" content="no-referrer" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
@@ -8,7 +9,7 @@
   <!-- The code is the admission, so keep it out of search results. -->
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=48" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=54" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -45,6 +46,12 @@
           <p class="tkt__venue" data-venue>—</p>
           <p class="tkt__holder" data-holder hidden>—</p>
           <p class="tkt__chair" data-chair hidden data-i18n="ticket.wheelchair">Wheelchair space</p>
+          <!-- Declared online, proved at the door — so it is on the ticket the
+               holder shows, not only on the scanner the staff hold. -->
+          <p class="tkt__tariff" data-tariff hidden data-i18n="ticket.reduced">Reduced rate — bring proof of eligibility</p>
+          <!-- A day pass admits to several screenings, and which ones is the
+               only thing about it that is not obvious. -->
+          <ul class="tkt__shows" data-shows hidden></ul>
         </div>
 
         <div class="tkt__code">
@@ -64,8 +71,8 @@
   <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
           integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
           crossorigin="anonymous"></script>
-  <script src="../assets/js/translations.js?v=30"></script>
+  <script src="../assets/js/translations.js?v=37"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/ticket.js?v=1"></script>
+  <script src="../assets/js/ticket.js?v=2"></script>
 </body>
 </html>

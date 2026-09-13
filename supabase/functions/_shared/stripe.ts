@@ -28,6 +28,7 @@ export async function createCheckoutSession(o: {
 }): Promise<{ id: string; url: string }> {
   const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
+    signal: AbortSignal.timeout(12_000),
     headers: {
       authorization: `Bearer ${env.stripeSecretKey()}`,
       "content-type": "application/x-www-form-urlencoded",
@@ -59,9 +60,13 @@ export async function createCheckoutSession(o: {
   return { id: data.id as string, url: data.url as string };
 }
 
-// Seats for one screening. The line item is the number of *paying* seats: an
-// accredited holder in the same party costs nothing and is simply not counted
-// here, which is why the caller passes a quantity rather than us deriving one.
+export type CheckoutLine = { name: string; unitAmountCents: number; quantity: number };
+
+// Seats for one screening, or a day pass. There is a line per tariff rather
+// than one per seat, because a receipt reading "2 x Ridotto CHF 10" is what the
+// buyer can check and what the festival can reconcile. Accredited holders in
+// the same party cost nothing and simply produce no line, which is why the
+// caller builds the lines instead of us deriving them from a seat count.
 //
 // `expires_at` is deliberately short. Every minute this session stays open is a
 // minute the seats behind it are held out of the pool, so unlike a pass — where
@@ -69,15 +74,25 @@ export async function createCheckoutSession(o: {
 // hold rather than a day out.
 export async function createTicketCheckoutSession(o: {
   orderId: string;
-  screeningTitle: string;
+  lines: CheckoutLine[];
   locale: Locale;
   email: string;
-  unitAmountCents: number;
-  quantity: number;
   holdMinutes: number;
 }): Promise<{ id: string; url: string }> {
+  const lines = o.lines.filter((l) => l.quantity > 0 && l.unitAmountCents > 0);
+  if (lines.length === 0) throw new Error("Stripe checkout: nothing to charge");
+
+  const items: Record<string, string | number> = {};
+  lines.forEach((l, i) => {
+    items[`line_items[${i}][quantity]`] = l.quantity;
+    items[`line_items[${i}][price_data][currency]`] = "chf";
+    items[`line_items[${i}][price_data][unit_amount]`] = l.unitAmountCents;
+    items[`line_items[${i}][price_data][product_data][name]`] = l.name;
+  });
+
   const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
+    signal: AbortSignal.timeout(12_000),
     headers: {
       authorization: `Bearer ${env.stripeSecretKey()}`,
       "content-type": "application/x-www-form-urlencoded",
@@ -85,10 +100,7 @@ export async function createTicketCheckoutSession(o: {
     },
     body: form({
       mode: "payment",
-      "line_items[0][quantity]": o.quantity,
-      "line_items[0][price_data][currency]": "chf",
-      "line_items[0][price_data][unit_amount]": o.unitAmountCents,
-      "line_items[0][price_data][product_data][name]": o.screeningTitle,
+      ...items,
       customer_email: o.email,
       client_reference_id: o.orderId,
       "metadata[order_id]": o.orderId,
@@ -112,12 +124,12 @@ export async function createTicketCheckoutSession(o: {
 export async function verifyWebhook(payload: string, header: string | null): Promise<boolean> {
   if (!header) return false;
 
-  const parts = Object.fromEntries(
-    header.split(",").map((p) => p.split("=", 2) as [string, string]),
-  );
-  const timestamp = parts.t;
-  const signature = parts.v1;
-  if (!timestamp || !signature) return false;
+  const parts = header.split(",").map(p => p.trim().split("=", 2));
+  const timestamps = parts.filter(([name]) => name === "t");
+  const timestamp = timestamps[0]?.[1];
+  const signatures = parts.filter(([name, value]) => name === "v1" && /^[a-f0-9]{64}$/.test(value ?? ""))
+    .map(([, value]) => value);
+  if (timestamps.length !== 1 || !timestamp || !/^\d+$/.test(timestamp) || !signatures.length) return false;
 
   // Reject anything older than five minutes so a captured request cannot be
   // replayed later.
@@ -140,7 +152,7 @@ export async function verifyWebhook(payload: string, header: string | null): Pro
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
-  return timingSafeEqual(expected, signature);
+  return signatures.some(signature => timingSafeEqual(expected, signature));
 }
 
 function timingSafeEqual(a: string, b: string): boolean {

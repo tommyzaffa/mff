@@ -16,8 +16,14 @@
   if (!root) return;
 
   var form = root;
+
+  // Accreditations and tickets share one page, and both flows call their panels
+  // `choose` and `form`. Each script may therefore only ever see the panels
+  // inside its own `[data-flow]` block, or the two would switch each other.
+  var scope = root.closest("[data-flow]") || document;
+
   var panels = {};
-  document.querySelectorAll("[data-panel]").forEach(function (el) {
+  scope.querySelectorAll("[data-panel]").forEach(function (el) {
     panels[el.getAttribute("data-panel")] = el;
   });
 
@@ -144,7 +150,7 @@
 
   // --- chooser --------------------------------------------------------------
 
-  document.querySelectorAll("[data-choose]").forEach(function (btn) {
+  scope.querySelectorAll("[data-choose]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       choice = btn.getAttribute("data-choose");
       codeOk = false;
@@ -405,7 +411,7 @@
           return;
         }
         if (res.outcome === "issued") {
-          var link = document.querySelector("[data-badge-link]");
+          var link = scope.querySelector("[data-badge-link]");
           if (link) link.href = "../badge/?c=" + encodeURIComponent(res.badge_code);
           show("issued");
           return;

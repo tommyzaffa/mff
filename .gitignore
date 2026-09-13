@@ -15,6 +15,26 @@ yarn-error.log*
 # Environment
 .env
 .env.*
+.dev.vars
+.dev.vars.*
+
+# Credentials and signing material (Stripe, Supabase, Wallet, service accounts)
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+service-account*.json
+service_account*.json
+*-service-account.json
+credentials*.json
+secrets*.json
+secrets*.toml
+/credentials/
+/secrets/
+/private/
 
 # Editors / IDE
 .vscode/
@@ -30,15 +50,38 @@ node_modules/
 dist/
 build/
 coverage/
+.cache/
+*.tsbuildinfo
+playwright-report/
+test-results/
 
-# Claude Code
-.claude/settings.local.json
-.claude/worktrees/
-.claude/projects/
-.claude/cache/
+# Local agent settings, sessions and worktrees
+.claude/
+.codex/
 
 # Supabase CLI local state (project link, cached versions)
 supabase/.temp/
+supabase/.branches/
+
+# Local database copies and exports: may contain personal data
+*.dump
+*.sql.gz
+*.sql.zip
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+/backups/
+/exports/
+/tmp/
+/temp/
+
+# Local security findings, not part of the public repository
+/SECURITY-AUDIT.md
 
 # Docs
 /docs
+
+# Keep backend source, migrations and tests versioned. GitHub Pages must
+# exclude them from the published website via _config.yml, not .gitignore.

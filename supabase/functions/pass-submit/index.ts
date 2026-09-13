@@ -1,3 +1,4 @@
+import { secured } from "../_shared/security.ts";
 // POST /functions/v1/pass-submit
 //
 // The single entry point for every accreditation request. It takes the form as
@@ -24,7 +25,7 @@ const PROOF_TYPES = [...PHOTO_TYPES, "application/pdf"];
 const MAX_PHOTO = 6 * 1024 * 1024;
 const MAX_PROOF = 10 * 1024 * 1024;
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
   if (req.method !== "POST") return fail(req, "method_not_allowed", 405);
@@ -33,19 +34,20 @@ Deno.serve(async (req) => {
     const contentType = req.headers.get("content-type") || "";
 
     if (contentType.includes("application/json")) {
-      const body = await req.json();
+      const body = await req.json().catch(() => null);
       if (body?.action === "check_code") {
         return json(req, await checkCode(String(body.code ?? ""), String(body.type ?? "")));
       }
       return fail(req, "bad_request");
     }
 
+    if (!contentType.includes("multipart/form-data")) return fail(req, "bad_request");
     return await submit(req);
   } catch (e) {
     console.error("pass-submit", e);
     return fail(req, "server_error", 500, String(e));
   }
-});
+}, {"scope":"pass-submit","methods":["POST"],"maxBytes":17825792,"limit":12,"globalLimit":120}));
 
 // --- code probe -------------------------------------------------------------
 
@@ -53,7 +55,7 @@ Deno.serve(async (req) => {
 // the pass is actually created.
 async function checkCode(raw: string, type: string) {
   const code = raw.trim().toUpperCase();
-  if (!code) return { ok: false, error: "code_required" };
+  if (!/^[A-Z0-9-]{4,32}$/.test(code)) return { ok: false, error: "code_invalid" };
 
   const { data } = await db()
     .from("pass_access_codes")
@@ -92,7 +94,10 @@ async function submit(req: Request): Promise<Response> {
   const locale = asLocale(str("locale"));
   const accessCode = str("access_code").toUpperCase();
 
-  if (!firstName || !lastName) return fail(req, "name_required");
+  if (!firstName || !lastName || firstName.length > 60 || lastName.length > 60) return fail(req, "name_required");
+  if (email.length > 254 || org.length > 200 || accessCode.length > 32) return fail(req, "bad_request");
+  // A misconfigured zero-priced public kind must never silently issue a free pass.
+  if (k.price_cents === 0 && !accessCode) return fail(req, "code_required");
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return fail(req, "email_invalid");
   if (k.needs_org && !org) return fail(req, "org_required");
 
@@ -139,7 +144,10 @@ async function submit(req: Request): Promise<Response> {
       contentType: proof.type,
       upsert: true,
     });
-    if (up2.error) return fail(req, "upload_failed", 500, up2.error.message);
+    if (up2.error) {
+      await cleanupFiles(photoPath, null);
+      return fail(req, "upload_failed", 500, up2.error.message);
+    }
   }
 
   const waived = accessCode.length > 0;
@@ -185,7 +193,7 @@ async function submit(req: Request): Promise<Response> {
     }
   }
 
-  await logEvent(passId, "submitted", waived ? `code ${accessCode}` : `${amount} cents`);
+  await logEvent(passId, "submitted", waived ? "invitation code accepted" : `${amount} cents`);
 
   // --- outcome 1: nothing to pay -------------------------------------------
   if (amount === 0) {
@@ -198,7 +206,7 @@ async function submit(req: Request): Promise<Response> {
     await db().from("passes").update({ status: "pending_review" }).eq("id", passId);
     await logEvent(passId, "submitted", "awaiting review");
 
-    const photoUrl = await signedFileUrl("pass-photos", photoPath, 60 * 60 * 24 * 7);
+    const photoUrl = await signedFileUrl("pass-photos", photoPath, 3600);
     const office = reviewRequestEmail({
       name: `${firstName} ${lastName}`,
       email,
@@ -224,18 +232,26 @@ async function submit(req: Request): Promise<Response> {
   }
 
   // --- outcome 3: straight to checkout -------------------------------------
-  const session = await createCheckoutSession({
+  let session;
+  try {
+    session = await createCheckoutSession({
     passId,
     type,
     locale,
     email,
     amountCents: amount,
-  });
+    });
+  } catch (e) {
+    await db().from("passes").update({ status: "cancelled" }).eq("id", passId);
+    await cleanupFiles(photoPath, proofPath);
+    return fail(req, "checkout_failed", 502, String(e));
+  }
 
-  await db()
+  const { error: saveError } = await db()
     .from("passes")
     .update({ status: "awaiting_payment", stripe_session_id: session.id })
     .eq("id", passId);
+  if (saveError) return fail(req, "server_error", 500, saveError.message);
   await logEvent(passId, "submitted", `checkout ${session.id}`);
 
   return json(req, { ok: true, outcome: "checkout", url: session.url });

@@ -566,11 +566,17 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 .nav__panel.is-open a {
   animation: menuItemIn 0.72s var(--ease) forwards;
 }
+/* The cascade has to cover every entry: an item past the last rule keeps
+   `animation-delay: 0` and pops in FIRST, which is what used to happen to
+   Contact once the menu grew to six links. Two spare steps for future ones. */
 .nav__panel a:nth-child(1) { animation-delay: 0.16s; }
-.nav__panel a:nth-child(2) { animation-delay: 0.26s; }
-.nav__panel a:nth-child(3) { animation-delay: 0.36s; }
-.nav__panel a:nth-child(4) { animation-delay: 0.46s; }
-.nav__panel a:nth-child(5) { animation-delay: 0.56s; }
+.nav__panel a:nth-child(2) { animation-delay: 0.24s; }
+.nav__panel a:nth-child(3) { animation-delay: 0.32s; }
+.nav__panel a:nth-child(4) { animation-delay: 0.40s; }
+.nav__panel a:nth-child(5) { animation-delay: 0.48s; }
+.nav__panel a:nth-child(6) { animation-delay: 0.56s; }
+.nav__panel a:nth-child(7) { animation-delay: 0.64s; }
+.nav__panel a:nth-child(8) { animation-delay: 0.72s; }
 @keyframes menuItemIn {
   from { opacity: 0; transform: translateY(34px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -605,8 +611,13 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 }
 /* reverse stagger — the last item leaves first */
 .nav__panel.is-closing a:nth-child(1) { animation-delay: 0.18s; }
-.nav__panel.is-closing a:nth-child(2) { animation-delay: 0.10s; }
-.nav__panel.is-closing a:nth-child(3) { animation-delay: 0.02s; }
+.nav__panel.is-closing a:nth-child(2) { animation-delay: 0.16s; }
+.nav__panel.is-closing a:nth-child(3) { animation-delay: 0.14s; }
+.nav__panel.is-closing a:nth-child(4) { animation-delay: 0.12s; }
+.nav__panel.is-closing a:nth-child(5) { animation-delay: 0.10s; }
+.nav__panel.is-closing a:nth-child(6) { animation-delay: 0.08s; }
+.nav__panel.is-closing a:nth-child(7) { animation-delay: 0.06s; }
+.nav__panel.is-closing a:nth-child(8) { animation-delay: 0.04s; }
 @keyframes menuItemOut {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(28px); }
@@ -1593,6 +1604,69 @@ a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,
 .t-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
 .t-card--end { justify-content: center; text-align: center; font-family: var(--font-display); font-weight: 600; opacity: 0.85; }
 
+/* Programme events carry no artwork: the body grows and the price / free chip
+   sits on the right. Every colour here derives from currentColor, because the
+   day sections invert to violet on phones (initMobileInnerColors in app.js). */
+.t-card--event { align-items: flex-start; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; }
+.t-card--event .t-card__body { flex: 1 1 260px; }
+.t-card__note { font-size: 0.88rem; line-height: 1.45; opacity: 0.7; margin-top: 3px; max-width: 56ch; }
+.t-card__aside { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 0 0 auto; }
+.t-card__price { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.04em; opacity: 0.7; white-space: nowrap; }
+.t-card__cta { padding: 0.5em 1.2em; font-size: 0.85rem; }
+.t-card__free {
+  font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.55; white-space: nowrap;
+  padding: 0.45em 0.9em; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+
+/* The line-up of a competition programme, hanging under its card. */
+.t-films {
+  list-style: none; margin: 8px 0 0; padding: 0 0 0 16px;
+  border-left: 2px solid color-mix(in srgb, currentColor 18%, transparent);
+  display: grid; gap: 2px;
+}
+.t-film {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+  padding: 6px 4px;
+}
+.t-film + .t-film { border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent); }
+.t-film__link {
+  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
+  text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+  text-underline-offset: 3px; transition: text-decoration-color 0.3s;
+}
+.t-film__link:hover { text-decoration-color: currentColor; }
+.t-film__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.76rem; }
+.t-film__cat {
+  font-family: var(--font-display); font-size: 0.66rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 0.25em 0.6em; border-radius: 999px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.t-film__run { font-variant-numeric: tabular-nums; opacity: 0.6; }
+.t-film__guest { font-style: italic; opacity: 0.75; }
+
+/* Ticket rules, stated once in the hero. */
+.prog-legend {
+  display: block; margin-top: clamp(22px, 3.5vw, 34px); max-width: 62ch;
+  padding: clamp(16px, 2.4vw, 22px);
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+.prog-legend__title {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.16em;
+  text-transform: uppercase; opacity: 0.65; margin: 0 0 0.6rem;
+}
+.prog-legend__body { font-size: 0.95rem; line-height: 1.55; margin: 0 0 1rem; opacity: 0.85; }
+.prog-legend__cta { padding: 0.55em 1.3em; font-size: 0.9rem; }
+.program-download { margin: clamp(18px, 2.6vw, 26px) 0 0; }
+
+@media (max-width: 640px) {
+  .t-card--event { flex-direction: column; }
+  .t-card__aside { flex-direction: row; align-items: center; }
+}
+
 /* ---- film / event detail ---- */
 .film__header, .event__header { max-width: 72ch; margin-bottom: clamp(22px, 4vw, 40px); }
 .film__kicker, .event__kicker {
@@ -1636,6 +1710,40 @@ a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,
 .film__list li, .event__list li { font-size: 1rem; }
 .film__list strong, .event__list strong { font-family: var(--font-display); }
 .film__actions, .event__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: clamp(16px, 2vw, 24px); }
+
+/* An event whose artwork is a wordmark on paper (~2.9:1) cannot go in the 3/2
+   `.event__media` box — `cover` would eat the logo. This one runs the full
+   width of the container and keeps its own ratio, and the copy below it sits
+   in a single measured column instead of the two-column `.event__grid`. */
+.event__banner {
+  max-width: 72ch; /* same measure as .event__header and .event__body */
+  margin: 0 0 clamp(26px, 4vw, 48px);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(15, 15, 18, 0.28);
+}
+.event__banner img { display: block; width: 100%; height: auto; }
+.event__body { max-width: 72ch; }
+
+/* Date line, entry, one-line description — the shape of the printed programme.
+   Rules and dimming derive from currentColor: these sections invert to violet
+   on phones (initMobileInnerColors in app.js). */
+.event__list--schedule { gap: 0; }
+.event__list--schedule li {
+  display: grid; gap: 3px; padding: 16px 0;
+  border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+.event__list--schedule li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+.event__when {
+  font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.62;
+}
+.event__what { font-size: 0.95rem; line-height: 1.55; opacity: 0.8; max-width: 70ch; }
+.event__credit {
+  margin: clamp(22px, 3vw, 32px) 0 0; max-width: 62ch;
+  font-size: 0.88rem; line-height: 1.55; opacity: 0.6;
+}
 .pill {
   display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem;
   padding: 0.5em 1em; border-radius: 999px; border: 1px solid currentColor; opacity: 0.85;
@@ -2086,8 +2194,33 @@ html.intro-armed #introOverlay {
 
 .ticket-note { margin: 18px 0 0; font-size: 0.88rem; line-height: 1.55; opacity: 0.7; }
 
+/* Accreditations and tickets are two independent flows stacked in one section.
+   This is only the separator between them: everything inside keeps its own
+   styling, and no colour is hardcoded because the section inverts to violet
+   below 700px. */
+.flow + .flow {
+  margin-top: 72px; padding-top: 56px;
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+.flow__head { margin: 0 0 28px; }
+.flow__title {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.7rem, 4vw, 2.4rem); letter-spacing: -0.01em;
+}
+.flow__note { margin: 8px 0 0; max-width: 62ch; opacity: 0.78; }
+
 .screening-list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .screening-list[hidden] { display: none; }
+
+/* Day passes and single screenings are the same card in two lists, so the only
+   thing separating them is a heading. */
+.ticket-group + .ticket-group { margin-top: 34px; }
+.ticket-group[hidden] { display: none; }
+.ticket-group__title {
+  margin: 0 0 6px; font-family: var(--font-display); font-weight: 700;
+  font-size: 1.25rem; letter-spacing: 0.01em;
+}
+.ticket-group .ticket-note { margin: 0 0 14px; }
 
 /* Solid plate, like .pass-card, for the same reason: the section is still
    crossfading from cream to violet on the first screenful. */
@@ -2154,6 +2287,21 @@ html.intro-armed #introOverlay {
    it into shouting. */
 .seat__badge { text-transform: uppercase; }
 .seat__badge::placeholder { text-transform: none; }
+
+/* Same box as the text inputs above it, since it is the same row of the same
+   form. `appearance: none` because Safari otherwise draws a grey native select
+   that reads as disabled on the violet card. */
+.seat__tariff {
+  width: 100%; padding: 12px 14px; border-radius: 12px; font: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: color-mix(in srgb, currentColor 6%, transparent); color: inherit;
+  appearance: none; cursor: pointer;
+}
+.seat__tariff:focus { outline: none; border-color: currentColor; }
+/* The list itself is drawn by the OS, which does not inherit the card's
+   colours, so the options have to say what they are on their own. */
+.seat__tariff option { color: #1B1030; background: #F5F3F8; }
+
 .seat__chair {
   display: flex; align-items: center; gap: 9px; font-size: 0.86rem; opacity: 0.78;
 }
@@ -2210,6 +2358,25 @@ html.intro-armed #introOverlay {
 .tkt__holder { margin: 10px 0 0; font-size: 1rem; font-weight: 600; }
 .tkt__holder[hidden], .tkt__chair[hidden] { display: none; }
 .tkt__chair  { margin: 6px 0 0; font-size: 0.82rem; opacity: 0.6; }
+
+/* Not dimmed like the wheelchair line: this one is a thing to remember to
+   bring, and the holder reads the card before leaving the house. */
+.tkt__tariff {
+  margin: 10px 0 0; padding: 7px 12px; display: inline-block;
+  font-size: 0.84rem; font-weight: 600; border-radius: 999px;
+  background: rgba(36, 36, 43, 0.08);
+  border: 1px solid rgba(36, 36, 43, 0.18);
+}
+.tkt__tariff[hidden] { display: none; }
+
+.tkt__shows {
+  margin: 14px 0 0; padding: 0 0 0 14px; list-style: none;
+  border-left: 2px solid rgba(36, 36, 43, 0.15);
+  display: grid; gap: 4px; font-size: 0.88rem;
+}
+.tkt__shows[hidden] { display: none; }
+/* Già entrato a questa proiezione: la giornaliera vale ancora per le altre. */
+.tkt__shows .is-used { opacity: 0.45; text-decoration: line-through; }
 
 /* The perforation line, so the two halves read as ticket and stub. */
 .tkt__code {
@@ -2300,7 +2467,16 @@ html.intro-armed #introOverlay {
 .door-show__lock { margin: 12px 0 0; font-size: 0.92rem; font-weight: 600; }
 .door-show__sold { margin: 12px 0 0; font-size: 0.88rem; opacity: 0.75; }
 
-.door-show__counter { display: flex; gap: 12px; margin-top: 14px; }
+/* Nome della tariffa, quanti ne sono stati fatti, − e +. I due pulsanti
+   restano larghi come prima: si premono col pollice, di lato, al buio. */
+.door-show__counter { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.door-show__tariff { flex: 1 1 auto; font-size: 0.95rem; font-weight: 600; }
+.door-show__tally {
+  flex: 0 0 auto; min-width: 2ch; text-align: right;
+  font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.door-show__counter .door-step { flex: 0 0 88px; }
 
 .door-step {
   flex: 1 1 0; min-height: 64px; border-radius: 16px; cursor: pointer;
@@ -2418,6 +2594,14 @@ html.intro-armed #introOverlay {
 .scan__verdict-name:empty { display: none; }
 .scan__verdict-note { margin: 0; max-width: 24rem; font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
 .scan__verdict-note:empty { display: none; }
+/* Il ridotto è l'unica riga che chiede di fare qualcosa — chiedere il
+   documento — e il verde sparisce da solo dopo un secondo e mezzo. Se si legge
+   come le altre note non la legge nessuno. */
+.scan__verdict.is-reduced .scan__verdict-note {
+  font-size: 1.15rem; font-weight: 700; opacity: 1;
+  padding: 8px 14px; border-radius: 12px;
+  background: rgba(0, 0, 0, 0.28);
+}
 .scan__verdict-close {
   margin-top: 18px; padding: 14px 30px; min-height: 52px; border-radius: 999px;
   cursor: pointer; font: inherit; font-weight: 700;
@@ -2457,6 +2641,12 @@ body.badge-page {
   background-color: var(--violet-deep, #2E1B54);
   color: var(--paper, #F3F2EF);
 }
+/* The cream wash + head photo do not live on `body` but on a fixed
+   `body:not(.home-page)::before` layer, so blanking the body background above
+   does not remove them: they kept painting over the violet and left the door /
+   scan login white on cream, field and typed text alike. Only the phone and
+   print rules used to hide this layer; the standalone pages need it too. */
+body.badge-page::before { display: none; }
 
 .badge-stage {
   min-height: 100dvh; display: flex; flex-direction: column;

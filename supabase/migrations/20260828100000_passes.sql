@@ -93,13 +93,8 @@ create table if not exists public.pass_access_codes (
   created_at    timestamptz not null default now()
 );
 
--- The festival's own master key: unlimited, every type, for passes we issue
--- ourselves at the desk. Rotate it by inserting a new one and deactivating this.
-insert into public.pass_access_codes (code, label, allowed_types, max_uses, note) values
-  ('MERGE-STAFF-MASTER-26', 'Master interno festival',
-   array['guest','guest_student','industry','press','delegation','sponsor','staff','media']::public.pass_type[],
-   null, 'Uso illimitato. Non distribuire: serve allo staff per emettere pass a mano.')
-on conflict (code) do nothing;
+-- Create invitation codes privately in the staff dashboard. Never seed a
+-- reusable credential in a migration or in site documentation.
 
 -- ---------------------------------------------------------------------------
 -- Badge numbers

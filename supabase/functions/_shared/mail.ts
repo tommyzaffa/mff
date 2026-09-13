@@ -48,14 +48,17 @@ type SendArgs = {
   subject: string;
   html: string;
   replyTo?: string;
+  idempotencyKey?: string;
 };
 
-export async function sendMail({ to, subject, html, replyTo }: SendArgs): Promise<void> {
+export async function sendMail({ to, subject, html, replyTo, idempotencyKey }: SendArgs): Promise<void> {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
+    signal: AbortSignal.timeout(12_000),
     headers: {
       authorization: `Bearer ${env.resendApiKey()}`,
       "content-type": "application/json",
+      ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {}),
     },
     body: JSON.stringify({
       from: env.mailFrom,

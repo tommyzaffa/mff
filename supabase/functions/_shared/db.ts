@@ -15,6 +15,7 @@ export function db(): SupabaseClient {
   if (!cached) {
     cached = createClient(env.supabaseUrl, env.serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
+      global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(10_000) }) },
     });
   }
   return cached;
@@ -57,7 +58,7 @@ export async function kind(type: string): Promise<PassKind | null> {
   return (data as PassKind) ?? null;
 }
 
-export async function logEvent(passId: string, kind: string, detail?: string, actor?: string) {
+export async function logEvent(passId: string, kind: string, detail?: string | null, actor?: string) {
   // Never let a failed audit write break the flow it is describing.
   await db().from("pass_events").insert({ pass_id: passId, kind, detail, actor }).then(
     () => {},

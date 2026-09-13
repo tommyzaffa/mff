@@ -1,0 +1,21 @@
+# GitHub Pages must publish only the site, never backend sources or runbooks.
+exclude:
+  - supabase
+  - README.md
+  - SECURITY-AUDIT.md
+  - AGENTS.md
+  - tests
+  - node_modules
+  - docs
+  - credentials
+  - secrets
+  - private
+  - backups
+  - exports
+  - tmp
+  - temp
+  - coverage
+  - playwright-report
+  - test-results
+  - package.json
+  - package-lock.json

@@ -58,6 +58,7 @@
   var manualForm = document.querySelector("[data-manual]");
 
   var password = "";
+  var session = "";
   var current = null;      // la proiezione scelta
   var stream = null;
   var canvas = document.createElement("canvas");
@@ -74,15 +75,27 @@
   }
 
   try {
-    password = sessionStorage.getItem("mff_door") || "";
+    session = sessionStorage.getItem("mff_door_session") || "";
+    sessionStorage.removeItem("mff_door");
   } catch (e) { /* modalità privata */ }
 
   function call(body) {
     return fetch(ENDPOINT, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(Object.assign({ password: password }, body || {})),
-    }).then(function (r) { return r.json(); });
+      body: JSON.stringify(Object.assign(session ? { session: session } : { password: password }, body || {})),
+      signal: AbortSignal.timeout(15000),
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res.session) {
+        session = res.session; password = "";
+        try { sessionStorage.setItem("mff_door_session", session); } catch (e) {}
+      }
+      if (res.error === "unauthorised") {
+        session = "";
+        try { sessionStorage.removeItem("mff_door_session"); } catch (e) {}
+      }
+      return res;
+    });
   }
 
   // --- suono e vibrazione ---------------------------------------------------
@@ -114,12 +127,21 @@
     if (navigator.vibrate) navigator.vibrate(good ? 60 : [90, 70, 90]);
   }
 
+  document.querySelectorAll("[data-logout]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      session = ""; password = "";
+      try { sessionStorage.removeItem("mff_door_session"); sessionStorage.removeItem("mff_door"); } catch (e) {}
+      window.location.reload();
+    });
+  });
+
   // --- login ----------------------------------------------------------------
 
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     unlockAudio();
     loginError.textContent = "";
+    session = "";
     password = loginForm.password.value;
     if (!password) return;
 
@@ -132,12 +154,14 @@
           // A refused password and a broken server look the same from here
           // unless we say so, and whoever is holding the queue has no way to
           // guess which of the two they are looking at.
-          loginError.textContent = res.error === "server_error"
+          loginError.textContent = res.error === "rate_limited"
+            ? "Troppi tentativi. Attendi cinque minuti e riprova."
+            : ["server_error", "service_unavailable"].indexOf(res.error) !== -1
             ? "Il server non risponde. Avvisa l'organizzazione."
             : "Password sbagliata.";
           return;
         }
-        try { sessionStorage.setItem("mff_door", password); } catch (e2) {}
+        loginForm.password.value = "";
         toPick(res.screenings || []);
       })
       .catch(function () {
@@ -315,6 +339,7 @@
     already_used:     ["GIÀ ENTRATO", "bad"],
     wrong_screening:  ["ALTRA PROIEZIONE", "warn"],
     badge_not_booked: ["ACCREDITO SENZA POSTO", "warn"],
+    day_pass_not_here: ["GIORNALIERA DI UN ALTRO GIORNO", "warn"],
     not_valid:        ["NON VALIDO", "bad"],
     unknown_ticket:   ["SCONOSCIUTO", "bad"],
     screening_required: ["SCEGLI LA PROIEZIONE", "warn"],
@@ -335,14 +360,20 @@
     holding = true;
 
     var word, kind, name = "", note = "";
+    // Il ridotto è l'unica cosa che chiede di FARE qualcosa a chi sta alla
+    // porta, quindi va detto anche quando il verdetto è un rifiuto: se uno
+    // rientra col biglietto già usato, il documento serve comunque.
+    var reduced = r.tariff === "reduced";
 
     if (r.ok) {
       word = "ENTRA";
       kind = "ok";
       name = r.name || "";
       var bits = [];
+      if (reduced) bits.push("RIDOTTO — chiedi il documento");
       if (r.wheelchair) bits.push("Posto carrozzina");
       if (r.badge) bits.push("Accredito " + r.badge);
+      if (r.day_pass) bits.push("Giornaliera " + r.day_pass);
       note = bits.join(" · ");
       if (typeof r.checked_in === "number") countEl.textContent = String(r.checked_in);
     } else {
@@ -360,6 +391,11 @@
       } else if (r.reason === "badge_not_booked") {
         note = "L'accredito è valido ma non ha prenotato un posto per questa " +
                "proiezione. Il posto va prenotato: mandalo in cassa.";
+      } else if (r.reason === "day_pass_not_here") {
+        // O la giornaliera è di un altro giorno, o è stata comprata quando
+        // questa proiezione aveva già chiuso la vendita online: in entrambi i
+        // casi non ha mai avuto un posto qui.
+        note = "Questa giornaliera non copre questa proiezione. Mandalo in cassa.";
       } else if (r.reason === "offline") {
         note = "Non ho potuto verificare. Riavvicina il QR quando torna la rete.";
       } else if (r.reason === "not_valid") {
@@ -367,7 +403,7 @@
       }
     }
 
-    verdict.className = "scan__verdict is-" + kind;
+    verdict.className = "scan__verdict is-" + kind + (reduced ? " is-reduced" : "");
     verdictWord.textContent = word;
     verdictName.textContent = name;
     verdictNote.textContent = note;
@@ -407,7 +443,7 @@
 
   // --- rientro dopo un ricaricamento ---------------------------------------
 
-  if (password) {
+  if (session) {
     call()
       .then(function (res) {
         if (!res.ok) return;

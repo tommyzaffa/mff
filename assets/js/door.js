@@ -34,6 +34,7 @@
   var loginError = document.querySelector("[data-login-error]");
 
   var password = "";
+  var session = "";
 
   function show(name) {
     Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
@@ -42,22 +43,43 @@
   // sessionStorage e non localStorage: il tablet del banco passa di mano, e
   // chiudere la scheda deve bastare a uscire.
   try {
-    password = sessionStorage.getItem("mff_door") || "";
+    session = sessionStorage.getItem("mff_door_session") || "";
+    sessionStorage.removeItem("mff_door");
   } catch (e) { /* modalità privata */ }
 
   function call(body) {
     return fetch(ENDPOINT, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(Object.assign({ password: password }, body || {})),
-    }).then(function (r) { return r.json(); });
+      body: JSON.stringify(Object.assign(session ? { session: session } : { password: password }, body || {})),
+      signal: AbortSignal.timeout(15000),
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res.session) {
+        session = res.session; password = "";
+        try { sessionStorage.setItem("mff_door_session", session); } catch (e) {}
+      }
+      if (res.error === "unauthorised") {
+        session = "";
+        try { sessionStorage.removeItem("mff_door_session"); } catch (e) {}
+      }
+      return res;
+    });
   }
+
+  document.querySelectorAll("[data-logout]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      session = ""; password = "";
+      try { sessionStorage.removeItem("mff_door_session"); sessionStorage.removeItem("mff_door"); } catch (e) {}
+      window.location.reload();
+    });
+  });
 
   // --- login ----------------------------------------------------------------
 
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     loginError.textContent = "";
+    session = "";
     password = loginForm.password.value;
     if (!password) return;
 
@@ -69,12 +91,14 @@
           // A refused password and a broken server look the same from here
           // unless we say so, and whoever is holding the queue has no way to
           // guess which of the two they are looking at.
-          loginError.textContent = res.error === "server_error"
+          loginError.textContent = res.error === "rate_limited"
+            ? "Troppi tentativi. Attendi cinque minuti e riprova."
+            : ["server_error", "service_unavailable"].indexOf(res.error) !== -1
             ? "Il server non risponde. Avvisa l'organizzazione."
             : "Password sbagliata.";
           return;
         }
-        try { sessionStorage.setItem("mff_door", password); } catch (e2) {}
+        loginForm.password.value = "";
         render(res.screenings || []);
         show("board");
       })
@@ -156,23 +180,45 @@
       sold.textContent = "Venduti in cassa: " + s.door_sold;
       li.appendChild(sold);
 
-      var row = document.createElement("div");
-      row.className = "door-show__counter";
-
-      var minus = step(s, -1, "−");
-      var plus = step(s, +1, "+");
-      minus.disabled = s.door_sold <= 0;
-      plus.disabled = s.seats_left <= 0;
-
-      row.appendChild(minus);
-      row.appendChild(plus);
-      li.appendChild(row);
+      // Una riga per tariffa. Il posto è lo stesso — il conteggio grande qui
+      // sopra è la somma — ma l'incasso no, e a fine serata la cassa del cinema
+      // va confrontata con questi due numeri, non con uno solo.
+      li.appendChild(counter(s, "full", "Intero", s.price_cents, s.door_full));
+      li.appendChild(counter(s, "reduced", "Ridotto", s.price_reduced_cents, s.door_reduced));
 
       listEl.appendChild(li);
     });
   }
 
-  function step(screening, delta, label) {
+  function money(cents) {
+    return "CHF " + (Number(cents) / 100).toFixed(2).replace(/\.00$/, ".–");
+  }
+
+  function counter(s, tariff, label, price, sold) {
+    var row = document.createElement("div");
+    row.className = "door-show__counter";
+
+    var name = document.createElement("span");
+    name.className = "door-show__tariff";
+    name.textContent = label + " " + money(price);
+    row.appendChild(name);
+
+    var count = document.createElement("span");
+    count.className = "door-show__tally";
+    count.textContent = String(sold);
+    row.appendChild(count);
+
+    var minus = step(s, tariff, -1, "−");
+    var plus = step(s, tariff, +1, "+");
+    minus.disabled = Number(sold) <= 0;
+    plus.disabled = s.seats_left <= 0;
+
+    row.appendChild(minus);
+    row.appendChild(plus);
+    return row;
+  }
+
+  function step(screening, tariff, delta, label) {
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "door-step" + (delta > 0 ? " door-step--plus" : "");
@@ -183,7 +229,13 @@
       // avremmo indovinato qui.
       lock(true);
       statusEl.textContent = "";
-      call({ action: "sell", screening: screening.code, delta: delta, actor: "cassa" })
+      call({
+        action: "sell",
+        screening: screening.code,
+        delta: delta,
+        tariff: tariff,
+        actor: "cassa",
+      })
         .then(function (res) {
           lock(false);
           if (!res.ok) {
@@ -231,7 +283,7 @@
   }, 30000);
 
   // Un turno che ricarica la pagina non deve ridigitare la password.
-  if (password) {
+  if (session) {
     call()
       .then(function (res) {
         if (!res.ok) return;

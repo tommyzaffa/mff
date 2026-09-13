@@ -1,3 +1,7 @@
+import { createDoorSession, validDoorSession } from "../_shared/door-session.ts";
+import { passwordMatches } from "../_shared/request.ts";
+import { rateLimit } from "../_shared/security.ts";
+import { secured } from "../_shared/security.ts";
 // POST /functions/v1/ticket-door
 //
 // The Lux staff's own page. Three actions, all behind one shared password:
@@ -25,7 +29,6 @@
 // turned away from a film they paid for.
 
 import { db } from "../_shared/db.ts";
-import { env } from "../_shared/env.ts";
 import { fail, json, preflight } from "../_shared/http.ts";
 
 // A screening stays on the board until it has been running a while, so the
@@ -33,7 +36,7 @@ import { fail, json, preflight } from "../_shared/http.ts";
 const KEEP_VISIBLE_MINUTES = 45;
 const LOOK_AHEAD_HOURS = 18;
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
   if (req.method !== "POST") return fail(req, "method_not_allowed", 405);
@@ -42,21 +45,28 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => null);
     if (!body || typeof body !== "object") return fail(req, "bad_request");
 
-    if (!authorised(String(body.password ?? ""))) {
-      // Deliberately vague and deliberately slow: this is a short passphrase
-      // shared by a shift, so the one defence worth having is making a guessing
-      // run expensive.
-      await new Promise((r) => setTimeout(r, 700));
-      return fail(req, "unauthorised", 401);
+    const expected = Deno.env.get("DOOR_PASSWORD");
+    if (!expected) return fail(req, "service_unavailable", 503);
+    let session = body.session;
+    if (!await validDoorSession(session, expected)) {
+      if (session && !body.password) return fail(req, "unauthorised", 401);
+      // Limit BEFORE comparing the password. Checking first would still let
+      // unlimited guesses distinguish a correct password from a 429 response.
+      const blocked = await rateLimit(req, "door-login", 10, 100, 300);
+      if (blocked) return blocked;
+      if (!passwordMatches(body.password, expected)) return fail(req, "unauthorised", 401);
+      session = await createDoorSession(expected);
     }
+
+    if (body.action && !["board", "sell", "scan"].includes(body.action)) return fail(req, "bad_request");
 
     if (body.action === "scan") {
       const code = String(body.code ?? "").trim();
       const screening = String(body.screening ?? "").trim();
-      if (!code) return fail(req, "code_required");
+      if (!/^MFF-(?:[TD]-[A-Z0-9]{8}|[A-Z0-9]{4}-[A-Z0-9]{4})$/.test(code)) return fail(req, "code_required");
       // Always sent by the page, because a check-in that does not know which
       // door it is standing at cannot refuse the wrong film.
-      if (!screening) return fail(req, "screening_required");
+      if (!/^[a-z0-9][a-z0-9-]{1,23}$/.test(screening)) return fail(req, "screening_required");
 
       const { data, error } = await db().rpc("ticket_check_in", {
         p_code: code,
@@ -69,33 +79,29 @@ Deno.serve(async (req) => {
     if (body.action === "sell") {
       const screening = String(body.screening ?? "").trim();
       const delta = Number(body.delta);
-      if (!screening) return fail(req, "screening_required");
+      // Which of the two prices was charged. It changes nothing about the seat
+      // count — a seat is a seat — but without it the takings cannot be checked
+      // against the till at the end of the night.
+      const tariff = body.tariff === "reduced" ? "reduced" : "full";
+      if (!/^[a-z0-9][a-z0-9-]{1,23}$/.test(screening)) return fail(req, "screening_required");
       if (!Number.isInteger(delta) || delta === 0 || Math.abs(delta) > 20) {
         return fail(req, "bad_delta");
       }
 
-      const { error } = await db().from("screening_door_sales").insert({
-        screening,
-        delta,
-        actor: String(body.actor ?? "").trim().slice(0, 40) || "cassa",
+      const { data: sale, error } = await db().rpc("ticket_door_sell", {
+        p_screening: screening, p_delta: delta, p_tariff: tariff,
+        p_actor: String(body.actor ?? "").trim().slice(0, 40) || "cassa",
       });
+      if (!error && !sale?.ok) return fail(req, sale?.reason ?? "sale_failed", 409);
       if (error) return fail(req, "server_error", 500, error.message);
     }
 
-    return json(req, { ok: true, screenings: await board() });
+    return json(req, { ok: true, session, screenings: await board() });
   } catch (e) {
     console.error("ticket-door", e);
     return fail(req, "server_error", 500, String(e));
   }
-});
-
-function authorised(given: string): boolean {
-  const expected = env.doorPassword();
-  if (given.length !== expected.length) return false;
-  let diff = 0;
-  for (let i = 0; i < given.length; i++) diff |= given.charCodeAt(i) ^ expected.charCodeAt(i);
-  return diff === 0;
-}
+}, {"scope":"ticket-door","methods":["POST"]}));
 
 async function board() {
   // Seats held by checkouts nobody finished are given back before counting, so
@@ -106,17 +112,18 @@ async function board() {
   const from = new Date(now - KEEP_VISIBLE_MINUTES * 60_000).toISOString();
   const to = new Date(now + LOOK_AHEAD_HOURS * 3_600_000).toISOString();
 
-  const { data } = await db()
+  const { data, error } = await db()
     .from("screening_availability")
     .select(
-      "code, title, venue, starts_at, capacity, price_cents, " +
-        "online_taken, door_sold, seats_left, wheelchair_left, sales_close_at",
+      "code, title, venue, starts_at, capacity, price_cents, price_reduced_cents, online_taken, door_sold, door_full, door_reduced, seats_left, wheelchair_left, sales_close_at",
     )
     .eq("is_published", true)
     .eq("is_ticketed", true)
     .gte("starts_at", from)
     .lte("starts_at", to)
     .order("starts_at", { ascending: true });
+
+  if (error) throw new Error("availability unavailable");
 
   // `unlocked` is the whole rule, computed in one place: the box office may sell
   // a screening only once the site has stopped selling it.

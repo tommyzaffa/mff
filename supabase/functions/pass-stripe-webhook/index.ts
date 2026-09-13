@@ -1,3 +1,5 @@
+import { paymentMatches } from "../_shared/request.ts";
+import { secured } from "../_shared/security.ts";
 // POST /functions/v1/pass-stripe-webhook
 //
 // Stripe is the only thing that may tell us something was paid for — the success
@@ -18,7 +20,7 @@ import { issuePass } from "../_shared/issue.ts";
 import { emailTickets } from "../_shared/ticket-mail.ts";
 import { verifyWebhook } from "../_shared/stripe.ts";
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
 
   // The raw body, byte for byte: re-serialising it would break the signature.
@@ -55,7 +57,7 @@ Deno.serve(async (req) => {
     if (!data) return ok();
     const pass = data as Pass;
 
-    if (event.type === "checkout.session.completed") {
+    if (["checkout.session.completed", "checkout.session.async_payment_succeeded"].includes(event.type)) {
       // `paid` and not, say, `processing`: TWINT and some cards settle
       // asynchronously, and we only hand out a badge once the money is there.
       if (session.payment_status !== "paid") {
@@ -74,21 +76,19 @@ Deno.serve(async (req) => {
       // carry the price we asked for. Only our own account can produce a
       // correctly signed event, so this is belt and braces — but the belt is
       // what stops a stale or mismatched session from issuing a badge.
-      if (pass.stripe_session_id && session.id !== pass.stripe_session_id) {
-        await logEvent(passId, "error", `session mismatch: ${String(session.id)}`, "stripe");
-        return ok();
-      }
-      if (Number(session.amount_total ?? 0) < pass.amount_cents) {
-        await logEvent(passId, "error", `underpaid: ${String(session.amount_total)}`, "stripe");
+      if (!paymentMatches(session, pass)) {
+        await logEvent(passId, "error", "payment/session/currency mismatch", "stripe");
         return ok();
       }
 
-      await db().from("passes").update({
+      const { data: paid, error: paidError } = await db().from("passes").update({
         status: "paid",
         paid_at: new Date().toISOString(),
         stripe_payment_intent: (session.payment_intent as string) ?? null,
         stripe_session_id: (session.id as string) ?? pass.stripe_session_id,
-      }).eq("id", passId);
+      }).eq("id", passId).in("status", ["awaiting_payment", "paid"]).select("id");
+      if (paidError) throw new Error("payment persistence failed");
+      if (!paid?.length) return ok();
 
       await logEvent(passId, "paid", `${session.amount_total} ${session.currency}`, "stripe");
       await issuePass({ ...pass, status: "paid" }, "stripe");
@@ -97,8 +97,9 @@ Deno.serve(async (req) => {
 
     if (event.type === "checkout.session.expired") {
       // Only reopen a pass that never got anywhere; an issued one is untouchable.
-      if (pass.status === "awaiting_payment") {
-        await db().from("passes").update({ status: "cancelled" }).eq("id", passId);
+      if (pass.status === "awaiting_payment" && session.id === pass.stripe_session_id) {
+        const { error } = await db().from("passes").update({ status: "cancelled" }).eq("id", passId).eq("status", "awaiting_payment");
+        if (error) throw new Error("expiry persistence failed");
         if (pass.access_code) {
           await db().rpc("pass_release_access_code", { p_code: pass.access_code });
         }
@@ -113,7 +114,7 @@ Deno.serve(async (req) => {
     // A 500 makes Stripe retry, which is what we want for a transient failure.
     return new Response("Handler failed", { status: 500 });
   }
-});
+}, {"scope":"pass-stripe-webhook","methods":["POST"],"maxBytes":262144}));
 
 // --- seat reservations ------------------------------------------------------
 
@@ -133,33 +134,34 @@ async function ticketOrder(
     .maybeSingle();
   if (!order) return;
 
-  if (type === "checkout.session.completed") {
+  if (["checkout.session.completed", "checkout.session.async_payment_succeeded"].includes(type)) {
     // TWINT and some cards settle asynchronously; seats are only confirmed once
     // the money is actually there, not when the customer leaves the page.
     if (session.payment_status !== "paid") return;
-    if (order.status === "issued") return;
-    if (order.stripe_session_id && session.id !== order.stripe_session_id) {
-      console.error(`ticket order ${orderId}: session mismatch ${String(session.id)}`);
-      return;
-    }
-    if (Number(session.amount_total ?? 0) < order.amount_cents) {
-      console.error(`ticket order ${orderId}: underpaid ${String(session.amount_total)}`);
+    if (!paymentMatches(session, order)) {
+      console.error(`ticket order ${orderId}: payment/session/currency mismatch`);
       return;
     }
 
-    const { data: issued } = await db().rpc("ticket_order_issue", {
+    const { data: issued, error: issueError } = await db().rpc("ticket_order_issue", {
       p_id: orderId,
       p_intent: (session.payment_intent as string) ?? null,
     });
 
-    // `already` means a retry of an event we handled: the tickets went out the
-    // first time, and sending them again would be the second copy of something
-    // that admits one person.
-    if (issued?.ok && !issued.already) await emailTickets(orderId);
+    if (issueError) throw new Error("ticket issue failed");
+    if (!issued?.ok) {
+      console.error(`PAID_ORDER_NOT_ISSUED ${orderId}: ${issued?.reason}`);
+      // Let Stripe retry and surface the paid order for manual refund/reconciliation.
+      throw new Error("paid order needs reconciliation");
+    }
+
+    // The persisted delivery marker and provider idempotency key allow an
+    // already-issued order to recover from an earlier email outage.
+    if (!await emailTickets(orderId)) throw new Error("ticket email unavailable");
     return;
   }
 
-  if (type === "checkout.session.expired" && order.status === "held") {
+  if (type === "checkout.session.expired" && order.status === "held" && session.id === order.stripe_session_id) {
     await db().rpc("ticket_order_cancel", { p_id: orderId });
   }
 }

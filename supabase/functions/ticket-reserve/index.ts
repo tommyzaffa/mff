@@ -1,22 +1,25 @@
+import { secured } from "../_shared/security.ts";
 // POST /functions/v1/ticket-reserve
 //
-// Books seats for one screening. A party can mix accredited holders, who pay
-// nothing and spend one seat per badge, with paying guests — so the two possible
-// answers are:
+// Books seats, either for one screening or for a whole day. A party can mix
+// accredited holders, who pay nothing and spend one seat per badge, with paying
+// guests at either tariff — so the two possible answers are:
 //
 //   reserved — nothing to pay: the tickets are already valid and in their inbox
 //   checkout — here is the Stripe URL; the seats are held until it is paid
 //
-// All the counting, the sales window and the one-badge-one-seat rule live in the
-// `ticket_reserve` RPC, under the screening's row lock. This function does not
-// second-guess any of it: it validates the shape of the request, calls that once,
-// and turns the answer into a payment or an email.
+// Send `screening` for a single show or `day` (YYYY-MM-DD) for a day pass; one
+// or the other, never both. All the counting, the sales window, the tariff
+// prices and the one-badge-one-seat rule live in the RPCs, under the row locks
+// of the screenings involved. This function does not second-guess any of it: it
+// validates the shape of the request, calls once, and turns the answer into a
+// payment or an email.
 
 import { db } from "../_shared/db.ts";
 import { fail, json, preflight } from "../_shared/http.ts";
 import { asLocale } from "../_shared/templates.ts";
 import { emailTickets } from "../_shared/ticket-mail.ts";
-import { createTicketCheckoutSession } from "../_shared/stripe.ts";
+import { type CheckoutLine, createTicketCheckoutSession } from "../_shared/stripe.ts";
 
 // Stripe will not accept a session expiring in under 30 minutes, so that is the
 // floor. The database hold outlives it by five minutes: if the two were equal, a
@@ -26,9 +29,42 @@ const HOLD_MINUTES = CHECKOUT_MINUTES + 5;
 
 const MAX_SEATS = 10;
 
-type SeatIn = { badge?: string | null; holder?: string | null; wheelchair?: boolean };
+// Only what the buyer is allowed to claim. 'accredited' is not in here: that is
+// something the database concludes from a valid badge, never something a
+// request can assert.
+const TARIFFS = new Set(["full", "reduced"]);
 
-Deno.serve(async (req) => {
+type SeatIn = {
+  badge?: string | null;
+  holder?: string | null;
+  wheelchair?: boolean;
+  tariff?: string | null;
+};
+
+// Two lines on the receipt at most, one per tariff, so "2 x Ridotto CHF 10"
+// reads back as what was actually agreed.
+function checkoutLines(
+  label: string,
+  seats: { badge: string | null; tariff: string }[],
+  full: number,
+  reduced: number,
+): CheckoutLine[] {
+  const paying = seats.filter((s) => !s.badge);
+  return [
+    {
+      name: label,
+      unitAmountCents: full,
+      quantity: paying.filter((s) => s.tariff !== "reduced").length,
+    },
+    {
+      name: `${label} — ridotto / reduced`,
+      unitAmountCents: reduced,
+      quantity: paying.filter((s) => s.tariff === "reduced").length,
+    },
+  ];
+}
+
+Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
   if (req.method !== "POST") return fail(req, "method_not_allowed", 405);
@@ -38,49 +74,91 @@ Deno.serve(async (req) => {
     if (!body || typeof body !== "object") return fail(req, "bad_request");
 
     const screening = String(body.screening ?? "").trim();
+    const day = String(body.day ?? "").trim();
     const firstName = String(body.first_name ?? "").trim();
     const lastName = String(body.last_name ?? "").trim();
     const email = String(body.email ?? "").trim().toLowerCase();
     const locale = asLocale(body.locale);
 
-    if (!screening) return fail(req, "screening_required");
-    if (!firstName || !lastName) return fail(req, "name_required");
+    // Exactly one of the two. Accepting both would leave the function choosing
+    // which the buyer meant, and it would sometimes choose wrong.
+    if (!!screening === !!day) return fail(req, "screening_required");
+    if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return fail(req, "bad_day");
+    if (!firstName || !lastName || firstName.length > 60 || lastName.length > 60) return fail(req, "name_required");
+    if (email.length > 254 || screening.length > 24) return fail(req, "bad_request");
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return fail(req, "email_invalid");
 
     const rawSeats = Array.isArray(body.seats) ? (body.seats as SeatIn[]) : null;
     if (!rawSeats || rawSeats.length < 1) return fail(req, "seats_required");
     if (rawSeats.length > MAX_SEATS) return fail(req, "too_many_seats");
 
-    // Normalised here so the RPC receives exactly the three keys it reads and
-    // nothing a caller invented can reach the database.
-    const seats = rawSeats.map((s) => ({
-      badge: (s?.badge ?? "").toString().trim().toUpperCase() || null,
-      holder: (s?.holder ?? "").toString().trim().slice(0, 60) || null,
-      wheelchair: s?.wheelchair === true,
-    }));
+    // Normalised here so the RPC receives exactly the keys it reads and nothing
+    // a caller invented can reach the database.
+    const seats = rawSeats.map((s) => {
+      const tariff = (s?.tariff ?? "full").toString().trim().toLowerCase();
+      return {
+        badge: (s?.badge ?? "").toString().trim().toUpperCase() || null,
+        holder: (s?.holder ?? "").toString().trim().slice(0, 60) || null,
+        wheelchair: s?.wheelchair === true,
+        tariff: TARIFFS.has(tariff) ? tariff : "full",
+      };
+    });
 
     // Give back anything abandoned on a Stripe page before counting, so a busy
     // screening does not look full because of checkouts nobody finished.
     await db().rpc("ticket_expire_holds");
 
-    const { data: show, error: showErr } = await db()
-      .from("screening_availability")
-      .select("code, title, venue, starts_at, price_cents")
-      .eq("code", screening)
-      .maybeSingle();
+    let label: string;
+    let fullCents: number;
+    let reducedCents: number;
 
-    if (showErr) return fail(req, "server_error", 500, showErr.message);
-    if (!show) return fail(req, "unknown_screening", 404);
+    if (day) {
+      const { data: fd, error: fdErr } = await db()
+        .from("festival_days")
+        .select("day, is_on_sale, price_cents, price_reduced_cents")
+        .eq("day", day)
+        .maybeSingle();
 
-    const { data: result, error } = await db().rpc("ticket_reserve", {
-      p_screening: screening,
-      p_first_name: firstName,
-      p_last_name: lastName,
-      p_email: email,
-      p_seats: seats,
-      p_locale: locale,
-      p_hold_mins: HOLD_MINUTES,
-    });
+      if (fdErr) return fail(req, "server_error", 500, fdErr.message);
+      if (!fd || !fd.is_on_sale) return fail(req, "unknown_day", 404);
+
+      label = `Merge Film Festival 2026 — ${day}`;
+      fullCents = fd.price_cents;
+      reducedCents = fd.price_reduced_cents;
+    } else {
+      const { data: show, error: showErr } = await db()
+        .from("screening_availability")
+        .select("code, title, venue, starts_at, price_cents, price_reduced_cents")
+        .eq("code", screening)
+        .maybeSingle();
+
+      if (showErr) return fail(req, "server_error", 500, showErr.message);
+      if (!show) return fail(req, "unknown_screening", 404);
+
+      label = `Merge Film Festival 2026 — ${show.title}`;
+      fullCents = show.price_cents;
+      reducedCents = show.price_reduced_cents;
+    }
+
+    const { data: result, error } = day
+      ? await db().rpc("ticket_day_pass_reserve", {
+        p_day: day,
+        p_first_name: firstName,
+        p_last_name: lastName,
+        p_email: email,
+        p_seats: seats,
+        p_locale: locale,
+        p_hold_mins: HOLD_MINUTES,
+      })
+      : await db().rpc("ticket_reserve", {
+        p_screening: screening,
+        p_first_name: firstName,
+        p_last_name: lastName,
+        p_email: email,
+        p_seats: seats,
+        p_locale: locale,
+        p_hold_mins: HOLD_MINUTES,
+      });
 
     if (error) return fail(req, "server_error", 500, error.message);
 
@@ -94,7 +172,8 @@ Deno.serve(async (req) => {
 
     // --- nothing to pay ------------------------------------------------------
     if (result.free) {
-      await emailTickets(orderId);
+      // A mail outage must not make a valid reservation appear to have failed.
+      try { await emailTickets(orderId); } catch { console.error("ticket email delivery failed"); }
       return json(req, {
         ok: true,
         outcome: "reserved",
@@ -104,24 +183,21 @@ Deno.serve(async (req) => {
     }
 
     // --- straight to checkout ------------------------------------------------
-    const paying = seats.filter((s) => !s.badge).length;
-
     try {
       const session = await createTicketCheckoutSession({
         orderId,
-        screeningTitle: `Merge Film Festival 2026 — ${show.title}`,
+        lines: checkoutLines(label, seats, fullCents, reducedCents),
         locale,
         email,
-        unitAmountCents: show.price_cents,
-        quantity: paying,
         holdMinutes: CHECKOUT_MINUTES,
       });
 
-      await db()
+      const { error: saveError } = await db()
         .from("ticket_orders")
         .update({ stripe_session_id: session.id })
         .eq("id", orderId);
 
+      if (saveError) throw new Error("checkout persistence failed");
       return json(req, { ok: true, outcome: "checkout", url: session.url, order_id: orderId });
     } catch (e) {
       // The seats are already held by an order that can now never be paid for.
@@ -133,4 +209,4 @@ Deno.serve(async (req) => {
     console.error("ticket-reserve", e);
     return fail(req, "server_error", 500, String(e));
   }
-});
+}, {"scope":"ticket-reserve","methods":["POST"],"limit":8,"globalLimit":120}));

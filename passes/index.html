@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta name="referrer" content="no-referrer" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
-  <title>Passes — Merge Film Festival</title>
-  <meta name="description" content="Buy your Merge Film Festival pass — guest, industry and press accreditations." />
+  <title>Passes &amp; Tickets — Merge Film Festival</title>
+  <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=48" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=54" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -38,7 +39,8 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="../index.html" data-i18n="nav.home">Home</a>
-          <a href="index.html" data-i18n="nav.passes">Passes</a>
+          <a href="index.html" data-i18n="nav.passes">Passes &amp; Tickets</a>
+          <a href="../program/index.html" data-i18n="nav.program">Program</a>
           <a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a>
           <a href="../press/index.html" data-i18n="nav.press">Press</a>
           <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
@@ -55,11 +57,12 @@
     <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
       <span class="stain stain--br" aria-hidden="true"></span>
       <div class="container reveal">
-        <p class="page-hero__kicker" data-i18n="passes.kicker">Accreditation • Festival 2026</p>
-        <h1 class="page-hero__title" data-i18n="passes.title">Passes</h1>
-        <p class="page-hero__subtitle" data-i18n="passes.intro">One pass, four days: every screening, every masterclass, the opening and the awards night. Choose the one that fits you.</p>
+        <p class="page-hero__kicker" data-i18n="passes.kickerBoth">Passes &amp; tickets • Festival 2026</p>
+        <h1 class="page-hero__title" data-i18n="passes.titleBoth">Passes &amp; Tickets</h1>
+        <p class="page-hero__subtitle" data-i18n="passes.introBoth">A pass covers all four days — every screening, every masterclass, the opening and the awards night — and travels free on Ticino public transport. Coming for one film instead? Take a single seat or a day pass.</p>
         <div class="page-hero__actions">
-          <a class="btn btn--apply" href="#choose" data-i18n="passes.heroCta">See the passes</a>
+          <a class="btn btn--apply" href="#passes" data-i18n="passes.heroCta">See the passes</a>
+          <a class="btn btn--ghost" href="#tickets" data-i18n="passes.heroCtaTickets">See the tickets</a>
         </div>
       </div>
     </section>
@@ -67,6 +70,19 @@
     <section class="section is-on-violet section--pre-footer" data-bg="violet" id="choose">
       <span class="stain stain--tl" aria-hidden="true"></span>
       <div class="container">
+
+        <!-- ============================================================
+             Two independent flows on one page. Each one owns its panels
+             and never touches the other's: both call them `choose` and
+             `form`, which is exactly why the `data-flow` wrapper is not
+             decoration — passes.js and tickets.js scope themselves to it.
+             ============================================================ -->
+
+        <div class="flow" data-flow="passes" id="passes">
+          <header class="flow__head reveal">
+            <h2 class="flow__title" data-i18n="passes.groupPasses">Passes</h2>
+            <p class="flow__note" data-i18n="passes.groupPassesNote">All four days, everything included — and free travel across Ticino.</p>
+          </header>
 
         <!-- 1. Choose a pass ------------------------------------------------ -->
         <div class="pass-flow" data-panel="choose">
@@ -230,6 +246,106 @@
           </div>
         </div>
 
+        </div><!-- /flow passes -->
+
+        <div class="flow" data-flow="tickets" id="tickets">
+          <header class="flow__head reveal">
+            <h2 class="flow__title" data-i18n="passes.groupTickets">Tickets</h2>
+            <p class="flow__note" data-i18n="passes.groupTicketsNote">Coming for one film, or for one day. Accredited holders reserve for free.</p>
+          </header>
+
+        <!-- 0. While the programme loads ------------------------------------- -->
+        <div class="pass-flow" data-panel="loading">
+          <p class="ticket-note reveal" data-i18n="tickets.loading">Loading the screenings…</p>
+        </div>
+
+        <!-- 0b. No programme published yet ----------------------------------- -->
+        <div class="pass-flow" data-panel="soon" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="tickets.soonTitle">The programme is on its way</h2>
+            <p data-i18n="tickets.soonBody">Screening dates and times go online as soon as the selection is closed. Accreditations are already available, and every pass includes a seat at each screening.</p>
+            <a class="btn btn--apply" href="#passes" data-i18n="tickets.soonCta">Get your accreditation</a>
+          </div>
+        </div>
+
+        <!-- 1. Pick a screening ---------------------------------------------- -->
+        <div class="pass-flow" data-panel="choose" hidden>
+          <p class="pass-perk reveal">
+            <span class="pass-perk__label" data-i18n="tickets.perkLabel">Accredited?</span>
+            <span class="pass-perk__text" data-i18n="tickets.perkText">Enter your badge number when you book and the seat costs nothing — one seat per badge, per screening.</span>
+          </p>
+
+          <div class="ticket-group reveal" data-day-group hidden>
+            <h3 class="ticket-group__title" data-i18n="tickets.dayTitle">Day passes</h3>
+            <p class="ticket-note" data-i18n="tickets.dayNote">One code, every ticketed screening of that day.</p>
+            <ul class="screening-list" data-days></ul>
+          </div>
+
+          <div class="ticket-group reveal">
+            <h3 class="ticket-group__title" data-i18n="tickets.singleTitle">Single screenings</h3>
+            <ul class="screening-list" data-list></ul>
+          </div>
+
+          <p class="ticket-note reveal" data-i18n="tickets.tariffNote">The reduced rate is for students and over-65s. You declare it here and show proof at the door.</p>
+          <p class="ticket-note reveal" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+        </div>
+
+        <!-- 2. The form ------------------------------------------------------ -->
+        <div class="pass-flow" data-panel="form" hidden>
+          <form class="form-card pass-form" id="ticketForm" novalidate>
+            <button class="pass-form__back" type="button" data-back data-i18n="tickets.back">← Back</button>
+
+            <p class="ticket-form__show" data-show-title></p>
+            <p class="ticket-form__when" data-show-when></p>
+
+            <div class="pass-form__row">
+              <div class="form__field">
+                <label class="pass-form__label" for="tkFirst" data-i18n="tickets.firstName">First name</label>
+                <input id="tkFirst" type="text" name="first_name" autocomplete="given-name" required />
+              </div>
+              <div class="form__field">
+                <label class="pass-form__label" for="tkLast" data-i18n="tickets.lastName">Last name</label>
+                <input id="tkLast" type="text" name="last_name" autocomplete="family-name" required />
+              </div>
+            </div>
+
+            <div class="form__field">
+              <label class="pass-form__label" for="tkEmail" data-i18n="tickets.email">Email</label>
+              <p class="pass-form__hint" data-i18n="tickets.emailHint">We send the tickets here.</p>
+              <input id="tkEmail" type="email" name="email" autocomplete="email" required />
+            </div>
+
+            <p class="pass-form__label" data-i18n="tickets.seatsLabel">Seats</p>
+            <ul class="seat-list" data-seats></ul>
+
+            <button class="btn btn--ghost btn--small" type="button" data-add-seat data-i18n="tickets.addSeat">+ Add a seat</button>
+
+            <p class="ticket-total" data-total role="status" aria-live="polite"></p>
+
+            <label class="pass-consent">
+              <input type="checkbox" name="consent" required />
+              <span data-i18n-html="tickets.consent">I agree to the processing of my data for this booking, as described in the privacy policy.</span>
+            </label>
+
+            <p class="pass-form__perk" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+
+            <button class="btn" type="submit" data-submit-label data-i18n="tickets.submitPay">Continue to payment</button>
+            <p class="form__status" data-status role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <!-- 3. Done ---------------------------------------------------------- -->
+        <div class="pass-flow" data-panel="done" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="tickets.doneTitle">Your seat is booked</h2>
+            <p data-i18n="tickets.doneBody">We have sent the tickets to your inbox. Show them at the door — each one admits one person.</p>
+            <ul class="ticket-codes" data-codes></ul>
+            <a class="btn btn--ghost" href="../index.html" data-i18n="tickets.backHome">Back to the site</a>
+          </div>
+        </div>
+
+        </div><!-- /flow tickets -->
+
       </div>
     </section>
   </main>
@@ -251,7 +367,8 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
-                <li><a href="index.html" data-i18n="nav.passes">Passes</a></li>
+                <li><a href="index.html" data-i18n="nav.passes">Passes &amp; Tickets</a></li>
+                <li><a href="../program/index.html" data-i18n="nav.program">Program</a></li>
               </ul>
             </div>
             <div>
@@ -288,9 +405,10 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=30"></script>
+  <script src="../assets/js/translations.js?v=37"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/passes.js?v=4"></script>
+  <script src="../assets/js/passes.js?v=5"></script>
+  <script src="../assets/js/tickets.js?v=3"></script>
 </body>
 </html>

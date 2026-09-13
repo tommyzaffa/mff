@@ -1,3 +1,4 @@
+import { secured } from "../_shared/security.ts";
 // GET  /functions/v1/pass-review?t=<token>   the request, as JSON
 // POST /functions/v1/pass-review             approve or reject
 //
@@ -19,7 +20,7 @@ import { sendMail } from "../_shared/mail.ts";
 import { approvedEmail, asLocale, passName, rejectedEmail } from "../_shared/templates.ts";
 import { createCheckoutSession } from "../_shared/stripe.ts";
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
 
@@ -58,7 +59,7 @@ Deno.serve(async (req) => {
     console.error("pass-review", e);
     return json(req, { ok: false, error: "server_error" }, 500);
   }
-});
+}, {"scope":"pass-review","methods":["GET","POST"],"limit":30,"globalLimit":300}));
 
 async function byToken(token: string): Promise<Pass | null> {
   if (!/^[a-f0-9]{48}$/.test(token)) return null;

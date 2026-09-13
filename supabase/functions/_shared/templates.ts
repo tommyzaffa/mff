@@ -375,6 +375,8 @@ const TICKET_COPY: Record<Locale, {
   body: (n: number) => string;
   seatsLabel: string;
   freeSeat: string;
+  reducedSeat: string;
+  dayPassFoot: string;
   cta: string;
   foot: string;
 }> = {
@@ -388,6 +390,9 @@ const TICKET_COPY: Record<Locale, {
         : `i tuoi ${n} posti sono prenotati. Mostra i biglietti qui sotto all'ingresso della sala.`,
     seatsLabel: "I tuoi biglietti",
     freeSeat: "Incluso nell'accredito",
+    reducedSeat: "Tariffa ridotta — porta un documento",
+    dayPassFoot:
+      "Questo codice vale a ogni proiezione in programma quel giorno: mostralo\n       all'ingresso della sala ogni volta. Viene registrato una volta per proiezione.",
     cta: "Apri il biglietto",
     foot:
       `Il posto in sala è garantito ma non numerato: puoi sederti dove preferisci.
@@ -404,6 +409,9 @@ const TICKET_COPY: Record<Locale, {
         : `your ${n} seats are booked. Show the tickets below at the door.`,
     seatsLabel: "Your tickets",
     freeSeat: "Included with your accreditation",
+    reducedSeat: "Reduced rate — bring proof of eligibility",
+    dayPassFoot:
+      "This one code admits you to every screening on that day: show it at the door\n       each time. It is registered once per screening.",
     cta: "Open the ticket",
     foot:
       `Your place in the room is guaranteed but not numbered — sit wherever you like.
@@ -420,6 +428,9 @@ const TICKET_COPY: Record<Locale, {
         : `vos ${n} places sont réservées. Présentez les billets ci-dessous à l'entrée de la salle.`,
     seatsLabel: "Vos billets",
     freeSeat: "Inclus dans votre accréditation",
+    reducedSeat: "Tarif réduit — munissez-vous d'un justificatif",
+    dayPassFoot:
+      "Ce code unique donne accès à toutes les projections de la journée : présentez-le\n       à l'entrée à chaque fois. Il est enregistré une fois par projection.",
     cta: "Ouvrir le billet",
     foot:
       `Votre place est garantie mais non numérotée : asseyez-vous où vous voulez.
@@ -436,6 +447,9 @@ const TICKET_COPY: Record<Locale, {
         : `deine ${n} Plätze sind reserviert. Zeig die Tickets unten am Saaleingang.`,
     seatsLabel: "Deine Tickets",
     freeSeat: "In deiner Akkreditierung enthalten",
+    reducedSeat: "Ermässigt — bitte Nachweis mitbringen",
+    dayPassFoot:
+      "Dieser eine Code gilt für jede Vorführung dieses Tages: zeig ihn jedes Mal am\n       Saaleingang. Er wird pro Vorführung einmal registriert.",
     cta: "Ticket öffnen",
     foot:
       `Dein Platz im Saal ist garantiert, aber nicht nummeriert — setz dich, wohin du
@@ -446,6 +460,10 @@ const TICKET_COPY: Record<Locale, {
 
 // One email for the whole order, but one block per ticket: the people on it may
 // well arrive separately, so each has to be forwardable on its own.
+//
+// A day pass sends the same email. Its `tickets` are the day-pass codes, one per
+// person rather than one per seat — the holder never sees the per-screening rows
+// behind them — and `screeningTitle`/`startsAt` describe the day, not one film.
 export function ticketsEmail(o: {
   name: string;
   locale: Locale;
@@ -453,7 +471,14 @@ export function ticketsEmail(o: {
   startsAt: string;
   venue: string | null;
   amountCents: number;
-  tickets: { code: string; url: string; holder: string | null; badge: string | null }[];
+  dayPass?: boolean;
+  tickets: {
+    code: string;
+    url: string;
+    holder: string | null;
+    badge: string | null;
+    tariff?: string | null;
+  }[];
 }) {
   const t = TICKET_COPY[o.locale];
 
@@ -462,10 +487,13 @@ export function ticketsEmail(o: {
       const who = tk.holder
         ? `<div style="font-size:13px;color:#6b6b75;margin:0 0 2px">${esc(tk.holder)}</div>`
         : "";
-      const free = tk.badge
-        ? `<div style="font-size:12.5px;color:#6b6b75;margin:6px 0 0">${esc(t.freeSeat)} · ${
-          esc(tk.badge)
-        }</div>`
+      const note = tk.badge
+        ? `${esc(t.freeSeat)} · ${esc(tk.badge)}`
+        : tk.tariff === "reduced"
+        ? esc(t.reducedSeat)
+        : "";
+      const free = note
+        ? `<div style="font-size:12.5px;color:#6b6b75;margin:6px 0 0">${note}</div>`
         : "";
       return `<table role="presentation" cellpadding="0" cellspacing="0" width="100%"
                      style="margin:0 0 10px;background:#f6f4f0;border-radius:14px">
@@ -498,7 +526,7 @@ export function ticketsEmail(o: {
         }</p>
          <p style="margin:0 0 8px;font-weight:600">${esc(t.seatsLabel)}</p>
          ${blocks}`,
-      footnote: t.foot,
+      footnote: o.dayPass ? t.dayPassFoot : t.foot,
     }),
   };
 }

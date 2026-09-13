@@ -1,5 +1,9 @@
 # Accrediti e prevendite — messa in opera
 
+> Aggiornamento sicurezza 12/09/2026: leggere `../SECURITY-AUDIT.md` prima
+> del prossimo deploy. Le nuove funzioni richiedono la migrazione di sicurezza.
+> Il precedente codice master pubblicato deve essere revocato sul progetto reale.
+
 Tutto il backend del festival sta in un progetto Supabase solo. Il sito è statico
 su GitHub Pages e non parla mai col database: passa sempre dalle Edge Function,
 che sono le uniche a usare la service role.
@@ -31,10 +35,9 @@ select * from pass_kinds order by sort;         -- prezzi e lettere
 select code, label, max_uses from pass_access_codes;
 ```
 
-**Codice master interno** (già inserito): `MERGE-STAFF-MASTER-26`. Usi
-illimitati, sblocca ogni tipo di pass. Serve a noi per emettere accrediti a mano
-al banco. Non va distribuito. Per cambiarlo: inserisci il nuovo e metti
-`is_active = false` sul vecchio.
+**Codici interni**: crearli nel gestionale con un generatore casuale, scadenza
+e numero massimo di usi. Non inserirli nei file del sito o nelle migrazioni.
+Il precedente codice pubblicato va disattivato con la migrazione di sicurezza.
 
 **Lettere sui badge**: G guest, I industry, P press, D delegation, S sponsor,
 **T staff** (la S era già presa da sponsor), M media.

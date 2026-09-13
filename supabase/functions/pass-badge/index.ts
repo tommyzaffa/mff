@@ -1,3 +1,4 @@
+import { secured } from "../_shared/security.ts";
 // GET /functions/v1/pass-badge?c=MFF-XXXX-XXXX   the badge itself
 // GET /functions/v1/pass-badge?p=<pass-id>       what happened to my payment
 //
@@ -12,7 +13,7 @@
 import { db, kind, signedFileUrl } from "../_shared/db.ts";
 import { fail, json, preflight } from "../_shared/http.ts";
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
   if (req.method !== "GET") return fail(req, "method_not_allowed", 405);
@@ -29,7 +30,7 @@ Deno.serve(async (req) => {
     console.error("pass-badge", e);
     return fail(req, "server_error", 500, String(e));
   }
-});
+}, {"scope":"pass-badge","methods":["GET"],"limit":120,"globalLimit":1500}));
 
 async function badge(code: string) {
   if (!/^MFF-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) return { ok: false, error: "not_found" };
@@ -55,9 +56,7 @@ async function badge(code: string) {
       last_name: data.last_name,
       // A guest's badge carries no label; everyone else's says where they are from.
       org: k?.needs_org ? data.org : null,
-      // A week is long enough that the page never shows a broken image between
-      // one visit and the next, and short enough that a leaked URL goes stale.
-      photo_url: await signedFileUrl("pass-photos", data.photo_path, 60 * 60 * 24 * 7),
+      photo_url: await signedFileUrl("pass-photos", data.photo_path, 3600),
       issued_at: data.issued_at,
     },
   };

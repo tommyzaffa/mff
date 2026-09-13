@@ -1,3 +1,4 @@
+import { secured } from "../_shared/security.ts";
 // GET /functions/v1/pass-wallet?c=<badge code>&p=google   -> 302 to the save link
 // GET /functions/v1/pass-wallet?c=<badge code>&p=apple    -> the .pkpass file
 //
@@ -18,7 +19,7 @@ const HEX: Record<string, string> = {
   grey: "#4A4A52",
 };
 
-Deno.serve(async (req) => {
+Deno.serve(secured(async (req) => {
   const url = new URL(req.url);
   const code = (url.searchParams.get("c") ?? "").trim().toUpperCase();
   const platform = url.searchParams.get("p") ?? "google";
@@ -52,7 +53,7 @@ Deno.serve(async (req) => {
     console.error("pass-wallet", e);
     return oops("Non riesco a generare il pass per il wallet.", 500);
   }
-});
+}, {"scope":"pass-wallet","methods":["GET"],"limit":10,"globalLimit":100}));
 
 type Model = {
   code: string;
@@ -129,7 +130,7 @@ async function signRs256(claims: unknown, privateKeyPem: string): Promise<string
   const der = pemToDer(privateKeyPem);
   const key = await crypto.subtle.importKey(
     "pkcs8",
-    der,
+    new Uint8Array(der),
     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
     ["sign"],
@@ -219,7 +220,7 @@ async function applePass(m: Model): Promise<Response> {
     { name: "signature", data: signature },
   ]);
 
-  return new Response(bundle, {
+  return new Response(new Uint8Array(bundle), {
     headers: {
       "content-type": "application/vnd.apple.pkpass",
       "content-disposition": `attachment; filename="${m.code}.pkpass"`,
@@ -263,12 +264,12 @@ async function signManifest(
 }
 
 async function sha1Hex(bytes: Uint8Array): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-1", bytes);
+  const digest = await crypto.subtle.digest("SHA-1", new Uint8Array(bytes));
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 async function fetchBytes(url: string): Promise<Uint8Array> {
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
   if (!res.ok) throw new Error(`fetch ${url}: ${res.status}`);
   return new Uint8Array(await res.arrayBuffer());
 }
