@@ -2399,6 +2399,41 @@ html.intro-armed #introOverlay {
   font-size: 0.78rem; line-height: 1.5; opacity: 0.55;
 }
 
+/* The transport title. Full black and never dimmed, like the badge's: this is
+   the part an inspector reads, and the two logos beside it are what makes it
+   recognisable at a glance. */
+.tkt__transport {
+  padding: 14px 18px 13px; text-align: center;
+  border-top: 1px solid rgba(36, 36, 43, 0.16);
+}
+.tkt__transport[hidden] { display: none; }
+.tkt__transport-text {
+  margin: 0; font-size: 0.72rem; line-height: 1.45;
+  color: #0F0F12; text-wrap: pretty; hyphens: none;
+}
+.tkt__transport-logos {
+  margin-top: 11px;
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+}
+/* ffs.svg carries only a viewBox, so without a pinned height it resolves to
+   0 x 0 and disappears. It is also ~9:1, hence its own smaller height. */
+.tkt__transport-logos img { display: block; width: auto; height: 21px; }
+.tkt__transport-logos img[src*="ffs"] { height: 14px; }
+
+/* The poster's footer lockup, at ticket scale. */
+.tkt__partners {
+  padding: 13px 18px 16px;
+  border-top: 1px solid rgba(36, 36, 43, 0.16);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 11px 15px;
+}
+.tkt__partners img { display: block; width: auto; height: 19px; }
+.tkt__partners img[src*="migros"] { height: 15px; }
+.tkt__partners img[src*="infogiovani"] { height: 27px; }
+.tkt__partners img[src*="pestalozzi"] { height: 25px; }
+.tkt__partners img[src*="ersl"] { height: 22px; }
+.tkt__partners img[src*="ortega"] { height: 22px; }
+
 /* ==========================================================================
    The box office counter — /door/
 

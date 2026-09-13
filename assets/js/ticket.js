@@ -113,6 +113,16 @@
     } catch (e) { return iso; }
   }
 
+  // The transport wording needs the Swiss written date, in Italian, whatever
+  // language the rest of the card is in.
+  function stampDate(iso) {
+    try {
+      return new Intl.DateTimeFormat("it-CH", {
+        day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Europe/Zurich",
+      }).format(new Date(iso)).replace(/\//g, ".");
+    } catch (e) { return ""; }
+  }
+
   function paint(ticket, screening, screenings) {
     // A day pass is named after its day, not after the first film on it: the
     // first film is only where it happens to start.
@@ -159,6 +169,15 @@
     stateEl.setAttribute("data-i18n", state.key);
     stateEl.textContent = t(state.key, ticket.status);
     document.querySelector("[data-status-class]").className = "tkt " + state.css;
+
+    // The ticket doubles as an Arcobaleno day card for the day it admits to —
+    // but only while it is admission: a cancelled or unpaid one travels nowhere.
+    var transport = document.querySelector("[data-transport]");
+    var stamp = screening.starts_at ? stampDate(screening.starts_at) : "";
+    if (transport) {
+      transport.hidden = !stamp || (ticket.status !== "valid" && ticket.status !== "used");
+      document.querySelector("[data-transport-date]").textContent = stamp;
+    }
 
     // The QR carries the bare code, not a URL: it is scanned by the festival's
     // own check-in, and a short payload reads faster on a dark foyer's worth of

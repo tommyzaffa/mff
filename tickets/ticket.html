@@ -9,7 +9,7 @@
   <!-- The code is the admission, so keep it out of search results. -->
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=54" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=55" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -61,6 +61,35 @@
         </div>
 
         <p class="tkt__note" data-i18n="ticket.note">Admits one person. Seats are not numbered: sit wherever you like.</p>
+
+        <!-- Arcobaleno's prescribed wording, the same one the badge carries. A
+             ticket is good for one day, so it reads "valido il <data>" and
+             ticket.js fills the date in. It is NOT translated and NOT dimmed:
+             an inspector has to be able to read it. Hidden on a ticket that is
+             not admission (cancelled, or still waiting for payment). -->
+        <div class="tkt__transport" data-transport hidden>
+          <p class="tkt__transport-text">
+            Titolo di trasporto valido quale carta giornaliera speciale il
+            <span data-transport-date>—</span>, in tutte le zone della Comunità
+            Tariffale Arcobaleno, in seconda classe, (L)(TK)(V)
+          </p>
+          <div class="tkt__transport-logos">
+            <img src="../assets/img/logos/ffs.svg" alt="FFS" />
+            <img src="../assets/img/logos/arcobaleno.png" alt="Comunità tariffale Arcobaleno" />
+          </div>
+        </div>
+
+        <div class="tkt__partners">
+          <img src="../assets/img/logos/ortega.svg" alt="Ortega Schule" />
+          <img src="../assets/img/logos/ubs.png" alt="UBS" />
+          <img src="../assets/img/logos/aem.png" alt="AEM" />
+          <img src="../assets/img/logos/migros.png" alt="Percento culturale Migros Ticino" />
+          <img src="../assets/img/logos/lugano.png" alt="Città di Lugano" />
+          <img src="../assets/img/logos/massagno.png" alt="Comune di Massagno" />
+          <img src="../assets/img/logos/infogiovani.png" alt="Infogiovani" />
+          <img src="../assets/img/logos/ersl.png" alt="Ente Regionale per lo Sviluppo del Luganese" />
+          <img src="../assets/img/logos/pestalozzi.png" alt="Hotel Pestalozzi Lugano" />
+        </div>
       </article>
 
       <p class="badge-hint" data-i18n="ticket.hint">Show this screen at the door. Add the page to your home screen and you will have the ticket with you offline.</p>
@@ -73,6 +102,6 @@
           crossorigin="anonymous"></script>
   <script src="../assets/js/translations.js?v=37"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/ticket.js?v=2"></script>
+  <script src="../assets/js/ticket.js?v=3"></script>
 </body>
 </html>
