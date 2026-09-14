@@ -2,9 +2,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node db_security.mjs"
+    "test": "node db_security.mjs",
+    "test:browser": "node staff_browser.mjs"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.5.8"
+    "@electric-sql/pglite": "0.5.8",
+    "playwright": "1.62.1",
+    "qr-creator": "1.0.0"
   }
 }

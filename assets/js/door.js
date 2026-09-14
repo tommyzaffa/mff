@@ -35,6 +35,18 @@
 
   var password = "";
   var session = "";
+  var busy = false;
+  var retrySupported = false;
+  var pending = null;
+  try { pending = JSON.parse(sessionStorage.getItem("mff_door_pending") || "null"); } catch (e) {}
+
+  function savePending(value) {
+    pending = value;
+    try {
+      if (value) sessionStorage.setItem("mff_door_pending", JSON.stringify(value));
+      else sessionStorage.removeItem("mff_door_pending");
+    } catch (e) {}
+  }
 
   function show(name) {
     Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
@@ -48,12 +60,10 @@
   } catch (e) { /* modalità privata */ }
 
   function call(body) {
-    return fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(Object.assign(session ? { session: session } : { password: password }, body || {})),
-      signal: AbortSignal.timeout(15000),
-    }).then(function (r) { return r.json(); }).then(function (res) {
+    return window.mffStaffRequest(ENDPOINT,
+      Object.assign(session ? { session: session } : { password: password }, body || {})
+    ).then(function (res) {
+      if (Array.isArray(res.screenings)) retrySupported = res.sale_retry === true;
       if (res.session) {
         session = res.session; password = "";
         try { sessionStorage.setItem("mff_door_session", session); } catch (e) {}
@@ -101,6 +111,7 @@
         loginForm.password.value = "";
         render(res.screenings || []);
         show("board");
+        if (pending) { lock(); refresh(); }
       })
       .catch(function () {
         loginForm.querySelector("button").disabled = false;
@@ -129,6 +140,7 @@
 
   function render(screenings) {
     listEl.innerHTML = "";
+    if (!retrySupported) statusEl.textContent = "Cassa da aggiornare sul server. Avvisa l'organizzazione prima di registrare vendite.";
 
     if (!screenings.length) {
       var empty = document.createElement("li");
@@ -210,8 +222,8 @@
 
     var minus = step(s, tariff, -1, "−");
     var plus = step(s, tariff, +1, "+");
-    minus.disabled = Number(sold) <= 0;
-    plus.disabled = s.seats_left <= 0;
+    minus.disabled = !retrySupported || Number(sold) <= 0;
+    plus.disabled = !retrySupported || s.seats_left <= 0;
 
     row.appendChild(minus);
     row.appendChild(plus);
@@ -224,51 +236,71 @@
     btn.className = "door-step" + (delta > 0 ? " door-step--plus" : "");
     btn.textContent = label;
     btn.addEventListener("click", function () {
-      // Tutti i pulsanti si bloccano finché la risposta non arriva: la lavagna
-      // viene ridisegnata sui numeri che torna il server, non su quelli che
-      // avremmo indovinato qui.
-      lock(true);
-      statusEl.textContent = "";
-      call({
-        action: "sell",
-        screening: screening.code,
-        delta: delta,
-        tariff: tariff,
-        actor: "cassa",
-      })
-        .then(function (res) {
-          lock(false);
-          if (!res.ok) {
-            statusEl.textContent = res.error === "unauthorised"
-              ? "Sessione scaduta: ricarica la pagina e rientra."
-              : "Non registrato. Riprova.";
-            return;
-          }
-          render(res.screenings || []);
-        })
-        .catch(function () {
-          lock(false);
-          statusEl.textContent = "Nessuna connessione. Il conteggio non è stato registrato.";
-        });
+      if (busy || pending || !retrySupported) return;
+      savePending({
+        action: "sell", screening: screening.code, delta: delta,
+        tariff: tariff, actor: "cassa", request_id: crypto.randomUUID(),
+      });
+      refresh();
     });
     return btn;
   }
 
-  function lock(on) {
-    listEl.querySelectorAll("button").forEach(function (b) { b.disabled = on; });
+  function lock() {
+    listEl.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
   }
 
   // --- aggiornamento --------------------------------------------------------
 
+  var ERRORS = {
+    capacity: "Posti esauriti oppure nessuna vendita di questa tariffa da annullare. Conteggio aggiornato.",
+    sales_not_closed: "Vendita online ancora aperta: attendi l'orario indicato.",
+    unknown_screening: "Proiezione non più disponibile. Conteggio aggiornato.",
+    request_conflict: "Movimento non riconosciuto. Avvisa l'organizzazione.",
+  };
+
   function refresh() {
-    return call()
+    if (busy) return Promise.resolve();
+    if (pending && !retrySupported) {
+      statusEl.textContent = "Cassa da aggiornare sul server. Avvisa l'organizzazione prima di registrare vendite.";
+      return Promise.resolve();
+    }
+    busy = true;
+    lock();
+    var operation = pending;
+    statusEl.textContent = operation ? "Verifico la registrazione…" : "Aggiornamento…";
+    return call(operation || {})
       .then(function (res) {
-        if (!res.ok) return show("login");
+        if (!res.ok) {
+          if (res.error === "unauthorised") {
+            show("login");
+            loginError.textContent = "Sessione scaduta: rientra. L'eventuale movimento in sospeso verrà verificato.";
+          } else if (operation && ERRORS[res.error]) {
+            savePending(null);
+            // A definite database refusal may be retried as a NEW sale only
+            // after rereading availability. Never blindly re-enable + and −.
+            return call().then(function (board) {
+              if (!board.ok) throw new Error("board unavailable");
+              render(board.screenings || []);
+              statusEl.textContent = ERRORS[res.error];
+            });
+          } else {
+            statusEl.textContent = operation
+              ? "Esito da verificare. Premi Aggiorna: lo stesso movimento non verrà contato due volte."
+              : "Aggiornamento non riuscito. Premi Aggiorna prima di vendere.";
+          }
+          return;
+        }
+        if (operation) savePending(null);
         render(res.screenings || []);
+        if (retrySupported) statusEl.textContent = operation ? "Movimento registrato." : "Conteggio aggiornato.";
       })
       .catch(function () {
-        statusEl.textContent = "Nessuna connessione.";
-      });
+        statusEl.textContent = pending
+          ? "Risposta non ricevuta: il movimento potrebbe essere registrato. Premi Aggiorna per verificarlo senza duplicarlo."
+          : "Nessuna connessione. Premi Aggiorna prima di vendere.";
+      })
+      .finally(function () { busy = false; });
   }
 
   document.querySelector("[data-refresh]").addEventListener("click", function () {
@@ -289,6 +321,7 @@
         if (!res.ok) return;
         render(res.screenings || []);
         show("board");
+        if (pending) { lock(); refresh(); }
       })
       .catch(function () { /* si resta sul login */ });
   }

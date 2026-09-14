@@ -103,3 +103,35 @@ Deno.test('paid ticket receipt recovers on webhook retry after an email outage',
     assert((await call()).status===200);assert(attempts===2);
   }finally{globalThis.fetch=original;}
 });
+
+Deno.test('staff scan accepts all three code types and preserves the screening at the RPC',async()=>{
+  const original=globalThis.fetch;const {createDoorSession}=await import('../functions/_shared/door-session.ts');
+  const session=await createDoorSession('long-test-only-password');
+  let sent: Record<string,unknown>={};
+  globalThis.fetch=async(input,init)=>{
+    if(!String(input).includes('/rpc/ticket_check_in'))throw new Error('Unexpected operation');
+    sent=JSON.parse(String(init?.body));return Response.json({ok:true,name:'Test Visitor'});
+  };
+  try{
+    for(const code of ['MFF-T-ABCDEFGH','MFF-D-ABCDEFGH','MFF-ABCD-EFGH']){
+      const res=await door(req({session,action:'scan',screening:'staff-a',code}));
+      const data=await res.json();assert(data.ok && data.scan.ok);assert(sent.p_code===code && sent.p_screening==='staff-a');
+    }
+    assert((await door(req({session,action:'scan',code:'MFF-T-ABCDEFGH'}))).status===400);
+    assert((await door(req({session,action:'scan',screening:'staff-a',code:'invalid'}))).status===400);
+  }finally{globalThis.fetch=original;}
+});
+Deno.test('new counter routes retry IDs to the atomic RPC and advertises retry support',async()=>{
+  const original=globalThis.fetch;const {createDoorSession}=await import('../functions/_shared/door-session.ts');
+  const session=await createDoorSession('long-test-only-password');
+  const id='11111111-1111-4111-8111-111111111111';let sent: Record<string,unknown>={};
+  globalThis.fetch=async(input,init)=>{
+    if(String(input).includes('/rpc/ticket_door_sell_once')){sent=JSON.parse(String(init?.body));return Response.json({ok:true});}
+    return original(input,init);
+  };
+  try{
+    const body={session,action:'sell',screening:'staff-a',delta:1,tariff:'reduced',request_id:id};
+    const data=await (await door(req(body))).json();assert(data.ok && data.sale_retry);assert(sent.p_request===id && sent.p_tariff==='reduced');
+    assert((await door(req({...body,request_id:'bad-id'}))).status===400);
+  }finally{globalThis.fetch=original;}
+});

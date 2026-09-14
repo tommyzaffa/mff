@@ -69,6 +69,7 @@
   var timer = null;
   var dismissTimer = null;
   var audio = null;
+  var generation = 0;
 
   function show(name) {
     Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
@@ -80,12 +81,9 @@
   } catch (e) { /* modalità privata */ }
 
   function call(body) {
-    return fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(Object.assign(session ? { session: session } : { password: password }, body || {})),
-      signal: AbortSignal.timeout(15000),
-    }).then(function (r) { return r.json(); }).then(function (res) {
+    return window.mffStaffRequest(ENDPOINT,
+      Object.assign(session ? { session: session } : { password: password }, body || {})
+    ).then(function (res) {
       if (res.session) {
         session = res.session; password = "";
         try { sessionStorage.setItem("mff_door_session", session); } catch (e) {}
@@ -220,19 +218,21 @@
   }
 
   document.querySelector("[data-back]").addEventListener("click", function () {
+    if (busy) return;
     stop();
-    call()
-      .then(function (res) {
-        if (!res.ok) return show("login");
-        toPick(res.screenings || []);
-      })
-      .catch(function () { show("pick"); });
+    current = null;
+    show("pick");
+    refreshPick();
   });
 
   // --- la telecamera --------------------------------------------------------
 
   function start(screening) {
+    stop();
+    var run = generation;
+    recent = {};
     current = screening;
+    hintEl.textContent = "Avvio telecamera…";
     try { sessionStorage.setItem("mff_scan_show", screening.code); } catch (e) {}
 
     titleEl.textContent = screening.title;
@@ -247,18 +247,27 @@
       return;
     }
 
+    if (typeof window.jsQR !== "function") {
+      hintEl.textContent = "Lettore QR non disponibile. Ricarica la pagina oppure scrivi il codice.";
+      return;
+    }
+
     navigator.mediaDevices
       .getUserMedia({ video: { facingMode: "environment" }, audio: false })
       .then(function (s) {
+        if (run !== generation) { s.getTracks().forEach(function (t) { t.stop(); }); return; }
         stream = s;
         video.srcObject = s;
         return video.play();
       })
       .then(function () {
-        hintEl.textContent = "Inquadra il QR del biglietto o del badge.";
+        if (run !== generation) return;
+        hintEl.textContent = "Inquadra il QR del biglietto, badge o giornaliera.";
         timer = setInterval(tick, SCAN_INTERVAL_MS);
       })
       .catch(function () {
+        if (run !== generation) return;
+        if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
         // Il permesso negato non è un errore da nascondere: senza telecamera il
         // turno deve sapere subito di dover scrivere i codici a mano.
         hintEl.textContent =
@@ -267,6 +276,9 @@
   }
 
   function stop() {
+    generation++;
+    manualForm.querySelector("button").disabled = false;
+    document.querySelector("[data-back]").disabled = false;
     if (timer) { clearInterval(timer); timer = null; }
     if (dismissTimer) { clearTimeout(dismissTimer); dismissTimer = null; }
     if (stream) {
@@ -280,16 +292,18 @@
 
   function tick() {
     if (busy || holding) return;
-    if (!video.videoWidth) return;
+    if (!video.videoWidth || video.readyState < 2 || !ctx) return;
 
     var scale = Math.min(1, FRAME_MAX_PX / Math.max(video.videoWidth, video.videoHeight));
     var w = Math.round(video.videoWidth * scale);
     var h = Math.round(video.videoHeight * scale);
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
 
-    ctx.drawImage(video, 0, 0, w, h);
     var img;
-    try { img = ctx.getImageData(0, 0, w, h); } catch (e) { return; }
+    try {
+      ctx.drawImage(video, 0, 0, w, h);
+      img = ctx.getImageData(0, 0, w, h);
+    } catch (e) { return; }
 
     var found = window.jsQR(img.data, w, h, { inversionAttempts: "dontInvert" });
     if (found && found.data) submit(found.data);
@@ -298,6 +312,8 @@
   // --- la verifica ----------------------------------------------------------
 
   function submit(raw) {
+    if (busy || !current) return;
+    var run = generation;
     var code = String(raw).trim().toUpperCase();
     if (!code) return;
 
@@ -306,12 +322,17 @@
     recent[code] = now;
 
     busy = true;
+    manualForm.querySelector("button").disabled = true;
+    document.querySelector("[data-back]").disabled = true;
     hintEl.textContent = "Verifico…";
 
     call({ action: "scan", screening: current.code, code: code })
       .then(function (res) {
+        if (run !== generation) return;
         busy = false;
-        hintEl.textContent = "Inquadra il QR del biglietto o del badge.";
+        manualForm.querySelector("button").disabled = false;
+        document.querySelector("[data-back]").disabled = false;
+        hintEl.textContent = "Inquadra il QR del biglietto, badge o giornaliera.";
 
         if (!res.ok) {
           // Sessione scaduta o richiesta rifiutata: non è un verdetto sulla
@@ -322,12 +343,16 @@
             loginError.textContent = "Sessione scaduta: rientra.";
             return;
           }
-          return render({ ok: false, reason: "server" });
+          delete recent[code];
+          return render({ ok: false, reason: res.error === "code_required" ? "unknown_ticket" : "server" });
         }
         render(res.scan || { ok: false, reason: "server" });
       })
       .catch(function () {
+        if (run !== generation) return;
         busy = false;
+        manualForm.querySelector("button").disabled = false;
+        document.querySelector("[data-back]").disabled = false;
         // Senza risposta non sappiamo se il biglietto è buono: si riprova, non
         // si tira a indovinare.
         delete recent[code];
@@ -339,7 +364,7 @@
     already_used:     ["GIÀ ENTRATO", "bad"],
     wrong_screening:  ["ALTRA PROIEZIONE", "warn"],
     badge_not_booked: ["ACCREDITO SENZA POSTO", "warn"],
-    day_pass_not_here: ["GIORNALIERA DI UN ALTRO GIORNO", "warn"],
+    day_pass_not_here: ["GIORNALIERA NON VALIDA QUI", "warn"],
     not_valid:        ["NON VALIDO", "bad"],
     unknown_ticket:   ["SCONOSCIUTO", "bad"],
     screening_required: ["SCEGLI LA PROIEZIONE", "warn"],
@@ -397,7 +422,7 @@
         // casi non ha mai avuto un posto qui.
         note = "Questa giornaliera non copre questa proiezione. Mandalo in cassa.";
       } else if (r.reason === "offline") {
-        note = "Non ho potuto verificare. Riavvicina il QR quando torna la rete.";
+        note = "Risposta non ricevuta: l'ingresso potrebbe essere già registrato. Riprova lo stesso codice e controlla l'orario se risulta già entrato.";
       } else if (r.reason === "not_valid") {
         note = "Ordine annullato o pagamento non concluso.";
       }
@@ -428,6 +453,7 @@
 
   manualForm.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (busy || !current) return;
     var input = manualForm.code;
     var code = input.value.trim().toUpperCase();
     if (!code) return;
@@ -440,6 +466,35 @@
 
   // Chiudere la scheda deve bastare a spegnere la telecamera.
   window.addEventListener("pagehide", stop);
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted && current && !panels.scan.hidden) start(current);
+  });
+  var picking = false;
+  function refreshPick() {
+    if (picking) return;
+    picking = true;
+    var button = document.querySelector("[data-pick-refresh]");
+    button.disabled = true;
+    listEl.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
+    pickStatus.textContent = "Aggiornamento…";
+    call().then(function (res) {
+      if (!res.ok) {
+        if (res.error === "unauthorised") {
+          show("login");
+          loginError.textContent = "Sessione scaduta: rientra.";
+        } else pickStatus.textContent = "Aggiornamento non riuscito. Riprova.";
+        return;
+      }
+      toPick(res.screenings || []);
+    }).catch(function () {
+      pickStatus.textContent = "Nessuna connessione. Premi Aggiorna per riprovare.";
+    }).finally(function () {
+      picking = false;
+      button.disabled = false;
+      listEl.querySelectorAll("button").forEach(function (b) { b.disabled = false; });
+    });
+  }
+  document.querySelector("[data-pick-refresh]").addEventListener("click", refreshPick);
 
   // --- rientro dopo un ricaricamento ---------------------------------------
 

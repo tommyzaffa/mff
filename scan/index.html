@@ -41,6 +41,7 @@
         Scegli la sala che stai presidiando. I biglietti di un'altra proiezione
         verranno rifiutati senza essere consumati.
       </p>
+      <button class="btn btn--small" type="button" data-pick-refresh>Aggiorna</button>
       <ul class="scan__list" data-list></ul>
       <p class="scan__status" data-pick-status role="status" aria-live="polite"></p>
     </div>
@@ -59,7 +60,7 @@
       <div class="scan__stage">
         <video class="scan__video" data-video playsinline muted autoplay></video>
         <div class="scan__reticle" aria-hidden="true"></div>
-        <p class="scan__hint" data-hint>Inquadra il QR del biglietto o del badge.</p>
+        <p class="scan__hint" data-hint>Inquadra il QR del biglietto, badge o giornaliera.</p>
       </div>
 
       <!-- The verdict, not the camera, is the thing the staff actually read, so
@@ -85,10 +86,11 @@
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
+  <script src="../assets/js/vendor/jsQR-1.4.0.js"
           integrity="sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx"
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/scan.js?v=3"></script>
+  <script src="../assets/js/staff-api.js?v=1"></script>
+  <script src="../assets/js/scan.js?v=4"></script>
 </body>
 </html>

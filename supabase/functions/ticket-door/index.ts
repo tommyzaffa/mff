@@ -88,7 +88,14 @@ Deno.serve(secured(async (req) => {
         return fail(req, "bad_delta");
       }
 
-      const { data: sale, error } = await db().rpc("ticket_door_sell", {
+      const requestId = body.request_id;
+      if (requestId !== undefined && (typeof requestId !== "string" ||
+          !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId))) {
+        return fail(req, "bad_request_id");
+      }
+      // Keep older open tabs working; the new UI always supplies a stable ID.
+      const { data: sale, error } = await db().rpc(requestId ? "ticket_door_sell_once" : "ticket_door_sell", {
+        ...(requestId ? { p_request: requestId } : {}),
         p_screening: screening, p_delta: delta, p_tariff: tariff,
         p_actor: String(body.actor ?? "").trim().slice(0, 40) || "cassa",
       });
@@ -96,7 +103,7 @@ Deno.serve(secured(async (req) => {
       if (error) return fail(req, "server_error", 500, error.message);
     }
 
-    return json(req, { ok: true, session, screenings: await board() });
+    return json(req, { ok: true, session, sale_retry: true, screenings: await board() });
   } catch (e) {
     console.error("ticket-door", e);
     return fail(req, "server_error", 500, String(e));
