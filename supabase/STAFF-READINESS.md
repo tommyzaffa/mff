@@ -30,7 +30,7 @@ La giornaliera copre le proiezioni ancora prenotabili al momento dell'acquisto, 
 - Permesso telecamera che arriva dopo aver lasciato lo scanner: le tracce vengono chiuse; le risposte di una precedente sessione non modificano quella nuova. Ripristino della pagina dalla cache del browser gestito.
 - Elenco proiezioni senza aggiornamento: aggiunto Aggiorna, con selezione sospesa durante la richiesta.
 - Disponibilità di `AbortSignal.timeout`: sostituita con un timeout tramite AbortController per supportare anche browser che non espongono quel metodo.
-- Lettore QR dipendente da una CDN: jsQR 1.4.0 è incluso nel sito, con licenza MIT e identico hash di integrità. Il guasto del lettore ha un messaggio e resta disponibile il codice manuale.
+- Lettore QR dipendente da una CDN: jsQR 1.4.0 è incluso nel sito, con licenza Apache 2.0 e identico hash di integrità. Il guasto del lettore ha un messaggio e resta disponibile il codice manuale.
 - Aggiornamento periodico della cassa sovrapposto alla vendita: richieste serializzate; nessuna risposta vecchia può sovrascrivere il risultato di una vendita concorrente dello stesso dispositivo.
 - Risposta persa alla cassa: il movimento ha un identificativo persistito nella sessione. Aggiorna e il ripristino dopo reload recuperano lo stesso movimento. La nuova funzione SQL registra risultato e vendita nella stessa transazione, senza duplicarli ai tentativi successivi.
 - Pulsanti riattivati indiscriminatamente dopo un errore: ora i conteggi devono essere riletti; sottrazioni impossibili e sala piena restano bloccate.
