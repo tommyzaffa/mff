@@ -4,22 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
-  <title>Main Jury — Merge Film Festival</title>
-  <meta name="description" content="Main Jury — Merge Film Festival." />
+  <title data-i18n="juryMain.pageTitle">Main Jury · Hybrid — Merge Film Festival</title>
+  <meta name="description" content="Marco Longo and Francesca Monti are the jury for the Hybrid competition." data-i18n-attr="content:juryMain.subtitle" />
 
-  <link rel="stylesheet" href="../../assets/css/style.css?v=55" />
+  <link rel="stylesheet" href="../../assets/css/style.css?v=57" />
+  <link rel="stylesheet" href="../../assets/css/jury.css?v=1" />
   <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
 </head>
 
-<body>
+<body class="jury-page">
   <div id="bgCanvas"></div>
   <div id="bgMesh"></div>
   <div id="bgGrain"></div>
 
   <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="Home">
+    <a class="brand" href="../../index.html" aria-label="Home" data-i18n-attr="aria-label:nav.home">
       <span class="brand__mark"><img src="../../assets/img/favicon-96.png" alt="" aria-hidden="true" /></span>
       <span class="brand__text">Merge Film Festival</span>
     </a>
@@ -28,132 +29,84 @@
         <span class="nav__cta-long" data-i18n="nav.passesLong">Get your pass</span>
         <span class="nav__cta-short" data-i18n="nav.passesShort">Pass</span>
       </a>
-      <div class="nav__lang-switch" aria-label="Language switch">
+      <div class="nav__lang-switch" aria-label="Choose language" data-i18n-attr="aria-label:juryMain.languageLabel">
         <a class="nav__lang-option" data-lang="it" href="#">IT</a>
         <a class="nav__lang-option" data-lang="en" href="#">ENG</a>
         <a class="nav__lang-option" data-lang="fr" href="#">FR</a>
         <a class="nav__lang-option" data-lang="de" href="#">DE</a>
       </div>
       <div class="nav__dropdown">
-        <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
+        <button class="nav__toggle" type="button" aria-label="Open menu" data-i18n-attr="aria-label:juryMain.menuOpen" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="../../index.html" data-i18n="nav.home">Home</a>
           <a href="../../passes/index.html" data-i18n="nav.passes">Passes</a>
           <a href="../../program/index.html" data-i18n="nav.program">Program</a>
           <a href="../index.html" data-i18n="nav.inCompetition">In Competition</a>
+          <a href="main.html" data-i18n="nav.mainJury" aria-current="page">Main Jury</a>
           <a href="../../press/index.html" data-i18n="nav.press">Press</a>
           <a href="../../contact/index.html" data-i18n="nav.contact">Contact</a>
-          <div class="nav__panel-lang" aria-label="Language switch">
+          <div class="nav__panel-lang" aria-label="Choose language" data-i18n-attr="aria-label:juryMain.languageLabel">
             <a data-lang="it" href="#">IT</a><a data-lang="en" href="#">EN</a><a data-lang="fr" href="#">FR</a><a data-lang="de" href="#">DE</a>
           </div>
-          <button class="nav__panel-close" type="button" aria-label="Close menu"></button>
+          <button class="nav__panel-close" type="button" aria-label="Close menu" data-i18n-attr="aria-label:juryMain.menuClose"></button>
         </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Intro -->
+  <main id="main-content">
     <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
-      <span class="stain stain--br" aria-hidden="true"></span>
       <div class="container reveal">
-        <p class="page-hero__kicker" data-i18n="juryMain.kicker">Jury • Film Critics • AI Experts</p>
+        <p class="page-hero__kicker" data-i18n="juryMain.kicker">Cinema · Visual arts · Artificial intelligence</p>
         <h1 class="page-hero__title" data-i18n="juryMain.title">Main Jury</h1>
-        <p class="page-hero__subtitle" data-i18n="juryMain.subtitle">Four judges from the world of film criticism and the arts.</p>
-        <nav class="authors-index" aria-label="Jury index">
-          <a class="authors-index__item" href="#bavari">Alessandro Bavari</a>
-          <a class="authors-index__item" href="#monti">Francesca Monti</a>
-          <a class="authors-index__item" href="#longo">Marco Longo</a>
-          <a class="authors-index__item" href="#fourth" data-i18n="juryMain.tbaName">To be announced</a>
+        <p class="page-hero__subtitle" data-i18n="juryMain.subtitle">Marco Longo and Francesca Monti are the jury for the Hybrid competition.</p>
+        <nav class="authors-index" aria-label="Meet the Hybrid jury" data-i18n-attr="aria-label:juryMain.indexLabel">
+          <a class="authors-index__item" href="#hybrid" data-i18n="juryMain.hybridTitle">Hybrid</a>
         </nav>
       </div>
     </section>
 
-    <!-- Member 1 -->
-    <section class="section is-on-violet author" id="bavari" data-bg="violet">
-      <span class="stain stain--tl" aria-hidden="true"></span>
+    <section class="section jury-group is-on-violet section--pre-footer" data-bg="violet" id="hybrid" aria-labelledby="hybrid-title">
       <div class="container">
-        <header class="author__copy reveal">
-          <p class="author__eyebrow" data-i18n="juryMain.eyebrow">Main Jury</p>
-          <h2 class="section__title">Alessandro Bavari</h2>
-          <p class="section__desc" data-i18n="juryMain.role">Jury member</p>
+        <header class="author-group__header reveal">
+          <p class="author__eyebrow"><span class="jury-group__number" aria-hidden="true">01</span> <span data-i18n="juryMain.eyebrow">Main Jury</span></p>
+          <h2 class="section__title" id="hybrid-title" data-i18n="juryMain.hybridTitle">Hybrid</h2>
+          <p class="section__desc" data-i18n="juryMain.hybridDesc">Films that combine traditional techniques with artificial intelligence tools.</p>
         </header>
-        <div class="author__card reveal" data-delay="1">
-          <div class="author__media"><img src="../../assets/img/jury/main.jpg" alt="Portrait of Alessandro Bavari" loading="lazy" /></div>
-          <div class="author__body">
-            <p data-i18n="juryMain.bio">Full profile to be announced soon.</p>
-            <div class="author__nav">
-              <a class="btn btn--ghost" href="#top" data-i18n="juryMain.navBack">Back to index</a>
-              <a class="btn" href="#monti" data-i18n="juryMain.navNext">Next</a>
+        <div class="author-group__list">
+          <article class="author__card jury-member reveal" id="longo" aria-labelledby="longo-name">
+            <figure class="jury-member__portrait">
+              <div class="author__media">
+                <img src="../../assets/img/jury/longo.webp" srcset="../../assets/img/jury/longo-480.webp 480w, ../../assets/img/jury/longo.webp 747w" sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 980px) 420px, 360px" width="747" height="934" alt="Portrait of Marco Longo" data-i18n-attr="alt:juryMain.members.longo.alt" loading="lazy" decoding="async" />
+              </div>
+            </figure>
+            <div class="author__body">
+              <h3 class="author__name" id="longo-name">Marco Longo</h3>
+              <div class="jury-member__bio" data-i18n-html="juryMain.members.longo.bio">
+                <p>An independent producer and filmmaker, Marco Longo graduated in Modern Literature from the University of Pavia and in Directing from the Civica Scuola di Cinema in Milan. In 2018, he founded Berenice Film, through which he produces creative documentaries by emerging filmmakers.</p>
+                <p>He has written about cinema for the online magazine Filmidee and the Cult section of DinamoPress, and collaborates with the Locarno Film Festival, the Centro Culturale San Fedele in Milan and the FuoriFormato festival in Genoa. He coordinates productions at CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — and teaches at a number of film schools and academies.</p>
+              </div>
             </div>
-          </div>
+          </article>
+          <article class="author__card jury-member reveal" id="monti" aria-labelledby="monti-name">
+            <figure class="jury-member__portrait">
+              <div class="author__media">
+                <img src="../../assets/img/jury/monti.webp" sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 980px) 420px, 360px" width="440" height="550" alt="Portrait of Francesca Monti" data-i18n-attr="alt:juryMain.members.monti.alt" loading="lazy" decoding="async" />
+              </div>
+            </figure>
+            <div class="author__body">
+              <h3 class="author__name" id="monti-name">Francesca Monti</h3>
+              <div class="jury-member__bio" data-i18n-html="juryMain.members.monti.bio">
+                <p>Francesca Monti is Head of Education and a lecturer in Film History at CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. She has worked as a film critic, writing for specialist publications including duellanti, Segnocinema, Filmidee and Film Tv.</p>
+                <p>She has worked in programming and communications for institutions and events including the Locarno Film Festival, the Centro culturale San Fedele in Milan and the Bellaria Film Festival.</p>
+              </div>
+            </div>
+          </article>
         </div>
+        <div class="jury-group__back"><a class="authors-index__item" href="#top" data-i18n="juryMain.navBack">Back to top</a></div>
       </div>
     </section>
 
-    <!-- Member 2 -->
-    <section class="section is-on-cream author" id="monti" data-bg="cream">
-      <div class="container">
-        <header class="author__copy reveal">
-          <p class="author__eyebrow" data-i18n="juryMain.eyebrow">Main Jury</p>
-          <h2 class="section__title">Francesca Monti</h2>
-          <p class="section__desc" data-i18n="juryMain.role">Jury member</p>
-        </header>
-        <div class="author__card reveal" data-delay="1">
-          <div class="author__media"><img src="../../assets/img/jury/main.jpg" alt="Portrait of Francesca Monti" loading="lazy" /></div>
-          <div class="author__body">
-            <p data-i18n="juryMain.bio">Full profile to be announced soon.</p>
-            <div class="author__nav">
-              <a class="btn btn--ghost" href="#top" data-i18n="juryMain.navBack">Back to index</a>
-              <a class="btn" href="#longo" data-i18n="juryMain.navNext">Next</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Member 3 -->
-    <section class="section is-on-violet author" id="longo" data-bg="violet">
-      <span class="stain stain--br" aria-hidden="true"></span>
-      <div class="container">
-        <header class="author__copy reveal">
-          <p class="author__eyebrow" data-i18n="juryMain.eyebrow">Main Jury</p>
-          <h2 class="section__title">Marco Longo</h2>
-          <p class="section__desc" data-i18n="juryMain.role">Jury member</p>
-        </header>
-        <div class="author__card reveal" data-delay="1">
-          <div class="author__media"><img src="../../assets/img/jury/main.jpg" alt="Portrait of Marco Longo" loading="lazy" /></div>
-          <div class="author__body">
-            <p data-i18n="juryMain.bio">Full profile to be announced soon.</p>
-            <div class="author__nav">
-              <a class="btn btn--ghost" href="#top" data-i18n="juryMain.navBack">Back to index</a>
-              <a class="btn" href="#fourth" data-i18n="juryMain.navNext">Next</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Member 4 -->
-    <section class="section is-on-cream author section--pre-footer" id="fourth" data-bg="cream">
-      <div class="container">
-        <header class="author__copy reveal">
-          <p class="author__eyebrow" data-i18n="juryMain.eyebrow">Main Jury</p>
-          <h2 class="section__title" data-i18n="juryMain.tbaName">To be announced</h2>
-          <p class="section__desc" data-i18n="juryMain.role">Jury member</p>
-        </header>
-        <div class="author__card reveal" data-delay="1">
-          <div class="author__media"><img src="../../assets/img/jury/main.jpg" alt="Portrait of the fourth jury member" loading="lazy" /></div>
-          <div class="author__body">
-            <p data-i18n="juryMain.bio">Full profile to be announced soon.</p>
-            <div class="author__nav">
-              <a class="btn btn--ghost" href="#top" data-i18n="juryMain.navBack">Back to index</a>
-              <a class="btn" href="#footer" data-i18n="juryMain.navEnd">End</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer" id="footer" data-bg="violet">
@@ -190,7 +143,7 @@
               <p class="footer__small" data-i18n="footer.updatesText">Workshop announcements, schedule drops, winners — no spam.</p>
               <form class="nl-form nl-form--violet" novalidate>
                 <input class="nl-form__input" type="email" name="email" autocomplete="email" required
-                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder" aria-label="Email address" />
+                       placeholder="Your email address" data-i18n-attr="placeholder:footer.nlPlaceholder;aria-label:footer.nlPlaceholder" aria-label="Email address" />
                 <button class="nl-form__btn" type="submit" data-i18n="footer.nlCta">Subscribe</button>
                 <p class="nl-form__status" role="status" aria-live="polite"></p>
               </form>
@@ -212,7 +165,7 @@
     </div>
   </footer>
 
-  <script src="../../assets/js/translations.js?v=39"></script>
+  <script src="../../assets/js/translations.js?v=41"></script>
   <script src="../../assets/js/app.js?v=10"></script>
 </body>
 </html>

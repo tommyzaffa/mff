@@ -4,9 +4,17 @@
   <!-- Home -->
   <url>
     <loc>https://mergefestival.ch/</loc>
-    <lastmod>2026-08-05</lastmod>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- Main jury: Hybrid announcement -->
+  <url>
+    <loc>https://mergefestival.ch/in_competition/jury/main.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Press -->

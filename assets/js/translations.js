@@ -10,6 +10,7 @@ window.MFF_I18N = {
     meta: { htmlLang: "en", monthShort: "May 2026" },
 
     nav: {
+      mainJury: "Main Jury",
       juryLong: "Join the jury",
       juryShort: "Join",
       // Keep passesLong under ~17 characters: the header CTA wraps to two lines
@@ -30,6 +31,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news11Title: "Meet the Hybrid jury",
+      news11Text: "Marco Longo and Francesca Monti will judge the films in the Hybrid competition, where traditional filmmaking meets artificial intelligence. Discover their profiles.",
+      news11Link: "Meet the jury",
+      news11Date: "15 September 2026",
+      news11Alt: "Marco Longo and Francesca Monti, the Hybrid jury",
       heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Festival presentation",
       aboutTitle: "The first film festival in Switzerland entirely dedicated to AI",
@@ -190,8 +196,8 @@ window.MFF_I18N = {
       juriesTitle: "Festival Juries",
       juriesDesc: "Three different perspectives select the films in competition.",
       jury1Title: "Main Jury",
-      jury1Text: "Comprising four professional members who evaluate the works in competition.",
-      jury1Btn: "To be announced",
+      jury1Text: "Meet Marco Longo and Francesca Monti, the jurors for the Hybrid category.",
+      jury1Btn: "Meet the jury",
       jury2Title: "Youth Jury",
       jury2Text: "Students and young people, invited to judge the films in competition.",
       jury2Btn: "Find out how to apply",
@@ -201,16 +207,28 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      kicker: "Jury • Film Critics • AI Experts",
-      title: "Main Jury",
-      subtitle: "Four judges from the world of film criticism and the arts.",
-      eyebrow: "Main Jury",
-      role: "Jury member",
-      bio: "Full profile to be announced soon.",
-      tbaName: "To be announced",
-      navBack: "Back to index",
-      navNext: "Next",
-      navEnd: "End",
+      "title": "Main Jury",
+      "pageTitle": "Main Jury · Hybrid — Merge Film Festival",
+      "kicker": "Cinema · Visual arts · Artificial intelligence",
+      "subtitle": "Marco Longo and Francesca Monti are the jury for the Hybrid competition.",
+      "indexLabel": "Meet the Hybrid jury",
+      "eyebrow": "Main Jury",
+      "hybridTitle": "Hybrid",
+      "hybridDesc": "Films that combine traditional techniques with artificial intelligence tools.",
+      "navBack": "Back to top",
+      "menuOpen": "Open menu",
+      "menuClose": "Close menu",
+      "languageLabel": "Choose language",
+      "members": {
+        "longo": {
+          "alt": "Portrait of Marco Longo",
+          "bio": "<p>An independent producer and filmmaker, Marco Longo graduated in Modern Literature from the University of Pavia and in Directing from the Civica Scuola di Cinema in Milan. In 2018, he founded Berenice Film, through which he produces creative documentaries by emerging filmmakers.</p>\n<p>He has written about cinema for the online magazine Filmidee and the Cult section of DinamoPress, and collaborates with the Locarno Film Festival, the Centro Culturale San Fedele in Milan and the FuoriFormato festival in Genoa. He coordinates productions at CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — and teaches at a number of film schools and academies.</p>"
+        },
+        "monti": {
+          "alt": "Portrait of Francesca Monti",
+          "bio": "<p>Francesca Monti is Head of Education and a lecturer in Film History at CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. She has worked as a film critic, writing for specialist publications including duellanti, Segnocinema, Filmidee and Film Tv.</p>\n<p>She has worked in programming and communications for institutions and events including the Locarno Film Festival, the Centro culturale San Fedele in Milan and the Bellaria Film Festival.</p>"
+        }
+      }
     },
 
     juryYoung: {
@@ -788,6 +806,7 @@ window.MFF_I18N = {
     meta: { htmlLang: "it", monthShort: "Mag 2026" },
 
     nav: {
+      mainJury: "Giuria principale",
       juryLong: "Entra in giuria",
       juryShort: "Candidati",
       passesLong: "Prendi il pass",
@@ -804,6 +823,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news11Title: "Annunciata la giuria Hybrid",
+      news11Text: "Marco Longo e Francesca Monti valuteranno i film del concorso Hybrid, dove il cinema tradizionale incontra l’intelligenza artificiale. Scopri i loro profili.",
+      news11Link: "Scopri la giuria",
+      news11Date: "15 settembre 2026",
+      news11Alt: "Marco Longo e Francesca Monti, la giuria Hybrid",
       heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Presentazione festival",
       aboutTitle: "Primo festival cinematografico interamente dedicato all’AI in Svizzera",
@@ -964,8 +988,8 @@ window.MFF_I18N = {
       juriesTitle: "Giurie del Festival",
       juriesDesc: "Tre prospettive diverse selezionano i film in concorso.",
       jury1Title: "Giuria principale",
-      jury1Text: "Composta da 4 membri professionisti che valutano le opere in concorso.",
-      jury1Btn: "Da annunciare",
+      jury1Text: "Scopri Marco Longo e Francesca Monti, i giurati della categoria Hybrid.",
+      jury1Btn: "Scopri la giuria",
       jury2Title: "Giuria giovani",
       jury2Text: "Studenti e giovani, chiamati a giudicare i film in concorso.",
       jury2Btn: "Scopri come iscriverti",
@@ -975,16 +999,28 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      kicker: "Giuria • Critici cinematografici • Esperti di AI",
-      title: "Giuria principale",
-      subtitle: "Quattro giudici dal mondo della critica cinematografica e delle arti.",
-      eyebrow: "Giuria principale",
-      role: "Membro della giuria",
-      bio: "Profilo completo in arrivo a breve.",
-      tbaName: "Da annunciare",
-      navBack: "Torna all’indice",
-      navNext: "Prossimo",
-      navEnd: "Fine",
+      "title": "Giuria principale",
+      "pageTitle": "Giuria principale · Hybrid — Merge Film Festival",
+      "kicker": "Cinema · Arti visive · Intelligenza artificiale",
+      "subtitle": "Marco Longo e Francesca Monti sono la giuria del concorso Hybrid.",
+      "indexLabel": "Scopri la giuria Hybrid",
+      "eyebrow": "Giuria principale",
+      "hybridTitle": "Hybrid",
+      "hybridDesc": "Film che combinano tecniche tradizionali e strumenti di intelligenza artificiale.",
+      "navBack": "Torna in alto",
+      "menuOpen": "Apri il menu",
+      "menuClose": "Chiudi il menu",
+      "languageLabel": "Scegli la lingua",
+      "members": {
+        "longo": {
+          "alt": "Ritratto di Marco Longo",
+          "bio": "<p>Produttore e filmmaker indipendente, Marco Longo è laureato in Lettere moderne all’Università di Pavia e diplomato in Regia alla Civica Scuola di Cinema di Milano. Ha fondato nel 2018 Berenice Film, con cui produce documentari creativi di autori e autrici emergenti.</p>\n<p>Ha scritto di cinema per la rivista online Filmidee e per la sezione Cult del portale DinamoPress, collabora con il Locarno Film Festival, il Centro Culturale San Fedele di Milano e il festival FuoriFormato di Genova. Coordinatore delle produzioni al CISA — Conservatorio Internazionale di Scienze Audiovisive di Locarno — è docente in svariate scuole e accademie di cinema.</p>"
+        },
+        "monti": {
+          "alt": "Ritratto di Francesca Monti",
+          "bio": "<p>Francesca Monti è Responsabile della didattica e docente di Storia del cinema presso il CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) di Locarno. Si è occupata di critica cinematografica, scrivendo per testate specializzate come duellanti, Segnocinema, Filmidee, Film Tv.</p>\n<p>Ha lavorato nell’ambito della programmazione e comunicazione per istituzioni e manifestazioni quali Locarno Film Festival, Centro culturale San Fedele di Milano e Bellaria Film Festival.</p>"
+        }
+      }
     },
 
     juryYoung: {
@@ -1557,6 +1593,7 @@ window.MFF_I18N = {
     meta: { htmlLang: "fr", monthShort: "Mai 2026" },
 
     nav: {
+      mainJury: "Jury principal",
       juryLong: "Rejoins le jury",
       juryShort: "Rejoindre",
       passesLong: "Votre pass",
@@ -1573,6 +1610,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news11Title: "Découvrez le jury Hybrid",
+      news11Text: "Marco Longo et Francesca Monti évalueront les films de la compétition Hybrid, où le cinéma traditionnel rencontre l’intelligence artificielle. Découvrez leurs parcours.",
+      news11Link: "Découvrir le jury",
+      news11Date: "15 septembre 2026",
+      news11Alt: "Marco Longo et Francesca Monti, le jury Hybrid",
       heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Présentation du festival",
       aboutTitle: "Premier festival de cinéma entièrement dédié à l’IA en Suisse",
@@ -1733,8 +1775,8 @@ window.MFF_I18N = {
       juriesTitle: "Jurys du Festival",
       juriesDesc: "Trois perspectives différentes sélectionnent les films en compétition.",
       jury1Title: "Jury principal",
-      jury1Text: "Composé de 4 membres professionnels qui évaluent les œuvres en compétition.",
-      jury1Btn: "À annoncer",
+      jury1Text: "Découvrez Marco Longo et Francesca Monti, les membres du jury de la catégorie Hybrid.",
+      jury1Btn: "Découvrir le jury",
       jury2Title: "Jury jeunes",
       jury2Text: "Étudiants et jeunes, appelés à juger les films en compétition.",
       jury2Btn: "Découvrir comment s'inscrire",
@@ -1744,16 +1786,28 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      kicker: "Jury • Critiques de cinéma • Experts en IA",
-      title: "Jury principal",
-      subtitle: "Quatre juges issus du monde de la critique cinématographique et des arts.",
-      eyebrow: "Jury principal",
-      role: "Membre du jury",
-      bio: "Profil complet bientôt disponible.",
-      tbaName: "À annoncer",
-      navBack: "Retour à l’index",
-      navNext: "Suivant",
-      navEnd: "Fin",
+      "title": "Jury principal",
+      "pageTitle": "Jury principal · Hybrid — Merge Film Festival",
+      "kicker": "Cinéma · Arts visuels · Intelligence artificielle",
+      "subtitle": "Marco Longo et Francesca Monti composent le jury de la compétition Hybrid.",
+      "indexLabel": "Découvrir le jury Hybrid",
+      "eyebrow": "Jury principal",
+      "hybridTitle": "Hybrid",
+      "hybridDesc": "Des films associant techniques traditionnelles et outils d’intelligence artificielle.",
+      "navBack": "Retour en haut",
+      "menuOpen": "Ouvrir le menu",
+      "menuClose": "Fermer le menu",
+      "languageLabel": "Choisir la langue",
+      "members": {
+        "longo": {
+          "alt": "Portrait de Marco Longo",
+          "bio": "<p>Producteur et cinéaste indépendant, Marco Longo est diplômé en lettres modernes de l’Université de Pavie et en réalisation de la Civica Scuola di Cinema de Milan. En 2018, il a fondé Berenice Film, avec laquelle il produit des documentaires de création d’auteurs et d’autrices émergents.</p>\n<p>Il a écrit sur le cinéma pour la revue en ligne Filmidee et pour la rubrique Cult du portail DinamoPress. Il collabore avec le Locarno Film Festival, le Centro Culturale San Fedele de Milan et le festival FuoriFormato de Gênes. Coordinateur des productions au CISA — Conservatorio Internazionale di Scienze Audiovisive de Locarno —, il enseigne dans plusieurs écoles et académies de cinéma.</p>"
+        },
+        "monti": {
+          "alt": "Portrait de Francesca Monti",
+          "bio": "<p>Francesca Monti est responsable pédagogique et enseignante en histoire du cinéma au CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) de Locarno. Elle a exercé la critique cinématographique en écrivant pour des revues spécialisées telles que duellanti, Segnocinema, Filmidee et Film Tv.</p>\n<p>Elle a travaillé dans la programmation et la communication pour des institutions et des manifestations telles que le Locarno Film Festival, le Centro culturale San Fedele de Milan et le Bellaria Film Festival.</p>"
+        }
+      }
     },
 
     juryYoung: {
@@ -2326,6 +2380,7 @@ window.MFF_I18N = {
     meta: { htmlLang: "de", monthShort: "Mai 2026" },
 
     nav: {
+      mainJury: "Hauptjury",
       juryLong: "Zur Jugendjury",
       juryShort: "Jury",
       passesLong: "Pass sichern",
@@ -2342,6 +2397,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news11Title: "Die Hybrid-Jury steht fest",
+      news11Text: "Marco Longo und Francesca Monti bewerten die Filme des Hybrid-Wettbewerbs, in dem traditionelles Filmschaffen auf künstliche Intelligenz trifft. Entdecke ihre Porträts.",
+      news11Link: "Jury kennenlernen",
+      news11Date: "15. September 2026",
+      news11Alt: "Marco Longo und Francesca Monti, die Hybrid-Jury",
       heroPlace: "Cinema Lux, Massagno (Lugano)",
       aboutEyebrow: "Festivalpräsentation",
       aboutTitle: "Das erste Filmfestival in der Schweiz, das vollständig der KI gewidmet ist",
@@ -2502,8 +2562,8 @@ window.MFF_I18N = {
       juriesTitle: "Jurys des Festivals",
       juriesDesc: "Drei verschiedene Perspektiven wählen die Wettbewerbsfilme aus.",
       jury1Title: "Hauptjury",
-      jury1Text: "Bestehend aus 4 professionellen Mitgliedern, die die Wettbewerbswerke bewerten.",
-      jury1Btn: "Wird bekannt gegeben",
+      jury1Text: "Lerne Marco Longo und Francesca Monti kennen, die Jurymitglieder der Kategorie Hybrid.",
+      jury1Btn: "Jury kennenlernen",
       jury2Title: "Jugendjury",
       jury2Text: "Studenten und Jugendliche, die die Wettbewerbsfilme beurteilen.",
       jury2Btn: "Erfahren Sie, wie Sie sich anmelden",
@@ -2513,16 +2573,28 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      kicker: "Jury • Filmkritiker • KI-Experten",
-      title: "Hauptjury",
-      subtitle: "Vier Juroren aus der Welt der Filmkritik und der Künste.",
-      eyebrow: "Hauptjury",
-      role: "Jurymitglied",
-      bio: "Vollständiges Profil folgt in Kürze.",
-      tbaName: "Wird bekannt gegeben",
-      navBack: "Zurück zum Index",
-      navNext: "Nächstes",
-      navEnd: "Ende",
+      "title": "Hauptjury",
+      "pageTitle": "Hauptjury · Hybrid — Merge Film Festival",
+      "kicker": "Kino · Bildende Kunst · Künstliche Intelligenz",
+      "subtitle": "Marco Longo und Francesca Monti bilden die Jury des Hybrid-Wettbewerbs.",
+      "indexLabel": "Hybrid-Jury kennenlernen",
+      "eyebrow": "Hauptjury",
+      "hybridTitle": "Hybrid",
+      "hybridDesc": "Filme, die traditionelle Techniken mit Werkzeugen der künstlichen Intelligenz verbinden.",
+      "navBack": "Zurück nach oben",
+      "menuOpen": "Menü öffnen",
+      "menuClose": "Menü schliessen",
+      "languageLabel": "Sprache wählen",
+      "members": {
+        "longo": {
+          "alt": "Porträt von Marco Longo",
+          "bio": "<p>Marco Longo ist unabhängiger Produzent und Filmemacher. Er hat ein Studium der modernen Literatur an der Universität Pavia und eine Regieausbildung an der Civica Scuola di Cinema in Mailand abgeschlossen. 2018 gründete er Berenice Film, mit der er kreative Dokumentarfilme aufstrebender Autorinnen und Autoren produziert.</p>\n<p>Er schrieb über Film für das Onlinemagazin Filmidee und die Rubrik Cult des Portals DinamoPress und arbeitet mit dem Locarno Film Festival, dem Centro Culturale San Fedele in Mailand und dem Festival FuoriFormato in Genua zusammen. Er koordiniert die Produktionen am CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — und unterrichtet an verschiedenen Filmschulen und Akademien.</p>"
+        },
+        "monti": {
+          "alt": "Porträt von Francesca Monti",
+          "bio": "<p>Francesca Monti ist Leiterin der Lehre und Dozentin für Filmgeschichte am CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. Sie war als Filmkritikerin tätig und schrieb für Fachzeitschriften wie duellanti, Segnocinema, Filmidee und Film Tv.</p>\n<p>Sie arbeitete in der Programmgestaltung und Kommunikation für Institutionen und Veranstaltungen wie das Locarno Film Festival, das Centro culturale San Fedele in Mailand und das Bellaria Film Festival.</p>"
+        }
+      }
     },
 
     juryYoung: {

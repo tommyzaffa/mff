@@ -1,0 +1,36 @@
+/* Main jury: the site's author layout, grouped by competition category. */
+.jury-page .jury-group,
+.jury-page .jury-member { scroll-margin-top: 110px; }
+.jury-page .jury-group__number { margin-right: 0.8em; font-variant-numeric: tabular-nums; }
+.jury-page .jury-member {
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  align-items: start;
+}
+.jury-page .jury-member + .jury-member { margin-top: 0; }
+.jury-page .jury-member__portrait { margin: 0; min-width: 0; }
+.jury-page .jury-member .author__media { aspect-ratio: 4 / 5; }
+.jury-page .jury-member .author__media img { display: block; object-position: center 35%; }
+.jury-page .jury-member .author__name { margin-bottom: 1.15rem; }
+.jury-page .jury-member__bio { max-width: 68ch; }
+.jury-page .jury-member__bio p { line-height: 1.7; }
+.jury-page .jury-member__bio p + p { margin-top: 1.1em; }
+.jury-page .jury-member__bio a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+.jury-page .jury-member__bio a:hover { text-decoration-thickness: 2px; }
+.jury-page .jury-member__credit { margin-top: 0.85rem; font-size: 0.78rem; line-height: 1.5; }
+.jury-page .jury-member__placeholder {
+  background: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.2;
+  box-shadow: none;
+}
+.jury-page .jury-group__back { margin-top: clamp(40px, 6vw, 72px); display: flex; }
+.jury-page a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+@media (max-width: 980px) {
+  .jury-page .jury-member { grid-template-columns: 1fr; }
+  .jury-page .jury-member__portrait,
+  .jury-page .jury-member__placeholder { width: 100%; max-width: 420px; }
+}

@@ -7,7 +7,7 @@
   <title>Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=55" />
+  <link rel="stylesheet" href="assets/css/style.css?v=57" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -85,6 +85,7 @@
           <a href="passes/index.html" data-i18n="nav.passes">Passes</a>
           <a href="program/index.html" data-i18n="nav.program">Program</a>
           <a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a>
+          <a href="in_competition/jury/main.html" data-i18n="nav.mainJury">Main Jury</a>
           <a href="press/index.html" data-i18n="nav.press">Press</a>
           <a href="contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
@@ -135,6 +136,19 @@
         <div class="carousel carousel--news reveal" data-delay="1" aria-label="News carousel" tabindex="0">
           <div class="carousel__stage">
             <div class="carousel__track news-track">
+            <article class="card news-card">
+              <div class="news__img news__img--jury-collage" role="img" aria-label="Marco Longo and Francesca Monti, the Hybrid jury" data-i18n-attr="aria-label:home.news11Alt">
+                <img src="assets/img/jury/longo-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
+                <img src="assets/img/jury/monti.webp" width="440" height="550" alt="" loading="lazy" decoding="async" />
+              </div>
+              <div class="news__body">
+                <p class="news__meta"><span data-i18n="home.news11Date">15 September 2026</span> • News</p>
+                <h3 class="news__title" data-i18n="home.news11Title">Meet the Hybrid jury</h3>
+                <p class="news__text" data-i18n="home.news11Text">Marco Longo and Francesca Monti will judge the films in the Hybrid competition, where traditional filmmaking meets artificial intelligence. Discover their profiles.</p>
+                <a class="btn news__link" href="in_competition/jury/main.html#hybrid" data-i18n="home.news11Link">Meet the jury</a>
+              </div>
+            </article>
+
             <article class="card news-card">
               <img class="news__img" src="assets/img/news/programme-is-out.jpg" alt="The 2026 programme" loading="lazy" />
               <div class="news__body">
@@ -489,7 +503,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/js/translations.js?v=39"></script>
+  <script src="assets/js/translations.js?v=41"></script>
   <script src="assets/js/app.js?v=10"></script>
 
   <!-- Google Maps -->
