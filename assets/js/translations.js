@@ -31,6 +31,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news12Title: "Meet the Full AI jury",
+      news12Text: "Javishth Chabria and Hardeep Gambhir will judge the twenty films made entirely with artificial intelligence. Discover their profiles.",
+      news12Link: "Meet the jury",
+      news12Date: "16 September 2026",
+      news12Alt: "Javishth Chabria and Hardeep Gambhir, the Full AI jury",
       news11Title: "Meet the Hybrid jury",
       news11Text: "Marco Longo and Francesca Monti will judge the films in the Hybrid competition, where traditional filmmaking meets artificial intelligence. Discover their profiles.",
       news11Link: "Meet the jury",
@@ -51,8 +56,8 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Festival updates and news",
-      news0Title: "The four film selectors have been announced",
-      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali and Fabiana Marino will curate the film selection of the Merge Film Festival.",
+      news0Title: "The three film selectors have been announced",
+      news0Text: "Martina Agueci, Manila Tunesi and Lucas Previtali will curate the film selection of the Merge Film Festival.",
       news0Link: "Meet the selectors",
       news10Date: "September 2026",
       news10Title: "The full programme is out",
@@ -170,8 +175,6 @@ window.MFF_I18N = {
       bio6: "A Ticino actress and theatre performer, Manila Tunesi serves as film selector for the Merge Film Festival. After graduating from Bologna's Alessandra Galante Garrone Academy and taking part in the creation of several film projects, she continues her research toward political, independent and collective theatre. She has collaborated for years with Living Theatre Europa, Teatro Periferico and the theatre group Collettivo Vento. After her academic path, she chose to experiment with contemporary hybrid and performative languages capable of enriching her projects and research.",
       role7: "Film Selector",
       bio7: "Lucas Previtali is a Swiss editor and writer working in film. His work is driven by a long-standing interest in film critique and a growing focus on the aesthetics and language of digital cinema, as well as the exploration of new forms of visual storytelling. He edited the graduation short film For Your Own Good, which premiered at the Locarno Film Festival's school shorts section and was selected for the Fribourg International Film Festival. He serves as a selector of the Merge Film Festival and is currently writing his first film, an animated short.",
-      role8: "Film Selector",
-      bio8: "After studying Languages, she studied cinema in Locarno and later earned a Master's degree in Film Distribution. She currently works in organisation and marketing for an independent distribution company, following film releases and the strategies that accompany their journey towards the public. Her interest focuses on promoting original cinematic languages and researching new expressive forms in contemporary cinema.",
       navBack: "Back to index",
       navNext: "Next",
       navEnd: "End",
@@ -196,7 +199,7 @@ window.MFF_I18N = {
       juriesTitle: "Festival Juries",
       juriesDesc: "Three different perspectives select the films in competition.",
       jury1Title: "Main Jury",
-      jury1Text: "Meet Marco Longo and Francesca Monti, the jurors for the Hybrid category.",
+      jury1Text: "Javishth Chabria and Hardeep Gambhir judge Full AI; Marco Longo and Francesca Monti judge Hybrid.",
       jury1Btn: "Meet the jury",
       jury2Title: "Youth Jury",
       jury2Text: "Students and young people, invited to judge the films in competition.",
@@ -207,29 +210,39 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      "title": "Main Jury",
-      "pageTitle": "Main Jury · Hybrid — Merge Film Festival",
-      "kicker": "Cinema · Visual arts · Artificial intelligence",
-      "subtitle": "Marco Longo and Francesca Monti are the jury for the Hybrid competition.",
-      "indexLabel": "Meet the Hybrid jury",
-      "eyebrow": "Main Jury",
-      "hybridTitle": "Hybrid",
-      "hybridDesc": "Films that combine traditional techniques with artificial intelligence tools.",
-      "navBack": "Back to top",
-      "menuOpen": "Open menu",
-      "menuClose": "Close menu",
-      "languageLabel": "Choose language",
-      "members": {
-        "longo": {
-          "alt": "Portrait of Marco Longo",
-          "bio": "<p>An independent producer and filmmaker, Marco Longo graduated in Modern Literature from the University of Pavia and in Directing from the Civica Scuola di Cinema in Milan. In 2018, he founded Berenice Film, through which he produces creative documentaries by emerging filmmakers.</p>\n<p>He has written about cinema for the online magazine Filmidee and the Cult section of DinamoPress, and collaborates with the Locarno Film Festival, the Centro Culturale San Fedele in Milan and the FuoriFormato festival in Genoa. He coordinates productions at CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — and teaches at a number of film schools and academies.</p>"
-        },
-        "monti": {
-          "alt": "Portrait of Francesca Monti",
-          "bio": "<p>Francesca Monti is Head of Education and a lecturer in Film History at CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. She has worked as a film critic, writing for specialist publications including duellanti, Segnocinema, Filmidee and Film Tv.</p>\n<p>She has worked in programming and communications for institutions and events including the Locarno Film Festival, the Centro culturale San Fedele in Milan and the Bellaria Film Festival.</p>"
+        "title": "Main Jury",
+        "pageTitle": "Main Jury · Full AI and Hybrid — Merge Film Festival",
+        "kicker": "Cinema · Visual arts · Artificial intelligence",
+        "subtitle": "Meet the juries for the Full AI and Hybrid competitions.",
+        "indexLabel": "Jury categories",
+        "eyebrow": "Main Jury",
+        "fullTitle": "Full AI",
+        "fullDesc": "Works created entirely using artificial intelligence tools.",
+        "hybridTitle": "Hybrid",
+        "hybridDesc": "Films that combine traditional techniques with artificial intelligence tools.",
+        "navBack": "Back to the juries",
+        "menuOpen": "Open menu",
+        "menuClose": "Close menu",
+        "languageLabel": "Choose language",
+        "members": {
+          "javishth": {
+            "alt": "Portrait of Javishth Chabria",
+            "bio": "<p>Javishth Chabria is a tech entrepreneur, AI cinema pioneer, and a leading global voice on the future of storytelling and cinema. As the co-founder of Just Videos Studios (Mumbai/Atlanta), he is pioneering the transition to “simulation-first filmmaking” — a framework that bridges generative technology with traditional cinematic grammar to eliminate creative waste.</p>\n<p>An official Ambassador for the World AI Film Festival (WAIFF), Javishth recently delivered a landmark keynote at Cannes, drawing from his experience building AI pipelines for both Hollywood and Bollywood workflows. His insights into transmedia storytelling and AI-native infrastructure have captivated audiences and studios worldwide. By championing a “human-in-the-loop” philosophy, Javishth delivers a practical, inspiring blueprint for the future of entertainment, making him a premier choice for international festivals looking to explore the next frontier of media.</p>"
+          },
+          "hardeep": {
+            "alt": "Portrait of Hardeep Gambhir",
+            "bio": "<p>Hardeep Gambhir is the founder of LocalHost, a company building the institution that finds, funds and owns the work of internet-native storytellers. He produces AI film festivals across India, Japan and San Francisco, most recently the Tokyo AI Film Festival, which drew roughly 300 filmmakers, studios and investors, alongside hacker houses on three continents and a grant program backing filmmakers the industry cannot see.</p>\n<p>Before LocalHost he founded The Residency, a community company advised by Sam Altman, growing it to $78K in monthly recurring revenue and selecting 70 residents from over 1,100 applicants. He is an Emergent Ventures grantee and has judged at HackMIT and Stanford TreeHacks.</p>"
+          },
+          "longo": {
+            "alt": "Portrait of Marco Longo",
+            "bio": "<p>An independent producer and filmmaker, Marco Longo graduated in Modern Literature from the University of Pavia and in Directing from the Civica Scuola di Cinema in Milan. In 2018, he founded Berenice Film, through which he produces creative documentaries by emerging filmmakers.</p>\n<p>He has written about cinema for the online magazine Filmidee and the Cult section of DinamoPress, and collaborates with the Locarno Film Festival, the Centro Culturale San Fedele in Milan and the FuoriFormato festival in Genoa. He coordinates productions at CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — and teaches at a number of film schools and academies.</p>"
+          },
+          "monti": {
+            "alt": "Portrait of Francesca Monti",
+            "bio": "<p>Francesca Monti is Head of Education and a lecturer in Film History at CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. She has worked as a film critic, writing for specialist publications including duellanti, Segnocinema, Filmidee and Film Tv.</p>\n<p>She has worked in programming and communications for institutions and events including the Locarno Film Festival, the Centro culturale San Fedele in Milan and the Bellaria Film Festival.</p>"
+          }
         }
-      }
-    },
+      },
 
     juryYoung: {
       kicker: "Jury • Application • Youth",
@@ -823,6 +836,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news12Title: "Annunciata la giuria Full AI",
+      news12Text: "Javishth Chabria e Hardeep Gambhir valuteranno i venti film realizzati interamente con l’intelligenza artificiale. Scopri i loro profili.",
+      news12Link: "Scopri la giuria",
+      news12Date: "16 settembre 2026",
+      news12Alt: "Javishth Chabria e Hardeep Gambhir, la giuria Full AI",
       news11Title: "Annunciata la giuria Hybrid",
       news11Text: "Marco Longo e Francesca Monti valuteranno i film del concorso Hybrid, dove il cinema tradizionale incontra l’intelligenza artificiale. Scopri i loro profili.",
       news11Link: "Scopri la giuria",
@@ -843,8 +861,8 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Aggiornamenti e novità del festival",
-      news0Title: "Annunciati i quattro selezionatori",
-      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali e Fabiana Marino cureranno la selezione dei film del Merge Film Festival.",
+      news0Title: "Annunciati i tre selezionatori",
+      news0Text: "Martina Agueci, Manila Tunesi e Lucas Previtali cureranno la selezione dei film del Merge Film Festival.",
       news0Link: "Scopri i selezionatori",
       news10Date: "Settembre 2026",
       news10Title: "Il programma è online",
@@ -962,8 +980,6 @@ window.MFF_I18N = {
       bio6: "Attrice e performer teatrale ticinese, Manila Tunesi ricopre il ruolo di selezionatrice per il Merge Film Festival. Dopo essersi diplomata all’accademia di Bologna Alessandra Galante Garrone e aver partecipato alla creazione di diversi progetti cinematografici, continua la sua ricerca verso un teatro politico, indipendente e collettivo. Collabora da anni con le compagnie Living Theatre Europa, Teatro Periferico e il gruppo teatrale Collettivo Vento. Dopo il percorso accademico decide di sperimentare con linguaggi ibridi contemporanei e performativi che possano arricchire i suoi progetti e la sua ricerca.",
       role7: "Selezionatore",
       bio7: "Lucas Previtali è un montatore e sceneggiatore svizzero attivo nel campo del cinema. Il suo lavoro è guidato da un interesse di lunga data per la critica cinematografica e da una crescente attenzione all’estetica e al linguaggio del cinema digitale, oltre che dall’esplorazione di nuove forme di narrazione visiva. Ha montato il cortometraggio di diploma For Your Own Good, presentato in anteprima nella sezione dedicata ai cortometraggi delle scuole del Locarno Film Festival e selezionato al Fribourg International Film Festival. Ricopre il ruolo di selezionatore del Merge Film Festival e sta attualmente scrivendo il suo primo film, un cortometraggio d’animazione.",
-      role8: "Selezionatrice",
-      bio8: "Dopo gli studi in Lingue, ha studiato cinema a Locarno e ha successivamente conseguito un Master in Distribuzione Cinematografica. Attualmente si occupa di organizzazione e marketing per una casa di distribuzione indipendente, seguendo l’uscita dei film e le strategie che ne accompagnano il percorso verso il pubblico. Il suo interesse si concentra sulla valorizzazione di linguaggi cinematografici originali e sulla ricerca di nuove forme espressive nel cinema contemporaneo.",
       navBack: "Torna all’indice",
       navNext: "Prossimo",
       navEnd: "Footer",
@@ -988,7 +1004,7 @@ window.MFF_I18N = {
       juriesTitle: "Giurie del Festival",
       juriesDesc: "Tre prospettive diverse selezionano i film in concorso.",
       jury1Title: "Giuria principale",
-      jury1Text: "Scopri Marco Longo e Francesca Monti, i giurati della categoria Hybrid.",
+      jury1Text: "Javishth Chabria e Hardeep Gambhir giudicano Full AI; Marco Longo e Francesca Monti giudicano Hybrid.",
       jury1Btn: "Scopri la giuria",
       jury2Title: "Giuria giovani",
       jury2Text: "Studenti e giovani, chiamati a giudicare i film in concorso.",
@@ -999,29 +1015,39 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      "title": "Giuria principale",
-      "pageTitle": "Giuria principale · Hybrid — Merge Film Festival",
-      "kicker": "Cinema · Arti visive · Intelligenza artificiale",
-      "subtitle": "Marco Longo e Francesca Monti sono la giuria del concorso Hybrid.",
-      "indexLabel": "Scopri la giuria Hybrid",
-      "eyebrow": "Giuria principale",
-      "hybridTitle": "Hybrid",
-      "hybridDesc": "Film che combinano tecniche tradizionali e strumenti di intelligenza artificiale.",
-      "navBack": "Torna in alto",
-      "menuOpen": "Apri il menu",
-      "menuClose": "Chiudi il menu",
-      "languageLabel": "Scegli la lingua",
-      "members": {
-        "longo": {
-          "alt": "Ritratto di Marco Longo",
-          "bio": "<p>Produttore e filmmaker indipendente, Marco Longo è laureato in Lettere moderne all’Università di Pavia e diplomato in Regia alla Civica Scuola di Cinema di Milano. Ha fondato nel 2018 Berenice Film, con cui produce documentari creativi di autori e autrici emergenti.</p>\n<p>Ha scritto di cinema per la rivista online Filmidee e per la sezione Cult del portale DinamoPress, collabora con il Locarno Film Festival, il Centro Culturale San Fedele di Milano e il festival FuoriFormato di Genova. Coordinatore delle produzioni al CISA — Conservatorio Internazionale di Scienze Audiovisive di Locarno — è docente in svariate scuole e accademie di cinema.</p>"
-        },
-        "monti": {
-          "alt": "Ritratto di Francesca Monti",
-          "bio": "<p>Francesca Monti è Responsabile della didattica e docente di Storia del cinema presso il CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) di Locarno. Si è occupata di critica cinematografica, scrivendo per testate specializzate come duellanti, Segnocinema, Filmidee, Film Tv.</p>\n<p>Ha lavorato nell’ambito della programmazione e comunicazione per istituzioni e manifestazioni quali Locarno Film Festival, Centro culturale San Fedele di Milano e Bellaria Film Festival.</p>"
+        "title": "Giuria principale",
+        "pageTitle": "Giuria principale · Full AI e Hybrid — Merge Film Festival",
+        "kicker": "Cinema · Arti visive · Intelligenza artificiale",
+        "subtitle": "Scopri le giurie dei concorsi Full AI e Hybrid.",
+        "indexLabel": "Categorie della giuria",
+        "eyebrow": "Giuria principale",
+        "fullTitle": "Full AI",
+        "fullDesc": "Opere realizzate interamente con strumenti di intelligenza artificiale.",
+        "hybridTitle": "Hybrid",
+        "hybridDesc": "Film che combinano tecniche tradizionali e strumenti di intelligenza artificiale.",
+        "navBack": "Torna alle giurie",
+        "menuOpen": "Apri il menu",
+        "menuClose": "Chiudi il menu",
+        "languageLabel": "Scegli la lingua",
+        "members": {
+          "javishth": {
+            "alt": "Ritratto di Javishth Chabria",
+            "bio": "<p>Javishth Chabria è un imprenditore tecnologico, pioniere del cinema AI e una delle voci di riferimento a livello mondiale sul futuro della narrazione e del cinema. Cofondatore di Just Videos Studios (Mumbai/Atlanta), promuove il passaggio al “simulation-first filmmaking”: un approccio che mette la simulazione al centro del processo cinematografico e unisce la tecnologia generativa alla grammatica del cinema tradizionale per eliminare gli sprechi creativi.</p>\n<p>Ambasciatore ufficiale del World AI Film Festival (WAIFF), Javishth ha recentemente tenuto un importante intervento a Cannes, attingendo alla sua esperienza nello sviluppo di flussi di produzione AI per Hollywood e Bollywood. Le sue riflessioni sulla narrazione transmediale e sulle infrastrutture concepite per l’AI hanno coinvolto pubblici e studi di tutto il mondo. Sostenendo una filosofia “human-in-the-loop”, che mantiene l’essere umano al centro del processo, Javishth propone una visione concreta e stimolante del futuro dell’intrattenimento, affermandosi come una figura di riferimento per i festival internazionali che vogliono esplorare le nuove frontiere dei media.</p>"
+          },
+          "hardeep": {
+            "alt": "Ritratto di Hardeep Gambhir",
+            "bio": "<p>Hardeep Gambhir è il fondatore di LocalHost, una società che sta costruendo un’istituzione dedicata a individuare, finanziare e acquisire le opere di narratori nativi di Internet. Produce festival di cinema AI in India, Giappone e a San Francisco, tra cui, più recentemente, il Tokyo AI Film Festival, che ha riunito circa 300 filmmaker, studi e investitori. Promuove inoltre hacker house in tre continenti e un programma di sovvenzioni a sostegno di filmmaker che l’industria non riesce a vedere.</p>\n<p>Prima di LocalHost ha fondato The Residency, una società dedicata alla creazione di comunità, con Sam Altman come consulente, portandola a 78.000 dollari di ricavi ricorrenti mensili e selezionando 70 residenti tra oltre 1.100 candidati. È beneficiario di una sovvenzione di Emergent Ventures e ha fatto parte delle giurie di HackMIT e Stanford TreeHacks.</p>"
+          },
+          "longo": {
+            "alt": "Ritratto di Marco Longo",
+            "bio": "<p>Produttore e filmmaker indipendente, Marco Longo è laureato in Lettere moderne all’Università di Pavia e diplomato in Regia alla Civica Scuola di Cinema di Milano. Ha fondato nel 2018 Berenice Film, con cui produce documentari creativi di autori e autrici emergenti.</p>\n<p>Ha scritto di cinema per la rivista online Filmidee e per la sezione Cult del portale DinamoPress, collabora con il Locarno Film Festival, il Centro Culturale San Fedele di Milano e il festival FuoriFormato di Genova. Coordinatore delle produzioni al CISA — Conservatorio Internazionale di Scienze Audiovisive di Locarno — è docente in svariate scuole e accademie di cinema.</p>"
+          },
+          "monti": {
+            "alt": "Ritratto di Francesca Monti",
+            "bio": "<p>Francesca Monti è Responsabile della didattica e docente di Storia del cinema presso il CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) di Locarno. Si è occupata di critica cinematografica, scrivendo per testate specializzate come duellanti, Segnocinema, Filmidee, Film Tv.</p>\n<p>Ha lavorato nell’ambito della programmazione e comunicazione per istituzioni e manifestazioni quali Locarno Film Festival, Centro culturale San Fedele di Milano e Bellaria Film Festival.</p>"
+          }
         }
-      }
-    },
+      },
 
     juryYoung: {
       kicker: "Giuria • Candidatura • Giovani",
@@ -1610,6 +1636,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news12Title: "Découvrez le jury Full AI",
+      news12Text: "Javishth Chabria et Hardeep Gambhir évalueront les vingt films réalisés entièrement avec l’intelligence artificielle. Découvrez leurs parcours.",
+      news12Link: "Découvrir le jury",
+      news12Date: "16 septembre 2026",
+      news12Alt: "Javishth Chabria et Hardeep Gambhir, le jury Full AI",
       news11Title: "Découvrez le jury Hybrid",
       news11Text: "Marco Longo et Francesca Monti évalueront les films de la compétition Hybrid, où le cinéma traditionnel rencontre l’intelligence artificielle. Découvrez leurs parcours.",
       news11Link: "Découvrir le jury",
@@ -1630,8 +1661,8 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Mises à jour et actualités du festival",
-      news0Title: "Les quatre sélectionneurs ont été annoncés",
-      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali et Fabiana Marino assureront la sélection des films du Merge Film Festival.",
+      news0Title: "Les trois sélectionneurs ont été annoncés",
+      news0Text: "Martina Agueci, Manila Tunesi et Lucas Previtali assureront la sélection des films du Merge Film Festival.",
       news0Link: "Découvrir l’équipe",
       news10Date: "Septembre 2026",
       news10Title: "Le programme complet est en ligne",
@@ -1749,8 +1780,6 @@ window.MFF_I18N = {
       bio6: "Actrice et performeuse théâtrale tessinoise, Manila Tunesi occupe le rôle de sélectionneuse pour le Merge Film Festival. Après avoir obtenu son diplôme à l’académie Alessandra Galante Garrone de Bologne et participé à la création de plusieurs projets cinématographiques, elle poursuit sa recherche vers un théâtre politique, indépendant et collectif. Elle collabore depuis des années avec les compagnies Living Theatre Europa, Teatro Periferico et le groupe théâtral Collettivo Vento. Après son parcours académique, elle choisit d’expérimenter des langages hybrides contemporains et performatifs capables d’enrichir ses projets et sa recherche.",
       role7: "Sélectionneur",
       bio7: "Lucas Previtali est un monteur et scénariste suisse actif dans le domaine du cinéma. Son travail est animé par un intérêt de longue date pour la critique cinématographique et par une attention croissante à l’esthétique et au langage du cinéma numérique, ainsi que par l’exploration de nouvelles formes de narration visuelle. Il a monté le court métrage de diplôme For Your Own Good, présenté en avant-première dans la section des courts métrages d’écoles du Locarno Film Festival et sélectionné au Fribourg International Film Festival. Il occupe le rôle de sélectionneur du Merge Film Festival et écrit actuellement son premier film, un court métrage d’animation.",
-      role8: "Sélectionneuse",
-      bio8: "Après des études en langues, elle a étudié le cinéma à Locarno et a ensuite obtenu un Master en distribution cinématographique. Elle travaille actuellement dans l’organisation et le marketing pour une société de distribution indépendante, en suivant la sortie des films et les stratégies qui accompagnent leur parcours vers le public. Son intérêt se concentre sur la valorisation de langages cinématographiques originaux et sur la recherche de nouvelles formes expressives dans le cinéma contemporain.",
       navBack: "Retour à l’index",
       navNext: "Suivant",
       navEnd: "Footer",
@@ -1775,7 +1804,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys du Festival",
       juriesDesc: "Trois perspectives différentes sélectionnent les films en compétition.",
       jury1Title: "Jury principal",
-      jury1Text: "Découvrez Marco Longo et Francesca Monti, les membres du jury de la catégorie Hybrid.",
+      jury1Text: "Javishth Chabria et Hardeep Gambhir jugent Full AI ; Marco Longo et Francesca Monti jugent Hybrid.",
       jury1Btn: "Découvrir le jury",
       jury2Title: "Jury jeunes",
       jury2Text: "Étudiants et jeunes, appelés à juger les films en compétition.",
@@ -1786,29 +1815,39 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      "title": "Jury principal",
-      "pageTitle": "Jury principal · Hybrid — Merge Film Festival",
-      "kicker": "Cinéma · Arts visuels · Intelligence artificielle",
-      "subtitle": "Marco Longo et Francesca Monti composent le jury de la compétition Hybrid.",
-      "indexLabel": "Découvrir le jury Hybrid",
-      "eyebrow": "Jury principal",
-      "hybridTitle": "Hybrid",
-      "hybridDesc": "Des films associant techniques traditionnelles et outils d’intelligence artificielle.",
-      "navBack": "Retour en haut",
-      "menuOpen": "Ouvrir le menu",
-      "menuClose": "Fermer le menu",
-      "languageLabel": "Choisir la langue",
-      "members": {
-        "longo": {
-          "alt": "Portrait de Marco Longo",
-          "bio": "<p>Producteur et cinéaste indépendant, Marco Longo est diplômé en lettres modernes de l’Université de Pavie et en réalisation de la Civica Scuola di Cinema de Milan. En 2018, il a fondé Berenice Film, avec laquelle il produit des documentaires de création d’auteurs et d’autrices émergents.</p>\n<p>Il a écrit sur le cinéma pour la revue en ligne Filmidee et pour la rubrique Cult du portail DinamoPress. Il collabore avec le Locarno Film Festival, le Centro Culturale San Fedele de Milan et le festival FuoriFormato de Gênes. Coordinateur des productions au CISA — Conservatorio Internazionale di Scienze Audiovisive de Locarno —, il enseigne dans plusieurs écoles et académies de cinéma.</p>"
-        },
-        "monti": {
-          "alt": "Portrait de Francesca Monti",
-          "bio": "<p>Francesca Monti est responsable pédagogique et enseignante en histoire du cinéma au CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) de Locarno. Elle a exercé la critique cinématographique en écrivant pour des revues spécialisées telles que duellanti, Segnocinema, Filmidee et Film Tv.</p>\n<p>Elle a travaillé dans la programmation et la communication pour des institutions et des manifestations telles que le Locarno Film Festival, le Centro culturale San Fedele de Milan et le Bellaria Film Festival.</p>"
+        "title": "Jury principal",
+        "pageTitle": "Jury principal · Full AI et Hybrid — Merge Film Festival",
+        "kicker": "Cinéma · Arts visuels · Intelligence artificielle",
+        "subtitle": "Découvrez les jurys des compétitions Full AI et Hybrid.",
+        "indexLabel": "Catégories du jury",
+        "eyebrow": "Jury principal",
+        "fullTitle": "Full AI",
+        "fullDesc": "Des œuvres entièrement réalisées à l’aide d’outils d’intelligence artificielle.",
+        "hybridTitle": "Hybrid",
+        "hybridDesc": "Des films associant techniques traditionnelles et outils d’intelligence artificielle.",
+        "navBack": "Retour aux jurys",
+        "menuOpen": "Ouvrir le menu",
+        "menuClose": "Fermer le menu",
+        "languageLabel": "Choisir la langue",
+        "members": {
+          "javishth": {
+            "alt": "Portrait de Javishth Chabria",
+            "bio": "<p>Javishth Chabria est un entrepreneur technologique, un pionnier du cinéma par l’IA et l’une des grandes voix internationales sur l’avenir du récit et du cinéma. Cofondateur de Just Videos Studios (Mumbai/Atlanta), il ouvre la voie au “simulation-first filmmaking”, une approche qui place la simulation au cœur de la création cinématographique et associe les technologies génératives à la grammaire traditionnelle du cinéma pour éliminer le gaspillage créatif.</p>\n<p>Ambassadeur officiel du World AI Film Festival (WAIFF), Javishth a récemment prononcé une conférence marquante à Cannes, nourrie par son expérience du développement de chaînes de production utilisant l’IA pour Hollywood et Bollywood. Ses réflexions sur la narration transmédia et les infrastructures conçues pour l’IA ont captivé publics et studios à travers le monde. En défendant une philosophie “human-in-the-loop”, qui maintient l’humain au cœur du processus, Javishth propose une vision concrète et inspirante de l’avenir du divertissement, faisant de lui un interlocuteur de premier plan pour les festivals internationaux qui souhaitent explorer les nouvelles frontières des médias.</p>"
+          },
+          "hardeep": {
+            "alt": "Portrait de Hardeep Gambhir",
+            "bio": "<p>Hardeep Gambhir est le fondateur de LocalHost, une société qui bâtit une institution chargée de repérer, de financer et d’acquérir les œuvres de créateurs de récits issus d’Internet. Il produit des festivals de cinéma par l’IA en Inde, au Japon et à San Francisco, dont, tout récemment, le Tokyo AI Film Festival, qui a réuni environ 300 cinéastes, studios et investisseurs. Il développe également des hacker houses sur trois continents et un programme de bourses pour soutenir les cinéastes que l’industrie ne voit pas.</p>\n<p>Avant LocalHost, il a fondé The Residency, une entreprise dédiée à la création de communautés, conseillée par Sam Altman, qu’il a portée à 78 000 dollars de revenus mensuels récurrents en sélectionnant 70 résidents parmi plus de 1 100 candidats. Il est bénéficiaire d’une bourse Emergent Ventures et a été membre du jury de HackMIT et de Stanford TreeHacks.</p>"
+          },
+          "longo": {
+            "alt": "Portrait de Marco Longo",
+            "bio": "<p>Producteur et cinéaste indépendant, Marco Longo est diplômé en lettres modernes de l’Université de Pavie et en réalisation de la Civica Scuola di Cinema de Milan. En 2018, il a fondé Berenice Film, avec laquelle il produit des documentaires de création d’auteurs et d’autrices émergents.</p>\n<p>Il a écrit sur le cinéma pour la revue en ligne Filmidee et pour la rubrique Cult du portail DinamoPress. Il collabore avec le Locarno Film Festival, le Centro Culturale San Fedele de Milan et le festival FuoriFormato de Gênes. Coordinateur des productions au CISA — Conservatorio Internazionale di Scienze Audiovisive de Locarno —, il enseigne dans plusieurs écoles et académies de cinéma.</p>"
+          },
+          "monti": {
+            "alt": "Portrait de Francesca Monti",
+            "bio": "<p>Francesca Monti est responsable pédagogique et enseignante en histoire du cinéma au CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) de Locarno. Elle a exercé la critique cinématographique en écrivant pour des revues spécialisées telles que duellanti, Segnocinema, Filmidee et Film Tv.</p>\n<p>Elle a travaillé dans la programmation et la communication pour des institutions et des manifestations telles que le Locarno Film Festival, le Centro culturale San Fedele de Milan et le Bellaria Film Festival.</p>"
+          }
         }
-      }
-    },
+      },
 
     juryYoung: {
       kicker: "Jury • Candidature • Jeunes",
@@ -2397,6 +2436,11 @@ window.MFF_I18N = {
     },
 
     home: {
+      news12Title: "Die Full-AI-Jury steht fest",
+      news12Text: "Javishth Chabria und Hardeep Gambhir bewerten die zwanzig Filme, die vollständig mit künstlicher Intelligenz entstanden sind. Entdecke ihre Porträts.",
+      news12Link: "Jury kennenlernen",
+      news12Date: "16. September 2026",
+      news12Alt: "Javishth Chabria und Hardeep Gambhir, die Full-AI-Jury",
       news11Title: "Die Hybrid-Jury steht fest",
       news11Text: "Marco Longo und Francesca Monti bewerten die Filme des Hybrid-Wettbewerbs, in dem traditionelles Filmschaffen auf künstliche Intelligenz trifft. Entdecke ihre Porträts.",
       news11Link: "Jury kennenlernen",
@@ -2417,8 +2461,8 @@ window.MFF_I18N = {
 
       newsTitle: "News",
       newsDesc: "Festivalaktuelles und Neuigkeiten",
-      news0Title: "Die vier Filmkuratorinnen und Filmkuratoren wurden bekannt gegeben",
-      news0Text: "Martina Agueci, Manila Tunesi, Lucas Previtali und Fabiana Marino kuratieren die Filmauswahl des Merge Film Festivals.",
+      news0Title: "Die drei Filmkuratorinnen und Filmkuratoren wurden bekannt gegeben",
+      news0Text: "Martina Agueci, Manila Tunesi und Lucas Previtali kuratieren die Filmauswahl des Merge Film Festivals.",
       news0Link: "Das Auswahlteam entdecken",
       news10Date: "September 2026",
       news10Title: "Das ganze Programm ist online",
@@ -2536,8 +2580,6 @@ window.MFF_I18N = {
       bio6: "Manila Tunesi, Schauspielerin und Theaterperformerin aus dem Tessin, übernimmt die Rolle der Filmauswahl für das Merge Film Festival. Nach ihrem Abschluss an der Akademie Alessandra Galante Garrone in Bologna und der Mitwirkung an mehreren Filmprojekten setzt sie ihre Forschung in Richtung eines politischen, unabhängigen und kollektiven Theaters fort. Seit Jahren arbeitet sie mit den Kompanien Living Theatre Europa, Teatro Periferico und der Theatergruppe Collettivo Vento zusammen. Nach ihrem akademischen Weg entscheidet sie sich, mit zeitgenössischen hybriden und performativen Sprachen zu experimentieren, die ihre Projekte und ihre Forschung bereichern können.",
       role7: "Filmkurator",
       bio7: "Lucas Previtali ist ein Schweizer Cutter und Autor, der im Bereich Film tätig ist. Seine Arbeit ist von einem langjährigen Interesse an der Filmkritik geprägt sowie von einem wachsenden Fokus auf die Ästhetik und Sprache des digitalen Kinos und der Erkundung neuer Formen des visuellen Erzählens. Er montierte den Abschlusskurzfilm For Your Own Good, der in der Sektion für Schulkurzfilme des Locarno Film Festivals uraufgeführt und für das Fribourg International Film Festival ausgewählt wurde. Er übernimmt die Rolle des Filmkurators für das Merge Film Festival und schreibt derzeit an seinem ersten Film, einem Animationskurzfilm.",
-      role8: "Filmkuratorin",
-      bio8: "Nach ihrem Studium der Sprachen studierte sie Film in Locarno und erwarb anschließend einen Master in Filmvertrieb. Derzeit ist sie im Bereich Organisation und Marketing für einen unabhängigen Filmverleih tätig und begleitet Filmstarts sowie die Strategien, die den Weg der Filme zum Publikum unterstützen. Ihr Interesse gilt der Förderung origineller filmischer Sprachen und der Suche nach neuen Ausdrucksformen im zeitgenössischen Kino.",
       navBack: "Zurück zum Index",
       navNext: "Nächstes",
       navEnd: "Footer",
@@ -2562,7 +2604,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys des Festivals",
       juriesDesc: "Drei verschiedene Perspektiven wählen die Wettbewerbsfilme aus.",
       jury1Title: "Hauptjury",
-      jury1Text: "Lerne Marco Longo und Francesca Monti kennen, die Jurymitglieder der Kategorie Hybrid.",
+      jury1Text: "Javishth Chabria und Hardeep Gambhir bewerten Full AI, Marco Longo und Francesca Monti bewerten Hybrid.",
       jury1Btn: "Jury kennenlernen",
       jury2Title: "Jugendjury",
       jury2Text: "Studenten und Jugendliche, die die Wettbewerbsfilme beurteilen.",
@@ -2573,29 +2615,39 @@ window.MFF_I18N = {
     },
 
     juryMain: {
-      "title": "Hauptjury",
-      "pageTitle": "Hauptjury · Hybrid — Merge Film Festival",
-      "kicker": "Kino · Bildende Kunst · Künstliche Intelligenz",
-      "subtitle": "Marco Longo und Francesca Monti bilden die Jury des Hybrid-Wettbewerbs.",
-      "indexLabel": "Hybrid-Jury kennenlernen",
-      "eyebrow": "Hauptjury",
-      "hybridTitle": "Hybrid",
-      "hybridDesc": "Filme, die traditionelle Techniken mit Werkzeugen der künstlichen Intelligenz verbinden.",
-      "navBack": "Zurück nach oben",
-      "menuOpen": "Menü öffnen",
-      "menuClose": "Menü schliessen",
-      "languageLabel": "Sprache wählen",
-      "members": {
-        "longo": {
-          "alt": "Porträt von Marco Longo",
-          "bio": "<p>Marco Longo ist unabhängiger Produzent und Filmemacher. Er hat ein Studium der modernen Literatur an der Universität Pavia und eine Regieausbildung an der Civica Scuola di Cinema in Mailand abgeschlossen. 2018 gründete er Berenice Film, mit der er kreative Dokumentarfilme aufstrebender Autorinnen und Autoren produziert.</p>\n<p>Er schrieb über Film für das Onlinemagazin Filmidee und die Rubrik Cult des Portals DinamoPress und arbeitet mit dem Locarno Film Festival, dem Centro Culturale San Fedele in Mailand und dem Festival FuoriFormato in Genua zusammen. Er koordiniert die Produktionen am CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — und unterrichtet an verschiedenen Filmschulen und Akademien.</p>"
-        },
-        "monti": {
-          "alt": "Porträt von Francesca Monti",
-          "bio": "<p>Francesca Monti ist Leiterin der Lehre und Dozentin für Filmgeschichte am CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. Sie war als Filmkritikerin tätig und schrieb für Fachzeitschriften wie duellanti, Segnocinema, Filmidee und Film Tv.</p>\n<p>Sie arbeitete in der Programmgestaltung und Kommunikation für Institutionen und Veranstaltungen wie das Locarno Film Festival, das Centro culturale San Fedele in Mailand und das Bellaria Film Festival.</p>"
+        "title": "Hauptjury",
+        "pageTitle": "Hauptjury · Full AI und Hybrid — Merge Film Festival",
+        "kicker": "Kino · Bildende Kunst · Künstliche Intelligenz",
+        "subtitle": "Entdecke die Jurys der Wettbewerbe Full AI und Hybrid.",
+        "indexLabel": "Jurykategorien",
+        "eyebrow": "Hauptjury",
+        "fullTitle": "Full AI",
+        "fullDesc": "Werke, die vollständig mit Werkzeugen der künstlichen Intelligenz entstanden sind.",
+        "hybridTitle": "Hybrid",
+        "hybridDesc": "Filme, die traditionelle Techniken mit Werkzeugen der künstlichen Intelligenz verbinden.",
+        "navBack": "Zurück zu den Jurys",
+        "menuOpen": "Menü öffnen",
+        "menuClose": "Menü schliessen",
+        "languageLabel": "Sprache wählen",
+        "members": {
+          "javishth": {
+            "alt": "Porträt von Javishth Chabria",
+            "bio": "<p>Javishth Chabria ist Technologieunternehmer, Pionier des KI-Kinos und eine der führenden internationalen Stimmen zur Zukunft des Erzählens und des Films. Als Mitgründer von Just Videos Studios (Mumbai/Atlanta) treibt er den Übergang zum “simulation-first filmmaking” voran: ein Ansatz, der Simulation an den Anfang des filmischen Schaffens stellt und generative Technologie mit traditioneller Filmsprache verbindet, um kreative Verschwendung zu vermeiden.</p>\n<p>Als offizieller Botschafter des World AI Film Festival (WAIFF) hielt Javishth kürzlich eine wegweisende Keynote in Cannes. Dabei schöpfte er aus seiner Erfahrung mit dem Aufbau von KI-Produktionsabläufen für Hollywood und Bollywood. Seine Einblicke in transmediales Erzählen und von Grund auf für KI konzipierte Infrastrukturen haben Publikum und Studios weltweit begeistert. Mit seiner “human-in-the-loop”-Philosophie, die den Menschen aktiv in den Prozess einbindet, vermittelt Javishth eine praktische und inspirierende Vorstellung von der Zukunft der Unterhaltung. Damit ist er ein gefragter Gast internationaler Festivals, die neue Grenzen der Medien erkunden möchten.</p>"
+          },
+          "hardeep": {
+            "alt": "Porträt von Hardeep Gambhir",
+            "bio": "<p>Hardeep Gambhir ist Gründer von LocalHost, einem Unternehmen, das eine Institution aufbaut, um die Werke von Erzählerinnen und Erzählern aus der Internetkultur zu entdecken, zu finanzieren und zu erwerben. Er produziert KI-Filmfestivals in Indien, Japan und San Francisco, zuletzt das Tokyo AI Film Festival, das rund 300 Filmschaffende, Studios und Investoren zusammenbrachte. Daneben organisiert er Hacker Houses auf drei Kontinenten und ein Förderprogramm für Filmschaffende, die von der Branche übersehen werden.</p>\n<p>Vor LocalHost gründete er The Residency, ein von Sam Altman beratenes Unternehmen zum Aufbau von Gemeinschaften. Er steigerte dessen monatlich wiederkehrenden Umsatz auf 78.000 US-Dollar und wählte 70 Teilnehmende aus über 1.100 Bewerbungen aus. Er erhielt eine Förderung von Emergent Ventures und war Jurymitglied bei HackMIT und Stanford TreeHacks.</p>"
+          },
+          "longo": {
+            "alt": "Porträt von Marco Longo",
+            "bio": "<p>Marco Longo ist unabhängiger Produzent und Filmemacher. Er hat ein Studium der modernen Literatur an der Universität Pavia und eine Regieausbildung an der Civica Scuola di Cinema in Mailand abgeschlossen. 2018 gründete er Berenice Film, mit der er kreative Dokumentarfilme aufstrebender Autorinnen und Autoren produziert.</p>\n<p>Er schrieb über Film für das Onlinemagazin Filmidee und die Rubrik Cult des Portals DinamoPress und arbeitet mit dem Locarno Film Festival, dem Centro Culturale San Fedele in Mailand und dem Festival FuoriFormato in Genua zusammen. Er koordiniert die Produktionen am CISA — Conservatorio Internazionale di Scienze Audiovisive in Locarno — und unterrichtet an verschiedenen Filmschulen und Akademien.</p>"
+          },
+          "monti": {
+            "alt": "Porträt von Francesca Monti",
+            "bio": "<p>Francesca Monti ist Leiterin der Lehre und Dozentin für Filmgeschichte am CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. Sie war als Filmkritikerin tätig und schrieb für Fachzeitschriften wie duellanti, Segnocinema, Filmidee und Film Tv.</p>\n<p>Sie arbeitete in der Programmgestaltung und Kommunikation für Institutionen und Veranstaltungen wie das Locarno Film Festival, das Centro culturale San Fedele in Mailand und das Bellaria Film Festival.</p>"
+          }
         }
-      }
-    },
+      },
 
     juryYoung: {
       kicker: "Jury • Bewerbung • Jugendliche",
