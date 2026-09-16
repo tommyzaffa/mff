@@ -11,5 +11,7 @@ Disallow: /tickets/ticket.html
 Disallow: /passes/review.html
 Disallow: /door/
 Disallow: /scan/
+# Live captions: one page for the audience in the room, one for the regia.
+Disallow: /live/
 
 Sitemap: https://mergefestival.ch/sitemap.xml

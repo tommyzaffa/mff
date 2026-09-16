@@ -215,3 +215,73 @@ si passa al piano da 20 USD/mese per quel mese e basta.
 - [ ] (facolt.) Google Wallet: issuer ID + JSON del service account
 - [ ] (facolt.) Apple Developer: 99 USD/anno, poi i tre PEM
 - [ ] Service role del progetto festival, da mettere nel `.env.local` del gestionale
+- [ ] Soniox: chiave API dell'account + una password lunga per la regia (sez. 10)
+
+---
+
+## 10. Sottotitoli live (Soniox)
+
+Italiano parlato sul palco, inglese sullo schermo. La regia (`/live/control/`)
+apre il microfono, il pubblico (`/live/`) legge. Il browser della regia parla
+**direttamente** con Soniox via WebSocket, ma non conosce mai la chiave
+dell'account: la funzione `live-captions` gliene consegna una temporanea.
+
+### Dove si prende la chiave
+
+1. Registrare l'account su `soniox.com` (il piano a consumo basta; i primi
+   crediti di prova sono inclusi).
+2. Console → **API keys** → *Create new API key*, tipo standard. Si vede una
+   volta sola: `soniox_…`.
+3. Aggiungere un metodo di pagamento o un credito prepagato. Senza credito la
+   regia riceve `soniox_unavailable` al momento di avviare.
+
+### I due secret
+
+```bash
+supabase secrets set \
+  SONIOX_API_KEY="soniox_…" \
+  LIVE_CAPTIONS_PASSWORD="<passphrase lunga, minimo 16 caratteri>"
+
+supabase db push
+supabase functions deploy live-captions
+```
+
+`LIVE_CAPTIONS_PASSWORD` è la password che digita chi sta in regia, diversa da
+`DOOR_PASSWORD`: le sessioni sono firmate in domini separati, quindi il badge
+della cassa non può spendere credito audio e viceversa (test in
+`tests/handlers_test.ts`).
+
+### Come gira, tecnicamente
+
+1. La regia fa login → riceve una sessione firmata (12 h, `sessionStorage`).
+2. *Avvia diretta* → `action:'start'` prende in carico la sala `main` con un
+   lease e una durata massima; un'altra regia riceve `room_busy`.
+3. `action:'key'` → la funzione chiede a Soniox una **chiave temporanea**
+   (60 s di validità, monouso, durata massima pari a quanto resta della
+   sessione) e la passa al browser, che la usa solo per aprire il WebSocket.
+   Senza lease valido non viene chiesta nessuna chiave.
+4. L'audio esce dal mixer, passa per un AudioWorklet (PCM 16 bit mono, frame da
+   100 ms) e va a `wss://stt-rt.soniox.com/transcribe-websocket` con
+   `translation: {type:'one_way', target_language:'en'}`.
+5. I token finali tornano indietro e ogni ~1,2 s la regia li pubblica con
+   `action:'publish'`; la riga pubblica va in `live_caption_rooms`, che il
+   pubblico legge in realtime con la sola chiave anon (RLS: sola lettura).
+6. *Ferma* chiude microfono e WebSocket, scrive lo stato `ended` e libera la
+   sala per il talk successivo.
+
+### Prima di ogni talk
+
+- Aprire `/live/control/` **su HTTPS** (il microfono non parte da `file://`).
+- *Rileva ingressi* e scegliere l'uscita del mixer, non il microfono interno.
+- Compilare *Nomi e contesto*: nomi degli ospiti, titoli dei film e le
+  traduzioni obbligate (`cortometraggio = short film`). È quello che alza la
+  qualità più di ogni altra impostazione.
+- Provare trenta secondi di parlato e guardare *Livello audio* e il monitor.
+- Il QR della card *Apri al pubblico* porta alla pagina del pubblico;
+  `?screen=1` è la versione a caratteri grandi per il proiettore.
+
+### Costo
+
+Circa **0,18 USD/ora** di audio (trascrizione + traduzione): venti ore di talk
+stanno sotto i 4 USD. Il contatore *Stima API* in regia conta solo i secondi
+effettivamente inviati; il consumo vero resta quello del pannello Soniox.

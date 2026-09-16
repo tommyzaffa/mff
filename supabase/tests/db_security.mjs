@@ -180,5 +180,45 @@ await test('request ledger is protected by row-level security',async()=>{
  assert.equal((await q(`select relrowsecurity as r from pg_class where oid='public.ticket_door_requests'::regclass`))[0].r,true);
  assert.equal((await q(`select count(*)::int n from pg_policies where tablename='ticket_door_requests'`))[0].n,0);
 });
+
+// Live captions: the audience reads one row, and only the regia that holds the
+// room may write it. Everything below uses a room that exists only in this test.
+await db.exec(`insert into live_caption_rooms(id) values('talk')`);
+const regiaA='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa', regiaB='bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb';
+const claim=async(publisher,title='Talk',minutes=30)=>(await q(`select live_caption_claim('talk',$1,$2,$3) as r`,[publisher,title,minutes]))[0].r;
+const caption=async(publisher,sequence,state,text)=>(await q(`select live_caption_update('talk',$1,$2,$3,$4,$5) as r`,[publisher,sequence,state,text,text]))[0].r;
+const room=async()=>(await q(`select * from live_caption_rooms where id='talk'`))[0];
+await test('the audience can read captions and nothing else',async()=>{
+ assert.equal((await q(`select relrowsecurity as r from pg_class where oid='public.live_caption_rooms'::regclass`))[0].r,true);
+ assert.deepEqual(await q(`select cmd from pg_policies where tablename='live_caption_rooms'`),[{cmd:'SELECT'}]);
+ assert.equal((await q(`select count(*)::int n from pg_policies where tablename='live_caption_publishers'`))[0].n,0);
+ for(const role of ['anon','authenticated']){
+  assert.equal((await q(`select has_table_privilege($1,'public.live_caption_rooms','UPDATE') as p`,[role]))[0].p,false);
+  assert.equal((await q(`select has_table_privilege($1,'public.live_caption_publishers','SELECT') as p`,[role]))[0].p,false);
+ }
+});
+await test('a second regia cannot take over a live room, and a repeated start keeps the text',async()=>{
+ assert.equal((await claim(regiaA)).ok,true);
+ assert.equal((await caption(regiaA,1,'live','Buonasera')).ok,true);
+ assert.equal((await claim(regiaB)).error,'room_busy');
+ assert.equal((await claim(regiaA)).snapshot.translated,'Buonasera');
+ assert.equal((await caption(regiaB,2,'live','pirata')).error,'lease_lost');
+ assert.equal((await claim(regiaA,'Talk',600)).error,'bad_request');
+ assert.equal((await room()).translated,'Buonasera');
+});
+await test('a delayed retry never rewinds the captions on screen',async()=>{
+ assert.equal((await caption(regiaA,5,'live','ultimo')).ok,true);
+ const revision=(await room()).revision;
+ assert.equal((await caption(regiaA,4,'live','vecchio')).ok,true);
+ assert.deepEqual([(await room()).translated,(await room()).revision],['ultimo',revision]);
+});
+await test('a stopped session cannot resume, and the room frees up for the next talk',async()=>{
+ assert.equal((await caption(regiaA,6,'ended','grazie')).ok,true);
+ assert.equal((await caption(regiaA,7,'live','ancora')).error,'lease_lost');
+ assert.equal((await room()).state,'ended');
+ assert.equal((await claim(regiaB,'Secondo talk')).ok,true);
+ const next=await room();
+ assert.deepEqual([next.state,next.title,next.translated],['connecting','Secondo talk','']);
+});
 console.log(`${count} database security tests passed`);
 await db.close();

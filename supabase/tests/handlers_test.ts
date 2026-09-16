@@ -3,6 +3,10 @@ Deno.env.set('SUPABASE_URL', 'https://database.example.invalid');
 Deno.env.set('SUPABASE_SERVICE_ROLE_KEY', 'test-service-role');
 Deno.env.set('DOOR_PASSWORD', 'long-test-only-password');
 Deno.env.set('STRIPE_WEBHOOK_SECRET', 'test-signing-secret');
+// Deliberately the same string as DOOR_PASSWORD: the two session domains must
+// stay separate even when the festival reuses a passphrase.
+Deno.env.set('LIVE_CAPTIONS_PASSWORD', 'long-test-only-password');
+Deno.env.set('SONIOX_API_KEY', 'soniox-account-key');
 let handler: (req: Request) => Promise<Response>;
 Deno.serve = ((fn: typeof handler) => { handler = fn; return {} }) as unknown as typeof Deno.serve;
 await import('../functions/ticket-door/index.ts');
@@ -11,6 +15,8 @@ await import('../functions/pass-submit/index.ts');
 const submit = handler!;
 await import('../functions/pass-stripe-webhook/index.ts');
 const webhook = handler!;
+await import('../functions/live-captions/index.ts');
+const live = handler!;
 let calls: string[] = [];
 let rateAllowed = true;
 globalThis.fetch = (input: RequestInfo | URL): Promise<Response> => {
@@ -119,6 +125,46 @@ Deno.test('staff scan accepts all three code types and preserves the screening a
     }
     assert((await door(req({session,action:'scan',code:'MFF-T-ABCDEFGH'}))).status===400);
     assert((await door(req({session,action:'scan',screening:'staff-a',code:'invalid'}))).status===400);
+  }finally{globalThis.fetch=original;}
+});
+Deno.test('a box-office session cannot spend audio credit, nor a regia session open the door',async()=>{
+  const {createDoorSession}=await import('../functions/_shared/door-session.ts');
+  const {createLiveSession}=await import('../functions/_shared/live-session.ts');
+  const doorSession=await createDoorSession('long-test-only-password');
+  const liveSession=await createLiveSession('long-test-only-password');
+  calls=[];
+  assert((await live(req({action:'check',session:doorSession}))).status===401);
+  assert((await door(req({session:liveSession}))).status===401);
+  assert((await live(req({action:'check',session:liveSession}))).status===200);
+  assert(!calls.some(c=>c.includes('soniox')));
+});
+Deno.test('a Soniox key needs a live lease, and the account key never leaves the server',async()=>{
+  const original=globalThis.fetch;
+  const {createLiveSession}=await import('../functions/_shared/live-session.ts');
+  const session=await createLiveSession('long-test-only-password');
+  const publisher='11111111-1111-4111-8111-111111111111';
+  let lease: Record<string,string>[]=[]; let sent: Headers|null=null;
+  globalThis.fetch=async(input,init)=>{
+    const url=String(input); calls.push(url);
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/live_caption_publishers'))return Response.json(lease);
+    if(url==='https://api.soniox.com/v1/auth/temporary-api-key'){
+      sent=new Headers(init?.headers); return Response.json({api_key:'temporary-key'});
+    }
+    throw new Error('Unexpected network operation: '+url);
+  };
+  try{
+    calls=[];
+    const denied=await live(req({action:'key',session,room:'main',publisher}));
+    assert(denied.status===409 && (await denied.json()).error==='lease_lost');
+    lease=[{publisher,lease_until:new Date(Date.now()+30_000).toISOString(),ends_at:new Date(Date.now()+3_600_000).toISOString()}];
+    const stranger=await live(req({action:'key',session,room:'main',publisher:'22222222-2222-4222-8222-222222222222'}));
+    assert((await stranger.json()).error==='lease_lost');
+    assert(!calls.some(c=>c.includes('soniox')));
+    const data=await (await live(req({action:'key',session,room:'main',publisher}))).json();
+    assert(data.ok && data.api_key==='temporary-key');
+    assert(sent!.get('authorization')==='Bearer soniox-account-key');
+    assert(!JSON.stringify(data).includes('soniox-account-key'));
   }finally{globalThis.fetch=original;}
 });
 Deno.test('new counter routes retry IDs to the atomic RPC and advertises retry support',async()=>{
