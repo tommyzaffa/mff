@@ -2041,6 +2041,14 @@ html.intro-armed #introOverlay {
 }
 .pass-perk__text { font-size: 0.98rem; line-height: 1.55; text-wrap: pretty; }
 
+/* The same plate inverted, so the two notices above the prices do not merge into
+   one block of violet. It owns both colours for the same reason .pass-perk does. */
+.pass-perk--warn {
+  background: #F5F3F8; color: #1A1330;
+  border-color: rgba(46, 27, 82, 0.2);
+}
+.pass-perk--warn .pass-perk__label { opacity: 0.7; }
+
 .pass-cards {
   display: grid; gap: 18px; margin: 0 0 34px; padding: 0; list-style: none;
   grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
@@ -2860,6 +2868,16 @@ body.badge-page::before { display: none; }
   font-size: 0.8rem; line-height: 1.6; opacity: 0.55;
 }
 
+/* Louder than .badge-hint on purpose: not knowing that the pass still has to be
+   turned into bookings is what puts a holder outside a full room. */
+.badge-note {
+  max-width: 360px; margin: 0; text-align: center;
+  font-size: 0.86rem; line-height: 1.6;
+  padding: 12px 16px; border-radius: 15px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+
 /* ---- printing ----------------------------------------------------------- */
 
 /* The download button writes its own 54 x 85.5 mm PDF (see badge.js); this block
@@ -2878,7 +2896,7 @@ body.badge-page::before { display: none; }
   /* On screen the stage centres this with flex; once the stage is a plain block
      the 380px cap would strand the card against the left edge of the sheet. */
   .badge-state { max-width: none; }
-  .badge-actions, .badge-hint { display: none !important; }
+  .badge-actions, .badge-hint, .badge-note { display: none !important; }
   /* The finished size, so it can be cut out and worn. Everything inside is in
      cqw, so the whole card simply rescales — nothing needs restating here. */
   .badge {

@@ -8,7 +8,7 @@
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=57" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=58" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -92,6 +92,13 @@
           <p class="pass-perk reveal">
             <span class="pass-perk__label" data-i18n="passes.perkLabel">Included with every pass</span>
             <span class="pass-perk__text" data-i18n="passes.perkTransport">Free travel on all public transport in Ticino — trains, buses and funiculars in every Arcobaleno zone — from 1 to 4 October 2026.</span>
+          </p>
+
+          <!-- The pass is access, not a booking. Said here, before the prices,
+               because it changes what someone is deciding to buy. -->
+          <p class="pass-perk pass-perk--warn reveal">
+            <span class="pass-perk__label" data-i18n="passes.seatsLabel">Seats are booked separately</span>
+            <span class="pass-perk__text" data-i18n="passes.seatsNote">Buying a pass does not reserve any seat. You then book the screenings you want with your badge number, and they cost nothing.</span>
           </p>
 
           <ul class="pass-cards reveal">
@@ -224,6 +231,7 @@
             </label>
 
             <p class="pass-form__perk" data-i18n="passes.perkTransportShort">Your pass is also a day ticket for every public transport in Ticino, 1–4 October 2026.</p>
+            <p class="pass-form__perk" data-i18n="passes.seatsNote">Buying a pass does not reserve any seat. You then book the screenings you want with your badge number, and they cost nothing.</p>
 
             <button class="btn" type="submit" data-submit-label data-i18n="passes.submitPay">Continue to payment</button>
             <p class="form__status" data-status role="status" aria-live="polite"></p>
@@ -406,7 +414,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=42"></script>
+  <script src="../assets/js/translations.js?v=43"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script src="../assets/js/passes.js?v=5"></script>

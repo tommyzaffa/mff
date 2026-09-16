@@ -74,6 +74,11 @@ const COPY = {
       `il tuo <strong>${p}</strong> è attivo. Il badge digitale è qui sotto: aprilo dal telefono
        e aggiungilo alla schermata home, così ce l'hai sempre con te, anche senza connessione.
        Il tuo codice di accredito è <strong style="letter-spacing:.06em">${code}</strong>.`,
+    issuedBook:
+      `<strong>Il pass non prenota i posti.</strong> Le proiezioni che vuoi vedere le riservi
+       una per una su mergefestival.ch/passes: inserisci il codice qui sopra e non paghi nulla
+       — un posto per badge, per proiezione. Le sale hanno posti limitati, quindi conviene farlo
+       per tempo.`,
     issuedCta: "Apri il badge",
     issuedFoot:
       `Puoi anche ritirare il badge fisico al Cinema Lux dal primo giorno di festival:
@@ -111,6 +116,10 @@ const COPY = {
       `your <strong>${p}</strong> is active. Your digital badge is below: open it on your phone
        and add it to the home screen, so it is always with you, even offline.
        Your accreditation code is <strong style="letter-spacing:.06em">${code}</strong>.`,
+    issuedBook:
+      `<strong>The pass does not reserve any seat.</strong> You book the screenings you want
+       one by one at mergefestival.ch/passes: enter the code above and they cost nothing
+       — one seat per badge, per screening. The rooms are small, so it is worth doing early.`,
     issuedCta: "Open the badge",
     issuedFoot:
       `You can also pick up a physical badge at Cinema Lux from the first day of the festival —
@@ -149,6 +158,11 @@ const COPY = {
        depuis votre téléphone et ajoutez-le à l'écran d'accueil, vous l'aurez toujours
        sur vous, même hors connexion.
        Votre code d'accréditation est <strong style="letter-spacing:.06em">${code}</strong>.`,
+    issuedBook:
+      `<strong>Le pass ne réserve aucune place.</strong> Vous réservez les projections de votre
+       choix une par une sur mergefestival.ch/passes : indiquez le code ci-dessus et elles ne
+       coûtent rien — une place par badge, par projection. Les salles sont petites : mieux vaut
+       s'y prendre tôt.`,
     issuedCta: "Ouvrir le badge",
     issuedFoot:
       `Vous pouvez aussi retirer un badge physique au Cinema Lux dès le premier jour du festival,
@@ -186,6 +200,10 @@ const COPY = {
       `dein <strong>${p}</strong> ist aktiv. Dein digitales Badge findest du unten: öffne es am
        Handy und lege es auf den Homescreen — so hast du es immer dabei, auch offline.
        Dein Akkreditierungscode lautet <strong style="letter-spacing:.06em">${code}</strong>.`,
+    issuedBook:
+      `<strong>Der Pass reserviert keine Plätze.</strong> Die gewünschten Vorführungen buchst du
+       einzeln auf mergefestival.ch/passes: Gib den Code oben an, dann kosten sie nichts
+       — ein Platz pro Badge, pro Vorführung. Die Säle sind klein, buch also früh.`,
     issuedCta: "Badge öffnen",
     issuedFoot:
       `Ab dem ersten Festivaltag kannst du im Cinema Lux auch ein physisches Badge abholen —
@@ -274,9 +292,9 @@ export function issuedEmail(
       locale: o.locale,
       preheader: t.issuedHeading,
       heading: t.issuedHeading,
-      body: `<p style="margin:0 0 12px">${esc(t.hi(o.name))}</p><p style="margin:0">${
+      body: `<p style="margin:0 0 12px">${esc(t.hi(o.name))}</p><p style="margin:0 0 14px">${
         t.issuedBody(esc(p), esc(o.badgeCode))
-      }</p>`,
+      }</p><p style="margin:0;padding:12px 14px;background:#f6f4f0;border-radius:12px">${t.issuedBook}</p>`,
       cta: { label: t.issuedCta, href: o.badgeUrl },
       footnote: t.issuedFoot,
     }),
