@@ -820,6 +820,9 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 }
 /* Wordmark logos must stay whole, so show them contained on their own white plate. */
 .news__img[src*="corriere"] { object-fit: contain; background: #fff; padding: 26px; }
+/* A square poster centre-cropped to 200px loses its wordmark; bias the crop
+   upwards so "Memoria Viva" and the date both stay in the band. */
+.news__img[src*="memoria-viva"] { object-position: center 34%; }
 .news__body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 .news__meta {
   font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.14em;
@@ -1740,6 +1743,8 @@ a.t-card:hover { transform: translateX(4px); box-shadow: 0 12px 30px rgba(15,15,
   box-shadow: 0 24px 60px rgba(15, 15, 18, 0.28);
 }
 .event__banner img { display: block; width: 100%; height: auto; }
+/* A square poster at the full 72ch measure would tower over the copy. */
+.event__banner--poster { max-width: min(420px, 100%); }
 .event__body { max-width: 72ch; }
 
 /* Date line, entry, one-line description — the shape of the printed programme.
