@@ -8,7 +8,7 @@
   <title>Ingresso sala — Merge Film Festival</title>
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=59" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=60" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -27,8 +27,19 @@
       <h1 class="scan__title">Ingresso sala</h1>
       <p class="scan__lead">Inserisci la password del turno.</p>
       <form class="scan__login" data-login novalidate>
-        <input type="password" name="password" autocomplete="current-password"
-               placeholder="Password" aria-label="Password" required />
+        <div class="password-field">
+          <input type="password" name="password" autocomplete="current-password"
+                 placeholder="Password" aria-label="Password" required />
+          <button class="password-eye" type="button" data-reveal
+                  aria-pressed="false" aria-label="Mostra la password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                 stroke-linecap="round" aria-hidden="true">
+              <path d="M1.9 12S5.6 5.3 12 5.3 22.1 12 22.1 12 18.4 18.7 12 18.7 1.9 12 1.9 12Z" />
+              <circle cx="12" cy="12" r="3.1" />
+              <line class="password-eye__slash" x1="4.2" y1="19.8" x2="19.8" y2="4.2" />
+            </svg>
+          </button>
+        </div>
         <button class="btn btn--apply" type="submit">Entra</button>
         <p class="scan__error" data-login-error role="status" aria-live="polite"></p>
       </form>
@@ -91,6 +102,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script src="../assets/js/staff-api.js?v=1"></script>
+  <script src="../assets/js/password-eye.js?v=1"></script>
   <script src="../assets/js/scan.js?v=4"></script>
 </body>
 </html>
