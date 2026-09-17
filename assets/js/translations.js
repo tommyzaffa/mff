@@ -35,7 +35,13 @@ window.MFF_I18N = {
       news13Text: "On 5 October Merge is a guest of the Swiss {ai} Weeks in Bellinzona, with a best of the selection and the artistic directors in the room. Free, sign-up required.",
       news13Link: "See the event",
       news13Date: "17 September 2026",
-      news12Title: "Meet the Full AI jury",
+
+      news14Title: "Meet the Experimental jury",
+      news14Text: "Alessandro Bavari, Marco Poloni and Keith Zhang will judge the eight films in the Experimental competition, where video art meets artificial intelligence. Discover their profiles.",
+      news14Link: "Meet the jury",
+      news14Date: "17 September 2026",
+      news14Alt: "Alessandro Bavari, Marco Poloni and Keith Zhang, the Experimental jury",
+     news12Title: "Meet the Full AI jury",
       news12Text: "Javishth Chabria and Hardeep Gambhir will judge the twenty films made entirely with artificial intelligence. Discover their profiles.",
       news12Link: "Meet the jury",
       news12Date: "16 September 2026",
@@ -203,7 +209,7 @@ window.MFF_I18N = {
       juriesTitle: "Festival Juries",
       juriesDesc: "Three different perspectives select the films in competition.",
       jury1Title: "Main Jury",
-      jury1Text: "Javishth Chabria and Hardeep Gambhir judge Full AI; Marco Longo and Francesca Monti judge Hybrid.",
+      jury1Text: "Seven names for three competitions: Chabria and Gambhir for Full AI, Longo and Monti for Hybrid, Bavari, Poloni and Zhang for Experimental.",
       jury1Btn: "Meet the jury",
       jury2Title: "Youth Jury",
       jury2Text: "Students and young people, invited to judge the films in competition.",
@@ -215,15 +221,17 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Main Jury",
-        "pageTitle": "Main Jury · Full AI and Hybrid — Merge Film Festival",
+        "pageTitle": "Main Jury · Full AI, Hybrid and Experimental — Merge Film Festival",
         "kicker": "Cinema · Visual arts · Artificial intelligence",
-        "subtitle": "Meet the juries for the Full AI and Hybrid competitions.",
+        "subtitle": "Meet the juries for the Full AI, Hybrid and Experimental competitions.",
         "indexLabel": "Jury categories",
         "eyebrow": "Main Jury",
         "fullTitle": "Full AI",
         "fullDesc": "Works created entirely using artificial intelligence tools.",
         "hybridTitle": "Hybrid",
         "hybridDesc": "Films that combine traditional techniques with artificial intelligence tools.",
+        "experimentalTitle": "Experimental",
+        "experimentalDesc": "Video art and experimental works created using artificial intelligence.",
         "navBack": "Back to the juries",
         "menuOpen": "Open menu",
         "menuClose": "Close menu",
@@ -244,6 +252,18 @@ window.MFF_I18N = {
           "monti": {
             "alt": "Portrait of Francesca Monti",
             "bio": "<p>Francesca Monti is Head of Education and a lecturer in Film History at CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. She has worked as a film critic, writing for specialist publications including duellanti, Segnocinema, Filmidee and Film Tv.</p>\n<p>She has worked in programming and communications for institutions and events including the Locarno Film Festival, the Centro culturale San Fedele in Milan and the Bellaria Film Festival.</p>"
+          },
+          "bavari": {
+            "alt": "Portrait of Alessandro Bavari",
+            "bio": "<p>Alessandro Bavari is an Italian-French visual artist, painter, photographer and art director, and a pioneer in the use of technology within creative research since 1993.</p>\n<p>In 2011, he won the Golden Nica at Prix Ars Electronica for <em>Metachaos</em>. His work later led to a collaboration with Ridley Scott and 20th Century Fox, for whom he worked as a concept artist on <em>Alien: Covenant</em> (2017).</p>\n<p>His artistic practice spans painting, photography, experimental animation and, since 2022, artificial intelligence, exploring the dialogue between traditional visual languages and emerging technologies. He also works in cinema, videogames and advertising, collaborating with international directors, agencies and brands.</p>"
+          },
+          "poloni": {
+            "alt": "Portrait of Marco Poloni",
+            "bio": "<p>Marco Poloni is an Italian and Swiss visual artist, filmmaker and photographer, based in Locarno, Paris and Berlin. His work has been presented internationally in numerous exhibitions, screenings, publications and conferences. In 2005, he represented Switzerland at the Venice Art Biennale.</p>\n<p>Poloni was an assistant professor at the School of the Art Institute of Chicago (SAIC), where he taught photography, and an associate professor at the École cantonale d’art de Lausanne (écal), where he taught film, photography and installation. Since 2022, he has directed the Conservatorio internazionale di scienze audiovisive (CISA), Locarno’s film school.</p>"
+          },
+          "keith": {
+            "alt": "Portrait of Keith Zhang",
+            "bio": "<p>Keith Zhang is a creative technologist and founder of Soulscape, an original-IP development company for AI-era entertainment. His work centres on developing distinctive characters and story worlds, building audiences, and unlocking their long-term commercial potential through original projects and selected creator collaborations.</p>\n<p>A former Uber engineer, Keith was previously co-founder and COO of YouArt (Y Combinator, Spring 2026). Through Soulscape he has brought together AI creators, Academy Award winners and industry veterans with backgrounds at Disney, Pixar and Warner Bros. He led Soulscape 2026, whose 48-hour Cinema Lab brought together 200 creators from more than 15 countries to produce 40 short films, and has led enterprise programmes for Alibaba Cloud and BytePlus.</p>\n<p>His work with Soulscape has been featured in The Hollywood Reporter and on KTVU FOX 2. Soulscape is currently developing original IPs to build enduring characters and worlds.</p>"
           }
         }
       },
@@ -895,7 +915,13 @@ window.MFF_I18N = {
       news13Text: "Il 5 ottobre Merge è ospite delle Swiss {ai} Weeks a Bellinzona, con un best of della selezione e i direttori artistici in sala. Gratuito, su iscrizione.",
       news13Link: "Scopri l’evento",
       news13Date: "17 settembre 2026",
-      news12Title: "Annunciata la giuria Full AI",
+
+      news14Title: "Annunciata la giuria Experimental",
+      news14Text: "Alessandro Bavari, Marco Poloni e Keith Zhang giudicano gli otto film del concorso Experimental, dove la videoarte incontra l’intelligenza artificiale. Scopri i loro profili.",
+      news14Link: "Scopri la giuria",
+      news14Date: "17 settembre 2026",
+      news14Alt: "Alessandro Bavari, Marco Poloni e Keith Zhang, la giuria Experimental",
+     news12Title: "Annunciata la giuria Full AI",
       news12Text: "Javishth Chabria e Hardeep Gambhir valuteranno i venti film realizzati interamente con l’intelligenza artificiale. Scopri i loro profili.",
       news12Link: "Scopri la giuria",
       news12Date: "16 settembre 2026",
@@ -1063,7 +1089,7 @@ window.MFF_I18N = {
       juriesTitle: "Giurie del Festival",
       juriesDesc: "Tre prospettive diverse selezionano i film in concorso.",
       jury1Title: "Giuria principale",
-      jury1Text: "Javishth Chabria e Hardeep Gambhir giudicano Full AI; Marco Longo e Francesca Monti giudicano Hybrid.",
+      jury1Text: "Sette nomi per tre concorsi: Chabria e Gambhir per Full AI, Longo e Monti per Hybrid, Bavari, Poloni e Zhang per Experimental.",
       jury1Btn: "Scopri la giuria",
       jury2Title: "Giuria giovani",
       jury2Text: "Studenti e giovani, chiamati a giudicare i film in concorso.",
@@ -1075,15 +1101,17 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Giuria principale",
-        "pageTitle": "Giuria principale · Full AI e Hybrid — Merge Film Festival",
+        "pageTitle": "Giuria principale · Full AI, Hybrid ed Experimental — Merge Film Festival",
         "kicker": "Cinema · Arti visive · Intelligenza artificiale",
-        "subtitle": "Scopri le giurie dei concorsi Full AI e Hybrid.",
+        "subtitle": "Scopri le giurie dei concorsi Full AI, Hybrid ed Experimental.",
         "indexLabel": "Categorie della giuria",
         "eyebrow": "Giuria principale",
         "fullTitle": "Full AI",
         "fullDesc": "Opere realizzate interamente con strumenti di intelligenza artificiale.",
         "hybridTitle": "Hybrid",
         "hybridDesc": "Film che combinano tecniche tradizionali e strumenti di intelligenza artificiale.",
+        "experimentalTitle": "Experimental",
+        "experimentalDesc": "Videoarte e opere sperimentali realizzate con l’intelligenza artificiale.",
         "navBack": "Torna alle giurie",
         "menuOpen": "Apri il menu",
         "menuClose": "Chiudi il menu",
@@ -1104,6 +1132,18 @@ window.MFF_I18N = {
           "monti": {
             "alt": "Ritratto di Francesca Monti",
             "bio": "<p>Francesca Monti è Responsabile della didattica e docente di Storia del cinema presso il CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) di Locarno. Si è occupata di critica cinematografica, scrivendo per testate specializzate come duellanti, Segnocinema, Filmidee, Film Tv.</p>\n<p>Ha lavorato nell’ambito della programmazione e comunicazione per istituzioni e manifestazioni quali Locarno Film Festival, Centro culturale San Fedele di Milano e Bellaria Film Festival.</p>"
+          },
+          "bavari": {
+            "alt": "Ritratto di Alessandro Bavari",
+            "bio": "<p>Alessandro Bavari è un artista visivo, pittore, fotografo e art director italo-francese, pioniere nell’impiego della tecnologia nella ricerca creativa fin dal 1993.</p>\n<p>Nel 2011 ha vinto la Golden Nica al Prix Ars Electronica per <em>Metachaos</em>. Il suo lavoro lo ha successivamente portato a collaborare con Ridley Scott e 20th Century Fox, per cui ha lavorato come concept artist in <em>Alien: Covenant</em> (2017).</p>\n<p>La sua pratica artistica spazia dalla pittura alla fotografia, dall’animazione sperimentale all’intelligenza artificiale, che utilizza dal 2022, esplorando il dialogo tra linguaggi visivi tradizionali e tecnologie emergenti. Lavora anche nel cinema, nei videogiochi e nella pubblicità, collaborando con registi, agenzie e marchi internazionali.</p>"
+          },
+          "poloni": {
+            "alt": "Ritratto di Marco Poloni",
+            "bio": "<p>Marco Poloni è un artista visivo, cineasta e fotografo italiano e svizzero, di base a Locarno, Parigi e Berlino. Il suo lavoro è stato presentato in numerose mostre, proiezioni, pubblicazioni e conferenze a livello internazionale. Nel 2005 ha rappresentato la Svizzera alla Biennale d’Arte di Venezia.</p>\n<p>Poloni è stato professore assistente presso la School of the Art Institute of Chicago (SAIC), dove insegnava fotografia, e professore associato presso l’École cantonale d’art de Lausanne (écal), dove insegnava cinema, fotografia e installazione. Dal 2022 dirige il Conservatorio internazionale di scienze audiovisive (CISA), la scuola di cinema di Locarno.</p>"
+          },
+          "keith": {
+            "alt": "Ritratto di Keith Zhang",
+            "bio": "<p>Keith Zhang è un creative technologist e fondatore di Soulscape, società che sviluppa proprietà intellettuali originali per l’intrattenimento dell’era dell’intelligenza artificiale. Il suo lavoro si concentra sulla creazione di personaggi e mondi narrativi riconoscibili, sulla costruzione del pubblico e sulla loro valorizzazione commerciale a lungo termine, tra progetti propri e collaborazioni selezionate con altri autori.</p>\n<p>Ex ingegnere di Uber, è stato co-fondatore e COO di YouArt (Y Combinator, primavera 2026). Con Soulscape ha riunito creatori AI, premi Oscar e professionisti provenienti da Disney, Pixar e Warner Bros. Ha diretto Soulscape 2026, il cui Cinema Lab di 48 ore ha riunito 200 creatori da oltre 15 paesi per realizzare 40 cortometraggi, e ha guidato programmi enterprise per Alibaba Cloud e BytePlus.</p>\n<p>Il suo lavoro con Soulscape è stato raccontato da The Hollywood Reporter e da KTVU FOX 2. Soulscape sta sviluppando nuove proprietà intellettuali originali, per costruire personaggi e mondi destinati a durare.</p>"
           }
         }
       },
@@ -1747,7 +1787,13 @@ window.MFF_I18N = {
       news13Text: "Le 5 octobre, Merge est l’invité des Swiss {ai} Weeks à Bellinzone, avec un best of de la sélection et les directeurs artistiques dans la salle. Gratuit, sur inscription.",
       news13Link: "Découvrir l’événement",
       news13Date: "17 septembre 2026",
-      news12Title: "Découvrez le jury Full AI",
+
+      news14Title: "Découvrez le jury Experimental",
+      news14Text: "Alessandro Bavari, Marco Poloni et Keith Zhang jugeront les huit films de la compétition Experimental, où l’art vidéo rencontre l’intelligence artificielle. Découvrez leurs profils.",
+      news14Link: "Découvrir le jury",
+      news14Date: "17 septembre 2026",
+      news14Alt: "Alessandro Bavari, Marco Poloni et Keith Zhang, le jury Experimental",
+     news12Title: "Découvrez le jury Full AI",
       news12Text: "Javishth Chabria et Hardeep Gambhir évalueront les vingt films réalisés entièrement avec l’intelligence artificielle. Découvrez leurs parcours.",
       news12Link: "Découvrir le jury",
       news12Date: "16 septembre 2026",
@@ -1915,7 +1961,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys du Festival",
       juriesDesc: "Trois perspectives différentes sélectionnent les films en compétition.",
       jury1Title: "Jury principal",
-      jury1Text: "Javishth Chabria et Hardeep Gambhir jugent Full AI ; Marco Longo et Francesca Monti jugent Hybrid.",
+      jury1Text: "Sept noms pour trois compétitions : Chabria et Gambhir pour Full AI, Longo et Monti pour Hybrid, Bavari, Poloni et Zhang pour Experimental.",
       jury1Btn: "Découvrir le jury",
       jury2Title: "Jury jeunes",
       jury2Text: "Étudiants et jeunes, appelés à juger les films en compétition.",
@@ -1927,15 +1973,17 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Jury principal",
-        "pageTitle": "Jury principal · Full AI et Hybrid — Merge Film Festival",
+        "pageTitle": "Jury principal · Full AI, Hybrid et Experimental — Merge Film Festival",
         "kicker": "Cinéma · Arts visuels · Intelligence artificielle",
-        "subtitle": "Découvrez les jurys des compétitions Full AI et Hybrid.",
+        "subtitle": "Découvrez les jurys des compétitions Full AI, Hybrid et Experimental.",
         "indexLabel": "Catégories du jury",
         "eyebrow": "Jury principal",
         "fullTitle": "Full AI",
         "fullDesc": "Des œuvres entièrement réalisées à l’aide d’outils d’intelligence artificielle.",
         "hybridTitle": "Hybrid",
         "hybridDesc": "Des films associant techniques traditionnelles et outils d’intelligence artificielle.",
+        "experimentalTitle": "Experimental",
+        "experimentalDesc": "Art vidéo et œuvres expérimentales réalisés à l’aide de l’intelligence artificielle.",
         "navBack": "Retour aux jurys",
         "menuOpen": "Ouvrir le menu",
         "menuClose": "Fermer le menu",
@@ -1956,6 +2004,18 @@ window.MFF_I18N = {
           "monti": {
             "alt": "Portrait de Francesca Monti",
             "bio": "<p>Francesca Monti est responsable pédagogique et enseignante en histoire du cinéma au CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) de Locarno. Elle a exercé la critique cinématographique en écrivant pour des revues spécialisées telles que duellanti, Segnocinema, Filmidee et Film Tv.</p>\n<p>Elle a travaillé dans la programmation et la communication pour des institutions et des manifestations telles que le Locarno Film Festival, le Centro culturale San Fedele de Milan et le Bellaria Film Festival.</p>"
+          },
+          "bavari": {
+            "alt": "Portrait de Alessandro Bavari",
+            "bio": "<p>Alessandro Bavari est un artiste visuel, peintre, photographe et directeur artistique franco-italien, pionnier de l’utilisation des technologies dans la recherche créative depuis 1993.</p>\n<p>En 2011, il a remporté la Golden Nica du Prix Ars Electronica pour <em>Metachaos</em>. Son travail l’a ensuite amené à collaborer avec Ridley Scott et 20th Century Fox, pour lesquels il a travaillé comme concept artist sur <em>Alien: Covenant</em> (2017).</p>\n<p>Sa pratique artistique couvre la peinture, la photographie, l’animation expérimentale et, depuis 2022, l’intelligence artificielle, explorant le dialogue entre les langages visuels traditionnels et les technologies émergentes. Il travaille également dans le cinéma, les jeux vidéo et la publicité, en collaboration avec des réalisateurs, des agences et des marques à l’international.</p>"
+          },
+          "poloni": {
+            "alt": "Portrait de Marco Poloni",
+            "bio": "<p>Marco Poloni est un artiste visuel, cinéaste et photographe italien et suisse, basé à Locarno, Paris et Berlin. Son travail a été présenté dans de nombreuses expositions, projections, publications et conférences à l’international. En 2005, il a représenté la Suisse à la Biennale d’art de Venise.</p>\n<p>Poloni a été professeur assistant à la School of the Art Institute of Chicago (SAIC), où il enseignait la photographie, et professeur associé à l’École cantonale d’art de Lausanne (écal), où il enseignait le cinéma, la photographie et l’installation. Depuis 2022, il dirige le Conservatorio internazionale di scienze audiovisive (CISA), l’école de cinéma de Locarno.</p>"
+          },
+          "keith": {
+            "alt": "Portrait de Keith Zhang",
+            "bio": "<p>Keith Zhang est creative technologist et fondateur de Soulscape, une société de développement de propriétés intellectuelles originales pour le divertissement à l’ère de l’intelligence artificielle. Son travail porte sur la création de personnages et d’univers narratifs singuliers, sur la construction d’un public et sur leur valorisation commerciale à long terme, à travers des projets originaux et des collaborations choisies avec d’autres créateurs.</p>\n<p>Ancien ingénieur chez Uber, il a été cofondateur et COO de YouArt (Y Combinator, printemps 2026). Avec Soulscape, il a réuni des créateurs IA, des lauréats des Oscars et des professionnels venus de Disney, Pixar et Warner Bros. Il a dirigé Soulscape 2026, dont le Cinema Lab de 48 heures a rassemblé 200 créateurs de plus de 15 pays pour produire 40 courts métrages, et a piloté des programmes entreprise pour Alibaba Cloud et BytePlus.</p>\n<p>Son travail avec Soulscape a été relayé par The Hollywood Reporter et par KTVU FOX 2. Soulscape développe actuellement de nouvelles propriétés intellectuelles originales, pour bâtir des personnages et des mondes qui durent.</p>"
           }
         }
       },
@@ -2599,7 +2659,13 @@ window.MFF_I18N = {
       news13Text: "Am 5. Oktober ist Merge zu Gast bei den Swiss {ai} Weeks in Bellinzona, mit einem Best of der Auswahl und den künstlerischen Leitern im Saal. Kostenlos, mit Anmeldung.",
       news13Link: "Zur Veranstaltung",
       news13Date: "17. September 2026",
-      news12Title: "Die Full-AI-Jury steht fest",
+
+      news14Title: "Die Experimental-Jury steht fest",
+      news14Text: "Alessandro Bavari, Marco Poloni und Keith Zhang bewerten die acht Filme des Experimental-Wettbewerbs, wo Videokunst auf künstliche Intelligenz trifft. Lern sie kennen.",
+      news14Link: "Jury kennenlernen",
+      news14Date: "17. September 2026",
+      news14Alt: "Alessandro Bavari, Marco Poloni und Keith Zhang, die Experimental-Jury",
+     news12Title: "Die Full-AI-Jury steht fest",
       news12Text: "Javishth Chabria und Hardeep Gambhir bewerten die zwanzig Filme, die vollständig mit künstlicher Intelligenz entstanden sind. Entdecke ihre Porträts.",
       news12Link: "Jury kennenlernen",
       news12Date: "16. September 2026",
@@ -2767,7 +2833,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys des Festivals",
       juriesDesc: "Drei verschiedene Perspektiven wählen die Wettbewerbsfilme aus.",
       jury1Title: "Hauptjury",
-      jury1Text: "Javishth Chabria und Hardeep Gambhir bewerten Full AI, Marco Longo und Francesca Monti bewerten Hybrid.",
+      jury1Text: "Sieben Namen für drei Wettbewerbe: Chabria und Gambhir für Full AI, Longo und Monti für Hybrid, Bavari, Poloni und Zhang für Experimental.",
       jury1Btn: "Jury kennenlernen",
       jury2Title: "Jugendjury",
       jury2Text: "Studenten und Jugendliche, die die Wettbewerbsfilme beurteilen.",
@@ -2779,15 +2845,17 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Hauptjury",
-        "pageTitle": "Hauptjury · Full AI und Hybrid — Merge Film Festival",
+        "pageTitle": "Hauptjury · Full AI, Hybrid und Experimental — Merge Film Festival",
         "kicker": "Kino · Bildende Kunst · Künstliche Intelligenz",
-        "subtitle": "Entdecke die Jurys der Wettbewerbe Full AI und Hybrid.",
+        "subtitle": "Entdecke die Jurys der Wettbewerbe Full AI, Hybrid und Experimental.",
         "indexLabel": "Jurykategorien",
         "eyebrow": "Hauptjury",
         "fullTitle": "Full AI",
         "fullDesc": "Werke, die vollständig mit Werkzeugen der künstlichen Intelligenz entstanden sind.",
         "hybridTitle": "Hybrid",
         "hybridDesc": "Filme, die traditionelle Techniken mit Werkzeugen der künstlichen Intelligenz verbinden.",
+        "experimentalTitle": "Experimental",
+        "experimentalDesc": "Videokunst und experimentelle Werke, die mithilfe künstlicher Intelligenz entstanden sind.",
         "navBack": "Zurück zu den Jurys",
         "menuOpen": "Menü öffnen",
         "menuClose": "Menü schliessen",
@@ -2808,6 +2876,18 @@ window.MFF_I18N = {
           "monti": {
             "alt": "Porträt von Francesca Monti",
             "bio": "<p>Francesca Monti ist Leiterin der Lehre und Dozentin für Filmgeschichte am CISA (Conservatorio di Scienze Audiovisive della Svizzera italiana) in Locarno. Sie war als Filmkritikerin tätig und schrieb für Fachzeitschriften wie duellanti, Segnocinema, Filmidee und Film Tv.</p>\n<p>Sie arbeitete in der Programmgestaltung und Kommunikation für Institutionen und Veranstaltungen wie das Locarno Film Festival, das Centro culturale San Fedele in Mailand und das Bellaria Film Festival.</p>"
+          },
+          "bavari": {
+            "alt": "Porträt von Alessandro Bavari",
+            "bio": "<p>Alessandro Bavari ist ein italienisch-französischer bildender Künstler, Maler, Fotograf und Art Director. Seit 1993 zählt er zu den Pionieren des Einsatzes von Technologie in der kreativen Forschung.</p>\n<p>2011 gewann er die Goldene Nica beim Prix Ars Electronica für <em>Metachaos</em>. Seine Arbeit führte später zu einer Zusammenarbeit mit Ridley Scott und 20th Century Fox, für die er als Concept Artist an <em>Alien: Covenant</em> (2017) mitwirkte.</p>\n<p>Seine künstlerische Praxis umfasst Malerei, Fotografie, experimentelle Animation und seit 2022 auch künstliche Intelligenz. Dabei erforscht er den Dialog zwischen traditionellen Bildsprachen und neuen Technologien. Ausserdem arbeitet er in den Bereichen Film, Videospiele und Werbung mit internationalen Regisseuren, Agenturen und Marken zusammen.</p>"
+          },
+          "poloni": {
+            "alt": "Porträt von Marco Poloni",
+            "bio": "<p>Marco Poloni ist ein italienischer und Schweizer bildender Künstler, Filmemacher und Fotograf mit Sitz in Locarno, Paris und Berlin. Seine Arbeiten wurden international in zahlreichen Ausstellungen, Vorführungen, Publikationen und Konferenzen vorgestellt. 2005 vertrat er die Schweiz an der Kunstbiennale von Venedig.</p>\n<p>Poloni war Assistenzprofessor an der School of the Art Institute of Chicago (SAIC), wo er Fotografie unterrichtete, und ausserordentlicher Professor an der École cantonale d’art de Lausanne (écal), wo er Film, Fotografie und Installation lehrte. Seit 2022 leitet er das Conservatorio internazionale di scienze audiovisive (CISA), die Filmschule von Locarno.</p>"
+          },
+          "keith": {
+            "alt": "Porträt von Keith Zhang",
+            "bio": "<p>Keith Zhang ist Creative Technologist und Gründer von Soulscape, einem Entwicklungsstudio für eigene Stoffe und Marken im Unterhaltungsgeschäft des KI-Zeitalters. Seine Arbeit dreht sich um unverwechselbare Figuren und Erzählwelten, um den Aufbau eines Publikums und um deren langfristige kommerzielle Auswertung – in eigenen Projekten wie in ausgewählten Kooperationen mit anderen Kreativen.</p>\n<p>Der frühere Uber-Ingenieur war Mitgründer und COO von YouArt (Y Combinator, Frühjahr 2026). Mit Soulscape hat er KI-Kreative, Oscar-Preisträger und Branchenprofis von Disney, Pixar und Warner Bros. zusammengebracht. Er leitete Soulscape 2026, dessen 48-stündiges Cinema Lab 200 Kreative aus über 15 Ländern versammelte und 40 Kurzfilme hervorbrachte, und verantwortete Enterprise-Programme für Alibaba Cloud und BytePlus.</p>\n<p>Über seine Arbeit mit Soulscape berichteten The Hollywood Reporter und KTVU FOX 2. Derzeit entwickelt Soulscape eigene Stoffe, um Figuren und Welten mit langer Haltbarkeit aufzubauen.</p>"
           }
         }
       },

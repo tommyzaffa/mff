@@ -811,6 +811,7 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   flex-shrink: 0;
   overflow: hidden;
 }
+.news__img--jury-collage-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .news__img--jury-collage img {
   width: 100%;
   height: 100%;
