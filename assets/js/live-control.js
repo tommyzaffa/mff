@@ -170,7 +170,11 @@
         r.failure = 'Soniox ha interrotto la traduzione (' + data.error_code + ')' + (detail ? ': ' + detail : '.');
         ws.close(); return;
       }
-      r.buffer.accept(data); r.dirty = true; render(r);
+      // The audience only ever sees final text, so only new final text is worth a
+      // round trip — and when it appears it should leave now, not on the next tick.
+      const settled = r.buffer.translated + '\v' + r.buffer.original;
+      r.buffer.accept(data); render(r);
+      if (settled !== r.buffer.translated + '\v' + r.buffer.original) { r.dirty = true; void publish(r); }
       if (!r.stopping) {
         r.state = 'live'; status('In diretta', 'live');
         if (Date.now() - r.socketOpened > 30000) r.attempts = 0;
@@ -239,7 +243,9 @@
           r.ws.send(audio); r.audioSeconds += audio.byteLength / 2 / r.audio.sampleRate;
         }
       };
-      r.pump = setInterval(() => { void publish(r); }, 1200);
+      // Backstop only: text that arrived while a request was in flight, and the
+      // heartbeat that keeps the room's lease alive during silence.
+      r.pump = setInterval(() => { void publish(r); }, 500);
       r.tick = setInterval(() => {
         const elapsed = Math.floor((Date.now() - r.startedAt) / 1000);
         $('elapsed').textContent = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
