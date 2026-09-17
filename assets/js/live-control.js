@@ -146,15 +146,17 @@
     status(r.attempts ? 'Riconnessione…' : 'Collegamento…', r.state);
     const key = await request({ action: 'key', session, room: r.room, publisher: r.publisher });
     if (run !== r || r.stopping) return;
-    const ws = new WebSocket(key.websocket_url); r.ws = ws;
+    const ws = new WebSocket(key.websocket_url); r.ws = ws; r.ready = false;
     r.lastResponse = Date.now();
     ws.onopen = () => {
       if (run !== r || r.stopping) { ws.close(); return; }
       ws.send(JSON.stringify({ api_key: key.api_key, model: key.model, audio_format: 'pcm_s16le',
-        sample_rate: r.audio.sampleRate, num_channels: 1, language_hints: [r.source, r.target],
+        sample_rate: r.audio.sampleRate, num_channels: 1, language_hints: [r.langFrom, r.langTo],
         enable_language_identification: true, enable_endpoint_detection: true, max_endpoint_delay_ms: 1000,
-        translation: { type: 'one_way', target_language: r.target }, context: r.context }));
-      key.api_key = ''; r.socketOpened = Date.now();
+        translation: { type: 'one_way', target_language: r.langTo }, context: r.context }));
+      // Audio may only follow the configuration: readyState turns OPEN just
+      // before this handler runs, so a frame could otherwise overtake it.
+      key.api_key = ''; r.ready = true; r.socketOpened = Date.now();
     };
     ws.onmessage = event => {
       if (run !== r || ws !== r.ws) return;
@@ -162,9 +164,10 @@
       try { data = JSON.parse(event.data); } catch (_) { ws.close(); return; }
       r.lastResponse = Date.now();
       if (data.error_code) {
+        const detail = typeof data.error_message === 'string' ? data.error_message.slice(0, 180) : '';
         r.fatal = ![408, 429, 500, 502, 503, 504].includes(Number(data.error_code));
-        r.failure = Number(data.error_code) === 403 ? 'Sessione Soniox terminata: verifica credito e durata massima.' :
-          'Soniox ha interrotto la traduzione. Verifica connessione, credito e configurazione.';
+        // Soniox explains itself better than we can guess: show its own words.
+        r.failure = 'Soniox ha interrotto la traduzione (' + data.error_code + ')' + (detail ? ': ' + detail : '.');
         ws.close(); return;
       }
       r.buffer.accept(data); r.dirty = true; render(r);
@@ -176,6 +179,7 @@
     };
     ws.onerror = () => { /* onclose handles retries */ };
     ws.onclose = () => {
+      r.ready = false;
       if (r.finish) r.finish();
       if (run !== r || r.stopping || ws !== r.ws) return;
       r.buffer.clearDraft(); render(r);
@@ -201,9 +205,10 @@
       $('error').textContent = 'Usa un browser aggiornato su HTTPS o localhost per avviare l’audio.'; return;
     }
     const { source, target } = direction();
+    // Not `source`/`target`: r.source is already the MediaStreamAudioSourceNode.
     const r = { publisher: crypto.randomUUID(), room: $('room').value, buffer: new CaptionBuffer(target), sequence: 0,
       state: 'connecting', stopping: false, claimed: false, dirty: true, attempts: 0, audioSeconds: 0,
-      lastPublish: Date.now(), context: context(), source, target };
+      lastPublish: Date.now(), context: context(), langFrom: source, langTo: target };
     run = r; controls(true); render(r); status('Apertura microfono…');
     try {
       // Resume during the user's gesture (important on Safari).
@@ -219,7 +224,7 @@
       await r.audio.audioWorklet.addModule('../../assets/js/live-audio-worklet.js?v=1');
       if (run !== r || r.stopping) return;
       const claim = await request({ action: 'start', session, room: r.room, publisher: r.publisher,
-        title: $('title').value.trim(), minutes: Number($('minutes').value), language: r.target });
+        title: $('title').value.trim(), minutes: Number($('minutes').value), language: r.langTo });
       r.claimed = true; r.endsAt = Date.parse(claim.ends_at); r.startedAt = Date.now();
       if (run !== r || r.stopping) { await release(r); return; }
       r.source = r.audio.createMediaStreamSource(stream);
@@ -229,7 +234,7 @@
         if (run !== r || r.stopping) return;
         const { audio, level } = event.data; $('level').value = Math.min(1, level * 4);
         if (level > 0.002) r.lastSound = Date.now();
-        if (r.ws && r.ws.readyState === WebSocket.OPEN) {
+        if (r.ready && r.ws && r.ws.readyState === WebSocket.OPEN) {
           if (r.ws.bufferedAmount > r.audio.sampleRate * 2 * 3) { r.ws.close(); return; }
           r.ws.send(audio); r.audioSeconds += audio.byteLength / 2 / r.audio.sampleRate;
         }
@@ -257,7 +262,7 @@
     clearInterval(r.pump); clearInterval(r.tick); clearTimeout(r.retry);
     // Stop capture immediately, then let Soniox finalize the remaining words.
     closeAudio(r);
-    if (r.ws && r.ws.readyState === WebSocket.OPEN) {
+    if (r.ready && r.ws && r.ws.readyState === WebSocket.OPEN) {
       const drained = new Promise(resolve => { r.finish = resolve; });
       r.ws.send(''); await Promise.race([drained, delay(3500)]);
     }
