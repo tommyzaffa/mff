@@ -45,6 +45,25 @@
     if (!value || value.id !== room || (snapshot && Number(value.revision) < Number(snapshot.revision))) return;
     snapshot = value; render();
   }
+  // Append only what is new. Rewriting the paragraph re-wraps every line, and the
+  // audience loses the place it was reading; then keep the last line at the bottom.
+  let painted = '';
+  const glide = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function paint(text, placeholder) {
+    const caption = $('captions'); const frame = $('caption-window');
+    if (!text) { caption.textContent = placeholder; painted = ''; }
+    else if (painted && text.startsWith(painted)) {
+      const grown = text.slice(painted.length);
+      if (grown) caption.append(grown);
+      painted = text;
+    } else { caption.textContent = text; painted = text; }
+    const bottom = frame.scrollHeight - frame.clientHeight;
+    // A new line glides up; a jump of more than one window (a new talk, a phone
+    // waking up) snaps instead, so nobody has to watch the text fly past. A hidden
+    // tab cannot animate, so a glide queued there would simply never arrive.
+    const far = document.hidden || bottom - frame.scrollTop > frame.clientHeight;
+    frame.scrollTo({ top: bottom, behavior: glide && !far ? 'smooth' : 'instant' });
+  }
   function render() {
     if (!snapshot) return;
     speak(snapshot.language === 'it' ? 'it' : 'en');
@@ -58,8 +77,7 @@
     $('talk-title').textContent = snapshot.title;
     $('viewer-status').textContent = text;
     $('viewer-status').dataset.state = waiting ? 'reconnecting' : state;
-    const limit = document.body.dataset.size === 'large' ? 240 : 320;
-    $('captions').textContent = tail(snapshot.translated, limit) || (state === 'ended' ? words.thanks : words.waiting);
+    paint(tail(snapshot.translated, 1400), state === 'ended' ? words.thanks : words.waiting);
     $('viewer-message').textContent = waiting ? words.interrupted : '';
   }
   async function read() {
