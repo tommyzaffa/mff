@@ -5,7 +5,9 @@
   let session = ''; let run = null; let wakeLock = null; let discovering = false;
   try { session = sessionStorage.getItem('mff-live-session') || ''; } catch (_) { /* memory-only login */ }
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const fields = ['room', 'title', 'device', 'minutes', 'context', 'terms', 'glossary'];
+  const fields = ['room', 'title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
+  const directions = { 'it-en': { source: 'it', target: 'en' }, 'en-it': { source: 'en', target: 'it' } };
+  const direction = () => directions[$('direction').value] || directions['it-en'];
   function status(text, state = '') { $('status').textContent = text; $('status').dataset.state = state; }
   function controls(active) {
     for (const id of fields) $(id).disabled = active;
@@ -19,8 +21,20 @@
   function showControl(configured) {
     $('login-panel').hidden = true; $('control-panel').hidden = false;
     if (!configured) $('error').textContent = errorText({ code: 'not_configured' });
-    share();
+    share(); relabel();
   }
+  // The regia reads the source language, the audience reads the target one.
+  function relabel() {
+    const { source, target } = direction();
+    const names = { it: ['ITALIANO', 'italiano'], en: ['INGLESE', 'inglese'] };
+    $('direction-label').textContent = names[source][0] + ' → ' + names[target][0];
+    $('glossary-label').textContent = 'Traduzioni preferite · ' + names[source][1] + ' = ' + names[target][1];
+    $('glossary').placeholder = target === 'en' ? 'cortometraggio = short film' : 'short film = cortometraggio';
+    $('translation-label').textContent = names[target][0] + ' · TESTO VISIBILE AL PUBBLICO';
+    $('original-label').textContent = 'TRASCRIZIONE ' + (source === 'it' ? 'ITALIANA' : 'INGLESE');
+    $('translation').lang = $('draft').lang = target; $('original').lang = source;
+  }
+  $('direction').addEventListener('change', relabel);
   function share() {
     const url = new URL('../', location.href); url.searchParams.set('room', $('room').value);
     $('audience-link').href = url.href; url.searchParams.set('screen', '1'); $('screen-link').href = url.href;
@@ -137,9 +151,9 @@
     ws.onopen = () => {
       if (run !== r || r.stopping) { ws.close(); return; }
       ws.send(JSON.stringify({ api_key: key.api_key, model: key.model, audio_format: 'pcm_s16le',
-        sample_rate: r.audio.sampleRate, num_channels: 1, language_hints: ['it', 'en'],
+        sample_rate: r.audio.sampleRate, num_channels: 1, language_hints: [r.source, r.target],
         enable_language_identification: true, enable_endpoint_detection: true, max_endpoint_delay_ms: 1000,
-        translation: { type: 'one_way', target_language: 'en' }, context: r.context }));
+        translation: { type: 'one_way', target_language: r.target }, context: r.context }));
       key.api_key = ''; r.socketOpened = Date.now();
     };
     ws.onmessage = event => {
@@ -186,9 +200,10 @@
     if (!window.isSecureContext || !navigator.mediaDevices || !window.AudioWorkletNode) {
       $('error').textContent = 'Usa un browser aggiornato su HTTPS o localhost per avviare l’audio.'; return;
     }
-    const r = { publisher: crypto.randomUUID(), room: $('room').value, buffer: new CaptionBuffer(), sequence: 0,
+    const { source, target } = direction();
+    const r = { publisher: crypto.randomUUID(), room: $('room').value, buffer: new CaptionBuffer(target), sequence: 0,
       state: 'connecting', stopping: false, claimed: false, dirty: true, attempts: 0, audioSeconds: 0,
-      lastPublish: Date.now(), context: context() };
+      lastPublish: Date.now(), context: context(), source, target };
     run = r; controls(true); render(r); status('Apertura microfono…');
     try {
       // Resume during the user's gesture (important on Safari).
@@ -204,7 +219,7 @@
       await r.audio.audioWorklet.addModule('../../assets/js/live-audio-worklet.js?v=1');
       if (run !== r || r.stopping) return;
       const claim = await request({ action: 'start', session, room: r.room, publisher: r.publisher,
-        title: $('title').value.trim(), minutes: Number($('minutes').value) });
+        title: $('title').value.trim(), minutes: Number($('minutes').value), language: r.target });
       r.claimed = true; r.endsAt = Date.parse(claim.ends_at); r.startedAt = Date.now();
       if (run !== r || r.stopping) { await release(r); return; }
       r.source = r.audio.createMediaStreamSource(stream);

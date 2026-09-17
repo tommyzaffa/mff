@@ -5,6 +5,8 @@ create table public.live_caption_rooms (
   state text not null default 'idle' check (state in ('idle','connecting','live','reconnecting','ended')),
   original text not null default '' check (length(original) <= 1500),
   translated text not null default '' check (length(translated) <= 1500),
+  -- Language the audience reads, chosen per talk by the regia.
+  language text not null default 'en' check (language in ('en','it')),
   revision bigint not null default 0,
   updated_at timestamptz not null default now()
 );
@@ -25,12 +27,13 @@ insert into public.live_caption_rooms(id) values ('main');
 
 -- Serialized claim and mutations: an old tab or a delayed HTTP retry can never
 -- overwrite a new publisher, resurrect an ended session, or reorder captions.
-create function public.live_caption_claim(p_room text, p_publisher uuid, p_title text, p_minutes integer)
+create function public.live_caption_claim(p_room text, p_publisher uuid, p_title text, p_minutes integer,
+  p_language text)
 returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
 declare r public.live_caption_rooms; p public.live_caption_publishers;
 begin
   if p_publisher is null or p_minutes is null or p_minutes not between 5 and 240
-    or p_title is null or length(p_title) > 120 then
+    or p_title is null or length(p_title) > 120 or p_language is null or p_language not in ('en','it') then
     return jsonb_build_object('ok',false,'error','bad_request');
   end if;
   select * into r from live_caption_rooms where id=p_room for update;
@@ -46,7 +49,7 @@ begin
     on conflict(room) do update set publisher=excluded.publisher, lease_until=excluded.lease_until,
       ends_at=excluded.ends_at, sequence=0;
   update live_caption_rooms set title=p_title,state='connecting',original='',translated='',
-    revision=revision+1,updated_at=now() where id=p_room returning * into r;
+    language=p_language,revision=revision+1,updated_at=now() where id=p_room returning * into r;
   return jsonb_build_object('ok',true,'ends_at',now()+make_interval(mins=>p_minutes),'snapshot',to_jsonb(r));
 end $$;
 
@@ -79,9 +82,9 @@ begin
   return jsonb_build_object('ok',true,'ends_at',p.ends_at);
 end $$;
 
-revoke all on function public.live_caption_claim(text,uuid,text,integer) from public,anon,authenticated;
+revoke all on function public.live_caption_claim(text,uuid,text,integer,text) from public,anon,authenticated;
 revoke all on function public.live_caption_update(text,uuid,bigint,text,text,text) from public,anon,authenticated;
-grant execute on function public.live_caption_claim(text,uuid,text,integer) to service_role;
+grant execute on function public.live_caption_claim(text,uuid,text,integer,text) to service_role;
 grant execute on function public.live_caption_update(text,uuid,bigint,text,text,text) to service_role;
 -- The publication exists on Supabase; isolated tests do not require replication.
 do $$ begin

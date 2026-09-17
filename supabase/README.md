@@ -221,8 +221,11 @@ si passa al piano da 20 USD/mese per quel mese e basta.
 
 ## 10. Sottotitoli live (Soniox)
 
-Italiano parlato sul palco, inglese sullo schermo. La regia (`/live/control/`)
-apre il microfono, il pubblico (`/live/`) legge. Il browser della regia parla
+Si parla una lingua sul palco e se ne legge un'altra sullo schermo. La regia
+(`/live/control/`) sceglie la direzione a ogni talk — **italiano → inglese**
+oppure **inglese → italiano** — apre il microfono, e il pubblico (`/live/`)
+legge; la pagina del pubblico si mette da sola nella lingua dei sottotitoli,
+perché la sala la scrive nella colonna `language`. Il browser della regia parla
 **direttamente** con Soniox via WebSocket, ma non conosce mai la chiave
 dell'account: la funzione `live-captions` gliene consegna una temporanea.
 
@@ -262,7 +265,8 @@ della cassa non può spendere credito audio e viceversa (test in
    Senza lease valido non viene chiesta nessuna chiave.
 4. L'audio esce dal mixer, passa per un AudioWorklet (PCM 16 bit mono, frame da
    100 ms) e va a `wss://stt-rt.soniox.com/transcribe-websocket` con
-   `translation: {type:'one_way', target_language:'en'}`.
+   `translation: {type:'one_way', target_language:<lingua scelta>}`. Quello che
+   viene già detto nella lingua d'arrivo non viene ritradotto: passa dritto.
 5. I token finali tornano indietro e ogni ~1,2 s la regia li pubblica con
    `action:'publish'`; la riga pubblica va in `live_caption_rooms`, che il
    pubblico legge in realtime con la sola chiave anon (RLS: sola lettura).
@@ -272,6 +276,8 @@ della cassa non può spendere credito audio e viceversa (test in
 ### Prima di ogni talk
 
 - Aprire `/live/control/` **su HTTPS** (il microfono non parte da `file://`).
+- Scegliere la direzione in *Lingua del talk e dei sottotitoli*: si imposta
+  prima di *Avvia* e resta fissa per tutta la sessione.
 - *Rileva ingressi* e scegliere l'uscita del mixer, non il microfono interno.
 - Compilare *Nomi e contesto*: nomi degli ospiti, titoli dei film e le
   traduzioni obbligate (`cortometraggio = short film`). È quello che alza la

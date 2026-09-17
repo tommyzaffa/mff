@@ -185,7 +185,7 @@ await test('request ledger is protected by row-level security',async()=>{
 // room may write it. Everything below uses a room that exists only in this test.
 await db.exec(`insert into live_caption_rooms(id) values('talk')`);
 const regiaA='aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa', regiaB='bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb';
-const claim=async(publisher,title='Talk',minutes=30)=>(await q(`select live_caption_claim('talk',$1,$2,$3) as r`,[publisher,title,minutes]))[0].r;
+const claim=async(publisher,title='Talk',minutes=30,language='en')=>(await q(`select live_caption_claim('talk',$1,$2,$3,$4) as r`,[publisher,title,minutes,language]))[0].r;
 const caption=async(publisher,sequence,state,text)=>(await q(`select live_caption_update('talk',$1,$2,$3,$4,$5) as r`,[publisher,sequence,state,text,text]))[0].r;
 const room=async()=>(await q(`select * from live_caption_rooms where id='talk'`))[0];
 await test('the audience can read captions and nothing else',async()=>{
@@ -204,6 +204,7 @@ await test('a second regia cannot take over a live room, and a repeated start ke
  assert.equal((await claim(regiaA)).snapshot.translated,'Buonasera');
  assert.equal((await caption(regiaB,2,'live','pirata')).error,'lease_lost');
  assert.equal((await claim(regiaA,'Talk',600)).error,'bad_request');
+ assert.equal((await claim(regiaA,'Talk',30,'de')).error,'bad_request');
  assert.equal((await room()).translated,'Buonasera');
 });
 await test('a delayed retry never rewinds the captions on screen',async()=>{
@@ -216,9 +217,9 @@ await test('a stopped session cannot resume, and the room frees up for the next 
  assert.equal((await caption(regiaA,6,'ended','grazie')).ok,true);
  assert.equal((await caption(regiaA,7,'live','ancora')).error,'lease_lost');
  assert.equal((await room()).state,'ended');
- assert.equal((await claim(regiaB,'Secondo talk')).ok,true);
+ assert.equal((await claim(regiaB,'Secondo talk',30,'it')).ok,true);
  const next=await room();
- assert.deepEqual([next.state,next.title,next.translated],['connecting','Secondo talk','']);
+ assert.deepEqual([next.state,next.title,next.translated,next.language],['connecting','Secondo talk','','it']);
 });
 console.log(`${count} database security tests passed`);
 await db.close();

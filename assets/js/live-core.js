@@ -2,7 +2,7 @@
 (function (root) {
   'use strict';
   class CaptionBuffer {
-    constructor() { this.original = ''; this.translated = ''; this.draft = ''; }
+    constructor(target = 'en') { this.target = target; this.original = ''; this.translated = ''; this.draft = ''; }
     accept(event) {
       if (!Array.isArray(event.tokens)) return;
       this.draft = '';
@@ -13,8 +13,8 @@
           if (translation) this.translated = (this.translated + token.text).slice(-1400);
           else {
             this.original = (this.original + token.text).slice(-1400);
-            // In one-way mode English speech is already in the target language.
-            if (token.language === 'en') this.translated = (this.translated + token.text).slice(-1400);
+            // In one-way mode speech already in the target language is never translated.
+            if (token.language === this.target) this.translated = (this.translated + token.text).slice(-1400);
           }
         } else if (translation) this.draft += token.text;
       }

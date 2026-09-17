@@ -12,16 +12,17 @@
     <header class="masthead"><a class="wordmark" href="../../">MERGE<span>FILM FESTIVAL</span></a><span class="eyebrow">LIVE CAPTIONS / REGIA</span></header>
     <section class="login-card" id="login-panel">
       <span class="eyebrow">ACCESSO RISERVATO</span><h1>Le parole,<br>oltre la lingua.</h1>
-      <p>Controlla i sottotitoli in inglese per il pubblico del festival.</p>
+      <p>Controlla i sottotitoli tradotti per il pubblico del festival.</p>
       <form id="login-form"><label for="password">Password regia</label><input id="password" type="password" autocomplete="current-password" required maxlength="256"><button class="primary" type="submit">Entra in regia <span aria-hidden="true">↗</span></button></form>
       <p id="login-error" class="error" role="alert"></p>
     </section>
     <section id="control-panel" hidden>
-      <div class="section-heading"><div><span class="eyebrow">ITALIANO → INGLESE</span><h1>Sottotitoli live</h1></div><button id="logout" class="quiet">Esci</button></div>
+      <div class="section-heading"><div><span class="eyebrow" id="direction-label">ITALIANO → INGLESE</span><h1>Sottotitoli live</h1></div><button id="logout" class="quiet">Esci</button></div>
       <div class="control-grid">
         <section class="card settings"><h2>Prepara la diretta</h2>
           <label for="room">Sala</label><select id="room"><option value="main">Palco principale</option></select>
           <label for="title">Titolo del talk</label><input id="title" value="Merge Film Festival — Live talks" maxlength="120" required>
+          <label for="direction">Lingua del talk e dei sottotitoli</label><select id="direction"><option value="it-en" selected>Si parla italiano → sottotitoli in inglese</option><option value="en-it">Si parla inglese → sottotitoli in italiano</option></select>
           <div class="label-row"><label for="device">Ingresso audio</label><button class="text-button" id="devices">Rileva ingressi</button></div>
           <select id="device"><option value="">Ingresso predefinito</option></select>
           <p class="hint">Collega l’uscita del mixer. Usa cuffie per il controllo e tieni il computer alimentato.</p>
@@ -29,7 +30,7 @@
           <details><summary>Nomi e contesto del talk</summary>
             <label for="context">Argomento e nomi degli speaker</label><textarea id="context" rows="3" maxlength="2500" placeholder="Una conversazione sul cinema e sull’intelligenza artificiale…"></textarea>
             <label for="terms">Parole da riconoscere · una per riga</label><textarea id="terms" rows="3" maxlength="2000" placeholder="Merge Film Festival"></textarea>
-            <label for="glossary">Traduzioni preferite · italiano = inglese</label><textarea id="glossary" rows="3" maxlength="2000" placeholder="cortometraggio = short film"></textarea>
+            <label for="glossary" id="glossary-label">Traduzioni preferite · italiano = inglese</label><textarea id="glossary" rows="3" maxlength="2000" placeholder="cortometraggio = short film"></textarea>
           </details>
           <div class="actions"><button id="start" class="primary">Avvia diretta</button><button id="stop" class="danger" disabled>Ferma</button></div>
           <p class="hint">L’audio viene inviato a Soniox solo dopo Avvia. Ferma chiude microfono e traduzione.</p>
@@ -40,14 +41,14 @@
             <p class="hint">Stima a $0.18/ora, esclusi hosting e imposte. Il consumo effettivo è nel pannello Soniox.</p>
             <p class="error" id="error" role="alert"></p><p class="notice" id="notice" role="status"></p>
           </section>
-          <section class="caption-preview"><span class="eyebrow">INGLESE · TESTO VISIBILE AL PUBBLICO</span><p id="translation" lang="en">I sottotitoli appariranno qui.</p><p id="draft" class="draft" lang="en"></p><span class="eyebrow">TRASCRIZIONE ITALIANA</span><p id="original" class="original" lang="it">In attesa dell’audio.</p></section>
+          <section class="caption-preview"><span class="eyebrow" id="translation-label">INGLESE · TESTO VISIBILE AL PUBBLICO</span><p id="translation" lang="en">I sottotitoli appariranno qui.</p><p id="draft" class="draft" lang="en"></p><span class="eyebrow" id="original-label">TRASCRIZIONE ITALIANA</span><p id="original" class="original" lang="it">In attesa dell’audio.</p></section>
           <section class="card sharing"><div><h2>Apri al pubblico</h2><p class="hint">Lo stesso testo sullo schermo in sala e sui telefoni.</p><div class="actions"><a id="screen-link" class="button" href="../?room=main&amp;screen=1" target="_blank" rel="noopener">Schermo sala ↗</a><a id="audience-link" href="../?room=main" target="_blank" rel="noopener">Pagina pubblico ↗</a><button id="copy-link" class="quiet">Copia link</button></div></div><div id="qr" aria-label="QR code della pagina pubblico"></div></section>
         </div>
       </div>
     </section>
     <footer class="control-footer">MERGE FILM FESTIVAL <span>Sottotitoli automatici · verifica l’audio prima di ogni talk.</span></footer>
   </main>
-  <script src="../../assets/js/passes-config.js?v=2"></script><script src="../../assets/js/live-core.js?v=1"></script>
-  <script src="../../assets/js/vendor/qr-creator-1.0.0.min.js"></script><script src="../../assets/js/live-control.js?v=1"></script>
+  <script src="../../assets/js/passes-config.js?v=2"></script><script src="../../assets/js/live-core.js?v=2"></script>
+  <script src="../../assets/js/vendor/qr-creator-1.0.0.min.js"></script><script src="../../assets/js/live-control.js?v=2"></script>
 </body>
 </html>

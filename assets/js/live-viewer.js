@@ -5,7 +5,33 @@
   const params = new URLSearchParams(location.search);
   const room = params.get('room') || 'main';
   let client; let channel; let snapshot; let connected = false; let fetching = false;
-  let stopped = false; let booting = false; let poll; let tick; let bootTimer;
+  let stopped = false; let booting = false; let poll; let tick; let bootTimer; let shown = 'en';
+  // The audience reads the page in the language it is being translated into.
+  const copy = {
+    en: { label: 'LIVE CAPTIONS / ENGLISH', source: 'Automatically translated from Italian.',
+      accuracy: 'Names and expressions may contain errors.', size: 'Caption size',
+      standard: 'Standard text', large: 'Large text', fullscreen: 'Full screen ↗',
+      idle: 'Waiting for the talk', ended: 'Talk ended', reconnecting: 'Reconnecting…',
+      connecting: 'Starting…', live: 'Live', waiting: 'Captions will appear when the talk begins.',
+      thanks: 'Thank you for joining us.',
+      interrupted: 'The live connection was interrupted. The text above is the last received caption.' },
+    it: { label: 'SOTTOTITOLI LIVE / ITALIANO', source: 'Tradotto automaticamente dall’inglese.',
+      accuracy: 'Nomi ed espressioni possono contenere errori.', size: 'Dimensione del testo',
+      standard: 'Testo standard', large: 'Testo grande', fullscreen: 'Schermo intero ↗',
+      idle: 'In attesa del talk', ended: 'Talk terminato', reconnecting: 'Riconnessione…',
+      connecting: 'Avvio…', live: 'In diretta', waiting: 'I sottotitoli appariranno all’inizio del talk.',
+      thanks: 'Grazie per aver seguito il talk.',
+      interrupted: 'Il collegamento si è interrotto. Il testo qui sopra è l’ultimo sottotitolo ricevuto.' },
+  };
+  function speak(language) {
+    if (language === shown) return;
+    shown = language; const words = copy[language];
+    document.documentElement.lang = language;
+    $('captions').lang = language; $('stage-label').textContent = words.label;
+    $('source-note').textContent = words.source; $('accuracy-note').textContent = words.accuracy;
+    $('size-label').textContent = words.size; $('fullscreen').textContent = words.fullscreen;
+    $('text-size').options[0].textContent = words.standard; $('text-size').options[1].textContent = words.large;
+  }
   if (params.get('screen') === '1') { document.body.classList.add('screen-mode'); document.body.dataset.size = 'large'; $('text-size').value = 'large'; }
   $('text-size').onchange = () => { document.body.dataset.size = $('text-size').value; render(); };
   $('fullscreen').onclick = async () => {
@@ -21,18 +47,20 @@
   }
   function render() {
     if (!snapshot) return;
+    speak(snapshot.language === 'it' ? 'it' : 'en');
+    const words = copy[shown];
     const stale = Date.now() - Date.parse(snapshot.updated_at) > 30000;
     const state = snapshot.state;
     const active = ['connecting', 'live', 'reconnecting'].includes(state);
     const waiting = active && (stale || !connected || state === 'reconnecting');
-    const text = state === 'idle' ? 'Waiting for the talk' : state === 'ended' ? 'Talk ended' :
-      waiting ? 'Reconnecting…' : state === 'connecting' ? 'Starting…' : 'Live';
+    const text = state === 'idle' ? words.idle : state === 'ended' ? words.ended :
+      waiting ? words.reconnecting : state === 'connecting' ? words.connecting : words.live;
     $('talk-title').textContent = snapshot.title;
     $('viewer-status').textContent = text;
     $('viewer-status').dataset.state = waiting ? 'reconnecting' : state;
     const limit = document.body.dataset.size === 'large' ? 240 : 320;
-    $('captions').textContent = tail(snapshot.translated, limit) || (state === 'ended' ? 'Thank you for joining us.' : 'Captions will appear when the talk begins.');
-    $('viewer-message').textContent = waiting ? 'The live connection was interrupted. The text above is the last received caption.' : '';
+    $('captions').textContent = tail(snapshot.translated, limit) || (state === 'ended' ? words.thanks : words.waiting);
+    $('viewer-message').textContent = waiting ? words.interrupted : '';
   }
   async function read() {
     if (!client || fetching || stopped) return;
