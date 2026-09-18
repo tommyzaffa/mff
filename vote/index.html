@@ -8,7 +8,7 @@
   <meta name="description" content="Rate the film you have just watched and help pick the Merge Film Festival Audience Award." />
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=63" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=64" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -42,6 +42,23 @@
           <!-- Waiting on the schedule lookup -->
           <div class="vote__panel" data-panel="loading">
             <p class="vote__status" data-i18n="vote.loading">Loading…</p>
+          </div>
+
+          <!-- Arrived without a code, from the one QR that hangs in the room:
+               everything whose window is open right now, so the audience picks
+               what they have just watched instead of hunting for a link. -->
+          <div class="vote__panel" data-panel="pick" hidden>
+            <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
+            <h1 class="vote__headline" data-i18n="vote.pickTitle">What did you just watch?</h1>
+            <ul class="vote__list" data-list></ul>
+            <p class="vote__fine" data-i18n="vote.pickText">Only what is open for voting appears here.</p>
+          </div>
+
+          <!-- Same QR, but no window is open -->
+          <div class="vote__panel vote__panel--center" data-panel="none" hidden>
+            <h1 class="vote__headline" data-i18n="vote.noneTitle">There is nothing to vote on right now.</h1>
+            <p class="vote__fine" data-i18n="vote.noneText">Voting opens when a screening ends and stays open for three hours. Scan again then.</p>
+            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
 
           <!-- The voting window is open -->
@@ -123,9 +140,9 @@
     </section>
   </main>
 
-  <script src="../assets/js/translations.js?v=49"></script>
+  <script src="../assets/js/translations.js?v=50"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/vote-config.js"></script>
-  <script src="../assets/js/vote.js"></script>
+  <script src="../assets/js/vote.js?v=2"></script>
 </body>
 </html>

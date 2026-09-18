@@ -2004,6 +2004,23 @@ html.intro-armed #introOverlay {
 .vote__scale[aria-busy="true"] .vote__score { pointer-events: none; opacity: 0.45; }
 .vote__scale[aria-busy="true"] .vote__score.is-chosen { opacity: 1; }
 
+/* The list behind the single room QR. Rows are big because they are tapped in
+   the dark by someone still holding a coat. */
+.vote__list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.vote__list[hidden] { display: none; }
+.vote__pick {
+  appearance: none; cursor: pointer; width: 100%;
+  display: grid; gap: 4px; text-align: left;
+  min-height: 64px; padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  border-radius: 14px;
+  background: transparent; color: inherit;
+  transition: background-color 0.18s var(--ease);
+}
+.vote__pick:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.vote__pick-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+.vote__pick-meta { font-size: 0.82rem; opacity: 0.6; }
+
 .vote__legend {
   display: flex; justify-content: space-between; margin: 0;
   font-size: 0.78rem; opacity: 0.55;
