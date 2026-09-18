@@ -13,6 +13,13 @@
    a day pass posts `day`. Each seat carries its own tariff, full
    or reduced — declared here, checked at the door, which is why
    the word travels all the way to the scanner.
+
+   A day pass buys a CODE, not seats: like an accreditation badge
+   it reserves nothing, and its holder comes back here to book each
+   screening with it. That is why the day cards carry no seat count
+   and the day form offers neither a wheelchair box nor a badge
+   field — and why the credential field on a screening accepts
+   either kind of code.
    ============================================================ */
 (function () {
   "use strict";
@@ -45,6 +52,17 @@
   var showWhenEl = form.querySelector("[data-show-when]");
   var addSeatBtn = form.querySelector("[data-add-seat]");
   var codesEl = scope.querySelector("[data-codes]");
+  var seatsLabelEl = form.querySelector("[data-seats-label]");
+  var dayWarnEls = Array.prototype.slice.call(form.querySelectorAll("[data-day-warning]"));
+  var seatedOnlyEls = Array.prototype.slice.call(form.querySelectorAll("[data-seated-only]"));
+  var doneEl = scope.querySelector("[data-done-body]");
+  var doneTitleEl = scope.querySelector("[data-done-title]");
+
+  function retitle(el, key) {
+    if (!el) return;
+    el.setAttribute("data-i18n", key);
+    el.textContent = t(key, el.textContent);
+  }
 
   var MAX_SEATS = 10;
 
@@ -146,7 +164,7 @@
     var pick = s
       ? screenings.filter(function (x) { return x.code === s && x.sales_open && x.seats_left > 0; })[0]
       : d
-      ? days.filter(function (x) { return x.day === d && x.sales_open && x.seats_left > 0; })[0]
+      ? days.filter(function (x) { return x.day === d && x.sales_open; })[0]
       : null;
     if (pick) openForm(s ? asScreening(pick) : asDay(pick));
   }
@@ -160,6 +178,7 @@
       full: Number(s.price_cents),
       reduced: Number(s.price_reduced_cents),
       badges: true,
+      seated: true,
     };
   }
 
@@ -177,6 +196,9 @@
       // badge on a day pass would be money for nothing — the server refuses it
       // and the field is simply not offered.
       badges: false,
+      // Nothing is being seated here, so neither the wheelchair box nor the
+      // seat count means anything: both belong to the booking that comes later.
+      seated: false,
     };
   }
 
@@ -208,6 +230,8 @@
       ? t("tickets.soldOut", "Sold out")
       : o.closed
       ? t("tickets.closed", "Online sales are closed — ask at the box office.")
+      : o.note
+      ? o.note
       : o.left + " " + t("tickets.seatsLeft", "seats left");
     info.appendChild(seats);
 
@@ -250,9 +274,11 @@
         title: t("tickets.dayPass", "Day pass"),
         meta: d.screenings.length + " " + t("tickets.dayScreenings", "screenings"),
         price: priceText(Number(d.price_cents), Number(d.price_reduced_cents)),
-        left: Number(d.seats_left),
+        // A pass takes no seat, so there is no number to count down. What the
+        // buyer needs on the card is the rule, not a figure.
+        note: t("tickets.dayBookNote", "Reserve each screening afterwards with your pass code."),
         closed: false,
-        soldOut: Number(d.seats_left) <= 0,
+        soldOut: false,
         book: function () { openForm(asDay(d)); },
       }));
     });
@@ -264,6 +290,10 @@
     current = item;
     showTitleEl.textContent = item.title;
     showWhenEl.textContent = item.when;
+    // The one thing a day-pass buyer must not miss, said before they pay and
+    // again in the email, on the pass and at the door.
+    dayWarnEls.forEach(function (el) { el.hidden = item.seated; });
+    seatedOnlyEls.forEach(function (el) { el.hidden = !item.seated; });
     seatsEl.innerHTML = "";
     addSeat();
     statusEl.textContent = "";
@@ -333,12 +363,15 @@
     tariff.addEventListener("change", updateTotal);
     li.appendChild(tariff);
 
+    // One field for both credentials. A badge is MFF-XXXX-XXXX and a day pass
+    // MFF-D-XXXXXXXX, so the server can tell them apart with certainty and the
+    // buyer is spared a choice they could only get wrong.
     if (!current || current.badges) {
       var badge = document.createElement("input");
       badge.type = "text";
       badge.className = "seat__badge";
       badge.setAttribute("data-badge", "");
-      badge.placeholder = t("tickets.phBadge", "Badge number (optional)");
+      badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
       badge.addEventListener("input", function () {
         badge.value = badge.value.toUpperCase();
         updateTotal();
@@ -346,16 +379,20 @@
       li.appendChild(badge);
     }
 
-    var chair = document.createElement("label");
-    chair.className = "seat__chair";
-    var box = document.createElement("input");
-    box.type = "checkbox";
-    box.setAttribute("data-wheelchair", "");
-    var text = document.createElement("span");
-    text.textContent = t("tickets.wheelchair", "Wheelchair space");
-    chair.appendChild(box);
-    chair.appendChild(text);
-    li.appendChild(chair);
+    // A wheelchair space is claimed when a seat is actually taken, so it asks
+    // nothing of a day pass: the holder will tick it on each booking instead.
+    if (!current || current.seated) {
+      var chair = document.createElement("label");
+      chair.className = "seat__chair";
+      var box = document.createElement("input");
+      box.type = "checkbox";
+      box.setAttribute("data-wheelchair", "");
+      var text = document.createElement("span");
+      text.textContent = t("tickets.wheelchair", "Wheelchair space");
+      chair.appendChild(box);
+      chair.appendChild(text);
+      li.appendChild(chair);
+    }
 
     seatsEl.appendChild(li);
     renumber();
@@ -364,8 +401,19 @@
 
   function renumber() {
     var rows = seatRows();
+    var unitKey = current && !current.seated ? "tickets.dayPass" : "tickets.seat";
+    if (seatsLabelEl) {
+      seatsLabelEl.textContent = current && !current.seated
+        ? t("tickets.passesLabel", "Day passes")
+        : t("tickets.seatsLabel", "Seats");
+    }
+    if (addSeatBtn) {
+      addSeatBtn.textContent = current && !current.seated
+        ? t("tickets.addPass", "+ Add a pass")
+        : t("tickets.addSeat", "+ Add a seat");
+    }
     rows.forEach(function (li, i) {
-      li.querySelector(".seat__n").textContent = t("tickets.seat", "Seat") + " " + (i + 1);
+      li.querySelector(".seat__n").textContent = t(unitKey, "Seat") + " " + (i + 1);
       li.querySelector(".seat__remove").hidden = rows.length <= 1;
       // The options were written by hand, so a language switch has to come back
       // for them; the chosen value is preserved because only the labels change.
@@ -375,9 +423,13 @@
         sel.options[1].textContent = t("tickets.tariffReduced", "Reduced — student / 65+");
       }
       var holder = li.querySelector("[data-holder]");
-      if (holder) holder.placeholder = t("tickets.phHolder", "Name on the ticket (optional)");
+      if (holder) {
+        holder.placeholder = current && !current.seated
+          ? t("tickets.phPassHolder", "Name on the pass (optional)")
+          : t("tickets.phHolder", "Name on the ticket (optional)");
+      }
       var badge = li.querySelector("[data-badge]");
-      if (badge) badge.placeholder = t("tickets.phBadge", "Badge number (optional)");
+      if (badge) badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
     });
     if (addSeatBtn) addSeatBtn.hidden = rows.length >= MAX_SEATS;
   }
@@ -385,19 +437,21 @@
   function collect() {
     return seatRows().map(function (li) {
       var badge = li.querySelector("[data-badge]");
+      var chair = li.querySelector("[data-wheelchair]");
       return {
         badge: badge ? badge.value.trim().toUpperCase() || null : null,
         holder: li.querySelector("[data-holder]").value.trim() || null,
-        wheelchair: li.querySelector("[data-wheelchair]").checked,
+        wheelchair: chair ? chair.checked : false,
         tariff: li.querySelector("[data-tariff]").value,
       };
     });
   }
 
-  // A badge covers exactly one seat, so the sum is simply the seats without one,
-  // each at the tariff it declared. The server checks each badge for real; this
-  // is only what the buyer is told to expect, and a badge that turns out to be
-  // invalid stops the booking rather than quietly charging for it.
+  // A badge or a day pass covers exactly one seat, so the sum is simply the
+  // seats without one, each at the tariff it declared. The server checks every
+  // credential for real; this is only what the buyer is told to expect, and one
+  // that turns out to be invalid stops the booking rather than quietly charging
+  // for it.
   function updateTotal() {
     if (!current) return;
     var cents = collect().reduce(function (sum, s) {
@@ -407,7 +461,7 @@
 
     totalEl.textContent = cents > 0
       ? t("tickets.total", "Total") + ": " + money(cents)
-      : t("tickets.totalFree", "Nothing to pay — your accreditation covers these seats.");
+      : t("tickets.totalFree", "Nothing to pay — your accreditation or day pass covers these seats.");
 
     var key = cents > 0 ? "tickets.submitPay" : "tickets.submitFree";
     submitBtn.setAttribute("data-i18n", key);
@@ -460,6 +514,11 @@
           return;
         }
         codes(res.codes || []);
+        // The `data-i18n` key moves with the text, so a language switch on the
+        // done panel keeps saying the same thing rather than reverting to the
+        // ticket wording.
+        retitle(doneTitleEl, current.seated ? "tickets.doneTitle" : "tickets.doneDayTitle");
+        retitle(doneEl, current.seated ? "tickets.doneBody" : "tickets.doneDayBody");
         show("done");
       })
       .catch(function () { bad("network"); });

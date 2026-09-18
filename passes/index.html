@@ -8,7 +8,7 @@
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=61" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=62" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -280,13 +280,19 @@
         <!-- 1. Pick a screening ---------------------------------------------- -->
         <div class="pass-flow" data-panel="choose" hidden>
           <p class="pass-perk reveal">
-            <span class="pass-perk__label" data-i18n="tickets.perkLabel">Accredited?</span>
-            <span class="pass-perk__text" data-i18n="tickets.perkText">Enter your badge number when you book and the seat costs nothing — one seat per badge, per screening.</span>
+            <span class="pass-perk__label" data-i18n="tickets.perkLabel">Have a badge or a day pass?</span>
+            <span class="pass-perk__text" data-i18n="tickets.perkText">Enter its code when you book and the seat costs nothing — one seat per badge or day pass, per screening.</span>
           </p>
 
           <div class="ticket-group reveal" data-day-group hidden>
             <h3 class="ticket-group__title" data-i18n="tickets.dayTitle">Day passes</h3>
-            <p class="ticket-note" data-i18n="tickets.dayNote">One code, every ticketed screening of that day.</p>
+            <p class="ticket-note" data-i18n="tickets.dayNote">One code for every ticketed screening of that day — free, but you still have to reserve each one with it.</p>
+            <!-- Said here, in the form, on the pass, in the email and at the
+                 door: a day pass is a credential, not a seat. -->
+            <p class="pass-perk pass-perk--warn">
+              <span class="pass-perk__label" data-i18n="tickets.dayWarnLabel">Seats are booked separately</span>
+              <span class="pass-perk__text" data-i18n="tickets.dayWarnText">A day pass does not reserve any seat. Once you have it, come back and book the screenings you want with its code — one seat per pass, per screening. Without a reservation there is no seat waiting for you.</span>
+            </p>
             <ul class="screening-list" data-days></ul>
           </div>
 
@@ -324,7 +330,7 @@
               <input id="tkEmail" type="email" name="email" autocomplete="email" required />
             </div>
 
-            <p class="pass-form__label" data-i18n="tickets.seatsLabel">Seats</p>
+            <p class="pass-form__label" data-seats-label data-i18n="tickets.seatsLabel">Seats</p>
             <ul class="seat-list" data-seats></ul>
 
             <button class="btn btn--ghost btn--small" type="button" data-add-seat data-i18n="tickets.addSeat">+ Add a seat</button>
@@ -336,7 +342,10 @@
               <span data-i18n-html="tickets.consent">I agree to the processing of my data for this booking, as described in the privacy policy.</span>
             </label>
 
-            <p class="pass-form__perk" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+            <p class="pass-form__perk" data-seated-only data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
+            <!-- Shown only when the thing being bought is a day pass, so the
+                 last thing read before paying is what the pass does not do. -->
+            <p class="pass-form__perk" data-day-warning hidden data-i18n="tickets.dayWarnText">A day pass does not reserve any seat. Once you have it, come back and book the screenings you want with its code — one seat per pass, per screening. Without a reservation there is no seat waiting for you.</p>
 
             <button class="btn" type="submit" data-submit-label data-i18n="tickets.submitPay">Continue to payment</button>
             <p class="form__status" data-status role="status" aria-live="polite"></p>
@@ -346,8 +355,8 @@
         <!-- 3. Done ---------------------------------------------------------- -->
         <div class="pass-flow" data-panel="done" hidden>
           <div class="form-card reveal pass-result">
-            <h2 data-i18n="tickets.doneTitle">Your seat is booked</h2>
-            <p data-i18n="tickets.doneBody">We have sent the tickets to your inbox. Show them at the door — each one admits one person.</p>
+            <h2 data-done-title data-i18n="tickets.doneTitle">Your seat is booked</h2>
+            <p data-done-body data-i18n="tickets.doneBody">We have sent the tickets to your inbox. Show them at the door — each one admits one person.</p>
             <ul class="ticket-codes" data-codes></ul>
             <a class="btn btn--ghost" href="../index.html" data-i18n="tickets.backHome">Back to the site</a>
           </div>
@@ -414,10 +423,10 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=45"></script>
+  <script src="../assets/js/translations.js?v=47"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script src="../assets/js/passes.js?v=5"></script>
-  <script src="../assets/js/tickets.js?v=3"></script>
+  <script src="../assets/js/tickets.js?v=4"></script>
 </body>
 </html>

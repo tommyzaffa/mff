@@ -12,8 +12,9 @@ Il flusso principale funziona, verificato sia nei test locali sia eseguendo le f
 | Badge valido con prenotazione per la proiezione | Entra; il QR del relativo biglietto condivide lo stesso ingresso |
 | Badge valido senza prenotazione | Accredito senza posto |
 | Badge usato su due proiezioni prenotate | Un ingresso distinto per ciascuna |
-| Giornaliera pagata | Un ingresso per ciascuna proiezione inclusa all'acquisto |
-| Giornaliera per un altro giorno o per un film escluso | Rifiutata senza consumare gli altri ingressi |
+| Giornaliera con prenotazione per la proiezione | Entra; un ingresso distinto per ciascuna proiezione prenotata |
+| Giornaliera valida ma senza prenotazione per quella proiezione | Giornaliera senza posto |
+| Giornaliera di un altro giorno | Giornaliera di un altro giorno, senza consumare le prenotazioni |
 | Ordine non pagato o annullato | Rifiutato |
 | Acquisto per più persone | Codici utilizzabili separatamente |
 | Biglietto ridotto / carrozzina | Segnalazione restituita allo staff |
@@ -22,7 +23,7 @@ Il flusso principale funziona, verificato sia nei test locali sia eseguendo le f
 
 **Un badge non è un ingresso automatico.** Il posto va prenotato online prima della chiusura delle vendite, normalmente un'ora prima. `/door` registra vendite intere/ridotte: non offre una funzione per assegnare gratuitamente un posto a un accreditato arrivato senza prenotazione. Questa eventualità richiede una procedura concordata con l'organizzazione.
 
-La giornaliera copre le proiezioni ancora prenotabili al momento dell'acquisto, non automaticamente tutti i film del giorno. Il messaggio nello scanner ora dice “Giornaliera non valida qui”, evitando di indicare falsamente un giorno diverso.
+**Nemmeno la giornaliera è un ingresso automatico.** Dal 18 settembre 2026 si comporta esattamente come un accredito: una volta pagata dà un codice, e ogni proiezione va prenotata online con quel codice, gratuitamente, prima della chiusura delle vendite. Le giornaliere vendute prima di quella data mantengono i posti che il vecchio sistema aveva già assegnato. Lo scanner distingue due casi: “Giornaliera di un altro giorno” (non varrà mai per questa proiezione) e “Giornaliera senza posto” (giorno giusto, ma il posto non è mai stato prenotato). In entrambi i casi si manda la persona in cassa: nessuna prenotazione viene consumata.
 
 ## Problemi corretti
 
@@ -40,10 +41,10 @@ La giornaliera copre le proiezioni ancora prenotabili al momento dell'acquisto, 
 
 ## Verifiche eseguite
 
-- **31 test PostgreSQL isolati**, con tutte le migrazioni applicate: prenotazioni, emissione, badge, giornaliere, posti, annullamenti, tariffe, permessi e recupero dei movimenti.
+- **37 test PostgreSQL isolati**, con tutte le migrazioni applicate: prenotazioni, emissione, badge, giornaliere come credenziale (nessun posto all'acquisto, prenotazione gratuita, un solo posto per proiezione, giorno sbagliato, scadenza del pagamento), posti, annullamenti, tariffe, permessi e recupero dei movimenti.
 - **15 test Deno**, con rete simulata: handler effettivi, credenziali, sessioni, validazione richieste, instradamento dei tre codici e dei movimenti della cassa, controlli già esistenti sui pagamenti.
 - **14 test browser Chrome**, viewport mobile: login, inserimento manuale, errori di rete, lettura QR con generatore effettivo e colori del sito, QR nel flusso video tramite MediaStream sintetico, chiusura telecamera, selezione proiezione, cassa e recupero dopo reload. Nessun errore JavaScript non gestito.
-- **Prova sul database Supabase reale**, tramite `tests/staff_live_smoke.sql`: prenotazione/emissione, biglietto non pagato, film sbagliato, ingresso corretto e duplicato, badge senza/con prenotazione, equivalenza badge/biglietto, giornaliera su due film, giorno sbagliato e limiti della cassa. Transazione annullata: zero proiezioni, ordini o pass di prova rimasti. Nessuna email o pagamento esterno.
+- **Prova sul database Supabase reale**, tramite `tests/staff_live_smoke.sql`: prenotazione/emissione, biglietto non pagato, film sbagliato, ingresso corretto e duplicato, badge senza/con prenotazione, equivalenza badge/biglietto, giornaliera rifiutata per giorno sbagliato e poi per mancata prenotazione, prenotazione gratuita su due film e relativi ingressi, limiti della cassa. Transazione annullata: zero proiezioni, ordini o pass di prova rimasti. Nessuna email o pagamento esterno.
 - **Online, in lettura:** 10 proiezioni a pagamento pubblicate, inclusa la premiazione; capienza 273 + 2 spazi carrozzina; nessun codice di formato incompatibile, duplicato di prenotazione per badge/giornaliera, conteggio negativo o sovracapienza. Al momento della verifica risultano zero biglietti attivi emessi.
 - `ticket-door` attivo, risposta 401 senza credenziali, `DOOR_PASSWORD` presente nei metadati dei secret. Tutte le migrazioni antecedenti a questa verifica risultano applicate.
 
@@ -53,12 +54,12 @@ La prova sul database reale è stata ripetuta dopo la pubblicazione della nuova 
 
 Il rilascio applica nell’ordine: migrazione `20260914120000_staff_reliability.sql`, Edge Function `ticket-door`, poi sito statico con `staff-api.js`, jsQR locale e pagine aggiornate. Ricaricare le schede già aperte. La nuova cassa tiene bloccate le vendite se rileva il backend precedente.
 
-Prima dell'impiego al festival, fare una prova con almeno due telefoni effettivamente destinati allo staff, su HTTPS e sul Wi-Fi/rete mobile del cinema: stesso QR su due dispositivi, badge prenotato/non prenotato, giornaliera, cambio film, perdita della rete e recupero della vendita. Usare uno staging o una sessione di collaudo organizzata con dati di prova. Non usare biglietti degli spettatori per verifiche esplorative.
+Prima dell'impiego al festival, fare una prova con almeno due telefoni effettivamente destinati allo staff, su HTTPS e sul Wi-Fi/rete mobile del cinema: stesso QR su due dispositivi, badge prenotato/non prenotato, giornaliera prenotata/non prenotata, cambio film, perdita della rete e recupero della vendita. Usare uno staging o una sessione di collaudo organizzata con dati di prova. Non usare biglietti degli spettatori per verifiche esplorative.
 
 Indicazioni per il turno:
 
 1. In `/scan`, scegliere sempre la proiezione corretta. L'elenco mostra gli eventi nelle prossime 18 ore e fino a 45 minuti dopo l'inizio; lontano dal festival è normale trovarlo vuoto.
-2. Verde: ingresso registrato. Ridotto: controllare il documento. Badge: controllare l'intestatario secondo la procedura del cinema.
+2. Verde: ingresso registrato. Ridotto: controllare il documento. Badge e giornaliera: controllare l'intestatario secondo la procedura del cinema.
 3. “Già entrato”: controllare l'orario; non far passare automaticamente. Dopo una risposta persa potrebbe essere la propria prima scansione già registrata.
 4. Senza rete lo scanner non autorizza ingressi. Usare il codice manuale se il QR o la telecamera non funzionano: anche questa verifica richiede connessione.
 5. In `/door`, usare Intero/Ridotto per ogni vendita e “−” sulla tariffa corretta per correggerla. Dopo un esito incerto premere Aggiorna, evitando di registrare un nuovo movimento dalla stessa o da un'altra postazione finché non è chiarito.

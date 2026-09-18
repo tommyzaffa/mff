@@ -12,9 +12,10 @@ import { secured } from "../_shared/security.ts";
 // printed on it and whether it is still valid. No email address, no order total,
 // nothing about the party's other seats.
 //
-// A day pass is the same object seen from further back: one `MFF-D-` code over
-// several ticket rows, one per screening of the day. It is shown as a single
-// pass with the list of doors it opens, never as a handful of tickets.
+// A day pass is not a ticket at all: it is a credential, like an accreditation
+// badge, and it reserves nothing by itself. What it shows is therefore the pass
+// and the screenings its holder has actually booked with it — which may well be
+// none, and saying so plainly is the point.
 
 import { db } from "../_shared/db.ts";
 import { fail, json, preflight } from "../_shared/http.ts";
@@ -83,40 +84,47 @@ async function oneTicket(code: string) {
 }
 
 async function onePass(code: string) {
-  const { data: rows } = await db()
-    .from("tickets").select(TICKET_COLS)
-    .eq("day_pass_code", code).order("created_at", { ascending: true });
-  if (!rows?.length) return { ok: false, error: "unknown_ticket" };
+  const { data: pass } = await db()
+    .from("day_passes")
+    .select("code, order_id, day, holder_name, tariff, cancelled_at")
+    .eq("code", code)
+    .maybeSingle();
+  if (!pass) return { ok: false, error: "unknown_ticket" };
 
-  const status = await orderStatus(rows[0].order_id);
-  const live = rows.filter((r) => !r.cancelled_at);
+  const status = await orderStatus(pass.order_id);
 
-  const { data: shows } = await db()
-    .from("screenings").select("code, title, venue, starts_at")
-    .in("code", live.map((r) => r.screening))
-    .order("starts_at", { ascending: true });
+  const { data: booked } = await db()
+    .from("tickets").select("screening, checked_in_at")
+    .eq("day_pass_code", code).is("cancelled_at", null);
 
-  // The pass is spent per door, so "used" here means the holder is inside the
-  // screening that is running — not that the day is over.
-  const usedAt = live.map((r) => r.checked_in_at).filter(Boolean).sort().pop() ?? null;
+  const seats = booked ?? [];
+  const { data: shows } = seats.length
+    ? await db()
+      .from("screenings").select("code, title, venue, starts_at")
+      .in("code", seats.map((r) => r.screening))
+      .order("starts_at", { ascending: true })
+    : { data: [] };
 
+  // A pass is never "used": it is spent one door at a time and stays good for
+  // the next one. Only the order and a cancellation can take it away.
   return {
     ok: true,
     ticket: {
-      code,
-      holder: rows[0].holder_name,
+      code: pass.code,
+      holder: pass.holder_name,
       badge: null,
-      tariff: rows[0].tariff,
-      wheelchair: rows[0].wheelchair,
+      tariff: pass.tariff,
+      wheelchair: false,
       day_pass: true,
-      valid: status === "issued" && live.length > 0,
-      status: state(status, live.length ? null : "cancelled", null),
-      checked_in_at: usedAt,
+      day: pass.day,
+      valid: status === "issued" && !pass.cancelled_at,
+      status: state(status, pass.cancelled_at, null),
+      checked_in_at: null,
     },
-    screening: shows?.[0] ?? null,
+    screening: null,
     screenings: (shows ?? []).map((s) => ({
       ...s,
-      used: live.find((r) => r.screening === s.code)?.checked_in_at ?? null,
+      used: seats.find((r) => r.screening === s.code)?.checked_in_at ?? null,
     })),
   };
 }
@@ -131,20 +139,19 @@ async function wholeOrder(orderId: string) {
 
   // Only an issued order has codes worth showing: while it is still `held` the
   // page is waiting for the webhook, and saying nothing is the honest answer.
-  const rows = order.status === "issued"
-    ? (await db()
-      .from("tickets")
-      .select("code, day_pass_code")
+  const codes = order.status !== "issued" ? [] : order.day
+    ? ((await db()
+      .from("day_passes")
+      .select("code")
       .eq("order_id", orderId)
       .is("cancelled_at", null)
-      .order("created_at", { ascending: true })).data ?? []
-    : [];
-
-  // A day-pass order holds one row per screening per person but only one code
-  // per person, so it is the passes that are listed, deduplicated.
-  const codes = order.day
-    ? [...new Set(rows.map((t) => t.day_pass_code).filter(Boolean) as string[])]
-    : rows.map((t) => t.code);
+      .order("created_at", { ascending: true })).data ?? []).map((p) => p.code)
+    : ((await db()
+      .from("tickets")
+      .select("code")
+      .eq("order_id", orderId)
+      .is("cancelled_at", null)
+      .order("created_at", { ascending: true })).data ?? []).map((t) => t.code);
 
   return {
     ok: true,

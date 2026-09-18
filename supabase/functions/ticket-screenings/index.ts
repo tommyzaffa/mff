@@ -6,10 +6,12 @@ import { secured } from "../_shared/security.ts";
 // browser read the table with the anon key, because `screening_availability`
 // joins the orders — and those carry names and email addresses.
 //
-// It also answers with the days that are sold as a pass. A day pass takes one
-// seat in every screening of that day that is still on sale, so what is left of
-// it is the smallest of those — computed here rather than stored, because it
-// changes with every booking and with the clock.
+// It also answers with the days that are sold as a pass. A day pass reserves
+// nothing — it is a credential, like an accreditation badge, and its holder
+// books each screening afterwards — so there is no seat count to report for
+// one. All that is asked of a day is whether it still has a screening the site
+// can sell, because a pass for a day that has moved to the box office would
+// open nothing.
 //
 // Every read first sweeps expired holds, so seats abandoned on a Stripe page
 // come back into the count without a cron job to forget to set up.
@@ -60,7 +62,6 @@ Deno.serve(secured(async (req) => {
         screenings: open.map((s) => s.code),
         // No screening of that day is still on sale, so there is no pass left
         // to sell either — the whole day has moved to the box office.
-        seats_left: open.length ? Math.min(...open.map((s) => s.seats_left)) : 0,
         sales_open: open.length > 0,
       };
     });

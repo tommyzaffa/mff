@@ -386,32 +386,64 @@ export function whenText(iso: string, locale: Locale): string {
   }).format(new Date(iso));
 }
 
+// A day pass belongs to a date, not to an hour.
+function dayText(iso: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(DATE_LOCALE[locale], {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: ZONE,
+  }).format(new Date(iso));
+}
+
 const TICKET_COPY: Record<Locale, {
   subject: (title: string) => string;
+  passSubject: (title: string) => string;
   heading: string;
+  passHeading: string;
   hi: (n: string) => string;
   body: (n: number) => string;
   seatsLabel: string;
+  passesLabel: string;
+  dayPassBody: (n: number) => string;
+  dayPassBook: string;
   freeSeat: string;
+  freeSeatDay: string;
   reducedSeat: string;
   dayPassFoot: string;
   cta: string;
+  passCta: string;
   foot: string;
 }> = {
   it: {
     subject: (t) => `Il tuo posto — ${t}`,
+    passSubject: (t) => `La tua giornaliera — ${t}`,
     heading: "Posto confermato",
+    passHeading: "Giornaliera attiva",
     hi: (n) => `Ciao ${n},`,
     body: (n) =>
       n === 1
         ? "il tuo posto è prenotato. Mostra il biglietto qui sotto all'ingresso della sala."
         : `i tuoi ${n} posti sono prenotati. Mostra i biglietti qui sotto all'ingresso della sala.`,
     seatsLabel: "I tuoi biglietti",
+    passesLabel: "Le tue giornaliere",
+    dayPassBody: (n) =>
+      n === 1
+        ? "la tua giornaliera è pronta. Attenzione: la giornaliera non prenota i posti."
+        : `le tue ${n} giornaliere sono pronte. Attenzione: la giornaliera non prenota i posti.`,
+    dayPassBook:
+      `<strong>La giornaliera non prenota i posti.</strong> Le proiezioni di quel giorno le
+       riservi una per una su mergefestival.ch/passes: inserisci il codice qui sotto e non
+       paghi nulla — un posto per giornaliera, per proiezione. La sala ha posti limitati,
+       quindi conviene farlo per tempo.`,
     freeSeat: "Incluso nell'accredito",
+    freeSeatDay: "Incluso nella giornaliera",
     reducedSeat: "Tariffa ridotta — porta un documento",
     dayPassFoot:
-      "Questo codice vale a ogni proiezione in programma quel giorno: mostralo\n       all'ingresso della sala ogni volta. Viene registrato una volta per proiezione.",
+      `Senza prenotazione il posto non è garantito. Dopo aver prenotato, mostra la
+       giornaliera all'ingresso della sala: viene registrata una volta per proiezione.`,
     cta: "Apri il biglietto",
+    passCta: "Apri la giornaliera",
     foot:
       `Il posto in sala è garantito ma non numerato: puoi sederti dove preferisci.
        Ti consigliamo di arrivare qualche minuto prima. Ogni biglietto vale per una
@@ -419,18 +451,32 @@ const TICKET_COPY: Record<Locale, {
   },
   en: {
     subject: (t) => `Your seat — ${t}`,
+    passSubject: (t) => `Your day pass — ${t}`,
     heading: "Seat confirmed",
+    passHeading: "Day pass active",
     hi: (n) => `Hi ${n},`,
     body: (n) =>
       n === 1
         ? "your seat is booked. Show the ticket below at the door."
         : `your ${n} seats are booked. Show the tickets below at the door.`,
     seatsLabel: "Your tickets",
+    passesLabel: "Your day passes",
+    dayPassBody: (n) =>
+      n === 1
+        ? "your day pass is ready. Please note: a day pass does not reserve any seat."
+        : `your ${n} day passes are ready. Please note: a day pass does not reserve any seat.`,
+    dayPassBook:
+      `<strong>The day pass does not reserve any seat.</strong> You book that day's screenings
+       one by one at mergefestival.ch/passes: enter the code below and they cost nothing
+       — one seat per pass, per screening. The room is small, so it is worth doing early.`,
     freeSeat: "Included with your accreditation",
+    freeSeatDay: "Included with your day pass",
     reducedSeat: "Reduced rate — bring proof of eligibility",
     dayPassFoot:
-      "This one code admits you to every screening on that day: show it at the door\n       each time. It is registered once per screening.",
+      `Without a reservation your seat is not guaranteed. Once you have booked, show the
+       pass at the door: it is registered once per screening.`,
     cta: "Open the ticket",
+    passCta: "Open the day pass",
     foot:
       `Your place in the room is guaranteed but not numbered — sit wherever you like.
        Please arrive a few minutes early. Each ticket admits one person and can only
@@ -438,18 +484,33 @@ const TICKET_COPY: Record<Locale, {
   },
   fr: {
     subject: (t) => `Votre place — ${t}`,
+    passSubject: (t) => `Votre pass journée — ${t}`,
     heading: "Place confirmée",
+    passHeading: "Pass journée actif",
     hi: (n) => `Bonjour ${n},`,
     body: (n) =>
       n === 1
         ? "votre place est réservée. Présentez le billet ci-dessous à l'entrée de la salle."
         : `vos ${n} places sont réservées. Présentez les billets ci-dessous à l'entrée de la salle.`,
     seatsLabel: "Vos billets",
+    passesLabel: "Vos pass journée",
+    dayPassBody: (n) =>
+      n === 1
+        ? "votre pass journée est prêt. Attention : le pass journée ne réserve aucune place."
+        : `vos ${n} pass journée sont prêts. Attention : le pass journée ne réserve aucune place.`,
+    dayPassBook:
+      `<strong>Le pass journée ne réserve aucune place.</strong> Vous réservez les projections
+       de la journée une par une sur mergefestival.ch/passes : indiquez le code ci-dessous et
+       elles ne coûtent rien — une place par pass, par projection. La salle est petite :
+       mieux vaut s'y prendre tôt.`,
     freeSeat: "Inclus dans votre accréditation",
+    freeSeatDay: "Inclus dans votre pass journée",
     reducedSeat: "Tarif réduit — munissez-vous d'un justificatif",
     dayPassFoot:
-      "Ce code unique donne accès à toutes les projections de la journée : présentez-le\n       à l'entrée à chaque fois. Il est enregistré une fois par projection.",
+      `Sans réservation, votre place n'est pas garantie. Une fois la réservation faite,
+       présentez le pass à l'entrée : il est enregistré une fois par projection.`,
     cta: "Ouvrir le billet",
+    passCta: "Ouvrir le pass journée",
     foot:
       `Votre place est garantie mais non numérotée : asseyez-vous où vous voulez.
        Merci d'arriver quelques minutes en avance. Chaque billet admet une personne
@@ -457,18 +518,32 @@ const TICKET_COPY: Record<Locale, {
   },
   de: {
     subject: (t) => `Dein Platz — ${t}`,
+    passSubject: (t) => `Dein Tagespass — ${t}`,
     heading: "Platz bestätigt",
+    passHeading: "Tagespass aktiv",
     hi: (n) => `Hallo ${n},`,
     body: (n) =>
       n === 1
         ? "dein Platz ist reserviert. Zeig das Ticket unten am Saaleingang."
         : `deine ${n} Plätze sind reserviert. Zeig die Tickets unten am Saaleingang.`,
     seatsLabel: "Deine Tickets",
+    passesLabel: "Deine Tagespässe",
+    dayPassBody: (n) =>
+      n === 1
+        ? "dein Tagespass ist bereit. Achtung: der Tagespass reserviert keinen Platz."
+        : `deine ${n} Tagespässe sind bereit. Achtung: der Tagespass reserviert keinen Platz.`,
+    dayPassBook:
+      `<strong>Der Tagespass reserviert keinen Platz.</strong> Die Vorführungen dieses Tages
+       buchst du einzeln auf mergefestival.ch/passes: gib den Code unten ein, sie kosten nichts
+       — ein Platz pro Pass, pro Vorführung. Der Saal ist klein, also lieber früh buchen.`,
     freeSeat: "In deiner Akkreditierung enthalten",
+    freeSeatDay: "In deinem Tagespass enthalten",
     reducedSeat: "Ermässigt — bitte Nachweis mitbringen",
     dayPassFoot:
-      "Dieser eine Code gilt für jede Vorführung dieses Tages: zeig ihn jedes Mal am\n       Saaleingang. Er wird pro Vorführung einmal registriert.",
+      `Ohne Reservierung ist dein Platz nicht garantiert. Nach der Buchung zeigst du den
+       Pass am Saaleingang: er wird pro Vorführung einmal registriert.`,
     cta: "Ticket öffnen",
+    passCta: "Tagespass öffnen",
     foot:
       `Dein Platz im Saal ist garantiert, aber nicht nummeriert — setz dich, wohin du
        möchtest. Bitte komm ein paar Minuten früher. Jedes Ticket gilt für eine Person
@@ -479,9 +554,10 @@ const TICKET_COPY: Record<Locale, {
 // One email for the whole order, but one block per ticket: the people on it may
 // well arrive separately, so each has to be forwardable on its own.
 //
-// A day pass sends the same email. Its `tickets` are the day-pass codes, one per
-// person rather than one per seat — the holder never sees the per-screening rows
-// behind them — and `screeningTitle`/`startsAt` describe the day, not one film.
+// A day pass sends the same email with a different message: its `tickets` are
+// the pass codes, one per person, and they admit to nothing yet — so the body
+// leads with the instruction to go and reserve, and `screeningTitle`/`startsAt`
+// describe the day rather than one film.
 export function ticketsEmail(o: {
   name: string;
   locale: Locale;
@@ -495,6 +571,7 @@ export function ticketsEmail(o: {
     url: string;
     holder: string | null;
     badge: string | null;
+    dayPass?: string | null;
     tariff?: string | null;
   }[];
 }) {
@@ -505,8 +582,11 @@ export function ticketsEmail(o: {
       const who = tk.holder
         ? `<div style="font-size:13px;color:#6b6b75;margin:0 0 2px">${esc(tk.holder)}</div>`
         : "";
+      const reduced = tk.tariff === "reduced" ? ` · ${esc(t.reducedSeat)}` : "";
       const note = tk.badge
         ? `${esc(t.freeSeat)} · ${esc(tk.badge)}`
+        : tk.dayPass
+        ? `${esc(t.freeSeatDay)} · ${esc(tk.dayPass)}${reduced}`
         : tk.tariff === "reduced"
         ? esc(t.reducedSeat)
         : "";
@@ -520,7 +600,9 @@ export function ticketsEmail(o: {
                   <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
                               font-size:19px;font-weight:700;letter-spacing:.06em">${esc(tk.code)}</div>
                   <div style="margin:8px 0 0"><a href="${esc(tk.url)}"
-                       style="color:#2E1B54;font-weight:600;font-size:14px">${esc(t.cta)} →</a></div>
+                       style="color:#2E1B54;font-weight:600;font-size:14px">${
+        esc(o.dayPass ? t.passCta : t.cta)
+      } →</a></div>
                   ${free}
                 </td></tr>
               </table>`;
@@ -529,20 +611,38 @@ export function ticketsEmail(o: {
 
   const where = o.venue ? ` · ${o.venue}` : "";
 
+  // A day pass is dated but not timed: it is not admission to the first film,
+  // so printing that film's hour under it would promise a seat there.
+  const whenLine = o.dayPass
+    ? dayText(o.startsAt, o.locale)
+    : whenText(o.startsAt, o.locale) + where;
+
   return {
-    subject: t.subject(o.screeningTitle),
+    subject: o.dayPass ? t.passSubject(o.screeningTitle) : t.subject(o.screeningTitle),
     html: layout({
       locale: o.locale,
-      preheader: `${o.screeningTitle} · ${whenText(o.startsAt, o.locale)}`,
-      heading: t.heading,
+      preheader: `${o.screeningTitle} · ${whenLine}`,
+      heading: o.dayPass ? t.passHeading : t.heading,
       body:
         `<p style="margin:0 0 12px">${esc(t.hi(o.name))}</p>
-         <p style="margin:0 0 18px">${esc(t.body(o.tickets.length))}</p>
-         <p style="margin:0 0 4px;font-size:17px;font-weight:700">${esc(o.screeningTitle)}</p>
-         <p style="margin:0 0 18px;color:#6b6b75">${
-          esc(whenText(o.startsAt, o.locale) + where)
+         <p style="margin:0 0 18px">${
+          esc(o.dayPass ? t.dayPassBody(o.tickets.length) : t.body(o.tickets.length))
         }</p>
-         <p style="margin:0 0 8px;font-weight:600">${esc(t.seatsLabel)}</p>
+         <p style="margin:0 0 4px;font-size:17px;font-weight:700">${esc(o.screeningTitle)}</p>
+         <p style="margin:0 0 18px;color:#6b6b75">${esc(whenLine)}</p>
+         ${
+          o.dayPass
+            ? `<table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                      style="margin:0 0 18px;background:#f0ecff;border-radius:14px">
+                 <tr><td style="padding:14px 16px;font-size:14px;line-height:1.5">
+                   ${t.dayPassBook}
+                 </td></tr>
+               </table>`
+            : ""
+        }
+         <p style="margin:0 0 8px;font-weight:600">${
+          esc(o.dayPass ? t.passesLabel : t.seatsLabel)
+        }</p>
          ${blocks}`,
       footnote: o.dayPass ? t.dayPassFoot : t.foot,
     }),

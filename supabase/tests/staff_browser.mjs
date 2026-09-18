@@ -33,7 +33,7 @@ await context.route('**/*',async route=>{
  if(body.action==='scan'){
   if(mode==='scan-delay')await new Promise(r=>release=r);
   if(mode==='offline')return route.abort();
-  const reason=body.code==='MFF-T-WRONGABC'?'wrong_screening':body.code==='MFF-T-USEDABCD'?'already_used':body.code==='MFF-D-OTHERDAY'?'day_pass_not_here':null;
+  const reason=body.code==='MFF-T-WRONGABC'?'wrong_screening':body.code==='MFF-T-USEDABCD'?'already_used':body.code==='MFF-D-OTHERDAY'?'day_pass_not_here':body.code==='MFF-D-NESSUNXX'?'day_pass_not_booked':null;
   return route.fulfill({json:{ok:true,scan:reason?{ok:false,reason,title:'Proiezione B',starts_at:'2026-10-02T21:00:00+02:00'}:{ok:true,name:'Test Visitor',checked_in:1}}});
  }
  if(body.action==='sell'){
@@ -62,8 +62,8 @@ try{
   assert.equal(requests.filter(r=>r.action==='scan').length,before);
   release();mode='normal';await page.getByText('ENTRA',{exact:true}).waitFor();
  });
- await test('wrong film, duplicate and excluded day-pass responses are clear',async()=>{
-  for(const [code,word] of [['MFF-T-WRONGABC','ALTRA PROIEZIONE'],['MFF-T-USEDABCD','GIÀ ENTRATO'],['MFF-D-OTHERDAY','GIORNALIERA NON VALIDA QUI']]){
+ await test('wrong film, duplicate and refused day-pass responses are clear',async()=>{
+  for(const [code,word] of [['MFF-T-WRONGABC','ALTRA PROIEZIONE'],['MFF-T-USEDABCD','GIÀ ENTRATO'],['MFF-D-OTHERDAY','GIORNALIERA DI UN ALTRO GIORNO'],['MFF-D-NESSUNXX','GIORNALIERA SENZA POSTO']]){
    if(await page.locator('[data-verdict-close]').isVisible())await page.locator('[data-verdict-close]').click();
    await manual(code);await page.getByText(word,{exact:true}).waitFor();
   }

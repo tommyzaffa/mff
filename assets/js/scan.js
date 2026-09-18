@@ -364,7 +364,8 @@
     already_used:     ["GIÀ ENTRATO", "bad"],
     wrong_screening:  ["ALTRA PROIEZIONE", "warn"],
     badge_not_booked: ["ACCREDITO SENZA POSTO", "warn"],
-    day_pass_not_here: ["GIORNALIERA NON VALIDA QUI", "warn"],
+    day_pass_not_here: ["GIORNALIERA DI UN ALTRO GIORNO", "warn"],
+    day_pass_not_booked: ["GIORNALIERA SENZA POSTO", "warn"],
     not_valid:        ["NON VALIDO", "bad"],
     unknown_ticket:   ["SCONOSCIUTO", "bad"],
     screening_required: ["SCEGLI LA PROIEZIONE", "warn"],
@@ -417,10 +418,15 @@
         note = "L'accredito è valido ma non ha prenotato un posto per questa " +
                "proiezione. Il posto va prenotato: mandalo in cassa.";
       } else if (r.reason === "day_pass_not_here") {
-        // O la giornaliera è di un altro giorno, o è stata comprata quando
-        // questa proiezione aveva già chiuso la vendita online: in entrambi i
-        // casi non ha mai avuto un posto qui.
-        note = "Questa giornaliera non copre questa proiezione. Mandalo in cassa.";
+        // La giornaliera è di un altro giorno: non copre questa proiezione e
+        // non la coprirà mai.
+        note = "Questa giornaliera è per " + (r.day || "un altro giorno") +
+               ". Non vale per questa proiezione. Mandalo in cassa.";
+      } else if (r.reason === "day_pass_not_booked") {
+        // Giorno giusto, ma la giornaliera non prenota nulla da sola: qui il
+        // posto non è mai stato riservato.
+        note = "La giornaliera è valida ma non ha prenotato un posto per questa " +
+               "proiezione. Il posto va prenotato: mandalo in cassa.";
       } else if (r.reason === "offline") {
         note = "Risposta non ricevuta: l'ingresso potrebbe essere già registrato. Riprova lo stesso codice e controlla l'orario se risulta già entrato.";
       } else if (r.reason === "not_valid") {

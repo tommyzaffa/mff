@@ -11,6 +11,7 @@ declare
   single_order jsonb;
   badge_order jsonb;
   daily_order jsonb;
+  daily_seats jsonb;
   verdict jsonb;
   test_day date := current_date + 10;
 begin
@@ -52,6 +53,14 @@ begin
   perform public.ticket_order_issue((daily_order->>'order_id')::uuid);
   verdict := public.ticket_check_in(daily_order->'codes'->>0,'audit-staff-till');
   if verdict->>'reason' <> 'day_pass_not_here' then raise exception 'Wrong day admitted'; end if;
+  -- A day pass is a credential, not a seat: the right day is not enough.
+  verdict := public.ticket_check_in(daily_order->'codes'->>0,'audit-staff-a');
+  if verdict->>'reason' <> 'day_pass_not_booked' then raise exception 'Unbooked day pass accepted'; end if;
+  daily_seats := public.ticket_reserve('audit-staff-a','Temporary','Audit','staff-audit@example.invalid',jsonb_build_array(jsonb_build_object('badge',daily_order->'codes'->>0)),'it',20);
+  if daily_seats->>'ok' <> 'true' or daily_seats->>'free' <> 'true' then raise exception 'Day pass booking failed: %', daily_seats; end if;
+  if public.ticket_reserve('audit-staff-b','Temporary','Audit','staff-audit@example.invalid',jsonb_build_array(jsonb_build_object('badge',daily_order->'codes'->>0)),'it',20)->>'ok' <> 'true' then
+    raise exception 'Day pass second booking failed';
+  end if;
   verdict := public.ticket_check_in(daily_order->'codes'->>0,'audit-staff-a');
   if verdict->>'ok' <> 'true' or verdict->>'tariff' <> 'reduced' then raise exception 'Day pass film A failed'; end if;
   verdict := public.ticket_check_in(daily_order->'codes'->>0,'audit-staff-a');

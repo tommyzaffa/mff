@@ -97,11 +97,17 @@
     })
     .catch(function () { show("missing"); });
 
+  // A day pass carries a bare `YYYY-MM-DD`, which Date reads as UTC midnight —
+  // an hour before the Zurich day it names. Noon is safely inside either.
+  function asDate(iso) {
+    return new Date(/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso + "T12:00:00" : iso);
+  }
+
   function dayText(iso) {
     try {
       return new Intl.DateTimeFormat(LOCALES[LANG] || "en-GB", {
         weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Zurich",
-      }).format(new Date(iso));
+      }).format(asDate(iso));
     } catch (e) { return iso; }
   }
 
@@ -119,29 +125,55 @@
     try {
       return new Intl.DateTimeFormat("it-CH", {
         day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Europe/Zurich",
-      }).format(new Date(iso)).replace(/\//g, ".");
+      }).format(asDate(iso)).replace(/\//g, ".");
     } catch (e) { return ""; }
   }
 
+  // Retitling has to move the key with the text, or the next language switch
+  // puts the ticket wording back on a day pass.
+  function retitle(el, key, fallback) {
+    if (!el) return;
+    el.setAttribute("data-i18n", key);
+    el.textContent = t(key, fallback);
+  }
+
   function paint(ticket, screening, screenings) {
-    // A day pass is named after its day, not after the first film on it: the
-    // first film is only where it happens to start.
-    document.querySelector("[data-title]").textContent = ticket.day_pass
+    var pass = !!ticket.day_pass;
+
+    // A day pass is named after its day, not after a film: it admits to none
+    // until its holder books one.
+    document.querySelector("[data-title]").textContent = pass
       ? t("ticket.dayPass", "Day pass")
       : screening.title || "—";
-    document.querySelector("[data-when]").textContent = screening.starts_at
-      ? (ticket.day_pass ? dayText(screening.starts_at) : whenText(screening.starts_at))
+    var when = pass ? ticket.day : screening.starts_at;
+    document.querySelector("[data-when]").textContent = when
+      ? (pass ? dayText(when) : whenText(when))
       : "";
-    document.querySelector("[data-venue]").textContent = screening.venue || "";
+    document.querySelector("[data-venue]").textContent = pass ? "" : (screening.venue || "");
     document.querySelector("[data-code]").textContent = ticket.code;
+
+    if (pass) {
+      retitle(document.querySelector("[data-code-label]"), "ticket.passCodeLabel", "Day pass code");
+      retitle(document.querySelector("[data-note]"), "ticket.passNote",
+        "This pass does not reserve a seat. Book each screening you want with this code — it costs nothing.");
+    }
+
+    var book = document.querySelector("[data-book]");
+    if (book) book.hidden = !pass;
 
     var tariff = document.querySelector("[data-tariff]");
     if (tariff) tariff.hidden = ticket.tariff !== "reduced";
 
+    // What the pass has actually been used to book. Empty is a real answer and
+    // is said out loud, because it means there is no seat waiting.
     var shows = document.querySelector("[data-shows]");
+    var showsLabel = document.querySelector("[data-shows-label]");
+    var showsEmpty = document.querySelector("[data-shows-empty]");
     if (shows) {
       shows.innerHTML = "";
-      shows.hidden = !ticket.day_pass || !screenings.length;
+      shows.hidden = !pass || !screenings.length;
+      if (showsLabel) showsLabel.hidden = !pass || !screenings.length;
+      if (showsEmpty) showsEmpty.hidden = !pass || screenings.length > 0;
       screenings.forEach(function (s) {
         var li = document.createElement("li");
         li.textContent = hourText(s.starts_at) + " · " + s.title;
@@ -173,7 +205,7 @@
     // The ticket doubles as an Arcobaleno day card for the day it admits to —
     // but only while it is admission: a cancelled or unpaid one travels nowhere.
     var transport = document.querySelector("[data-transport]");
-    var stamp = screening.starts_at ? stampDate(screening.starts_at) : "";
+    var stamp = when ? stampDate(when) : "";
     if (transport) {
       transport.hidden = !stamp || (ticket.status !== "valid" && ticket.status !== "used");
       document.querySelector("[data-transport-date]").textContent = stamp;

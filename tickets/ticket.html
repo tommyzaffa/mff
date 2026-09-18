@@ -9,7 +9,7 @@
   <!-- The code is the admission, so keep it out of search results. -->
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=61" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=62" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -49,18 +49,24 @@
           <!-- Declared online, proved at the door — so it is on the ticket the
                holder shows, not only on the scanner the staff hold. -->
           <p class="tkt__tariff" data-tariff hidden data-i18n="ticket.reduced">Reduced rate — bring proof of eligibility</p>
-          <!-- A day pass admits to several screenings, and which ones is the
-               only thing about it that is not obvious. -->
+          <!-- A day pass reserves nothing by itself, so the only thing worth
+               printing on it is which screenings its holder has actually
+               booked with it — and saying "none yet" when that is the truth. -->
+          <p class="tkt__shows-label" data-shows-label hidden data-i18n="ticket.bookedLabel">Screenings you have booked</p>
           <ul class="tkt__shows" data-shows hidden></ul>
+          <p class="tkt__shows-empty" data-shows-empty hidden data-i18n="ticket.bookedNone">You have not booked any screening yet.</p>
         </div>
 
         <div class="tkt__code">
           <div class="tkt__qr" data-qr aria-hidden="true"></div>
-          <span class="tkt__code-label" data-i18n="ticket.codeLabel">Ticket code</span>
+          <span class="tkt__code-label" data-code-label data-i18n="ticket.codeLabel">Ticket code</span>
           <strong class="tkt__code-value" data-code>MFF-T-00000000</strong>
         </div>
 
-        <p class="tkt__note" data-i18n="ticket.note">Admits one person. Seats are not numbered: sit wherever you like.</p>
+        <p class="tkt__note" data-note data-i18n="ticket.note">Admits one person. Seats are not numbered: sit wherever you like.</p>
+
+        <!-- The whole point of the change, said on the thing itself. -->
+        <a class="tkt__book" data-book hidden href="index.html" data-i18n="ticket.bookWithPass">Book a screening with this code</a>
 
         <!-- Arcobaleno's prescribed wording, the same one the badge carries. A
              ticket is good for one day, so it reads "valido il <data>" and
@@ -100,8 +106,8 @@
   <script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"
           integrity="sha384-cmmVU8dn+rGH6Yvlt0Q1+31iG9lS4wdVsqV/ZP/53RBddef+VZcYakA+NhG4S8wE"
           crossorigin="anonymous"></script>
-  <script src="../assets/js/translations.js?v=45"></script>
+  <script src="../assets/js/translations.js?v=47"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/ticket.js?v=3"></script>
+  <script src="../assets/js/ticket.js?v=4"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
   <title>Thank you — Merge Film Festival</title>
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=61" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=62" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -24,9 +24,12 @@
     </div>
 
     <div class="badge-state" data-panel="done" hidden>
-      <h1 data-i18n="ticket.doneTitle">Your seats are booked</h1>
-      <p data-i18n="ticket.doneBody">A copy is on its way to your inbox. Each ticket admits one person.</p>
+      <h1 data-done-title data-i18n="ticket.doneTitle">Your seats are booked</h1>
+      <p data-done-body data-i18n="ticket.doneBody">A copy is on its way to your inbox. Each ticket admits one person.</p>
       <ul class="ticket-codes" data-codes></ul>
+      <!-- A day pass leaves the buyer with something still to do, so the way to
+           do it is the button they land on, not a line to go and find. -->
+      <a class="btn btn--apply" data-book hidden href="../passes/index.html#tickets" data-i18n="ticket.bookWithPass">Book a screening with this code</a>
       <a class="btn btn--ghost" href="../index.html" data-i18n="ticket.backHome">Back to the site</a>
     </div>
 
@@ -46,7 +49,7 @@
 
   </main>
 
-  <script src="../assets/js/translations.js?v=45"></script>
+  <script src="../assets/js/translations.js?v=47"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script>
   /* Stripe sends the customer back here the moment they pay, but the seats are
@@ -79,6 +82,14 @@
       Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
     }
 
+    function retitle(sel, key, fallback) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      var node = dict, parts = key.split(".");
+      for (var i = 0; i < parts.length && node; i++) node = node[parts[i]];
+      el.textContent = typeof node === "string" ? node : fallback;
+    }
+
     var orderId = new URLSearchParams(location.search).get("o");
     if (!orderId) return show("missing");
 
@@ -89,6 +100,14 @@
         .then(function (res) {
           if (!res.ok) return show("missing");
           if (res.status === "issued") {
+            // A day pass order confirms a credential, not a seat, and the page
+            // has to say so or the buyer walks in on Thursday expecting one.
+            if (res.day) {
+              retitle("[data-done-title]", "ticket.doneDayTitle", "Your day pass is ready");
+              retitle("[data-done-body]", "ticket.doneDayBody",
+                "It is on its way to your inbox too. It does not reserve a seat: now book the screenings you want with the code below — they cost nothing.");
+              document.querySelector("[data-book]").hidden = false;
+            }
             var list = document.querySelector("[data-codes]");
             list.innerHTML = "";
             (res.codes || []).forEach(function (code) {

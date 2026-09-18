@@ -90,7 +90,8 @@ await db.exec(`insert into screenings(code,title,starts_at,opens_at,closes_at,is
  ('staff-a','Staff A',current_date+interval '2 days 12 hours',current_date+interval '2 days 12 hours',current_date+interval '2 days 14 hours',true,true,20,2,1500,1000),
  ('staff-b','Staff B',current_date+interval '2 days 16 hours',current_date+interval '2 days 16 hours',current_date+interval '2 days 18 hours',true,true,20,2,1500,1000),
  ('staff-closed','Earlier film',current_date+interval '2 days 10 hours',current_date+interval '2 days 10 hours',current_date+interval '2 days 12 hours',true,true,20,2,1500,1000),
- ('staff-till','Till',now()+interval '30 minutes',now(),now()+interval '2 hours',true,true,3,2,1500,1000);
+ ('staff-till','Till',now()+interval '30 minutes',now(),now()+interval '2 hours',true,true,3,2,1500,1000),
+ ('staff-nextday','Staff Next Day',current_date+interval '3 days 12 hours',current_date+interval '3 days 12 hours',current_date+interval '3 days 14 hours',true,true,20,2,1500,1000);
  update screenings set sales_close_at=now()-interval '1 minute' where code='staff-closed';
  insert into festival_days(day,code,price_cents,price_reduced_cents,is_on_sale) values(current_date+2,'staff-day',3000,2500,true);`);
 const book=async(show,seats)=>(await q(`select ticket_reserve($1,'Staff','Test','staff@example.invalid',$2::jsonb,'it',20) as r`,[show,JSON.stringify(seats)]))[0].r;
@@ -115,29 +116,48 @@ await test('revoked accreditation cannot bypass revocation using the ticket QR',
  assert.equal((await scan(accreditedB.codes[0],'staff-b')).reason,'not_valid');
  await q(`update passes set status='issued' where id=$1`,[pass]);
 });
-await test('day pass reserves only screenings included at purchase time',async()=>{
+await test('day pass is a credential and reserves no seat on its own',async()=>{
  day=(await q(`select ticket_day_pass_reserve(current_date+2,'Day','Visitor','day@example.invalid','[{"tariff":"reduced","holder":"Day Visitor"}]'::jsonb,'it',20) as r`))[0].r;
- assert.equal(day.ok,true);assert.deepEqual(day.screenings,['staff-a','staff-b']);assert.equal(day.amount_cents,2500);
+ assert.equal(day.ok,true);assert.equal(day.amount_cents,2500);
+ assert.equal((await q(`select count(*)::int n from tickets where order_id=$1`,[day.order_id]))[0].n,0);
 });
 await test('unpaid and unknown day passes have explicit rejection reasons',async()=>{
  assert.equal((await scan(day.codes[0],'staff-a')).reason,'not_valid');
  assert.equal((await scan('MFF-D-UNKNOWNX','staff-a')).reason,'unknown_ticket');
  assert.equal((await issue(day)).ok,true);
 });
-await test('day pass refuses another day and excluded screening without consumption',async()=>{
+await test('an unbooked day pass is turned away without consuming anything',async()=>{
  assert.equal((await scan(day.codes[0],'test-show')).reason,'day_pass_not_here');
- assert.equal((await scan(day.codes[0],'staff-closed')).reason,'day_pass_not_here');
- assert.equal((await q(`select count(*)::int n from tickets where order_id=$1 and checked_in_at is not null`,[day.order_id]))[0].n,0);
+ assert.equal((await scan(day.codes[0],'staff-a')).reason,'day_pass_not_booked');
+ assert.equal((await q(`select count(*)::int n from tickets where day_pass_code=$1 and checked_in_at is not null`,[day.codes[0]]))[0].n,0);
 });
-await test('day pass admits once per included film with reduced-price warning',async()=>{
- const a=await scan(day.codes[0],'staff-a');assert.equal(a.ok,true);assert.equal(a.tariff,'reduced');assert.equal(a.name,'Day Visitor');
+await test('a day pass books free seats and cannot take two at one screening',async()=>{
+ const a=await book('staff-a',[{badge:day.codes[0]}]);
+ assert.equal(a.ok,true);assert.equal(a.free,true);
+ assert.equal((await book('staff-a',[{badge:day.codes[0]}])).reason,'day_pass_already_used');
+ assert.equal((await book('staff-nextday',[{badge:day.codes[0]}])).reason,'day_pass_wrong_day');
+ assert.equal((await book('staff-b',[{badge:day.codes[0]}])).ok,true);
+});
+await test('day pass admits once per booked film with reduced-price warning',async()=>{
+ const a=await scan(day.codes[0],'staff-a');assert.equal(a.ok,true);assert.equal(a.tariff,'reduced');
  assert.equal((await scan(day.codes[0],'staff-a')).reason,'already_used');
  assert.equal((await scan(day.codes[0],'staff-b')).ok,true);
  const ticket=(await q(`select code from tickets where day_pass_code=$1 and screening='staff-a'`,[day.codes[0]]))[0].code;
  assert.equal((await scan(ticket,'staff-a')).reason,'already_used');
 });
 await test('cancelled day pass is refused even with a previously issued QR',async()=>{
- await q(`update ticket_orders set status='cancelled' where id=$1`,[day.order_id]);assert.equal((await scan(day.codes[0],'staff-b')).reason,'not_valid');
+ await q(`update ticket_orders set status='cancelled' where id=$1`,[day.order_id]);
+ assert.equal((await scan(day.codes[0],'staff-b')).reason,'not_valid');
+});
+// A pass now outlives its order's seats, so expiry has to cancel the credential
+// itself or an abandoned checkout leaves a live, unpaid day pass behind.
+await test('an abandoned day-pass checkout leaves no live credential',async()=>{
+ const held=(await q(`select ticket_day_pass_reserve(current_date+2,'Held','Visitor','held@example.invalid','[{"tariff":"full"}]'::jsonb,'it',20) as r`))[0].r;
+ assert.equal(held.ok,true);assert.equal(held.free,false);
+ await q(`update ticket_orders set holds_until=now()-interval '1 minute' where id=$1`,[held.order_id]);
+ assert.equal((await q(`select ticket_expire_holds() as n`))[0].n>=1,true);
+ assert.equal((await q(`select count(*)::int n from day_passes where order_id=$1 and cancelled_at is null`,[held.order_id]))[0].n,0);
+ assert.equal((await scan(held.codes[0],'staff-a')).reason,'not_valid');
 });
 await test('group purchase gives each visitor one independently usable code',async()=>{
  const group=await book('staff-a',[{holder:'Full Visitor',tariff:'full'},{holder:'Wheelchair Visitor',tariff:'reduced',wheelchair:true}]);

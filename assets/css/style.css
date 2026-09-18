@@ -281,6 +281,9 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), background 0.3s;
   box-shadow: 0 8px 24px rgba(46, 27, 84, 0.22);
 }
+/* `display` here outranks the UA's [hidden] rule, so a hidden .btn has to be
+   hidden again by hand. */
+.btn[hidden] { display: none; }
 .btn::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.28), transparent 80%);
@@ -2401,8 +2404,24 @@ html.intro-armed #introOverlay {
 }
 .tkt__tariff[hidden] { display: none; }
 
+.tkt__shows-label {
+  margin: 16px 0 0;
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.5;
+}
+.tkt__shows-label[hidden] { display: none; }
+
+/* Nothing booked is the normal state of a pass just bought, and it is exactly
+   the state the holder has to notice — so it is said, not left blank. */
+.tkt__shows-empty {
+  margin: 10px 0 0; padding: 9px 12px; border-radius: 10px;
+  font-size: 0.86rem; line-height: 1.45;
+  background: rgba(36, 36, 43, 0.06);
+  border: 1px solid rgba(36, 36, 43, 0.16);
+}
+.tkt__shows-empty[hidden] { display: none; }
+
 .tkt__shows {
-  margin: 14px 0 0; padding: 0 0 0 14px; list-style: none;
+  margin: 8px 0 0; padding: 0 0 0 14px; list-style: none;
   border-left: 2px solid rgba(36, 36, 43, 0.15);
   display: grid; gap: 4px; font-size: 0.88rem;
 }
@@ -2430,6 +2449,16 @@ html.intro-armed #introOverlay {
   margin: 0; padding: 0 18px 18px; text-align: center;
   font-size: 0.78rem; line-height: 1.5; opacity: 0.55;
 }
+
+/* Only a day pass shows this, and on a day pass it is the one thing there is
+   left to do — so it is a button, not another line of small print. */
+.tkt__book {
+  display: block; margin: 0 18px 18px; padding: 11px 14px;
+  text-align: center; text-decoration: none; border-radius: 999px;
+  font-size: 0.86rem; font-weight: 600;
+  color: #F5F3F8; background: #2E1B54;
+}
+.tkt__book[hidden] { display: none; }
 
 /* The transport title. Full black and never dimmed, like the badge's: this is
    the part an inspector reads, and the two logos beside it are what makes it

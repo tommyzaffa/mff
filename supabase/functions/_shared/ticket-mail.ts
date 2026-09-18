@@ -33,31 +33,25 @@ export async function emailTickets(orderId: string): Promise<boolean> {
 
   const locale = asLocale(order.locale);
 
-  const { data: rows } = await db()
-    .from("tickets")
-    .select("code, holder_name, badge_code, tariff, day_pass_code, screening")
-    .eq("order_id", orderId).is("cancelled_at", null)
-    .order("created_at", { ascending: true });
-  if (!rows?.length) return false;
-
   // --- a day pass ----------------------------------------------------------
-  // One row per screening per person, but one code per person. Collapse to the
-  // codes, or a two-film day would send the same pass twice.
+  // A pass reserves nothing, so there are no tickets to send: the email is the
+  // code and the instruction to go and book with it.
   if (order.day) {
-    const seen = new Set<string>();
-    const passes = rows.filter((r) => {
-      if (!r.day_pass_code || seen.has(r.day_pass_code)) return false;
-      seen.add(r.day_pass_code);
-      return true;
-    });
-    if (!passes.length) return false;
+    const { data: passes } = await db()
+      .from("day_passes")
+      .select("code, holder_name, tariff")
+      .eq("order_id", orderId).is("cancelled_at", null)
+      .order("created_at", { ascending: true });
+    if (!passes?.length) return false;
 
-    // The day starts at its first screening, which is what the holder needs to
-    // know and is already in the rows we have.
+    // The day starts at its first screening, which is the hour the holder has
+    // to plan around even though the pass admits to none of them yet.
     const { data: first } = await db()
       .from("screenings")
       .select("venue, starts_at")
-      .in("code", rows.map((r) => r.screening))
+      .eq("is_published", true).eq("is_ticketed", true)
+      .gte("starts_at", `${order.day}T00:00:00+02:00`)
+      .lte("starts_at", `${order.day}T23:59:59+02:00`)
       .order("starts_at", { ascending: true })
       .limit(1)
       .maybeSingle();
@@ -77,14 +71,12 @@ export async function emailTickets(orderId: string): Promise<boolean> {
       venue: first?.venue ?? null,
       amountCents: order.amount_cents,
       dayPass: true,
-      tickets: passes.map((t) => ({
-        code: t.day_pass_code as string,
-        holder: t.holder_name,
+      tickets: passes.map((p) => ({
+        code: p.code,
+        holder: p.holder_name,
         badge: null,
-        tariff: t.tariff,
-        url: `${env.siteUrl}/tickets/ticket.html?c=${
-          encodeURIComponent(t.day_pass_code as string)
-        }`,
+        tariff: p.tariff,
+        url: `${env.siteUrl}/tickets/ticket.html?c=${encodeURIComponent(p.code)}`,
       })),
     });
 
@@ -95,6 +87,13 @@ export async function emailTickets(orderId: string): Promise<boolean> {
   }
 
   // --- a single screening --------------------------------------------------
+  const { data: rows } = await db()
+    .from("tickets")
+    .select("code, holder_name, badge_code, tariff, day_pass_code, screening")
+    .eq("order_id", orderId).is("cancelled_at", null)
+    .order("created_at", { ascending: true });
+  if (!rows?.length) return false;
+
   const { data: show } = await db()
     .from("screenings").select("title, venue, starts_at")
     .eq("code", order.screening).maybeSingle();
@@ -111,6 +110,7 @@ export async function emailTickets(orderId: string): Promise<boolean> {
       code: t.code,
       holder: t.holder_name,
       badge: t.badge_code,
+      dayPass: t.day_pass_code,
       tariff: t.tariff,
       url: `${env.siteUrl}/tickets/ticket.html?c=${encodeURIComponent(t.code)}`,
     })),
