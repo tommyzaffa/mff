@@ -2004,33 +2004,62 @@ html.intro-armed #introOverlay {
 .vote__scale[aria-busy="true"] .vote__score { pointer-events: none; opacity: 0.45; }
 .vote__scale[aria-busy="true"] .vote__score.is-chosen { opacity: 1; }
 
-/* The list behind the single room QR. Rows are big because they are tapped in
-   the dark by someone still holding a coat. */
+/* The films of the programme that has just ended. Rows are big because they are
+   tapped in the dark by someone still holding a coat. */
+.vote__groups { display: grid; gap: 1.5rem; }
+.vote__group {
+  margin: 0 0 10px; font-family: var(--font-body); font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.55;
+}
 .vote__list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .vote__list[hidden] { display: none; }
 .vote__pick {
   appearance: none; cursor: pointer; width: 100%;
-  display: grid; gap: 4px; text-align: left;
+  display: grid; grid-template-columns: 1fr auto; row-gap: 4px; column-gap: 12px;
+  align-items: center; text-align: left;
   min-height: 64px; padding: 14px 18px;
   border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
   border-radius: 14px;
   background: transparent; color: inherit;
   transition: background-color 0.18s var(--ease);
 }
-.vote__pick:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
-.vote__pick-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
-.vote__pick-meta { font-size: 0.82rem; opacity: 0.6; }
+.vote__pick:hover:not(:disabled) { background: color-mix(in srgb, currentColor 12%, transparent); }
+.vote__pick:disabled { cursor: default; opacity: 0.62; }
+/* Placed by hand: in DOM order auto-placement would put the meta line in the
+   second column, next to the title instead of under it. */
+.vote__pick-title {
+  grid-area: 1 / 1; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+}
+.vote__pick-meta { grid-area: 2 / 1; font-size: 0.82rem; opacity: 0.6; }
+.vote__pick-score {
+  grid-area: 1 / 2 / 3 / 3;
+  min-width: 42px; padding: 6px 0; text-align: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+}
+
+/* Confirmation of the vote just cast, and the step back from the scale to the
+   list. Both live on the list panel, so they follow its colours. */
+.vote__note {
+  margin: 0; padding: 10px 14px; border-radius: 12px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font-size: 0.9rem; font-weight: 600;
+}
+.vote__back {
+  appearance: none; cursor: pointer; justify-self: start;
+  padding: 0; border: 0; background: transparent; color: inherit;
+  font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+  letter-spacing: 0.04em; opacity: 0.6;
+}
+.vote__back::before { content: "← "; }
+.vote__back:hover { opacity: 1; }
 
 .vote__legend {
   display: flex; justify-content: space-between; margin: 0;
   font-size: 0.78rem; opacity: 0.55;
 }
 .vote__fine { margin: 0; font-size: 0.85rem; opacity: 0.55; }
-
-.vote__big {
-  margin: 0; font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(4rem, 22vw, 7rem); line-height: 1; color: inherit;
-}
 
 /* Elsewhere the switch moves into the menu overlay on phones, but this page has
    no menu, so it has to stay in the header. */

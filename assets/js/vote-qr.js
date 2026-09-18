@@ -1,6 +1,7 @@
 /* ============================================================
    Merge Film Festival — printable QR sheet for the staff
-   One card per published screening, pulled from Supabase.
+   One card per screening that has films in competition, pulled from Supabase.
+   A retrospective has nothing to vote on, so it gets no sheet.
    ============================================================ */
 (function () {
   "use strict";
@@ -39,16 +40,24 @@
     return el;
   }
 
-  fetch(CFG.url + "/rest/v1/screenings?select=*&is_published=eq.true&order=starts_at.asc", {
+  fetch(CFG.url + "/rest/v1/votable_films?select=screening,screening_title,venue,starts_at&order=starts_at.asc", {
     headers: { apikey: CFG.anonKey, Authorization: "Bearer " + CFG.anonKey },
   }).then(function (res) {
     if (!res.ok) throw new Error(res.status);
     return res.json();
-  }).then(function (rows) {
-    if (!rows.length) { status.textContent = "No published screenings yet."; return; }
+  }).then(function (films) {
+    if (!films.length) { status.textContent = "No films in competition yet."; return; }
 
-    rows.forEach(function (row) {
-      var link = BASE + "?s=" + row.code;
+    var order = [];
+    var byBlock = {};
+    films.forEach(function (film) {
+      if (!byBlock[film.screening]) { byBlock[film.screening] = { row: film, count: 0 }; order.push(film.screening); }
+      byBlock[film.screening].count += 1;
+    });
+
+    order.forEach(function (code) {
+      var row = byBlock[code].row;
+      var link = BASE + "?s=" + code;
 
       var card = document.createElement("div");
       card.className = "card";
@@ -57,9 +66,9 @@
       qr.className = "card__qr";
       card.appendChild(qr);
 
-      card.appendChild(line("card__title", row.title));
+      card.appendChild(line("card__title", row.screening_title));
       card.appendChild(line("card__meta", [row.venue, timeLabel(row.starts_at)].filter(Boolean).join(" • ")));
-      card.appendChild(line("card__cta", "Vota / Vote 1–10"));
+      card.appendChild(line("card__cta", byBlock[code].count + " film · Vota / Vote 1–10"));
       card.appendChild(line("card__code", link));
 
       sheet.appendChild(card);

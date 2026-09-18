@@ -8,7 +8,7 @@
   <meta name="description" content="Rate the film you have just watched and help pick the Merge Film Festival Audience Award." />
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=64" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=65" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -44,26 +44,27 @@
             <p class="vote__status" data-i18n="vote.loading">Loading…</p>
           </div>
 
-          <!-- Arrived without a code, from the one QR that hangs in the room:
-               everything whose window is open right now, so the audience picks
-               what they have just watched instead of hunting for a link. -->
-          <div class="vote__panel" data-panel="pick" hidden>
+          <!-- The films that can be voted right now. Built in JS: one group per
+               screening, one row per film, in projection order. -->
+          <div class="vote__panel" data-panel="films" hidden>
             <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
-            <h1 class="vote__headline" data-i18n="vote.pickTitle">What did you just watch?</h1>
-            <ul class="vote__list" data-list></ul>
-            <p class="vote__fine" data-i18n="vote.pickText">Only what is open for voting appears here.</p>
+            <h1 class="vote__headline" data-i18n="vote.filmsTitle">Rate the films you have just seen</h1>
+            <p class="vote__note" data-note hidden></p>
+            <div class="vote__groups" data-groups></div>
+            <p class="vote__fine" data-i18n="vote.filmsText">Tap a film and give it a mark from 1 to 10.</p>
           </div>
 
           <!-- Same QR, but no window is open -->
           <div class="vote__panel vote__panel--center" data-panel="none" hidden>
             <h1 class="vote__headline" data-i18n="vote.noneTitle">There is nothing to vote on right now.</h1>
-            <p class="vote__fine" data-i18n="vote.noneText">Voting opens when a screening ends and stays open for three hours. Scan again then.</p>
+            <p class="vote__fine" data-i18n="vote.noneText">Voting opens at the end of each competition programme and stays open for three hours. Scan again then.</p>
             <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
 
-          <!-- The voting window is open -->
+          <!-- The scale, for the one film the audience just tapped -->
           <div class="vote__panel" data-panel="open" hidden>
-            <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
+            <button class="vote__back" type="button" data-back data-i18n="vote.back">All films</button>
+            <p class="vote__eyebrow" data-section></p>
             <h1 class="vote__film" data-film></h1>
             <p class="vote__where" data-where></p>
             <p class="vote__ask" data-i18n="vote.ask">How much did you like it?</p>
@@ -83,31 +84,13 @@
               <span data-i18n="vote.low">Not for me</span>
               <span data-i18n="vote.high">Loved it</span>
             </p>
-            <p class="vote__fine" data-i18n="vote.fine">One vote per device. Anonymous — we only store the number.</p>
-          </div>
-
-          <!-- Vote accepted -->
-          <div class="vote__panel vote__panel--center" data-panel="thanks" hidden>
-            <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
-            <p class="vote__big" data-chosen></p>
-            <h1 class="vote__headline" data-i18n="vote.thanksTitle">Thank you, your vote is in.</h1>
-            <p class="vote__where" data-film></p>
-            <p class="vote__fine" data-i18n="vote.thanksText">The winner is announced at the awards ceremony.</p>
-            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
-          </div>
-
-          <!-- This device already voted for this screening -->
-          <div class="vote__panel vote__panel--center" data-panel="already" hidden>
-            <h1 class="vote__headline" data-i18n="vote.alreadyTitle">You already voted for this one.</h1>
-            <p class="vote__where" data-film></p>
-            <p class="vote__fine" data-i18n="vote.alreadyText">Every screening has its own code, so scan the next one when it ends.</p>
-            <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
+            <p class="vote__fine" data-i18n="vote.fine">One vote per film, from this device. Anonymous — we only store the number.</p>
           </div>
 
           <!-- Scanned before the screening ended -->
           <div class="vote__panel vote__panel--center" data-panel="early" hidden>
             <h1 class="vote__headline" data-i18n="vote.earlyTitle">Voting is not open yet.</h1>
-            <p class="vote__where" data-film></p>
+            <p class="vote__where" data-block></p>
             <p class="vote__fine">
               <span data-i18n="vote.earlyText">You can vote from</span>
               <strong data-opens></strong>
@@ -117,7 +100,7 @@
           <!-- Window closed -->
           <div class="vote__panel vote__panel--center" data-panel="closed" hidden>
             <h1 class="vote__headline" data-i18n="vote.closedTitle">Voting for this screening is closed.</h1>
-            <p class="vote__where" data-film></p>
+            <p class="vote__where" data-block></p>
             <p class="vote__fine" data-i18n="vote.closedText">Votes are only taken in the minutes right after the screening.</p>
             <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
@@ -140,9 +123,9 @@
     </section>
   </main>
 
-  <script src="../assets/js/translations.js?v=50"></script>
+  <script src="../assets/js/translations.js?v=51"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/vote-config.js"></script>
-  <script src="../assets/js/vote.js?v=2"></script>
+  <script src="../assets/js/vote.js?v=3"></script>
 </body>
 </html>
