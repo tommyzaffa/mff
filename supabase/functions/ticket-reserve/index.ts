@@ -79,6 +79,11 @@ Deno.serve(secured(async (req) => {
     const lastName = String(body.last_name ?? "").trim();
     const email = String(body.email ?? "").trim().toLowerCase();
     const locale = asLocale(body.locale);
+    // An invitation minted in the gestionale. It pays for the whole booking, so
+    // it belongs to the order rather than to a seat; the database decides
+    // whether it is live, whether it fits this screening or day and how many
+    // seats are left on it.
+    const invite = String(body.access_code ?? "").trim().toUpperCase() || null;
 
     // Exactly one of the two. Accepting both would leave the function choosing
     // which the buyer meant, and it would sometimes choose wrong.
@@ -86,6 +91,12 @@ Deno.serve(secured(async (req) => {
     if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return fail(req, "bad_day");
     if (!firstName || !lastName || firstName.length > 60 || lastName.length > 60) return fail(req, "name_required");
     if (email.length > 254 || screening.length > 24) return fail(req, "bad_request");
+    // No invitation can be shaped like a festival QR — the table forbids it —
+    // so a code that is, or that is not a code at all, is answered without
+    // asking the database about it.
+    if (invite && (!/^[A-Z0-9][A-Z0-9-]{2,31}$/.test(invite) || invite.startsWith("MFF-"))) {
+      return fail(req, "unknown_invite", 409);
+    }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return fail(req, "email_invalid");
 
     const rawSeats = Array.isArray(body.seats) ? (body.seats as SeatIn[]) : null;
@@ -149,6 +160,7 @@ Deno.serve(secured(async (req) => {
         p_seats: seats,
         p_locale: locale,
         p_hold_mins: HOLD_MINUTES,
+        p_access_code: invite,
       })
       : await db().rpc("ticket_reserve", {
         p_screening: screening,
@@ -158,6 +170,7 @@ Deno.serve(secured(async (req) => {
         p_seats: seats,
         p_locale: locale,
         p_hold_mins: HOLD_MINUTES,
+        p_access_code: invite,
       });
 
     if (error) return fail(req, "server_error", 500, error.message);

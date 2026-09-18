@@ -173,6 +173,92 @@ await test('cancelled single ticket never admits',async()=>{
  const o=await book('staff-b',[{tariff:'full'}]);await issue(o);await q(`update tickets set cancelled_at=now() where order_id=$1`,[o.order_id]);
  assert.equal((await scan(o.codes[0],'staff-b')).reason,'not_valid');
 });
+// Invitation codes: the gestionale's way of giving a seat or a day away. Every
+// rule below is one a member of staff can get wrong in front of a guest.
+const invite=async(show,seats,code)=>(await q(`select ticket_reserve($1,'Guest','Invited','invited@example.invalid',$2::jsonb,'it',20,$3) as r`,[show,JSON.stringify(seats),code]))[0].r;
+const inviteDay=async(d,seats,code)=>(await q(`select ticket_day_pass_reserve($1,'Guest','Invited','invited@example.invalid',$2::jsonb,'it',20,$3) as r`,[d,JSON.stringify(seats),code]))[0].r;
+await db.exec(`insert into ticket_access_codes(code,label,scope,screening,day,max_uses) values
+ ('SCUOLA26-AAAA','Liceo Lugano','screening','staff-a',null,2),
+ ('OSPITE26-BBBB','Ospiti','screening',null,null,null),
+ ('GIORNO26-CCCC','Giornata sponsor','day',null,current_date+2,1),
+ ('SPENTO26-DDDD','Codice ritirato','screening','staff-a',null,5),
+ ('SCADUTO26-EEE','Codice scaduto','screening','staff-a',null,5);
+ update ticket_access_codes set is_active=false where code='SPENTO26-DDDD';
+ update ticket_access_codes set expires_at=now()-interval '1 day' where code='SCADUTO26-EEE';`);
+await test('an invitation code cannot be shaped like a festival QR',async()=>{
+ await assert.rejects(db.query(`insert into ticket_access_codes(code,label,scope,screening) values('MFF-T-ABCDEFGH','Finto','screening','staff-a')`));
+ await assert.rejects(db.query(`insert into ticket_access_codes(code,label,scope,day) values('GIORNO26-FFFF','Senza giorno','day',null)`));
+});
+await test('an invitation books free seats and is spent one per seat',async()=>{
+ const o=await invite('staff-a',[{holder:'Studente Uno'},{holder:'Studente Due'}],'SCUOLA26-AAAA');
+ assert.equal(o.ok,true);assert.equal(o.free,true);assert.equal(o.invited,true);assert.equal(o.amount_cents,0);
+ assert.equal((await q(`select ticket_access_code_uses('SCUOLA26-AAAA') as n`))[0].n,2);
+ assert.equal((await scan(o.codes[0],'staff-a')).ok,true);
+});
+await test('an exhausted invitation is refused and says how many are left',async()=>{
+ const o=await invite('staff-a',[{}],'SCUOLA26-AAAA');
+ assert.equal(o.reason,'invite_used_up');assert.equal(o.left,0);assert.equal(o.invite,'SCUOLA26-AAAA');
+});
+await test('an invitation is refused for the wrong screening, kind, state or name',async()=>{
+ assert.equal((await invite('staff-b',[{}],'SCUOLA26-AAAA')).reason,'invite_wrong_screening');
+ assert.equal((await invite('staff-a',[{}],'GIORNO26-CCCC')).reason,'invite_not_for_screening');
+ assert.equal((await invite('staff-a',[{}],'SPENTO26-DDDD')).reason,'invite_inactive');
+ assert.equal((await invite('staff-a',[{}],'SCADUTO26-EEE')).reason,'invite_expired');
+ assert.equal((await invite('staff-a',[{}],'NONESISTE-XX')).reason,'unknown_invite');
+});
+await test('an unpinned invitation works at any screening and never runs out',async()=>{
+ for(const show of ['staff-a','staff-b','staff-nextday']){
+  const o=await invite(show,[{}],'OSPITE26-BBBB');
+  assert.equal(o.ok,true);assert.equal(o.free,true);
+ }
+ assert.equal((await q(`select ticket_access_code_uses('OSPITE26-BBBB') as n`))[0].n,3);
+});
+await test('an invitation is refused when every seat already has a credential',async()=>{
+ assert.equal((await invite('staff-nextday',[{badge}],'OSPITE26-BBBB')).reason,'invite_not_needed');
+});
+await test('a cancelled invited order hands its uses back',async()=>{
+ const o=await invite('staff-b',[{}],'SCUOLA26-AAAA');
+ assert.equal(o.reason,'invite_wrong_screening');
+ const live=await q(`select code from tickets where access_code='SCUOLA26-AAAA' and cancelled_at is null`);
+ assert.equal(live.length,2);
+ await q(`update tickets set cancelled_at=now() where code=$1`,[live[0].code]);
+ assert.equal((await q(`select ticket_access_code_uses('SCUOLA26-AAAA') as n`))[0].n,1);
+ assert.equal((await invite('staff-a',[{}],'SCUOLA26-AAAA')).ok,true);
+});
+await test('a day invitation gives a free day pass that then books free seats',async()=>{
+ assert.equal((await inviteDay(null,[{}],'GIORNO26-CCCC')).reason,'unknown_day');
+ const bad=await q(`select ticket_day_pass_reserve(current_date+2,'G','I','g@example.invalid','[{}]'::jsonb,'it',20,'SCUOLA26-AAAA') as r`);
+ assert.equal(bad[0].r.reason,'invite_not_for_day');
+ const o=await inviteDay(new Date(Date.now()+2*864e5).toISOString().slice(0,10),[{holder:'Sponsor'}],'GIORNO26-CCCC');
+ assert.equal(o.ok,true);assert.equal(o.free,true);assert.equal(o.amount_cents,0);assert.equal(o.invited,true);
+ const seat=await book('staff-a',[{badge:o.codes[0]}]);
+ assert.equal(seat.ok,true);assert.equal(seat.free,true);
+ assert.equal((await scan(o.codes[0],'staff-a')).ok,true);
+ assert.equal((await q(`select ticket_access_code_uses('GIORNO26-CCCC') as n`))[0].n,1);
+});
+// La dashboard conia i codici a lotti con questo alfabeto e questa forma. Se un
+// giorno cambia e smette di rispettare il vincolo, lo staff se ne accorgerebbe
+// solo davanti a una scuola intera.
+await test('a whole batch minted the way the dashboard mints it is accepted',async()=>{
+ const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+ const made=new Set();
+ while(made.size<200){let tail='';for(let i=0;i<6;i++)tail+=A[Math.floor(Math.random()*A.length)];made.add('SCUOLA26-'+tail);}
+ const rows=[...made].map(c=>`('${c}','Liceo di Lugano 1','screening','staff-b',1)`).join(',');
+ await db.exec(`insert into ticket_access_codes(code,label,scope,screening,max_uses) values ${rows}`);
+ assert.equal((await q(`select count(*)::int n from ticket_access_codes where code like 'SCUOLA26-%'`))[0].n,201);
+ const one=[...made][0];
+ assert.equal((await invite('staff-b',[{}],one)).ok,true);
+ assert.equal((await invite('staff-b',[{}],one)).reason,'invite_used_up');
+ await db.exec(`delete from ticket_access_codes where code like 'SCUOLA26-%' and code <> 'SCUOLA26-AAAA' and code <> '${one}'`);
+});
+await test('the gestionale view reports live uses and the screening title',async()=>{
+ const rows=await q(`select code,uses,screening_title,max_uses from ticket_access_code_list order by code`);
+ const byCode=Object.fromEntries(rows.map(r=>[r.code,r]));
+ assert.equal(byCode['SCUOLA26-AAAA'].uses,2);
+ assert.equal(byCode['SCUOLA26-AAAA'].screening_title,'Staff A');
+ assert.equal(byCode['OSPITE26-BBBB'].max_uses,null);
+ assert.equal(byCode['GIORNO26-CCCC'].screening_title,null);
+});
 const movement=async(id,delta=1,tariff='full',show='staff-till')=>(await q(`select ticket_door_sell_once($1,$2,$3,$4,'test') as r`,[id,show,delta,tariff]))[0].r;
 const request='11111111-1111-4111-8111-111111111111';
 await test('retry after lost sale response produces only one ledger movement',async()=>{

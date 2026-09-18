@@ -181,3 +181,29 @@ Deno.test('new counter routes retry IDs to the atomic RPC and advertises retry s
     assert((await door(req({...body,request_id:'bad-id'}))).status===400);
   }finally{globalThis.fetch=original;}
 });
+Deno.test('an invitation code reaches the reserve RPC only once it could be real',async()=>{
+  await import('../functions/ticket-reserve/index.ts');const reserve=handler!;
+  const original=globalThis.fetch;let sent: Record<string,unknown>={};let hitDb=false;
+  globalThis.fetch=async(input,init)=>{
+    const url=String(input);
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/rpc/ticket_expire_holds')){hitDb=true;return Response.json(0);}
+    if(url.includes('/screening_availability')){hitDb=true;return Response.json({code:'staff-a',title:'Staff A',venue:'Lux',starts_at:new Date().toISOString(),price_cents:1500,price_reduced_cents:1000});}
+    if(url.includes('/rpc/ticket_reserve')){sent=JSON.parse(String(init?.body));return Response.json({ok:true,free:true,order_id:'11111111-1111-4111-8111-111111111111',codes:[],invited:true});}
+    // Il resto e' la ricevuta via email, che qui non ha destinatario.
+    return Response.json([]);
+  };
+  const body={screening:'staff-a',first_name:'Guest',last_name:'Invited',email:'guest@example.invalid',seats:[{}]};
+  try{
+    // Una forma che non puo' esistere non merita un giro nel database.
+    hitDb=false;
+    const bad=await reserve(req({...body,access_code:'MFF-T-ABCDEFGH'}));
+    assert(bad.status===409 && (await bad.json()).error==='unknown_invite');assert(!hitDb);
+    // Una plausibile arriva alla RPC normalizzata, non come l'ha scritta l'ospite.
+    const ok=await reserve(req({...body,access_code:' scuola26-aaaa '}));
+    assert((await ok.json()).ok);assert(sent.p_access_code==='SCUOLA26-AAAA');
+    // Nessun codice resta nessun codice: non un stringa vuota che il database
+    // dovrebbe poi indovinare.
+    await reserve(req(body));assert(sent.p_access_code===null);
+  }finally{globalThis.fetch=original;}
+});

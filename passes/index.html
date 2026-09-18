@@ -8,7 +8,7 @@
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=62" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=63" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -335,6 +335,16 @@
 
             <button class="btn btn--ghost btn--small" type="button" data-add-seat data-i18n="tickets.addSeat">+ Add a seat</button>
 
+            <!-- An invitation from the festival covers the WHOLE booking, so it
+                 sits here, apart from the per-seat credential field: a badge
+                 says "this person already has access", an invitation says
+                 "this booking is on us". -->
+            <div class="form__field ticket-invite">
+              <label class="pass-form__label" for="tkInvite" data-i18n="tickets.inviteLabel">Invitation code (optional)</label>
+              <p class="pass-form__hint" data-i18n="tickets.inviteHint">Only if the festival sent you one. It pays for the seats in this booking.</p>
+              <input id="tkInvite" type="text" name="access_code" autocomplete="off" spellcheck="false" data-invite />
+            </div>
+
             <p class="ticket-total" data-total role="status" aria-live="polite"></p>
 
             <label class="pass-consent">
@@ -423,10 +433,10 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=47"></script>
+  <script src="../assets/js/translations.js?v=48"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script src="../assets/js/passes.js?v=5"></script>
-  <script src="../assets/js/tickets.js?v=4"></script>
+  <script src="../assets/js/tickets.js?v=5"></script>
 </body>
 </html>

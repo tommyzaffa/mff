@@ -2323,6 +2323,15 @@ html.intro-armed #introOverlay {
 .seat__badge { text-transform: uppercase; }
 .seat__badge::placeholder { text-transform: none; }
 
+/* An invitation pays for the whole booking, so it is deliberately outside the
+   seat list. The rule above it is what draws the line between "who is coming"
+   and "who is paying". */
+.ticket-invite {
+  border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  padding-top: 18px;
+}
+.ticket-invite input { text-transform: uppercase; letter-spacing: .04em; }
+
 /* Same box as the text inputs above it, since it is the same row of the same
    form. `appearance: none` because Safari otherwise draws a grey native select
    that reads as disabled on the violet card. */

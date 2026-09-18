@@ -55,6 +55,7 @@
   var seatsLabelEl = form.querySelector("[data-seats-label]");
   var dayWarnEls = Array.prototype.slice.call(form.querySelectorAll("[data-day-warning]"));
   var seatedOnlyEls = Array.prototype.slice.call(form.querySelectorAll("[data-seated-only]"));
+  var inviteEl = form.querySelector("[data-invite]");
   var doneEl = scope.querySelector("[data-done-body]");
   var doneTitleEl = scope.querySelector("[data-done-title]");
 
@@ -161,6 +162,12 @@
     var q = new URLSearchParams(window.location.search);
     var s = q.get("s");
     var d = q.get("d");
+    // The gestionale hands out one link per invitation, so the guest never has
+    // to copy the code by hand. It is still a plain field they can edit.
+    if (inviteEl) {
+      var i = (q.get("i") || "").trim().toUpperCase();
+      if (i) inviteEl.value = i;
+    }
     var pick = s
       ? screenings.filter(function (x) { return x.code === s && x.sales_open && x.seats_left > 0; })[0]
       : d
@@ -452,15 +459,26 @@
   // credential for real; this is only what the buyer is told to expect, and one
   // that turns out to be invalid stops the booking rather than quietly charging
   // for it.
+  function invite() {
+    return inviteEl ? inviteEl.value.trim().toUpperCase() : "";
+  }
+
   function updateTotal() {
     if (!current) return;
+    var invited = !!invite();
     var cents = collect().reduce(function (sum, s) {
       if (s.badge) return sum;
+      // An invitation pays for exactly the seats nobody else is paying for, so
+      // on screen it zeroes the same seats the database will zero. If it turns
+      // out to be spent or wrong, the booking is refused rather than charged.
+      if (invited) return sum;
       return sum + (s.tariff === "reduced" ? current.reduced : current.full);
     }, 0);
 
     totalEl.textContent = cents > 0
       ? t("tickets.total", "Total") + ": " + money(cents)
+      : invited
+      ? t("tickets.totalInvited", "Nothing to pay — your invitation covers this booking.")
       : t("tickets.totalFree", "Nothing to pay — your accreditation or day pass covers these seats.");
 
     var key = cents > 0 ? "tickets.submitPay" : "tickets.submitFree";
@@ -469,6 +487,13 @@
   }
 
   if (addSeatBtn) addSeatBtn.addEventListener("click", addSeat);
+
+  if (inviteEl) {
+    inviteEl.addEventListener("input", function () {
+      inviteEl.value = inviteEl.value.toUpperCase();
+      updateTotal();
+    });
+  }
 
   form.querySelectorAll("[data-back]").forEach(function (btn) {
     btn.addEventListener("click", function () { show("choose"); });
@@ -489,6 +514,7 @@
       email: form.email.value.trim(),
       locale: lang(),
       seats: collect(),
+      access_code: invite() || null,
     };
     // One or the other, never both — the function refuses a request carrying
     // two, because it would have to guess which the buyer meant.
