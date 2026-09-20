@@ -1037,6 +1037,13 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-height: 64px;
   border-radius: 8px;
 }
+/* A ~4.9:1 wordmark with a tagline under it: width-bound, so the cap that does
+   the work is the first one. Matched on the full filename, since "filmexplorer"
+   is the only string here that cannot collide with a future mark. */
+.supporters__logo img[src*="filmexplorer.png"] {
+  max-width: 186px;
+  max-height: 42px;
+}
 .supporters__logo:hover { transform: scale(1.06); }
 
 /* ============================================================
