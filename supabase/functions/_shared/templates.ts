@@ -80,9 +80,12 @@ const COPY = {
        — un posto per badge, per proiezione. Le sale hanno posti limitati, quindi conviene farlo
        per tempo.`,
     issuedCta: "Apri il badge",
-    issuedFoot:
-      `Puoi anche ritirare il badge fisico al Cinema Lux dal primo giorno di festival:
-       ti basta mostrare questo codice. Conserva questa email, è il tuo unico accesso al badge.`,
+    issuedPickupTitle: "Il badge si ritira al Cinema Lux",
+    issuedPickupBody:
+      `Il badge fisico va ritirato di persona al <strong>Cinema Lux</strong> di Massagno,
+       durante gli orari del festival, dall’1 al 4 ottobre. Mostra questo codice alla
+       reception e te lo consegniamo.`,
+    issuedFoot: "Conserva questa email: è il tuo unico accesso al badge.",
   },
 
   en: {
@@ -121,9 +124,12 @@ const COPY = {
        one by one at mergefestival.ch/passes: enter the code above and they cost nothing
        — one seat per badge, per screening. The rooms are small, so it is worth doing early.`,
     issuedCta: "Open the badge",
-    issuedFoot:
-      `You can also pick up a physical badge at Cinema Lux from the first day of the festival —
-       just show this code. Keep this email: it is your only way back to the badge.`,
+    issuedPickupTitle: "Collect your badge at Cinema Lux",
+    issuedPickupBody:
+      `The physical badge has to be collected in person at <strong>Cinema Lux</strong> in
+       Massagno, during festival opening hours, 1–4 October. Show this code at the desk
+       and we will hand it over.`,
+    issuedFoot: "Keep this email: it is your only way back to the badge.",
   },
 
   fr: {
@@ -164,9 +170,12 @@ const COPY = {
        coûtent rien — une place par badge, par projection. Les salles sont petites : mieux vaut
        s'y prendre tôt.`,
     issuedCta: "Ouvrir le badge",
-    issuedFoot:
-      `Vous pouvez aussi retirer un badge physique au Cinema Lux dès le premier jour du festival,
-       sur présentation de ce code. Conservez cet e-mail : c'est votre seul accès au badge.`,
+    issuedPickupTitle: "Le badge se retire au Cinema Lux",
+    issuedPickupBody:
+      `Le badge physique doit être retiré en personne au <strong>Cinema Lux</strong> de
+       Massagno, pendant les horaires du festival, du 1er au 4 octobre. Présentez ce code
+       à l'accueil et nous vous le remettons.`,
+    issuedFoot: "Conservez cet e-mail : c'est votre seul accès au badge.",
   },
 
   de: {
@@ -205,9 +214,12 @@ const COPY = {
        einzeln auf mergefestival.ch/passes: Gib den Code oben an, dann kosten sie nichts
        — ein Platz pro Badge, pro Vorführung. Die Säle sind klein, buch also früh.`,
     issuedCta: "Badge öffnen",
-    issuedFoot:
-      `Ab dem ersten Festivaltag kannst du im Cinema Lux auch ein physisches Badge abholen —
-       zeig einfach diesen Code. Bewahre diese E-Mail auf: sie ist dein einziger Zugang zum Badge.`,
+    issuedPickupTitle: "Das Badge gibt es im Cinema Lux",
+    issuedPickupBody:
+      `Das physische Badge holst du persönlich im <strong>Cinema Lux</strong> in Massagno
+       ab, während der Öffnungszeiten des Festivals, vom 1. bis 4. Oktober. Zeig diesen
+       Code am Empfang, dann bekommst du es ausgehändigt.`,
+    issuedFoot: "Bewahre diese E-Mail auf: sie ist dein einziger Zugang zum Badge.",
   },
 } as const;
 
@@ -294,7 +306,17 @@ export function issuedEmail(
       heading: t.issuedHeading,
       body: `<p style="margin:0 0 12px">${esc(t.hi(o.name))}</p><p style="margin:0 0 14px">${
         t.issuedBody(esc(p), esc(o.badgeCode))
-      }</p><p style="margin:0;padding:12px 14px;background:#f6f4f0;border-radius:12px">${t.issuedBook}</p>`,
+      }</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+             style="margin:0 0 14px;background:#f0ecff;border-radius:14px">
+        <tr><td style="padding:16px 18px">
+          <p style="margin:0 0 6px;font-size:18px;font-weight:700;color:#2E1B54;line-height:1.3">${
+        esc(t.issuedPickupTitle)
+      }</p>
+          <p style="margin:0;font-size:15px;line-height:1.55">${t.issuedPickupBody}</p>
+        </td></tr>
+      </table>
+      <p style="margin:0;padding:12px 14px;background:#f6f4f0;border-radius:12px">${t.issuedBook}</p>`,
       cta: { label: t.issuedCta, href: o.badgeUrl },
       footnote: t.issuedFoot,
     }),
