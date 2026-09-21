@@ -27,6 +27,26 @@
   opacity: 0.2;
   box-shadow: none;
 }
+.jury-page .jury-group__note { margin: 1.1rem 0 0; max-width: 62ch; line-height: 1.65; opacity: 0.85; }
+.jury-page .jury-group__partner {
+  margin: clamp(20px, 3vw, 30px) 0 0;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.jury-page .jury-group__partner-label {
+  font-family: var(--font-display); font-weight: 700; font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.6;
+}
+.jury-page .jury-group__partner-link {
+  display: inline-flex; align-items: center;
+  transition: transform 0.4s var(--ease);
+}
+/* The Filmexplorer mark is a saturated blue on transparent: it sits fine on cream,
+   but needs a light plate once the phone breakpoint flips this section to violet. */
+.jury-page .is-on-violet .jury-group__partner-link {
+  background: #fff; border-radius: 10px; padding: 10px 16px;
+}
+.jury-page .jury-group__partner-link:hover { transform: scale(1.05); }
+.jury-page .jury-group__partner-link img { display: block; width: auto; height: 26px; }
 .jury-page .jury-group__back { margin-top: clamp(40px, 6vw, 72px); display: flex; }
 .jury-page a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 @media (max-width: 980px) {

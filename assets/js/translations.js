@@ -36,6 +36,11 @@ window.MFF_I18N = {
       news13Link: "See the event",
       news13Date: "17 September 2026",
 
+      news15Title: "Meet the Critics’ Jury",
+      news15Text: "Merge Film Festival invited Filmexplorer to confer the Critics’ Award 2026. Giuseppe Di Salvatore, Evelyn Kreutzer and Olivier Legras form the jury. Discover their profiles.",
+      news15Link: "Meet the jury",
+      news15Date: "21 September 2026",
+      news15Alt: "Giuseppe Di Salvatore, Evelyn Kreutzer and Olivier Legras, the Critics’ Jury",
       news14Title: "Meet the Experimental jury",
       news14Text: "Alessandro Bavari, Marco Poloni and Keith Zhang will judge the eight films in the Experimental competition, where video art meets artificial intelligence. Discover their profiles.",
       news14Link: "Meet the jury",
@@ -209,7 +214,7 @@ window.MFF_I18N = {
       juriesTitle: "Festival Juries",
       juriesDesc: "Three different perspectives select the films in competition.",
       jury1Title: "Main Jury",
-      jury1Text: "Seven names for three competitions: Chabria and Gambhir for Full AI, Longo and Monti for Hybrid, Bavari, Poloni and Zhang for Experimental.",
+      jury1Text: "Ten names across four juries: Full AI, Hybrid, Experimental and the Critics’ Jury powered by Filmexplorer.",
       jury1Btn: "Meet the jury",
       jury2Title: "Youth Jury",
       jury2Text: "Students and young people, invited to judge the films in competition.",
@@ -221,9 +226,9 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Main Jury",
-        "pageTitle": "Main Jury · Full AI, Hybrid and Experimental — Merge Film Festival",
+        "pageTitle": "Main Jury & Critics’ Award — Merge Film Festival",
         "kicker": "Cinema · Visual arts · Artificial intelligence",
-        "subtitle": "Meet the juries for the Full AI, Hybrid and Experimental competitions.",
+        "subtitle": "Meet the juries for Full AI, Hybrid and Experimental, and the critics awarding the Critics’ Award.",
         "indexLabel": "Jury categories",
         "eyebrow": "Main Jury",
         "fullTitle": "Full AI",
@@ -232,6 +237,11 @@ window.MFF_I18N = {
         "hybridDesc": "Films that combine traditional techniques with artificial intelligence tools.",
         "experimentalTitle": "Experimental",
         "experimentalDesc": "Video art and experimental works created using artificial intelligence.",
+        "criticsEyebrow": "Critics’ Award",
+        "criticsTitle": "Critics’ Jury",
+        "criticsDesc": "Three perspectives from film criticism, research and audiovisual creation.",
+        "criticsPartnerNote": "Merge Film Festival invited Filmexplorer to confer the Critics’ Award 2026.",
+        "photoCredit": "Photo: Lena Hellegouarch",
         "navBack": "Back to the juries",
         "menuOpen": "Open menu",
         "menuClose": "Close menu",
@@ -264,7 +274,19 @@ window.MFF_I18N = {
           "keith": {
             "alt": "Portrait of Keith Zhang",
             "bio": "<p>Keith Zhang is a creative technologist and founder of Soulscape, an original-IP development company for AI-era entertainment. His work centres on developing distinctive characters and story worlds, building audiences, and unlocking their long-term commercial potential through original projects and selected creator collaborations.</p>\n<p>A former Uber engineer, Keith was previously co-founder and COO of YouArt (Y Combinator, Spring 2026). Through Soulscape he has brought together AI creators, Academy Award winners and industry veterans with backgrounds at Disney, Pixar and Warner Bros. He led Soulscape 2026, whose 48-hour Cinema Lab brought together 200 creators from more than 15 countries to produce 40 short films, and has led enterprise programmes for Alibaba Cloud and BytePlus.</p>\n<p>His work with Soulscape has been featured in The Hollywood Reporter and on KTVU FOX 2. Soulscape is currently developing original IPs to build enduring characters and worlds.</p>"
-          }
+          },
+          "giuseppe": {
+          "alt": "Portrait of Giuseppe Di Salvatore",
+          "bio": "<p>Giuseppe Di Salvatore was trained as a philosopher (Rome, Paris, PhD), worked as a researcher in Geneva and founded a Philosophical Research Centre in Verona.</p>\n<p>After three years working as a video journalist, in 2016 he co-founded <a href=\"https://www.filmexplorer.ch\" target=\"_blank\" rel=\"noopener noreferrer\">FILMEXPLORER</a> in Basel together with Ruth Baettig, an online platform entirely focused on discourse around art films, where he serves as Editor-in-Chief. Since then, he has been active as a film and art curator and critic, as well as serving on selection committees and juries in film festivals.</p>"
+        },
+          "evelyn": {
+          "alt": "Portrait of Evelyn Kreutzer",
+          "bio": "<p>Evelyn Kreutzer is a media scholar, video artist, and curator, based between Lugano, Switzerland, and Berlin, Germany. Together with Kevin B. Lee (Lugano) and Johannes Binotto (Zurich/Lucerne), she co-leads the research group “The Video Essay: Memories, Ecologies, Bodies,” funded by the Swiss National Science Foundation (SNSF, 2024–2026), in which she primarily focuses on exploring questions of memory, practice, and AI in the videographic mode.</p>\n<p>She also serves as Editor for <em>[in]transition: Journal of Videographic Film and Moving Images Studies</em> and as co-editor of the Videography series in <em>Zeitschrift für Medienwissenschaft</em>. Her written and videographic work has been published in journals like <em>The Cine-Files</em>, <em>Music, Sound, and the Moving Image</em>, <em>NECSUS</em>, <em>Research in Film &amp; History</em>, and <em>[in]Transition</em>. Her audiovisual book <em>Televising Taste</em> is forthcoming with Lever Press.</p>"
+        },
+          "olivier": {
+          "alt": "Portrait of Olivier Legras",
+          "bio": "<p>Olivier Legras has spent over 25 years moving between code and image. Trained as a developer, he redirected his technical skills toward creation early on: a video and 360° production studio (BroZers&amp;Co), a home music studio for electronic production (MPC, modular synths), radio production and podcasts around cinema and visual art, and experiments in virtual and augmented reality.</p>\n<p>Now the founder of Teekila, where he explores the uses of generative AI, he brings a practitioner’s eye — both technical and sensitive — to the new narrative forms AI is opening up in cinema.</p>"
+        }
         }
       },
 
@@ -953,6 +975,11 @@ window.MFF_I18N = {
       news13Link: "Scopri l’evento",
       news13Date: "17 settembre 2026",
 
+      news15Title: "Annunciata la giuria della critica",
+      news15Text: "Merge Film Festival ha invitato Filmexplorer a conferire il Premio della critica 2026. La giuria è composta da Giuseppe Di Salvatore, Evelyn Kreutzer e Olivier Legras. Scopri i loro profili.",
+      news15Link: "Scopri la giuria",
+      news15Date: "21 settembre 2026",
+      news15Alt: "Giuseppe Di Salvatore, Evelyn Kreutzer e Olivier Legras, la giuria della critica",
       news14Title: "Annunciata la giuria Experimental",
       news14Text: "Alessandro Bavari, Marco Poloni e Keith Zhang giudicano gli otto film del concorso Experimental, dove la videoarte incontra l’intelligenza artificiale. Scopri i loro profili.",
       news14Link: "Scopri la giuria",
@@ -1126,7 +1153,7 @@ window.MFF_I18N = {
       juriesTitle: "Giurie del Festival",
       juriesDesc: "Tre prospettive diverse selezionano i film in concorso.",
       jury1Title: "Giuria principale",
-      jury1Text: "Sette nomi per tre concorsi: Chabria e Gambhir per Full AI, Longo e Monti per Hybrid, Bavari, Poloni e Zhang per Experimental.",
+      jury1Text: "Dieci nomi per quattro giurie: Full AI, Hybrid, Experimental e la Giuria della critica powered by Filmexplorer.",
       jury1Btn: "Scopri la giuria",
       jury2Title: "Giuria giovani",
       jury2Text: "Studenti e giovani, chiamati a giudicare i film in concorso.",
@@ -1138,9 +1165,9 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Giuria principale",
-        "pageTitle": "Giuria principale · Full AI, Hybrid ed Experimental — Merge Film Festival",
+        "pageTitle": "Giuria principale e Premio della critica — Merge Film Festival",
         "kicker": "Cinema · Arti visive · Intelligenza artificiale",
-        "subtitle": "Scopri le giurie dei concorsi Full AI, Hybrid ed Experimental.",
+        "subtitle": "Scopri le giurie dei concorsi Full AI, Hybrid ed Experimental e i critici che assegnano il Premio della critica.",
         "indexLabel": "Categorie della giuria",
         "eyebrow": "Giuria principale",
         "fullTitle": "Full AI",
@@ -1149,6 +1176,11 @@ window.MFF_I18N = {
         "hybridDesc": "Film che combinano tecniche tradizionali e strumenti di intelligenza artificiale.",
         "experimentalTitle": "Experimental",
         "experimentalDesc": "Videoarte e opere sperimentali realizzate con l’intelligenza artificiale.",
+        "criticsEyebrow": "Premio della critica",
+        "criticsTitle": "Giuria della critica",
+        "criticsDesc": "Tre sguardi tra critica cinematografica, ricerca e creazione audiovisiva.",
+        "criticsPartnerNote": "Merge Film Festival ha invitato Filmexplorer a conferire il Premio della critica 2026.",
+        "photoCredit": "Foto: Lena Hellegouarch",
         "navBack": "Torna alle giurie",
         "menuOpen": "Apri il menu",
         "menuClose": "Chiudi il menu",
@@ -1181,7 +1213,19 @@ window.MFF_I18N = {
           "keith": {
             "alt": "Ritratto di Keith Zhang",
             "bio": "<p>Keith Zhang è un creative technologist e fondatore di Soulscape, società che sviluppa proprietà intellettuali originali per l’intrattenimento dell’era dell’intelligenza artificiale. Il suo lavoro si concentra sulla creazione di personaggi e mondi narrativi riconoscibili, sulla costruzione del pubblico e sulla loro valorizzazione commerciale a lungo termine, tra progetti propri e collaborazioni selezionate con altri autori.</p>\n<p>Ex ingegnere di Uber, è stato co-fondatore e COO di YouArt (Y Combinator, primavera 2026). Con Soulscape ha riunito creatori AI, premi Oscar e professionisti provenienti da Disney, Pixar e Warner Bros. Ha diretto Soulscape 2026, il cui Cinema Lab di 48 ore ha riunito 200 creatori da oltre 15 paesi per realizzare 40 cortometraggi, e ha guidato programmi enterprise per Alibaba Cloud e BytePlus.</p>\n<p>Il suo lavoro con Soulscape è stato raccontato da The Hollywood Reporter e da KTVU FOX 2. Soulscape sta sviluppando nuove proprietà intellettuali originali, per costruire personaggi e mondi destinati a durare.</p>"
-          }
+          },
+          "giuseppe": {
+          "alt": "Ritratto di Giuseppe Di Salvatore",
+          "bio": "<p>Giuseppe Di Salvatore si è formato come filosofo tra Roma e Parigi, conseguendo un dottorato di ricerca, ha lavorato come ricercatore a Ginevra e ha fondato un Centro di ricerca filosofica a Verona.</p>\n<p>Dopo tre anni di attività come videogiornalista, nel 2016 ha cofondato a Basilea, insieme a Ruth Baettig, <a href=\"https://www.filmexplorer.ch\" target=\"_blank\" rel=\"noopener noreferrer\">FILMEXPLORER</a>, una piattaforma online interamente dedicata al dibattito sul cinema d’arte, di cui è caporedattore. Da allora è attivo come curatore e critico cinematografico e d’arte, oltre a far parte di comitati di selezione e giurie di festival cinematografici.</p>"
+        },
+          "evelyn": {
+          "alt": "Ritratto di Evelyn Kreutzer",
+          "bio": "<p>Evelyn Kreutzer è una studiosa dei media, videoartista e curatrice, attiva tra Lugano, in Svizzera, e Berlino, in Germania. Insieme a Kevin B. Lee (Lugano) e Johannes Binotto (Zurigo/Lucerna), codirige il gruppo di ricerca “The Video Essay: Memories, Ecologies, Bodies”, finanziato dal Fondo nazionale svizzero per la ricerca scientifica (SNSF, 2024–2026), nel quale si concentra soprattutto sull’esplorazione di questioni legate alla memoria, alla pratica e all’AI attraverso il linguaggio videografico.</p>\n<p>È inoltre redattrice di <em>[in]transition: Journal of Videographic Film and Moving Images Studies</em> e cocuratrice della serie Videography di <em>Zeitschrift für Medienwissenschaft</em>. I suoi lavori scritti e videografici sono stati pubblicati su riviste come <em>The Cine-Files</em>, <em>Music, Sound, and the Moving Image</em>, <em>NECSUS</em>, <em>Research in Film &amp; History</em> e <em>[in]Transition</em>. Il suo libro audiovisivo <em>Televising Taste</em> è di prossima pubblicazione presso Lever Press.</p>"
+        },
+          "olivier": {
+          "alt": "Ritratto di Olivier Legras",
+          "bio": "<p>Olivier Legras si muove da oltre 25 anni tra codice e immagine. Formatosi come sviluppatore, ha presto orientato le proprie competenze tecniche verso la creazione: uno studio di produzione video e a 360° (BroZers&amp;Co), uno studio musicale domestico per la produzione elettronica (MPC, sintetizzatori modulari), produzioni radiofoniche e podcast sul cinema e le arti visive, ed esperimenti nella realtà virtuale e aumentata.</p>\n<p>Oggi è il fondatore di Teekila, dove esplora gli usi dell’AI generativa, e porta sulle nuove forme narrative che l’AI apre al cinema lo sguardo di chi crea in prima persona, insieme tecnico e sensibile.</p>"
+        }
         }
       },
 
@@ -1862,6 +1906,11 @@ window.MFF_I18N = {
       news13Link: "Découvrir l’événement",
       news13Date: "17 septembre 2026",
 
+      news15Title: "Découvrez le jury de la critique",
+      news15Text: "Merge Film Festival a invité Filmexplorer à décerner le Prix de la critique 2026. Le jury réunit Giuseppe Di Salvatore, Evelyn Kreutzer et Olivier Legras. Découvrez leurs profils.",
+      news15Link: "Découvrir le jury",
+      news15Date: "21 septembre 2026",
+      news15Alt: "Giuseppe Di Salvatore, Evelyn Kreutzer et Olivier Legras, le jury de la critique",
       news14Title: "Découvrez le jury Experimental",
       news14Text: "Alessandro Bavari, Marco Poloni et Keith Zhang jugeront les huit films de la compétition Experimental, où l’art vidéo rencontre l’intelligence artificielle. Découvrez leurs profils.",
       news14Link: "Découvrir le jury",
@@ -2035,7 +2084,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys du Festival",
       juriesDesc: "Trois perspectives différentes sélectionnent les films en compétition.",
       jury1Title: "Jury principal",
-      jury1Text: "Sept noms pour trois compétitions : Chabria et Gambhir pour Full AI, Longo et Monti pour Hybrid, Bavari, Poloni et Zhang pour Experimental.",
+      jury1Text: "Dix noms pour quatre jurys : Full AI, Hybrid, Experimental et le Jury de la critique powered by Filmexplorer.",
       jury1Btn: "Découvrir le jury",
       jury2Title: "Jury jeunes",
       jury2Text: "Étudiants et jeunes, appelés à juger les films en compétition.",
@@ -2047,9 +2096,9 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Jury principal",
-        "pageTitle": "Jury principal · Full AI, Hybrid et Experimental — Merge Film Festival",
+        "pageTitle": "Jury principal et Prix de la critique — Merge Film Festival",
         "kicker": "Cinéma · Arts visuels · Intelligence artificielle",
-        "subtitle": "Découvrez les jurys des compétitions Full AI, Hybrid et Experimental.",
+        "subtitle": "Découvrez les jurys des compétitions Full AI, Hybrid et Experimental, ainsi que les critiques qui décernent le Prix de la critique.",
         "indexLabel": "Catégories du jury",
         "eyebrow": "Jury principal",
         "fullTitle": "Full AI",
@@ -2058,6 +2107,11 @@ window.MFF_I18N = {
         "hybridDesc": "Des films associant techniques traditionnelles et outils d’intelligence artificielle.",
         "experimentalTitle": "Experimental",
         "experimentalDesc": "Art vidéo et œuvres expérimentales réalisés à l’aide de l’intelligence artificielle.",
+        "criticsEyebrow": "Prix de la critique",
+        "criticsTitle": "Jury de la critique",
+        "criticsDesc": "Trois regards issus de la critique cinématographique, de la recherche et de la création audiovisuelle.",
+        "criticsPartnerNote": "Merge Film Festival a invité Filmexplorer à décerner le Prix de la critique 2026.",
+        "photoCredit": "Photo : Lena Hellegouarch",
         "navBack": "Retour aux jurys",
         "menuOpen": "Ouvrir le menu",
         "menuClose": "Fermer le menu",
@@ -2090,7 +2144,19 @@ window.MFF_I18N = {
           "keith": {
             "alt": "Portrait de Keith Zhang",
             "bio": "<p>Keith Zhang est creative technologist et fondateur de Soulscape, une société de développement de propriétés intellectuelles originales pour le divertissement à l’ère de l’intelligence artificielle. Son travail porte sur la création de personnages et d’univers narratifs singuliers, sur la construction d’un public et sur leur valorisation commerciale à long terme, à travers des projets originaux et des collaborations choisies avec d’autres créateurs.</p>\n<p>Ancien ingénieur chez Uber, il a été cofondateur et COO de YouArt (Y Combinator, printemps 2026). Avec Soulscape, il a réuni des créateurs IA, des lauréats des Oscars et des professionnels venus de Disney, Pixar et Warner Bros. Il a dirigé Soulscape 2026, dont le Cinema Lab de 48 heures a rassemblé 200 créateurs de plus de 15 pays pour produire 40 courts métrages, et a piloté des programmes entreprise pour Alibaba Cloud et BytePlus.</p>\n<p>Son travail avec Soulscape a été relayé par The Hollywood Reporter et par KTVU FOX 2. Soulscape développe actuellement de nouvelles propriétés intellectuelles originales, pour bâtir des personnages et des mondes qui durent.</p>"
-          }
+          },
+          "giuseppe": {
+          "alt": "Portrait de Giuseppe Di Salvatore",
+          "bio": "<p>Giuseppe Di Salvatore s’est formé à la philosophie à Rome et à Paris, jusqu’au doctorat, a travaillé comme chercheur à Genève et a fondé un Centre de recherche philosophique à Vérone.</p>\n<p>Après trois années comme journaliste vidéo, il a cofondé en 2016 à Bâle, avec Ruth Baettig, <a href=\"https://www.filmexplorer.ch\" target=\"_blank\" rel=\"noopener noreferrer\">FILMEXPLORER</a>, une plateforme en ligne entièrement consacrée au discours sur le cinéma d’art, dont il est le rédacteur en chef. Depuis, il exerce comme curateur et critique de cinéma et d’art, et siège également dans des comités de sélection et des jurys de festivals de cinéma.</p>"
+        },
+          "evelyn": {
+          "alt": "Portrait de Evelyn Kreutzer",
+          "bio": "<p>Evelyn Kreutzer est chercheuse en études des médias, artiste vidéo et curatrice, basée entre Lugano, en Suisse, et Berlin, en Allemagne. Avec Kevin B. Lee (Lugano) et Johannes Binotto (Zurich/Lucerne), elle codirige le groupe de recherche “The Video Essay: Memories, Ecologies, Bodies”, financé par le Fonds national suisse de la recherche scientifique (SNSF, 2024–2026), au sein duquel elle explore principalement les questions de mémoire, de pratique et d’IA par l’approche vidéographique.</p>\n<p>Elle est également rédactrice de <em>[in]transition: Journal of Videographic Film and Moving Images Studies</em> et coresponsable de la série Videography dans <em>Zeitschrift für Medienwissenschaft</em>. Ses travaux écrits et vidéographiques ont été publiés dans des revues telles que <em>The Cine-Files</em>, <em>Music, Sound, and the Moving Image</em>, <em>NECSUS</em>, <em>Research in Film &amp; History</em> et <em>[in]Transition</em>. Son livre audiovisuel <em>Televising Taste</em> paraîtra prochainement chez Lever Press.</p>"
+        },
+          "olivier": {
+          "alt": "Portrait de Olivier Legras",
+          "bio": "<p>Olivier Legras évolue depuis plus de 25 ans entre code et image. Développeur de formation, il a très tôt réorienté ses compétences techniques vers la création : un studio de production vidéo et à 360° (BroZers&amp;Co), un studio musical à domicile pour la production électronique (MPC, synthétiseurs modulaires), des productions radiophoniques et des podcasts autour du cinéma et des arts visuels, ainsi que des expérimentations en réalité virtuelle et augmentée.</p>\n<p>Aujourd’hui fondateur de Teekila, où il explore les usages de l’IA générative, il porte un regard de praticien, à la fois technique et sensible, sur les nouvelles formes narratives que l’IA ouvre au cinéma.</p>"
+        }
         }
       },
 
@@ -2771,6 +2837,11 @@ window.MFF_I18N = {
       news13Link: "Zur Veranstaltung",
       news13Date: "17. September 2026",
 
+      news15Title: "Die Jury der Filmkritik steht fest",
+      news15Text: "Das Merge Film Festival hat Filmexplorer eingeladen, den Preis der Filmkritik 2026 zu verleihen. Der Jury gehören Giuseppe Di Salvatore, Evelyn Kreutzer und Olivier Legras an. Entdecke ihre Profile.",
+      news15Link: "Jury entdecken",
+      news15Date: "21. September 2026",
+      news15Alt: "Giuseppe Di Salvatore, Evelyn Kreutzer und Olivier Legras, die Jury der Filmkritik",
       news14Title: "Die Experimental-Jury steht fest",
       news14Text: "Alessandro Bavari, Marco Poloni und Keith Zhang bewerten die acht Filme des Experimental-Wettbewerbs, wo Videokunst auf künstliche Intelligenz trifft. Lern sie kennen.",
       news14Link: "Jury kennenlernen",
@@ -2944,7 +3015,7 @@ window.MFF_I18N = {
       juriesTitle: "Jurys des Festivals",
       juriesDesc: "Drei verschiedene Perspektiven wählen die Wettbewerbsfilme aus.",
       jury1Title: "Hauptjury",
-      jury1Text: "Sieben Namen für drei Wettbewerbe: Chabria und Gambhir für Full AI, Longo und Monti für Hybrid, Bavari, Poloni und Zhang für Experimental.",
+      jury1Text: "Zehn Namen für vier Jurys: Full AI, Hybrid, Experimental und die Jury der Filmkritik powered by Filmexplorer.",
       jury1Btn: "Jury kennenlernen",
       jury2Title: "Jugendjury",
       jury2Text: "Studenten und Jugendliche, die die Wettbewerbsfilme beurteilen.",
@@ -2956,9 +3027,9 @@ window.MFF_I18N = {
 
     juryMain: {
         "title": "Hauptjury",
-        "pageTitle": "Hauptjury · Full AI, Hybrid und Experimental — Merge Film Festival",
+        "pageTitle": "Hauptjury und Preis der Filmkritik — Merge Film Festival",
         "kicker": "Kino · Bildende Kunst · Künstliche Intelligenz",
-        "subtitle": "Entdecke die Jurys der Wettbewerbe Full AI, Hybrid und Experimental.",
+        "subtitle": "Entdecke die Jurys der Wettbewerbe Full AI, Hybrid und Experimental sowie die Kritikerinnen und Kritiker, die den Preis der Filmkritik verleihen.",
         "indexLabel": "Jurykategorien",
         "eyebrow": "Hauptjury",
         "fullTitle": "Full AI",
@@ -2967,6 +3038,11 @@ window.MFF_I18N = {
         "hybridDesc": "Filme, die traditionelle Techniken mit Werkzeugen der künstlichen Intelligenz verbinden.",
         "experimentalTitle": "Experimental",
         "experimentalDesc": "Videokunst und experimentelle Werke, die mithilfe künstlicher Intelligenz entstanden sind.",
+        "criticsEyebrow": "Preis der Filmkritik",
+        "criticsTitle": "Jury der Filmkritik",
+        "criticsDesc": "Drei Perspektiven aus Filmkritik, Forschung und audiovisuellem Schaffen.",
+        "criticsPartnerNote": "Das Merge Film Festival hat Filmexplorer eingeladen, den Preis der Filmkritik 2026 zu verleihen.",
+        "photoCredit": "Foto: Lena Hellegouarch",
         "navBack": "Zurück zu den Jurys",
         "menuOpen": "Menü öffnen",
         "menuClose": "Menü schliessen",
@@ -2999,7 +3075,19 @@ window.MFF_I18N = {
           "keith": {
             "alt": "Porträt von Keith Zhang",
             "bio": "<p>Keith Zhang ist Creative Technologist und Gründer von Soulscape, einem Entwicklungsstudio für eigene Stoffe und Marken im Unterhaltungsgeschäft des KI-Zeitalters. Seine Arbeit dreht sich um unverwechselbare Figuren und Erzählwelten, um den Aufbau eines Publikums und um deren langfristige kommerzielle Auswertung – in eigenen Projekten wie in ausgewählten Kooperationen mit anderen Kreativen.</p>\n<p>Der frühere Uber-Ingenieur war Mitgründer und COO von YouArt (Y Combinator, Frühjahr 2026). Mit Soulscape hat er KI-Kreative, Oscar-Preisträger und Branchenprofis von Disney, Pixar und Warner Bros. zusammengebracht. Er leitete Soulscape 2026, dessen 48-stündiges Cinema Lab 200 Kreative aus über 15 Ländern versammelte und 40 Kurzfilme hervorbrachte, und verantwortete Enterprise-Programme für Alibaba Cloud und BytePlus.</p>\n<p>Über seine Arbeit mit Soulscape berichteten The Hollywood Reporter und KTVU FOX 2. Derzeit entwickelt Soulscape eigene Stoffe, um Figuren und Welten mit langer Haltbarkeit aufzubauen.</p>"
-          }
+          },
+          "giuseppe": {
+          "alt": "Porträt von Giuseppe Di Salvatore",
+          "bio": "<p>Giuseppe Di Salvatore studierte Philosophie in Rom und Paris und promovierte. Er arbeitete als Forscher in Genf und gründete ein Philosophisches Forschungszentrum in Verona.</p>\n<p>Nach drei Jahren als Videojournalist gründete er 2016 gemeinsam mit Ruth Baettig in Basel <a href=\"https://www.filmexplorer.ch\" target=\"_blank\" rel=\"noopener noreferrer\">FILMEXPLORER</a>, eine Onlineplattform, die sich ganz dem Diskurs über Kunstfilme widmet und deren Chefredakteur er ist. Seither ist er als Film- und Kunstkurator sowie als Kritiker tätig und wirkt zudem in Auswahlkomitees und Jurys von Filmfestivals mit.</p>"
+        },
+          "evelyn": {
+          "alt": "Porträt von Evelyn Kreutzer",
+          "bio": "<p>Evelyn Kreutzer ist Medienwissenschaftlerin, Videokünstlerin und Kuratorin und lebt und arbeitet zwischen Lugano in der Schweiz und Berlin in Deutschland. Gemeinsam mit Kevin B. Lee (Lugano) und Johannes Binotto (Zürich/Luzern) leitet sie die vom Schweizerischen Nationalfonds (SNSF, 2024–2026) geförderte Forschungsgruppe “The Video Essay: Memories, Ecologies, Bodies”. Darin beschäftigt sie sich vor allem mit Fragen zu Erinnerung, Praxis und KI in der videografischen Arbeit.</p>\n<p>Sie ist zudem Redakteurin von <em>[in]transition: Journal of Videographic Film and Moving Images Studies</em> und Mitherausgeberin der Reihe Videography in der <em>Zeitschrift für Medienwissenschaft</em>. Ihre schriftlichen und videografischen Arbeiten erschienen in Zeitschriften wie <em>The Cine-Files</em>, <em>Music, Sound, and the Moving Image</em>, <em>NECSUS</em>, <em>Research in Film &amp; History</em> und <em>[in]Transition</em>. Ihr audiovisuelles Buch <em>Televising Taste</em> erscheint demnächst bei Lever Press.</p>"
+        },
+          "olivier": {
+          "alt": "Porträt von Olivier Legras",
+          "bio": "<p>Olivier Legras bewegt sich seit über 25 Jahren zwischen Code und Bild. Als ausgebildeter Entwickler wandte er seine technischen Fähigkeiten schon früh dem kreativen Schaffen zu: einem Studio für Video- und 360°-Produktionen (BroZers&amp;Co), einem Heimstudio für elektronische Musikproduktion (MPC, modulare Synthesizer), Radioproduktionen und Podcasts zu Film und bildender Kunst sowie Experimenten mit virtueller und erweiterter Realität.</p>\n<p>Heute ist er Gründer von Teekila, wo er die Einsatzmöglichkeiten generativer KI erforscht. Auf die neuen Erzählformen, die KI dem Kino eröffnet, richtet er den zugleich technischen und sensiblen Blick eines Praktikers.</p>"
+        }
         }
       },
 
