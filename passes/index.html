@@ -8,7 +8,7 @@
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=68" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=69" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -277,6 +277,16 @@
           </div>
         </div>
 
+        <!-- 0c. The request failed. Never say the programme is missing here. -->
+        <div class="pass-flow" data-panel="offline" hidden>
+          <div class="form-card reveal pass-result">
+            <h2 data-i18n="tickets.offlineTitle">We could not load the screenings</h2>
+            <p data-i18n="tickets.offlineBody">The connection dropped before the programme arrived. The programme is published — check your signal and try again.</p>
+            <button type="button" class="btn btn--apply" data-retry data-i18n="tickets.offlineCta">Try again</button>
+            <p class="ticket-note"><a href="../program/index.html" data-i18n="tickets.offlineProgramme">See the full programme</a></p>
+          </div>
+        </div>
+
         <!-- 1. Pick a screening ---------------------------------------------- -->
         <div class="pass-flow" data-panel="choose" hidden>
           <p class="pass-perk reveal">
@@ -433,10 +443,10 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=53"></script>
+  <script src="../assets/js/translations.js?v=54"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
   <script src="../assets/js/passes.js?v=5"></script>
-  <script src="../assets/js/tickets.js?v=5"></script>
+  <script src="../assets/js/tickets.js?v=6"></script>
 </body>
 </html>

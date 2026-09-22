@@ -142,19 +142,35 @@
 
   // --- the programme --------------------------------------------------------
 
-  fetch(BASE + "ticket-screenings")
-    .then(function (r) { return r.json(); })
-    .then(function (res) {
-      screenings = (res.screenings || []).filter(function (s) { return s.is_ticketed; });
-      days = res.days || [];
-      if (!screenings.length) return show("soon");
-      render();
-      show("choose");
-      deepLink();
-    })
-    .catch(function () {
-      show("soon");
-    });
+  // A failed request is NOT an empty programme. This used to fall through to
+  // the "soon" panel, so one dropped connection told the visitor the programme
+  // had not been announced yet — with the programme long since published.
+  // Network trouble gets its own panel and a retry button; "soon" is now only
+  // ever shown when the server really answers with no ticketed screening.
+  function loadScreenings() {
+    show("loading");
+    fetch(BASE + "ticket-screenings")
+      .then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        return r.json();
+      })
+      .then(function (res) {
+        screenings = (res.screenings || []).filter(function (s) { return s.is_ticketed; });
+        days = res.days || [];
+        if (!screenings.length) return show("soon");
+        render();
+        show("choose");
+        deepLink();
+      })
+      .catch(function () {
+        show("offline");
+      });
+  }
+
+  var retryBtn = scope.querySelector("[data-retry]");
+  if (retryBtn) retryBtn.addEventListener("click", loadScreenings);
+
+  loadScreenings();
 
   // Coming from the programme page, which links straight at one screening or
   // one day. Nothing is skipped: the form simply opens already filled in.

@@ -779,9 +779,14 @@ window.MFF_I18N = {
       heroCta: "See the screenings",
       loading: "Loading the screenings…",
 
-      soonTitle: "The programme is on its way",
-      soonBody: "Screening dates and times go online as soon as the selection is closed. Accreditations are already available, and every pass includes a seat at each screening.",
+      soonTitle: "No screening open for booking",
+      soonBody: "There is no screening on sale right now. The full programme is on the programme page, and every pass includes a seat at each screening.",
       soonCta: "Get your accreditation",
+
+      offlineTitle: "We could not load the screenings",
+      offlineBody: "The connection dropped before the programme arrived. The programme is published — check your signal and try again.",
+      offlineCta: "Try again",
+      offlineProgramme: "See the full programme",
 
       perkLabel: "Have a badge or a day pass?",
       perkText: "Enter its code when you book and the seat costs nothing — one seat per badge or day pass, per screening.",
@@ -1712,9 +1717,14 @@ window.MFF_I18N = {
       heroCta: "Guarda le proiezioni",
       loading: "Carico le proiezioni…",
 
-      soonTitle: "Il programma sta arrivando",
-      soonBody: "Date e orari delle proiezioni saranno online appena chiusa la selezione. Gli accrediti sono già disponibili e comprendono il posto a ogni proiezione.",
+      soonTitle: "Nessuna proiezione prenotabile",
+      soonBody: "Al momento non c'è nessuna proiezione in vendita. Il programma completo è nella pagina del programma, e ogni accredito comprende il posto a ogni proiezione.",
       soonCta: "Prendi il tuo accredito",
+
+      offlineTitle: "Non riusciamo a caricare le proiezioni",
+      offlineBody: "La connessione è caduta prima che arrivasse il programma. Il programma c'è: controlla la rete e riprova.",
+      offlineCta: "Riprova",
+      offlineProgramme: "Vedi il programma completo",
 
       perkLabel: "Hai un badge o una giornaliera?",
       perkText: "Inserisci il suo codice quando prenoti e il posto non costa nulla — un posto per badge o giornaliera, per proiezione.",
@@ -2645,9 +2655,14 @@ window.MFF_I18N = {
       heroCta: "Voir les projections",
       loading: "Chargement des projections…",
 
-      soonTitle: "Le programme arrive",
-      soonBody: "Les dates et horaires des projections seront en ligne dès la clôture de la sélection. Les accréditations sont déjà disponibles et donnent une place à chaque projection.",
+      soonTitle: "Aucune projection réservable",
+      soonBody: "Aucune projection n'est en vente pour l'instant. Le programme complet se trouve sur la page du programme, et chaque accréditation donne une place à chaque projection.",
       soonCta: "Obtenir son accréditation",
+
+      offlineTitle: "Impossible de charger les projections",
+      offlineBody: "La connexion a lâché avant l'arrivée du programme. Le programme est bien en ligne : vérifiez votre réseau et réessayez.",
+      offlineCta: "Réessayer",
+      offlineProgramme: "Voir le programme complet",
 
       perkLabel: "Vous avez un badge ou un pass journée ?",
       perkText: "Indiquez son code lors de la réservation et la place ne coûte rien — une place par badge ou pass journée, et par projection.",
@@ -3578,9 +3593,14 @@ window.MFF_I18N = {
       heroCta: "Vorführungen ansehen",
       loading: "Vorführungen werden geladen…",
 
-      soonTitle: "Das Programm ist unterwegs",
-      soonBody: "Daten und Zeiten der Vorführungen gehen online, sobald die Auswahl abgeschlossen ist. Akkreditierungen sind bereits erhältlich und enthalten einen Platz bei jeder Vorführung.",
+      soonTitle: "Keine Vorführung buchbar",
+      soonBody: "Zurzeit ist keine Vorführung im Verkauf. Das vollständige Programm steht auf der Programmseite, und jede Akkreditierung enthält einen Platz bei jeder Vorführung.",
       soonCta: "Akkreditierung holen",
+
+      offlineTitle: "Vorführungen konnten nicht geladen werden",
+      offlineBody: "Die Verbindung brach ab, bevor das Programm ankam. Das Programm ist online — prüfen Sie Ihr Netz und versuchen Sie es erneut.",
+      offlineCta: "Erneut versuchen",
+      offlineProgramme: "Zum vollständigen Programm",
 
       perkLabel: "Badge oder Tagespass?",
       perkText: "Geben Sie bei der Reservierung den Code an, dann kostet der Platz nichts — ein Platz pro Badge oder Tagespass und Vorführung.",
