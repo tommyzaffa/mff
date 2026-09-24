@@ -1,0 +1,10 @@
+/* Film showcase and the final piazza entry in each programme day. */
+.bavari-works { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+.bavari-works__premiere { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 12px; }
+.bavari-works__title { font-family: Georgia, serif; font-size: 1.25rem; font-style: italic; }
+.bavari-works__badge { border: 1px solid currentColor; border-radius: 3px; padding: 4px 7px; font-size: .63rem; font-weight: 700; letter-spacing: .09em; }
+.bavari-works__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-family: Georgia, serif; font-size: .93rem; }
+.bavari-works__grid > span { overflow-wrap: anywhere; }
+.t-item--piazza { margin-top: 24px; }
+.t-card--piazza { background: color-mix(in srgb, currentColor 5%, transparent); }
+@media (max-width: 420px) { .bavari-works__grid { grid-template-columns: 1fr; gap: 8px; } }
