@@ -34,7 +34,13 @@ import { fail, json, preflight } from "../_shared/http.ts";
 // A screening stays on the board until it has been running a while, so the
 // counter does not vanish from under someone still selling latecomers.
 const KEEP_VISIBLE_MINUTES = 45;
-const LOOK_AHEAD_HOURS = 18;
+// The board used to look 18 hours ahead. That is right during the festival and
+// useless before it: a week out both staff pages were simply empty, so nobody
+// could learn them, rehearse them or check them. The programme is ten ticketed
+// screenings over four days, so the honest window is the whole festival — small
+// enough to read at a glance, and every screening that is not yet sellable
+// still comes back locked, with the time it opens.
+const LOOK_AHEAD_HOURS = 24 * 14;
 
 Deno.serve(secured(async (req) => {
   const pre = preflight(req);

@@ -121,21 +121,50 @@
 
   // --- la lavagna -----------------------------------------------------------
 
-  function timeText(iso) {
-    try {
-      return new Intl.DateTimeFormat("it-CH", {
-        weekday: "short", day: "numeric", month: "short",
-        hour: "2-digit", minute: "2-digit", timeZone: "Europe/Zurich",
-      }).format(new Date(iso));
-    } catch (e) { return iso; }
-  }
-
   function hourText(iso) {
     try {
       return new Intl.DateTimeFormat("it-CH", {
         hour: "2-digit", minute: "2-digit", timeZone: "Europe/Zurich",
       }).format(new Date(iso));
     } catch (e) { return iso; }
+  }
+
+  // La lavagna copre tutto il festival, quindi la data va detta una volta sola
+  // in testa al gruppo e non ripetuta su ogni riga. Il giorno è quello di
+  // Zurigo, non quello del tablet: un fuso sbagliato sposterebbe di un giorno
+  // le proiezioni serali.
+  function dayKey(iso) {
+    try {
+      return new Intl.DateTimeFormat("en-CA", {
+        year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { return String(iso).slice(0, 10); }
+  }
+
+  function dayText(iso) {
+    var label;
+    try {
+      label = new Intl.DateTimeFormat("it-CH", {
+        weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { label = String(iso).slice(0, 10); }
+    var key = dayKey(iso);
+    var now = Date.now();
+    if (key === dayKey(new Date(now).toISOString())) return "Oggi · " + label;
+    if (key === dayKey(new Date(now + 86400000).toISOString())) return "Domani · " + label;
+    return label;
+  }
+
+  // Quando manca poco, il minuto che resta dice più dell'orario: è la domanda
+  // che fa chi è davanti al banco. La lavagna si aggiorna da sola ogni mezzo
+  // minuto, quindi il conto alla rovescia resta vero senza un timer suo.
+  function unlockText(s) {
+    var mins = Math.ceil((new Date(s.sales_close_at).getTime() - Date.now()) / 60000);
+    if (mins > 0 && mins <= 90) {
+      return "Si vende fra " + mins + (mins === 1 ? " minuto" : " minuti") +
+             ", dalle " + hourText(s.sales_close_at) + ".";
+    }
+    return "Si può vendere dalle " + hourText(s.sales_close_at) + ".";
   }
 
   function render(screenings) {
@@ -145,18 +174,28 @@
     if (!screenings.length) {
       var empty = document.createElement("li");
       empty.className = "door__empty";
-      empty.textContent = "Nessuna proiezione nelle prossime ore.";
+      empty.textContent = "Nessuna proiezione in programma.";
       listEl.appendChild(empty);
       return;
     }
 
+    var lastDay = "";
     screenings.forEach(function (s) {
+      var key = dayKey(s.starts_at);
+      if (key !== lastDay) {
+        lastDay = key;
+        var head = document.createElement("li");
+        head.className = "staff-day";
+        head.textContent = dayText(s.starts_at);
+        listEl.appendChild(head);
+      }
+
       var li = document.createElement("li");
       li.className = "door-show" + (s.unlocked ? "" : " is-locked");
 
       var when = document.createElement("p");
       when.className = "door-show__when";
-      when.textContent = timeText(s.starts_at);
+      when.textContent = hourText(s.starts_at);
       li.appendChild(when);
 
       var title = document.createElement("h2");
@@ -181,7 +220,7 @@
       if (!s.unlocked) {
         var lock = document.createElement("p");
         lock.className = "door-show__lock";
-        lock.textContent = "Si può vendere dalle " + hourText(s.sales_close_at) + ".";
+        lock.textContent = unlockText(s);
         li.appendChild(lock);
         listEl.appendChild(li);
         return;

@@ -170,6 +170,8 @@
 
   // --- scelta della proiezione ----------------------------------------------
 
+  // La barra dello scanner tiene la data per intero: una volta partiti, sapere
+  // con certezza quale proiezione si sta presidiando vale la riga in più.
   function whenText(iso) {
     try {
       return new Intl.DateTimeFormat("it-CH", {
@@ -179,6 +181,38 @@
     } catch (e) { return iso; }
   }
 
+  // Nella lista, invece, la data sta nel titolo del giorno e sulla riga resta
+  // solo l'ora. Il giorno è quello di Zurigo, non quello del telefono.
+  function hourText(iso) {
+    try {
+      return new Intl.DateTimeFormat("it-CH", {
+        hour: "2-digit", minute: "2-digit", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { return iso; }
+  }
+
+  function dayKey(iso) {
+    try {
+      return new Intl.DateTimeFormat("en-CA", {
+        year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { return String(iso).slice(0, 10); }
+  }
+
+  function dayText(iso) {
+    var label;
+    try {
+      label = new Intl.DateTimeFormat("it-CH", {
+        weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Zurich",
+      }).format(new Date(iso));
+    } catch (e) { label = String(iso).slice(0, 10); }
+    var key = dayKey(iso);
+    var now = Date.now();
+    if (key === dayKey(new Date(now).toISOString())) return "Oggi · " + label;
+    if (key === dayKey(new Date(now + 86400000).toISOString())) return "Domani · " + label;
+    return label;
+  }
+
   function toPick(screenings) {
     listEl.innerHTML = "";
     pickStatus.textContent = "";
@@ -186,11 +220,21 @@
     if (!screenings.length) {
       var empty = document.createElement("li");
       empty.className = "scan__empty";
-      empty.textContent = "Nessuna proiezione nelle prossime ore.";
+      empty.textContent = "Nessuna proiezione in programma.";
       listEl.appendChild(empty);
     }
 
+    var lastDay = "";
     screenings.forEach(function (s) {
+      var key = dayKey(s.starts_at);
+      if (key !== lastDay) {
+        lastDay = key;
+        var head = document.createElement("li");
+        head.className = "staff-day";
+        head.textContent = dayText(s.starts_at);
+        listEl.appendChild(head);
+      }
+
       var li = document.createElement("li");
       var btn = document.createElement("button");
       btn.type = "button";
@@ -198,7 +242,7 @@
 
       var when = document.createElement("span");
       when.className = "scan__choice-when";
-      when.textContent = whenText(s.starts_at);
+      when.textContent = hourText(s.starts_at);
       btn.appendChild(when);
 
       var title = document.createElement("span");

@@ -2575,10 +2575,14 @@ html.intro-armed #introOverlay {
 .door__head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
 .door__title {
   margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem;
+  /* Deve poter rimpicciolire: senza questo il titolo tiene la sua larghezza
+     intrinseca e sono i due pulsanti a spezzarsi a metà parola sul telefono. */
+  flex: 1 1 auto; min-width: 0;
 }
 .door__lead { margin: 0 0 20px; opacity: 0.75; }
 .door__refresh {
   border: 0; background: none; padding: 0; cursor: pointer;
+  flex: 0 0 auto; white-space: nowrap;
   font: inherit; font-size: 0.9rem; color: inherit; opacity: 0.7; text-decoration: underline;
 }
 
@@ -2603,6 +2607,17 @@ html.intro-armed #introOverlay {
 
 .door__list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .door__empty { padding: 22px; text-align: center; opacity: 0.6; }
+
+/* Il titolo del giorno, condiviso da /door/ e /scan/: le due pagine ora
+   elencano tutto il festival, quindi la data si dice una volta in testa al
+   gruppo e ogni riga sotto porta solo l'ora. Colore ereditato — entrambe sono
+   pagine viola fisse, fuori dall'inversione di app.js. */
+.staff-day {
+  margin: 14px 0 0; font-family: var(--font-display); font-weight: 700;
+  font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+  opacity: 0.7;
+}
+.staff-day:first-child { margin-top: 0; }
 
 .door-show {
   padding: 18px 20px 20px; border-radius: 18px; text-align: center;
