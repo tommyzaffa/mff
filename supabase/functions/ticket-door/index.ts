@@ -67,7 +67,10 @@ Deno.serve(secured(async (req) => {
     if (body.action && !["board", "sell", "scan"].includes(body.action)) return fail(req, "bad_request");
 
     if (body.action === "scan") {
-      const code = String(body.code ?? "").trim();
+      // Ripulito prima di controllarne la forma: un codice battuto a mano al
+      // buio arriva con uno spazio in mezzo, e la regex lo scarterebbe come
+      // malformato invece di ammettere la persona che ha in mano il biglietto.
+      const code = String(body.code ?? "").toUpperCase().replace(/[^A-Z0-9-]/g, "");
       const screening = String(body.screening ?? "").trim();
       if (!/^MFF-(?:[TD]-[A-Z0-9]{8}|[A-Z0-9]{4}-[A-Z0-9]{4})$/.test(code)) return fail(req, "code_required");
       // Always sent by the page, because a check-in that does not know which

@@ -64,6 +64,16 @@ function checkoutLines(
   ];
 }
 
+// A badge or day-pass code as the holder actually types it. Trimming is not
+// enough: the codes are printed and read back in groups, so they arrive with a
+// space inside ("MFF-X73Q -YEQC"), a non-breaking space pasted out of an email,
+// or lower case. Every one of those used to come back as "we do not recognise
+// this badge", which reads as "your accreditation is not valid" to someone who
+// is holding a perfectly good one. Keep only what a code is made of.
+function credential(v: unknown): string | null {
+  return (v ?? "").toString().toUpperCase().replace(/[^A-Z0-9-]/g, "") || null;
+}
+
 Deno.serve(secured(async (req) => {
   const pre = preflight(req);
   if (pre) return pre;
@@ -108,7 +118,7 @@ Deno.serve(secured(async (req) => {
     const seats = rawSeats.map((s) => {
       const tariff = (s?.tariff ?? "full").toString().trim().toLowerCase();
       return {
-        badge: (s?.badge ?? "").toString().trim().toUpperCase() || null,
+        badge: credential(s?.badge),
         holder: (s?.holder ?? "").toString().trim().slice(0, 60) || null,
         wheelchair: s?.wheelchair === true,
         tariff: TARIFFS.has(tariff) ? tariff : "full",

@@ -355,10 +355,17 @@
 
   // --- la verifica ----------------------------------------------------------
 
+  // Stessa pulizia del sito: un codice scritto a mano al buio arriva con uno
+  // spazio in mezzo, e il server lo rifiuterebbe come sconosciuto invece di
+  // dire che quel biglietto e' valido. Resta solo cio' di cui un codice e' fatto.
+  function credential(v) {
+    return String(v == null ? "" : v).toUpperCase().replace(/[^A-Z0-9-]/g, "");
+  }
+
   function submit(raw) {
     if (busy || !current) return;
     var run = generation;
-    var code = String(raw).trim().toUpperCase();
+    var code = credential(raw);
     if (!code) return;
 
     var now = Date.now();
@@ -505,7 +512,7 @@
     e.preventDefault();
     if (busy || !current) return;
     var input = manualForm.code;
-    var code = input.value.trim().toUpperCase();
+    var code = credential(input.value);
     if (!code) return;
     delete recent[code];
     hideVerdict();

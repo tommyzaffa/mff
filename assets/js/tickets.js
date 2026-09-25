@@ -396,7 +396,7 @@
       badge.setAttribute("data-badge", "");
       badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
       badge.addEventListener("input", function () {
-        badge.value = badge.value.toUpperCase();
+        badge.value = credential(badge.value) || "";
         updateTotal();
       });
       li.appendChild(badge);
@@ -457,12 +457,21 @@
     if (addSeatBtn) addSeatBtn.hidden = rows.length >= MAX_SEATS;
   }
 
+  // I codici sono stampati e riletti a gruppi, quindi arrivano con uno spazio
+  // in mezzo ("MFF-X73Q -YEQC"), con uno spazio unificatore incollato da una
+  // mail, o in minuscolo. Tagliare solo le estremita' non bastava: il server
+  // rispondeva "questo numero di badge non risulta" a chi ne aveva uno
+  // validissimo. Qui resta solo cio' di cui un codice e' fatto.
+  function credential(v) {
+    return String(v == null ? "" : v).toUpperCase().replace(/[^A-Z0-9-]/g, "") || null;
+  }
+
   function collect() {
     return seatRows().map(function (li) {
       var badge = li.querySelector("[data-badge]");
       var chair = li.querySelector("[data-wheelchair]");
       return {
-        badge: badge ? badge.value.trim().toUpperCase() || null : null,
+        badge: badge ? credential(badge.value) : null,
         holder: li.querySelector("[data-holder]").value.trim() || null,
         wheelchair: chair ? chair.checked : false,
         tariff: li.querySelector("[data-tariff]").value,
