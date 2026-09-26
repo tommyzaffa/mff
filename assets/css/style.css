@@ -2750,12 +2750,13 @@ html.intro-armed #introOverlay {
   background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .scan__bar-text { flex: 1 1 auto; min-width: 0; }
-/* Two lines rather than one with an ellipsis: cut at the width of a phone,
+/* Wrapping, never an ellipsis on one line: cut at the width of a phone,
    "Film in concorso · Programma 1" and "… Programma 3" end identically, and the
-   bar is the only place the staff can check which room they are standing in. */
+   bar is the only place the staff can check which room they are standing in.
+   Three lines is what the two ceremony titles need on a 360px screen. */
 .scan__bar-title {
   margin: 0; font-weight: 700; font-size: 0.98rem; line-height: 1.2;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
   overflow: hidden; overflow-wrap: anywhere;
 }
 .scan__bar-when {
