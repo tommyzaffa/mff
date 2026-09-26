@@ -65,7 +65,15 @@
     el.textContent = t(key, el.textContent);
   }
 
+  // Quante righe si possono aggiungere in una volta sola. Una giornaliera non e'
+  // un posto in sala ma un codice: una scuola ne prende una per studente, quindi
+  // il tetto e' un altro. Il pulsante "aggiungi" sparisce al numero giusto per
+  // quello che si sta comprando.
   var MAX_SEATS = 10;
+  var MAX_DAY_PASSES = 35;
+  function maxRows() {
+    return current && current.key === "day" ? MAX_DAY_PASSES : MAX_SEATS;
+  }
 
   var screenings = [];
   var days = [];
@@ -334,7 +342,7 @@
 
   function addSeat() {
     var n = seatRows().length;
-    if (n >= MAX_SEATS) return;
+    if (n >= maxRows()) return;
 
     var li = document.createElement("li");
     li.className = "seat";
@@ -454,7 +462,7 @@
       var badge = li.querySelector("[data-badge]");
       if (badge) badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
     });
-    if (addSeatBtn) addSeatBtn.hidden = rows.length >= MAX_SEATS;
+    if (addSeatBtn) addSeatBtn.hidden = rows.length >= maxRows();
   }
 
   // I codici sono stampati e riletti a gruppi, quindi arrivano con uno spazio

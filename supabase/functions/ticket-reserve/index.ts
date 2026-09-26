@@ -27,7 +27,12 @@ import { type CheckoutLine, createTicketCheckoutSession } from "../_shared/strip
 const CHECKOUT_MINUTES = 30;
 const HOLD_MINUTES = CHECKOUT_MINUTES + 5;
 
+// Quanto si puo' comprare in una volta sola. Sono due numeri e non uno perche'
+// le due cose non si somigliano: un posto e' una poltrona in quella sala, una
+// giornaliera e' un codice che una scuola compra uno per studente. Il tetto dei
+// posti resta dov'era; quello delle giornaliere no.
 const MAX_SEATS = 10;
+const MAX_DAY_PASSES = 35;
 
 // Only what the buyer is allowed to claim. 'accredited' is not in here: that is
 // something the database concludes from a valid badge, never something a
@@ -111,7 +116,7 @@ Deno.serve(secured(async (req) => {
 
     const rawSeats = Array.isArray(body.seats) ? (body.seats as SeatIn[]) : null;
     if (!rawSeats || rawSeats.length < 1) return fail(req, "seats_required");
-    if (rawSeats.length > MAX_SEATS) return fail(req, "too_many_seats");
+    if (rawSeats.length > (day ? MAX_DAY_PASSES : MAX_SEATS)) return fail(req, "too_many_seats");
 
     // Normalised here so the RPC receives exactly the keys it reads and nothing
     // a caller invented can reach the database.
