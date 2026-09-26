@@ -68,8 +68,11 @@
     if (!snapshot) return;
     speak(snapshot.language === 'it' ? 'it' : 'en');
     const words = copy[shown];
-    const stale = Date.now() - Date.parse(snapshot.updated_at) > 30000;
-    const state = snapshot.state;
+    const age = Date.now() - Date.parse(snapshot.updated_at);
+    const stale = age > 30000;
+    // The lease lives 45 seconds, so a room nobody has written to in three minutes
+    // has no regia behind it: it is waiting for the next talk, not showing one.
+    const state = age > 180000 ? 'idle' : snapshot.state;
     const active = ['connecting', 'live', 'reconnecting'].includes(state);
     const waiting = active && (stale || !connected || state === 'reconnecting');
     const text = state === 'idle' ? words.idle : state === 'ended' ? words.ended :
@@ -77,7 +80,7 @@
     $('talk-title').textContent = snapshot.title;
     $('viewer-status').textContent = text;
     $('viewer-status').dataset.state = waiting ? 'reconnecting' : state;
-    paint(tail(snapshot.translated, 1400), state === 'ended' ? words.thanks : words.waiting);
+    paint(state === 'idle' ? '' : tail(snapshot.translated, 1400), state === 'ended' ? words.thanks : words.waiting);
     $('viewer-message').textContent = waiting ? words.interrupted : '';
   }
   async function read() {

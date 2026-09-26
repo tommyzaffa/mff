@@ -270,8 +270,12 @@ della cassa non può spendere credito audio e viceversa (test in
 5. I token finali tornano indietro e ogni ~1,2 s la regia li pubblica con
    `action:'publish'`; la riga pubblica va in `live_caption_rooms`, che il
    pubblico legge in realtime con la sola chiave anon (RLS: sola lettura).
-6. *Ferma* chiude microfono e WebSocket, scrive lo stato `ended` e libera la
-   sala per il talk successivo.
+6. *Ferma* chiude microfono e WebSocket, scrive lo stato `idle` con il testo
+   azzerato — la pagina del pubblico torna in attesa invece di restare
+   sull'ultima riga del talk finito — e libera la sala per il talk successivo.
+   La chiusura passa anche a lease scaduto (solo per chi possiede la sala): se
+   invece la regia sparisce senza fermare, la pagina del pubblico si azzera da
+   sola dopo tre minuti senza aggiornamenti.
 
 ### Prima di ogni talk
 

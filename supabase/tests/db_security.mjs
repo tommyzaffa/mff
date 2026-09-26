@@ -320,12 +320,21 @@ await test('a delayed retry never rewinds the captions on screen',async()=>{
  assert.deepEqual([(await room()).translated,(await room()).revision],['ultimo',revision]);
 });
 await test('a stopped session cannot resume, and the room frees up for the next talk',async()=>{
- assert.equal((await caption(regiaA,6,'ended','grazie')).ok,true);
+ assert.equal((await caption(regiaA,6,'idle','grazie')).ok,true);
  assert.equal((await caption(regiaA,7,'live','ancora')).error,'lease_lost');
- assert.equal((await room()).state,'ended');
+ const closed=await room();
+ // Stopping leaves nothing of the finished talk on the audience screen.
+ assert.deepEqual([closed.state,closed.original,closed.translated],['idle','','']);
  assert.equal((await claim(regiaB,'Secondo talk',30,'it')).ok,true);
  const next=await room();
  assert.deepEqual([next.state,next.title,next.translated,next.language],['connecting','Secondo talk','','it']);
+});
+await test('a regia whose lease expired can still clear the audience screen',async()=>{
+ await q(`update live_caption_publishers set lease_until=now()-interval '1 minute' where room='talk'`);
+ assert.equal((await caption(regiaB,1,'live','fantasma')).error,'lease_lost');
+ assert.equal((await caption(regiaB,2,'idle','')).ok,true);
+ const closed=await room();
+ assert.deepEqual([closed.state,closed.translated,closed.title],['idle','','Secondo talk']);
 });
 console.log(`${count} database security tests passed`);
 await db.close();

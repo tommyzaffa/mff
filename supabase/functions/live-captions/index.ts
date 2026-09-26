@@ -43,7 +43,7 @@ Deno.serve(secured(async req => {
   }
   if(body.action==='publish') {
     if(!Number.isSafeInteger(body.sequence) || body.sequence<1 || body.sequence>10000000 ||
-      !['connecting','live','reconnecting','ended'].includes(body.state) ||
+      !['connecting','live','reconnecting','ended','idle'].includes(body.state) ||
       typeof body.original!=='string' || body.original.length>1500 ||
       typeof body.translated!=='string' || body.translated.length>1500) return fail(req,'bad_request');
     const blocked=await rateLimit(req,'live-publish',150,1000,60);

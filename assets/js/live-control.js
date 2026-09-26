@@ -114,12 +114,15 @@
     })();
     return r.publishing;
   }
+  // Fermare un talk restituisce la sala al prossimo: la pagina del pubblico torna
+  // in attesa invece di restare per giorni sull'ultima riga di un talk finito.
+  const closing = r => ({ ...message(r, 'idle'), original: '', translated: '' });
   async function release(r) {
     if (!r.claimed) return;
     if (r.publishing) await r.publishing; // final update follows all earlier requests
     r.pending = null;
-    try { await request(message(r, 'ended'), { keepalive: true }); }
-    catch (_) { if (run === r) $('notice').textContent = 'Audio fermato. Il pubblico vedrà l’interruzione entro 30 secondi se la rete non torna.'; }
+    try { await request(closing(r), { keepalive: true }); }
+    catch (_) { if (run === r) $('notice').textContent = 'Audio fermato, ma la schermata del pubblico non si è ripulita: si azzera da sola entro tre minuti.'; }
     r.claimed = false;
   }
   function context() {
@@ -273,7 +276,7 @@
       r.ws.send(''); await Promise.race([drained, delay(3500)]);
     }
     if (r.ws) { r.ws.onclose = null; r.ws.close(); }
-    r.state = 'ended'; r.buffer.clearDraft(); r.dirty = true; render(r);
+    r.state = 'idle'; r.buffer.clearDraft(); r.dirty = true; render(r);
     await release(r);
     if (wakeLock) { await wakeLock.release().catch(() => {}); wakeLock = null; }
     if (run === r) {
@@ -289,7 +292,7 @@
     const r = run; r.stopping = true;
     clearInterval(r.pump); clearInterval(r.tick); clearTimeout(r.retry);
     closeAudio(r); if (r.ws) r.ws.close();
-    if (r.claimed) void request(message(r, 'ended'), { keepalive: true }).catch(() => {});
+    if (r.claimed) void request(closing(r), { keepalive: true }).catch(() => {});
     run = null; controls(false); status('Fermato');
   });
   if (session) request({ action: 'check', session }).then(data => showControl(data.configured)).catch(error => {
