@@ -2605,7 +2605,10 @@ html.intro-armed #introOverlay {
 .door__error { margin: 0; min-height: 1.2em; font-size: 0.9rem; color: #F2A9A9; }
 .door__status { margin: 18px 0 0; min-height: 1.2em; font-size: 0.9rem; color: #F2A9A9; }
 
-.door__list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+/* `minmax(0, 1fr)` for the same reason as the scanner below: the counter row
+   wants ~340px on one line, and an auto track grows to it — pushing the "+" a
+   cashier presses off the right edge of every phone narrower than 376px. */
+.door__list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 0; padding: 0; list-style: none; }
 .door__empty { padding: 22px; text-align: center; opacity: 0.6; }
 
 /* Il titolo del giorno, condiviso da /door/ e /scan/: le due pagine ora
@@ -2654,6 +2657,12 @@ html.intro-armed #introOverlay {
   font-variant-numeric: tabular-nums;
 }
 .door-show__counter .door-step { flex: 0 0 88px; }
+/* On a small phone the price takes its own line rather than squeezing the two
+   buttons: they are pressed with a thumb, sideways, in the dark. */
+@media (max-width: 400px) {
+  .door-show__counter { flex-wrap: wrap; row-gap: 8px; }
+  .door-show__tariff { flex: 1 1 100%; }
+}
 
 .door-step {
   flex: 1 1 0; min-height: 64px; border-radius: 16px; cursor: pointer;
@@ -2722,7 +2731,16 @@ html.intro-armed #introOverlay {
 
 /* --- the live panel ------------------------------------------------------ */
 
-.scan__panel--live { display: grid; gap: 14px; }
+/* `minmax(0, 1fr)`, not the default `auto`: the title of a long screening is
+   `nowrap`, so the bar's min-content is the whole line (~536px on a phone) and
+   an auto track grows to it — dragging the camera and the code field off the
+   right edge of a 375px screen, silently, because the body hides the overflow. */
+.scan__panel--live { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+/* And every row must be allowed to shrink into it: a grid item refuses to go
+   below its own min-content, which for the code field is the 20 characters an
+   `<input>` reserves by default. The manual form is a nested grid, so it needs
+   exactly the same pair. */
+.scan__panel--live > *, .scan__manual > * { min-width: 0; }
 .scan__panel--live[hidden] { display: none; }
 
 .scan__bar { display: flex; align-items: center; gap: 12px; }
@@ -2732,9 +2750,13 @@ html.intro-armed #introOverlay {
   background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .scan__bar-text { flex: 1 1 auto; min-width: 0; }
+/* Two lines rather than one with an ellipsis: cut at the width of a phone,
+   "Film in concorso · Programma 1" and "… Programma 3" end identically, and the
+   bar is the only place the staff can check which room they are standing in. */
 .scan__bar-title {
   margin: 0; font-weight: 700; font-size: 0.98rem; line-height: 1.2;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden; overflow-wrap: anywhere;
 }
 .scan__bar-when {
   margin: 2px 0 0; font-size: 0.72rem; letter-spacing: 0.12em;
@@ -2803,9 +2825,12 @@ html.intro-armed #introOverlay {
 
 /* --- typing a code by hand ------------------------------------------------ */
 
-.scan__manual { display: grid; gap: 8px; }
+.scan__manual { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .scan__manual label { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
 .scan__manual-row { display: flex; gap: 10px; }
+/* The field gives way, never the button: "Verifica" split over two lines the
+   moment the row had to fit a 360px phone. */
+.scan__manual-row .btn { flex: 0 0 auto; white-space: nowrap; }
 .scan__manual input {
   flex: 1 1 auto; min-width: 0; padding: 14px 16px; border-radius: 14px;
   font: inherit; font-family: var(--font-mono, ui-monospace, monospace);
