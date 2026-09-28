@@ -2877,7 +2877,11 @@ body.badge-page::before { display: none; }
 .badge-state h1 {
   margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.7rem;
 }
-.badge-state p { margin: 0; line-height: 1.6; opacity: 0.82; }
+/* Only the panel's own lines. As a plain descendant selector (0,1,1) this used to
+   reach into the card too and beat every .badge__* rule on a <p>: the name, the
+   role, the edition and the transport line all printed at 82% with their own
+   margins and line heights thrown away. */
+.badge-state > p { margin: 0; line-height: 1.6; opacity: 0.82; }
 
 .badge-spinner {
   width: 26px; height: 26px; border-radius: 50%;
@@ -2914,26 +2918,30 @@ body.badge-page::before { display: none; }
 /* The masthead is the festival's, not the pass type's: it stays violet on every
    badge so the card is recognisable before the type is read. The type colour
    lives in the chip beside it and in the QR. */
-/* The 13cqw of top padding is the lanyard slot: about 7 mm of empty violet
-   where the card gets punched. It is left unmarked on purpose — a printed
-   guide would still be on the card after the hole is made, and the punch is
-   aligned by eye anyway. Nothing may be placed in that strip. */
+/* The 19cqw of top padding is the lanyard slot: about 10 mm of empty violet
+   where the card gets punched. The first print test (28 Sep) had the round
+   punch reaching 7.8 mm down, and at 13cqw the wordmark sat right on the edge
+   of the hole; this leaves it about 3 mm clear. It is left unmarked on purpose
+   — a printed guide would still be on the card after the hole is made, and the
+   punch is aligned by eye anyway. Nothing may be placed in that strip. */
 .badge__head {
   flex: 0 0 auto; position: relative;
   display: flex; align-items: center; justify-content: space-between; gap: 3cqw;
   overflow: hidden;
-  padding: 13cqw 5.5cqw 4.5cqw; background: #2E1B54; color: #F3F2EF;
+  padding: 19cqw 5.5cqw 4cqw; background: #2E1B54; color: #F3F2EF;
 }
-.badge__head-text { min-width: 0; flex: 1 1 auto; }
+/* Every line on the card is full strength and at least semibold: the thin,
+   dimmed lines of the first print test came out looking faded on the plastic. */
+.badge__head-text { min-width: 0; flex: 1 1 auto; line-height: 1.25; }
 /* The wordmark is a name: it may never hyphenate or break across two lines, so
    it is pinned to one line and the type mark beside it gives way instead. */
 .badge__festival {
-  margin: 0; font-size: 4cqw; letter-spacing: 0.09em; text-transform: uppercase;
+  margin: 0; font-size: 4.4cqw; letter-spacing: 0.08em; text-transform: uppercase;
   font-weight: 700; white-space: nowrap; hyphens: none;
 }
-.badge__edition { margin: 1.4cqw 0 0; font-size: 3.5cqw; opacity: 0.74; }
+.badge__edition { margin: 1.6cqw 0 0; font-size: 3.9cqw; font-weight: 600; }
 .badge__contact {
-  margin: 0.8cqw 0 0; font-size: 3.2cqw; opacity: 0.62;
+  margin: 1cqw 0 0; font-size: 3.6cqw; font-weight: 600;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
@@ -2943,27 +2951,27 @@ body.badge-page::before { display: none; }
 .badge__type {
   flex: 0 0 auto;
   display: flex; align-items: center; justify-content: center;
-  width: 19cqw; height: 19cqw; border-radius: 2.4cqw;
+  width: 18cqw; height: 18cqw; border-radius: 2.4cqw;
   background: var(--badge-colour); box-shadow: inset 0 0 0 0.4cqw rgba(243, 242, 239, 0.28);
   font-family: var(--font-display); font-weight: 800; font-size: 10.5cqw;
   line-height: 1; text-transform: uppercase; white-space: nowrap;
   color: #F3F2EF;
 }
 /* Staff is the one type spelled out in full, so it drops to a readable size. */
-.badge__type--word { font-size: 3.4cqw; letter-spacing: 0.03em; }
+.badge__type--word { font-size: 3.6cqw; letter-spacing: 0.03em; }
 
 /* Takes the slack: whatever the header, code strip and transport line leave
    over goes here, so the card always fills exactly 85.5 mm. */
 .badge__body {
   flex: 1 1 auto; min-height: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2.6cqw; padding: 3.5cqw 5.5cqw; text-align: center;
+  gap: 2.2cqw; padding: 3cqw 5.5cqw; text-align: center;
 }
 
 /* Passport proportions (35 x 45 mm). It may shrink if a very long name takes a
    third line, which is why the height is a basis rather than a fixed size. */
 .badge__photo {
-  width: 36cqw; height: 45cqw; flex: 0 1 auto; min-height: 0; overflow: hidden;
+  width: 34cqw; height: 42.5cqw; flex: 0 1 auto; min-height: 0; overflow: hidden;
   border-radius: 2.4cqw; background: #ecebe7;
 }
 .badge__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -2972,23 +2980,26 @@ body.badge-page::before { display: none; }
   margin: 0; font-family: var(--font-display); font-weight: 700;
   font-size: 6cqw; line-height: 1.15; text-wrap: balance;
 }
-.badge__org { margin: 0; font-size: 3.4cqw; opacity: 0.66; }
+.badge__org {
+  margin: 0; font-family: var(--font-display); font-weight: 600;
+  font-size: 4.6cqw; line-height: 1.2; text-wrap: balance;
+}
 .badge__org[hidden] { display: none; }
 
 .badge__code {
   flex: 0 0 auto;
   display: flex; align-items: center; gap: 4cqw;
-  padding: 3.5cqw 5.5cqw; border-top: 0.3cqw solid #eae8e3;
+  padding: 3cqw 5.5cqw; border-top: 0.3cqw solid #eae8e3;
 }
 .badge__qr { flex: 0 0 auto; width: 22cqw; height: 22cqw; }
 .badge__qr canvas, .badge__qr svg { width: 100%; height: 100%; display: block; }
 .badge__code-text { text-align: left; min-width: 0; }
 .badge__code-label {
-  display: block; font-size: 2.9cqw; letter-spacing: 0.09em;
-  text-transform: uppercase; opacity: 0.5;
+  display: block; font-size: 3.3cqw; line-height: 1.25; letter-spacing: 0.06em;
+  text-transform: uppercase; font-weight: 700;
 }
 .badge__code-value {
-  display: block; margin-top: 1cqw; font-size: 5cqw;
+  display: block; margin-top: 1.2cqw; font-size: 5.6cqw; line-height: 1.2;
   letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -2997,9 +3008,9 @@ body.badge-page::before { display: none; }
    length on a bus, and it is what makes the badge valid on public transport. */
 .badge__transport {
   flex: 0 0 auto;
-  margin: 0; padding: 2.8cqw 5cqw 3.4cqw;
+  margin: 0; padding: 2.6cqw 4.5cqw 3.2cqw;
   border-top: 0.3cqw solid #eae8e3;
-  font-size: 2.7cqw; line-height: 1.4; text-align: center;
+  font-size: 3cqw; font-weight: 600; line-height: 1.32; text-align: center;
   color: #0F0F12; text-wrap: pretty; hyphens: none;
 }
 

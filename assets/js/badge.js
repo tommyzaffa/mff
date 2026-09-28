@@ -165,13 +165,23 @@
   // The browser's print dialog cannot be told a page size — Safari ignores
   // `@page { size }` outright — so printing always dropped the card in the
   // middle of an A4 and left someone to trim it by hand. Instead the card is
-  // rasterised at print resolution and wrapped in a one-page PDF that IS the
-  // card: 54 x 85.5 mm, full bleed, nothing to crop before it reaches a printer.
+  // rasterised at print resolution and wrapped in a one-page PDF built around
+  // the card: 54 x 85.5 mm, the size the printer cuts.
+  //
+  // Around it runs a bleed: the outermost pixels of the card carried on past
+  // the cut. The first test print came out with a white hairline along the top
+  // although the violet reached the very first row of the file — the cut lands
+  // a fraction of a millimetre off the print, and with nothing beyond the edge
+  // that fraction is bare card. The page is the card plus the bleed, and the
+  // TrimBox says where the card is. The bleed keeps the card's proportions
+  // (2 mm at the sides, 3.2 mm top and bottom), so a printer that shrinks the
+  // page to fit its card still fills it edge to edge instead of leaving a strip.
   var MM_W = 54;
   var MM_H = 85.5;
+  var BLEED_MM_X = 2;
+  var BLEED_MM_Y = BLEED_MM_X * MM_H / MM_W;
   var DPI = 600;
-  var PT_W = MM_W * 72 / 25.4;
-  var PT_H = MM_H * 72 / 25.4;
+  var PT = 72 / 25.4;
 
   // Fetched only when the file is actually asked for: at the door the badge has
   // to open on one bar of signal, and showing it needs none of this.
@@ -193,6 +203,34 @@
     });
   }
 
+  // Stretches the card's outermost row and column of pixels outward into the
+  // bleed. The card's edges are flat colour — the violet masthead, the white
+  // body, the hairlines running across it — so this is what they would look
+  // like carried past the cut. It samples one pixel in, in case the capture
+  // antialiased the very edge.
+  function withBleed(card) {
+    var w = card.width;
+    var h = card.height;
+    var bx = Math.ceil(BLEED_MM_X / 25.4 * DPI);
+    var by = Math.ceil(BLEED_MM_Y / 25.4 * DPI);
+    var sheet = document.createElement("canvas");
+    sheet.width = w + 2 * bx;
+    sheet.height = h + 2 * by;
+    var ctx = sheet.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    var L = 1, T = 1, R = w - 2, B = h - 2;
+    ctx.drawImage(card, 0, T, w, 1, bx, 0, w, by);           // top
+    ctx.drawImage(card, 0, B, w, 1, bx, by + h, w, by);      // bottom
+    ctx.drawImage(card, L, 0, 1, h, 0, by, bx, h);           // left
+    ctx.drawImage(card, R, 0, 1, h, bx + w, by, bx, h);      // right
+    ctx.drawImage(card, L, T, 1, 1, 0, 0, bx, by);           // corners
+    ctx.drawImage(card, R, T, 1, 1, bx + w, 0, bx, by);
+    ctx.drawImage(card, L, B, 1, 1, 0, by + h, bx, by);
+    ctx.drawImage(card, R, B, 1, 1, bx + w, by + h, bx, by);
+    ctx.drawImage(card, bx, by);
+    return { canvas: sheet, cardW: w, cardH: h, bx: bx, by: by };
+  }
+
   // Everything on the card is sized in cqw, so asking for 54 mm worth of pixels
   // is the same drawing at a larger scale rather than a different layout. At
   // 600 dpi the portrait and the QR are both scaled down, never up.
@@ -208,10 +246,12 @@
         style: { borderRadius: "0", boxShadow: "none" },
       });
     }).then(function (canvas) {
+      var out = withBleed(canvas);
       return new Promise(function (resolve, reject) {
-        canvas.toBlob(function (blob) {
-          blob ? resolve({ blob: blob, w: canvas.width, h: canvas.height })
-               : reject(new Error("encode"));
+        out.canvas.toBlob(function (blob) {
+          if (!blob) return reject(new Error("encode"));
+          out.blob = blob;
+          resolve(out);
         }, "image/jpeg", 0.95);
       });
     });
@@ -219,7 +259,7 @@
 
   // One page, one image, five objects. Writing the file out by hand instead of
   // pulling in a PDF library keeps this page as light as the rest of it.
-  function pdfWithImage(jpeg, pxW, pxH) {
+  function pdfWithImage(jpeg, img) {
     var enc = new TextEncoder();
     var parts = [];
     var offsets = [];
@@ -237,19 +277,35 @@
       put("endobj\n");
     }
 
-    // Scale the unit image up to the whole page: no margin, no offset.
-    var content = "q " + PT_W.toFixed(4) + " 0 0 " + PT_H.toFixed(4) + " 0 0 cm /Im0 Do Q";
+    // The page is the card plus the bleed; the TrimBox is the card. The image
+    // is placed so that its card pixels land exactly on the TrimBox — whole
+    // pixels of bleed are a hair wider than the bleed in millimetres, and that
+    // excess simply falls off the page.
+    var trimW = MM_W * PT, trimH = MM_H * PT;
+    var bleedX = BLEED_MM_X * PT, bleedY = BLEED_MM_Y * PT;
+    var pageW = trimW + 2 * bleedX, pageH = trimH + 2 * bleedY;
+    var sx = trimW / img.cardW, sy = trimH / img.cardH;
+    var content = "q " + (img.canvas.width * sx).toFixed(4) + " 0 0 " +
+                  (img.canvas.height * sy).toFixed(4) + " " +
+                  (bleedX - img.bx * sx).toFixed(4) + " " +
+                  (bleedY - img.by * sy).toFixed(4) + " cm /Im0 Do Q";
+    function box(x0, y0, x1, y1) {
+      return "[" + [x0, y0, x1, y1].map(function (n) { return n.toFixed(4); }).join(" ") + "]";
+    }
 
     // The binary comment stops anything downstream treating the file as text.
     put(new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a,
                         0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
     obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
     obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
-    obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " +
-           PT_W.toFixed(4) + " " + PT_H.toFixed(4) +
-           "] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>");
+    obj(3, "<< /Type /Page /Parent 2 0 R" +
+           " /MediaBox " + box(0, 0, pageW, pageH) +
+           " /BleedBox " + box(0, 0, pageW, pageH) +
+           " /TrimBox " + box(bleedX, bleedY, bleedX + trimW, bleedY + trimH) +
+           " /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>");
     // DCTDecode is the JPEG the canvas already produced, stored byte for byte.
-    obj(4, "<< /Type /XObject /Subtype /Image /Width " + pxW + " /Height " + pxH +
+    obj(4, "<< /Type /XObject /Subtype /Image /Width " + img.canvas.width +
+           " /Height " + img.canvas.height +
            " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " +
            jpeg.length + " >>", jpeg);
     obj(5, "<< /Length " + content.length + " >>", content);
@@ -304,7 +360,7 @@
     cardImage()
       .then(function (out) {
         return out.blob.arrayBuffer().then(function (buf) {
-          save(pdfWithImage(new Uint8Array(buf), out.w, out.h), fileName());
+          save(pdfWithImage(new Uint8Array(buf), out), fileName());
         });
       })
       .catch(function () {
