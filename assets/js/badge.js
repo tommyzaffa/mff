@@ -166,19 +166,21 @@
   // `@page { size }` outright — so printing always dropped the card in the
   // middle of an A4 and left someone to trim it by hand. Instead the card is
   // rasterised at print resolution and wrapped in a one-page PDF built around
-  // the card: 54 x 85.5 mm, the size the printer cuts.
+  // the card: a standard CR80 PVC card, 53.98 x 85.6 mm (ISO/IEC 7810 ID-1),
+  // which the card printer prints on directly — nothing is cut out of a sheet.
   //
   // Around it runs a bleed: the outermost pixels of the card carried on past
-  // the cut. The first test print came out with a white hairline along the top
-  // although the violet reached the very first row of the file — the cut lands
-  // a fraction of a millimetre off the print, and with nothing beyond the edge
-  // that fraction is bare card. The page is the card plus the bleed, and the
-  // TrimBox says where the card is. The bleed keeps the card's proportions
-  // (2 mm at the sides, 3.2 mm top and bottom), so a printer that shrinks the
-  // page to fit its card still fills it edge to edge instead of leaving a strip.
-  var MM_W = 54;
-  var MM_H = 85.5;
-  var BLEED_MM_X = 2;
+  // its edge. The first test print came out with a white hairline along the top
+  // although the violet reached the very first row of the file — the printer
+  // lays the image a fraction of a millimetre off the card, and with nothing
+  // beyond the edge that fraction is bare plastic. The page is the card plus the
+  // bleed, and the TrimBox says where the card is; printed at 100 % the bleed
+  // simply falls off the card. It keeps the card's proportions (1 mm at the
+  // sides, 1.6 mm top and bottom), so a printer told to fit the page to the card
+  // still fills it edge to edge, only 4 % smaller, instead of leaving a strip.
+  var MM_W = 53.98;
+  var MM_H = 85.6;
+  var BLEED_MM_X = 1;
   var BLEED_MM_Y = BLEED_MM_X * MM_H / MM_W;
   var DPI = 600;
   var PT = 72 / 25.4;
