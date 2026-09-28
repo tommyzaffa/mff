@@ -824,9 +824,6 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 }
 /* Wordmark logos must stay whole, so show them contained on their own white plate. */
 .news__img[src*="corriere"] { object-fit: contain; background: #fff; padding: 26px; }
-/* A square poster centre-cropped to 200px loses its wordmark; bias the crop
-   upwards so "Memoria Viva" and the date both stay in the band. */
-.news__img[src*="memoria-viva"] { object-position: center 34%; }
 .news__body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 .news__meta {
   font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.14em;
