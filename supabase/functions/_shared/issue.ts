@@ -26,24 +26,36 @@ export async function issuePass(pass: Pass, actor?: string): Promise<string> {
 
   await logEvent(pass.id, "issued", code, actor);
 
-  if (pass.email) {
-    const locale = asLocale(pass.locale);
-    const mail = issuedEmail({
-      name: pass.first_name,
-      type: pass.type,
-      locale,
-      badgeCode: code,
-      badgeUrl: badgeUrl(code),
-    });
-    try {
-      await sendMail({ to: pass.email, subject: mail.subject, html: mail.html });
-      await logEvent(pass.id, "email", `issued -> ${pass.email}`);
-    } catch (e) {
-      // The pass is valid whether or not the mail went out; the dashboard shows
-      // this failure so somebody can resend by hand.
-      await logEvent(pass.id, "error", `issued email failed: ${String(e)}`);
-    }
-  }
+  await emailIssued(pass, code);
 
   return code;
 }
+
+// The badge email on its own: sent by issuePass, and sent again by hand
+// (`ticket-mail`, action "badges") when that first attempt failed — a mail
+// outage, an exhausted quota. The outcome goes in the audit trail either way,
+// which is also how the retry finds who is still waiting.
+export async function emailIssued(
+  pass: Pick<Pass, "id" | "email" | "first_name" | "type" | "locale">,
+  code: string,
+): Promise<boolean> {
+  if (!pass.email) return false;
+  const mail = issuedEmail({
+    name: pass.first_name,
+    type: pass.type,
+    locale: asLocale(pass.locale),
+    badgeCode: code,
+    badgeUrl: badgeUrl(code),
+  });
+  try {
+    await sendMail({ to: pass.email, subject: mail.subject, html: mail.html });
+    await logEvent(pass.id, "email", `issued -> ${pass.email}`);
+    return true;
+  } catch (e) {
+    // The pass is valid whether or not the mail went out; the dashboard shows
+    // this failure so somebody can resend by hand.
+    await logEvent(pass.id, "error", `issued email failed: ${String(e)}`);
+    return false;
+  }
+}
+

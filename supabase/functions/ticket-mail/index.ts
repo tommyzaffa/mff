@@ -19,6 +19,8 @@ import { rateLimit, secured } from "../_shared/security.ts";
 //          collect the badge at the Lux, and book each screening with its code,
 //          because the badge alone reserves nothing. Once per pass, in the
 //          pass's language; `dry_run` counts, `only` sends to one address.
+//   badges — the badge email again, for every issued pass whose first one
+//          failed and never went out since. `dry_run` lists them.
 //
 // There is no page in front of it: it is called from a terminal, when someone
 // organising the festival says who should get their tickets now. Its own
@@ -36,6 +38,7 @@ import { emailTicketGroup, type MailOrder, ORDER_COLUMNS } from "../_shared/tick
 import { sendMailBatch } from "../_shared/mail.ts";
 import { asLocale, festivalStartEmail } from "../_shared/templates.ts";
 import { env } from "../_shared/env.ts";
+import { emailIssued } from "../_shared/issue.ts";
 
 // One request stays well inside the function's wall clock even at Resend's
 // pace; a longer list goes out in several calls.
@@ -104,6 +107,7 @@ Deno.serve(secured(async (req) => {
       if ("error" in reminded) return fail(req, reminded.error);
       return json(req, { ok: true, session, ...reminded });
     }
+    if (action === "badges") return json(req, { ok: true, session, ...await badges(body) });
     if (action === "send") {
       const sent = await send(body);
       if ("error" in sent) return fail(req, sent.error);
@@ -310,3 +314,33 @@ async function remind(body: Record<string, unknown>): Promise<
 
   return { sent: batch.length, remaining: todo.length - batch.length, ...counts };
 }
+
+// --- badges -----------------------------------------------------------------
+
+async function badges(body: Record<string, unknown>) {
+  const [{ data: failed, error }, { data: delivered, error: deliveredError }] = await Promise.all([
+    db().from("pass_events").select("pass_id").eq("kind", "error").like("detail", "issued email failed%"),
+    db().from("pass_events").select("pass_id").eq("kind", "email").like("detail", "issued ->%"),
+  ]);
+  if (error || deliveredError) throw new Error((error ?? deliveredError)!.message);
+
+  // Waiting means: a failure on record and no delivery after it. A pass whose
+  // retry already went through carries both, and is left alone.
+  const done = new Set((delivered ?? []).map((e) => e.pass_id));
+  const ids = [...new Set((failed ?? []).map((e) => e.pass_id))].filter((id) => !done.has(id));
+  if (!ids.length) return { sent: 0, failed: 0, waiting: [] as string[] };
+
+  const { data: passes, error: passError } = await db().from("passes")
+    .select("id, type, first_name, email, badge_code, locale").in("id", ids).eq("status", "issued");
+  if (passError) throw new Error(passError.message);
+  const waiting = ((passes ?? []) as Holder[]).filter((p) => p.email && p.badge_code);
+  if (body.dry_run === true) return { sent: 0, failed: 0, waiting: waiting.map((p) => p.email!) };
+
+  let sent = 0;
+  for (const [i, p] of waiting.entries()) {
+    if (i) await new Promise((r) => setTimeout(r, SEND_SPACING_MS));
+    if (await emailIssued(p, p.badge_code)) sent++;
+  }
+  return { sent, failed: waiting.length - sent, waiting: waiting.map((p) => p.email!) };
+}
+

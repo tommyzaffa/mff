@@ -338,6 +338,11 @@ successive.
   anche staff, per vedere com'è. Un indirizzo non valido viene saltato e
   riportato in `invalid`, invece di far rifiutare a Resend l'intero blocco.
 
+- `badges` — l'email del badge di nuovo, a chi aveva un badge emesso ma se l'è
+  vista fallire (Resend giù, quota finita, indirizzo sbagliato poi corretto) e
+  non l'ha mai ricevuta dopo. Li trova in `pass_events`; `dry_run: true` li
+  elenca soltanto.
+
 ```bash
 URL="https://luciaehqndzdeszdktzp.supabase.co/functions/v1/ticket-mail"
 curl -s "$URL" -H 'content-type: application/json' \

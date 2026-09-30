@@ -383,3 +383,27 @@ Deno.test('remind writes once to every badge but staff, and records nothing if R
     assert(again.sent===0 && batches.length===1);
   }finally{globalThis.fetch=original;}
 });
+
+Deno.test('badges resends only the badge emails that failed and never went out since',async()=>{
+  const original=globalThis.fetch;Deno.env.set('RESEND_API_KEY','test-key');
+  const waiting={id:'20000000-0000-4000-8000-000000000001',type:'guest_student',first_name:'Yifei',email:'yifei@example.invalid',badge_code:'MFF-YYYY-YYYY',locale:'it'};
+  let sent: string[]=[];let logged: {pass_id:string,kind:string}[]=[];let asked='';
+  globalThis.fetch=async(input,init)=>{
+    const url=decodeURIComponent(String(input));
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/pass_events')&&init?.method==='POST'){logged.push(JSON.parse(String(init.body)));return new Response(null,{status:201});}
+    if(url.includes('/pass_events?')&&url.includes('kind=eq.error'))return Response.json([{pass_id:waiting.id},{pass_id:'20000000-0000-4000-8000-000000000002'}]);
+    if(url.includes('/pass_events?')&&url.includes('kind=eq.email'))return Response.json([{pass_id:'20000000-0000-4000-8000-000000000002'}]);
+    if(url.includes('/passes?')){asked=url;return Response.json([waiting]);}
+    if(url==='https://api.resend.com/emails'){sent.push(JSON.parse(String(init?.body)).to[0]);return Response.json({id:'e'});}
+    throw new Error('Unexpected network operation: '+url);
+  };
+  try{
+    const dry=await (await mailer(req({password:'long-test-only-password',action:'badges',dry_run:true}))).json();
+    assert(dry.ok && dry.waiting.length===1 && sent.length===0);
+    assert(asked.includes(waiting.id) && !asked.includes('20000000-0000-4000-8000-000000000002'));
+    const res=await (await mailer(req({password:'long-test-only-password',action:'badges'}))).json();
+    assert(res.sent===1 && sent[0]==='yifei@example.invalid');
+    assert(logged.some(e=>e.pass_id===waiting.id && e.kind==='email'));
+  }finally{globalThis.fetch=original;}
+});
