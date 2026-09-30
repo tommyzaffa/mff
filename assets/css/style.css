@@ -2014,7 +2014,7 @@ html.intro-armed #introOverlay {
 .vote__scale[aria-busy="true"] .vote__score { pointer-events: none; opacity: 0.45; }
 .vote__scale[aria-busy="true"] .vote__score.is-chosen { opacity: 1; }
 
-/* The films of the programme that has just ended. Rows are big because they are
+/* The films in the open programmes. Rows are big because they are
    tapped in the dark by someone still holding a coat. */
 .vote__groups { display: grid; gap: 1.5rem; }
 .vote__group {
@@ -2025,9 +2025,9 @@ html.intro-armed #introOverlay {
 .vote__list[hidden] { display: none; }
 .vote__pick {
   appearance: none; cursor: pointer; width: 100%;
-  display: grid; grid-template-columns: 1fr auto; row-gap: 4px; column-gap: 12px;
+  display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; row-gap: 6px; column-gap: 16px;
   align-items: center; text-align: left;
-  min-height: 64px; padding: 14px 18px;
+  min-height: 132px; padding: 12px;
   border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
   border-radius: 14px;
   background: transparent; color: inherit;
@@ -2035,18 +2035,37 @@ html.intro-armed #introOverlay {
 }
 .vote__pick:hover:not(:disabled) { background: color-mix(in srgb, currentColor 12%, transparent); }
 .vote__pick:disabled { cursor: default; opacity: 0.62; }
+.vote__pick-poster {
+  grid-area: 1 / 1 / 3 / 2; width: 76px; height: 108px;
+  object-fit: contain; border-radius: 5px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
 /* Placed by hand: in DOM order auto-placement would put the meta line in the
    second column, next to the title instead of under it. */
 .vote__pick-title {
-  grid-area: 1 / 1; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+  grid-area: 1 / 2; align-self: end; overflow-wrap: anywhere;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
 }
-.vote__pick-meta { grid-area: 2 / 1; font-size: 0.82rem; opacity: 0.6; }
+.vote__pick-meta { grid-area: 2 / 2; align-self: start; font-size: 0.82rem; opacity: 0.6; }
 .vote__pick-score {
-  grid-area: 1 / 2 / 3 / 3;
+  grid-area: 1 / 3 / 3 / 4;
   min-width: 42px; padding: 6px 0; text-align: center;
   border-radius: 10px;
   background: color-mix(in srgb, currentColor 14%, transparent);
   font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+}
+.vote__selected { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 20px; align-items: center; }
+.vote__selected-poster {
+  width: 100px; height: 142px; object-fit: contain; border-radius: 6px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+.vote__selected-info { display: grid; gap: 10px; min-width: 0; }
+.vote__selected .vote__film { font-size: clamp(1.35rem, 5vw, 2.1rem); overflow-wrap: anywhere; }
+@media (max-width: 400px) {
+  .vote__pick { grid-template-columns: 64px minmax(0, 1fr) auto; column-gap: 12px; min-height: 114px; }
+  .vote__pick-poster { width: 64px; height: 90px; }
+  .vote__selected { grid-template-columns: 80px minmax(0, 1fr); gap: 14px; }
+  .vote__selected-poster { width: 80px; height: 114px; }
 }
 
 /* Confirmation of the vote just cast, and the step back from the scale to the

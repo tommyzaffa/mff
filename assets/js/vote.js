@@ -17,7 +17,7 @@
 
   var CFG = window.MFF_VOTE || {};
   var VOTER_KEY = "mff.voter";
-  var VOTES_KEY = "mff.votes";
+  var VOTES_KEY = "mff.votes.2026";
 
   var root = document.querySelector("[data-vote]");
   if (!root) return;
@@ -50,6 +50,11 @@
 
   function sectionLabel(section) {
     return t(SECTION_KEYS[section] || "", section);
+  }
+
+  function posterSrc(film) {
+    return "../assets/img/films/" + encodeURIComponent(film.section) + "/" +
+      encodeURIComponent(film.slug) + ".jpg";
   }
 
   /* -------------------------------------------------- identità del dispositivo */
@@ -247,6 +252,17 @@
     btn.type = "button";
     btn.className = "vote__pick";
 
+    var poster = document.createElement("img");
+    poster.className = "vote__pick-poster";
+    poster.alt = "";
+    poster.loading = "lazy";
+    poster.decoding = "async";
+    poster.width = 76;
+    poster.height = 108;
+    poster.src = posterSrc(film);
+    poster.addEventListener("error", function () { poster.hidden = true; });
+    btn.appendChild(poster);
+
     var title = document.createElement("span");
     title.className = "vote__pick-title";
     title.textContent = film.title;
@@ -294,6 +310,10 @@
 
   function openScale(film) {
     current = film;
+    var poster = panels.open.querySelector("[data-poster]");
+    poster.hidden = false;
+    poster.onerror = function () { poster.hidden = true; };
+    poster.src = posterSrc(film);
     fill("[data-section]", sectionLabel(film.section));
     fill("[data-film]", film.title);
     fill("[data-where]", blockLabel(film));

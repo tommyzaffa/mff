@@ -8,7 +8,7 @@
   <meta name="description" content="Rate the film you have just watched and help pick the Merge Film Festival Audience Award." />
   <meta name="robots" content="noindex, nofollow" />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=75" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=76" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -64,9 +64,14 @@
           <!-- The scale, for the one film the audience just tapped -->
           <div class="vote__panel" data-panel="open" hidden>
             <button class="vote__back" type="button" data-back data-i18n="vote.back">All films</button>
-            <p class="vote__eyebrow" data-section></p>
-            <h1 class="vote__film" data-film></h1>
-            <p class="vote__where" data-where></p>
+            <div class="vote__selected">
+              <img class="vote__selected-poster" data-poster alt="" width="100" height="142" decoding="async" />
+              <div class="vote__selected-info">
+                <p class="vote__eyebrow" data-section></p>
+                <h1 class="vote__film" data-film></h1>
+                <p class="vote__where" data-where></p>
+              </div>
+            </div>
             <p class="vote__ask" data-i18n="vote.ask">How much did you like it?</p>
             <div class="vote__scale" data-scale role="group" aria-label="Score from 1 to 10">
               <button class="vote__score" type="button" data-score="1">1</button>
@@ -126,6 +131,6 @@
   <script src="../assets/js/translations.js?v=55"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/vote-config.js"></script>
-  <script src="../assets/js/vote.js?v=4"></script>
+  <script src="../assets/js/vote.js?v=5"></script>
 </body>
 </html>
