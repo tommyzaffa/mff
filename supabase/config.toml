@@ -32,6 +32,10 @@ verify_jwt = false
 [functions.ticket-screenings]
 verify_jwt = false
 
+# Staff-only, behind TICKET_MAIL_PASSWORD; it checks its own signed session.
+[functions.ticket-mail]
+verify_jwt = false
+
 # Authenticated operator actions; public config contains only the read-only key.
 [functions.live-captions]
 verify_jwt = false

@@ -216,6 +216,7 @@ si passa al piano da 20 USD/mese per quel mese e basta.
 - [ ] (facolt.) Apple Developer: 99 USD/anno, poi i tre PEM
 - [ ] Service role del progetto festival, da mettere nel `.env.local` del gestionale
 - [ ] Soniox: chiave API dell'account + una password lunga per la regia (sez. 10)
+- [ ] Una password lunga per l'invio delle email dei biglietti (sez. 11)
 
 ---
 
@@ -295,3 +296,50 @@ della cassa non può spendere credito audio e viceversa (test in
 Circa **0,18 USD/ora** di audio (trascrizione + traduzione): venti ore di talk
 stanno sotto i 4 USD. Il contatore *Stima API* in regia conta solo i secondi
 effettivamente inviati; il consumo vero resta quello del pannello Soniox.
+
+---
+
+## 11. Email dei biglietti a comando (`ticket-mail`)
+
+Il sito manda l'email col biglietto nel momento in cui si prenota. Quello che
+viene prenotato in un altro modo — i registi e i loro ospiti, le giornaliere di
+una scuola messe su una proiezione dal SQL Editor — quel momento non lo ha mai
+avuto: l'ordine c'è, `email_sent_at` è vuoto, e nella casella di nessuno è
+arrivato niente. `ticket-mail` serve a mandarle quando lo decidiamo noi.
+
+Non ha una pagina: si chiama da terminale. Una password sola, diversa da quella
+della cassa, perché `list` restituisce nomi ed email.
+
+```bash
+supabase secrets set TICKET_MAIL_PASSWORD="<passphrase lunga, minimo 16 caratteri>"
+supabase functions deploy ticket-mail
+```
+
+Due azioni, sempre `POST` con JSON. Il primo invio usa `password`, la risposta
+contiene una `session` (8 ore) da usare al posto della password nelle chiamate
+successive.
+
+- `list` — gli ordini emessi, già raggruppati come verranno spediti: **una email
+  per destinatario e per proiezione** (o giorno, per le giornaliere). Un
+  professore con quaranta posti prenotati in quattro blocchi è un gruppo solo e
+  riceve un messaggio solo. Filtri: `unsent` (predefinito `true`: solo chi non
+  l'ha ancora ricevuta), `event` (`"s:concorso-1"` o `"d:2026-10-02"`), `q`
+  (cerca in email, nome dell'acquirente e nomi sui posti).
+- `send` — `order_ids` (fino a 200, al massimo 25 destinatari per chiamata).
+  Chi l'ha già ricevuta viene saltato, a meno di `"resend": true`: mandare due
+  volte la stessa lista non manda niente la seconda volta. Se Resend rifiuta un
+  invio, quegli ordini restano da inviare e si possono riprovare.
+
+```bash
+URL="https://luciaehqndzdeszdktzp.supabase.co/functions/v1/ticket-mail"
+curl -s "$URL" -H 'content-type: application/json' \
+  -d '{"password":"…","action":"list"}'
+curl -s "$URL" -H 'content-type: application/json' \
+  -d '{"session":"…","action":"send","order_ids":["…","…"]}'
+```
+
+Attenzione a `unsent`: la colonna `email_sent_at` esiste dal 13 settembre 2026.
+Un ordine più vecchio risulta "non inviato" anche se l'email era partita; il
+campo `booked_at` di ogni gruppo lo mostra prima di spedire. Il piano gratuito
+di Resend ha un tetto di 100 email al giorno (sez. 8).
+

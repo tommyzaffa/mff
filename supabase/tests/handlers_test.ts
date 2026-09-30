@@ -7,6 +7,9 @@ Deno.env.set('STRIPE_WEBHOOK_SECRET', 'test-signing-secret');
 // stay separate even when the festival reuses a passphrase.
 Deno.env.set('LIVE_CAPTIONS_PASSWORD', 'long-test-only-password');
 Deno.env.set('SONIOX_API_KEY', 'soniox-account-key');
+// Same passphrase again, for the same reason: the mail endpoint's sessions are
+// their own domain too.
+Deno.env.set('TICKET_MAIL_PASSWORD', 'long-test-only-password');
 let handler: (req: Request) => Promise<Response>;
 Deno.serve = ((fn: typeof handler) => { handler = fn; return {} }) as unknown as typeof Deno.serve;
 await import('../functions/ticket-door/index.ts');
@@ -205,5 +208,133 @@ Deno.test('an invitation code reaches the reserve RPC only once it could be real
     // Nessun codice resta nessun codice: non un stringa vuota che il database
     // dovrebbe poi indovinare.
     await reserve(req(body));assert(sent.p_access_code===null);
+  }finally{globalThis.fetch=original;}
+});
+
+await import('../functions/ticket-mail/index.ts');
+const mailer = handler!;
+Deno.test('the mail endpoint wants its own password: door and regia sessions are refused',async()=>{
+  const {createDoorSession}=await import('../functions/_shared/door-session.ts');
+  const {createLiveSession}=await import('../functions/_shared/live-session.ts');
+  rateAllowed=true;
+  for(const body of [{action:'list'},{action:'send',order_ids:['11111111-1111-4111-8111-111111111111']},{password:'wrong'},{password:['long-test-only-password']},
+    {session:await createDoorSession('long-test-only-password')},{session:await createLiveSession('long-test-only-password')}]){
+    calls=[];assert((await mailer(req(body))).status===401);
+    assert(calls.every(c=>c.includes('security_rate_limit')));
+  }
+  Deno.env.delete('TICKET_MAIL_PASSWORD');calls=[];
+  assert((await mailer(req({password:'long-test-only-password'}))).status===503);assert(calls.length===0);
+  Deno.env.set('TICKET_MAIL_PASSWORD','long-test-only-password');
+});
+
+// Two batches of one teacher's seats, the same address typed in another case, a
+// director, a day-pass order, and an order whose only seat was given back.
+const T='2026-10-02T14:00:00+02:00';
+const mailOrders=[
+  {id:'00000000-0000-4000-8000-000000000001',screening:'concorso-1',day:null,first_name:'Maria',last_name:'Siragusa',email:'maria.siragusa@scuola.ch',locale:'it',amount_cents:0,status:'issued',email_sent_at:null,created_at:'2026-09-29T10:00:00Z',
+   tickets:[{holder_name:'Studente Uno',cancelled_at:null},{holder_name:'Studente Due',cancelled_at:null}],day_passes:[]},
+  {id:'00000000-0000-4000-8000-000000000002',screening:'concorso-1',day:null,first_name:'Maria',last_name:'Siragusa',email:'Maria.Siragusa@scuola.ch',locale:'it',amount_cents:0,status:'issued',email_sent_at:null,created_at:'2026-09-29T10:00:01Z',
+   tickets:[{holder_name:'Studente Tre',cancelled_at:null},{holder_name:'Studente Ritirato',cancelled_at:'2026-09-29T11:00:00Z'}],day_passes:[]},
+  {id:'00000000-0000-4000-8000-000000000003',screening:'concorso-2',day:null,first_name:'Reza',last_name:'Delavar',email:'reza.delavar@example.invalid',locale:'en',amount_cents:0,status:'issued',email_sent_at:null,created_at:'2026-09-28T20:00:00Z',
+   tickets:[{holder_name:'Reza Delavar',cancelled_at:null}],day_passes:[]},
+  {id:'00000000-0000-4000-8000-000000000004',screening:null,day:'2026-10-02',first_name:'Maria',last_name:'Siragusa',email:'maria.siragusa@scuola.ch',locale:'it',amount_cents:3000,status:'issued',email_sent_at:null,created_at:'2026-09-20T10:00:00Z',
+   tickets:[],day_passes:[{holder_name:'Studente Uno',cancelled_at:null}]},
+  {id:'00000000-0000-4000-8000-000000000005',screening:'concorso-3',day:null,first_name:'Gone',last_name:'Away',email:'gone@example.invalid',locale:'it',amount_cents:0,status:'issued',email_sent_at:null,created_at:'2026-09-29T09:00:00Z',
+   tickets:[{holder_name:'Gone Away',cancelled_at:'2026-09-29T09:30:00Z'}],day_passes:[]},
+];
+const mailTickets=[
+  {order_id:mailOrders[0].id,code:'MFF-T-AAAAAAAA',holder_name:'Studente Uno',badge_code:null,tariff:'full',day_pass_code:'MFF-D-AAAAAAAA',screening:'concorso-1'},
+  {order_id:mailOrders[0].id,code:'MFF-T-BBBBBBBB',holder_name:'Studente Due',badge_code:null,tariff:'reduced',day_pass_code:'MFF-D-BBBBBBBB',screening:'concorso-1'},
+  {order_id:mailOrders[1].id,code:'MFF-T-CCCCCCCC',holder_name:'Studente Tre',badge_code:null,tariff:'full',day_pass_code:'MFF-D-CCCCCCCC',screening:'concorso-1'},
+  {order_id:mailOrders[2].id,code:'MFF-T-DDDDDDDD',holder_name:'Reza Delavar',badge_code:'MFF-2J22-HFD8',tariff:'accredited',day_pass_code:null,screening:'concorso-2'},
+];
+function mailBackend(orders: typeof mailOrders){
+  const seen={lists:[] as string[],mails:[] as {to:string[],html:string,key:string|null}[],marked:[] as string[]};
+  const fetcher=async(input: RequestInfo|URL,init?: RequestInit)=>{
+    const url=decodeURIComponent(String(input));
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/ticket_orders')&&init?.method==='PATCH'){seen.marked.push(url);return new Response(null,{status:204});}
+    if(url.includes('/ticket_orders?')){
+      seen.lists.push(url);
+      const only=url.match(/id=in\.\(([^)]*)\)/)?.[1]?.split(',');
+      return Response.json(orders.filter(o=>!only||only.includes(o.id)));
+    }
+    if(url.includes('/tickets?'))return Response.json(mailTickets.filter(t=>url.includes(t.order_id)));
+    if(url.includes('/screenings?')&&url.includes('code=eq.'))return Response.json({title:'Film in concorso · Programma 1',venue:'Cinema Lux',starts_at:T});
+    if(url.includes('/screenings?'))return Response.json([{code:'concorso-1',title:'Film in concorso · Programma 1',starts_at:T},{code:'concorso-2',title:'Film in concorso · Programma 2',starts_at:'2026-10-02T20:30:00+02:00'}]);
+    if(url.includes('/festival_days?'))return Response.json([{day:'2026-10-02'}]);
+    if(url==='https://api.resend.com/emails'){
+      const body=JSON.parse(String(init?.body));
+      seen.mails.push({to:body.to,html:body.html,key:new Headers(init?.headers).get('idempotency-key')});
+      return Response.json({id:'email-'+seen.mails.length});
+    }
+    throw new Error('Unexpected network operation: '+url);
+  };
+  return {seen,fetcher};
+}
+
+Deno.test('list groups the waiting orders by inbox and event, and finds a teacher by a pupil',async()=>{
+  const original=globalThis.fetch;const {seen,fetcher}=mailBackend(mailOrders);globalThis.fetch=fetcher;
+  try{
+    const data=await (await mailer(req({password:'long-test-only-password',action:'list'}))).json();
+    assert(data.ok && data.session);
+    assert(seen.lists[0].includes('status=eq.issued') && seen.lists[0].includes('email_sent_at=is.null'));
+    const groups=data.groups as {email:string,event:string,order_ids:string[],tickets:number,holders:string[],title:string}[];
+    assert(groups.length===3);
+    const school=groups.find(g=>g.event==='s:concorso-1')!;
+    assert(school.order_ids.length===2 && school.tickets===3);
+    assert(!school.holders.includes('Studente Ritirato'));
+    assert(groups.find(g=>g.event==='d:2026-10-02')!.tickets===1);
+    assert(!groups.some(g=>g.email==='gone@example.invalid'));
+    assert(data.events.some((e: {value:string})=>e.value==='d:2026-10-02'));
+
+    const pupil=await (await mailer(req({session:data.session,action:'list',q:'studente tre'}))).json();
+    assert(pupil.groups.length===1 && pupil.groups[0].event==='s:concorso-1');
+    const all=await (await mailer(req({session:data.session,action:'list',unsent:false,event:'s:concorso-2'}))).json();
+    assert(all.ok);assert(!seen.lists.at(-1)!.includes('email_sent_at=is.null') && seen.lists.at(-1)!.includes('screening=eq.concorso-2'));
+  }finally{globalThis.fetch=original;}
+});
+
+Deno.test('send mails one message per inbox and event, and never twice unless asked',async()=>{
+  const original=globalThis.fetch;Deno.env.set('RESEND_API_KEY','test-key');
+  const orders=mailOrders.map(o=>({...o,email_sent_at:o.email_sent_at as string|null}));
+  const {seen,fetcher}=mailBackend(orders as typeof mailOrders);globalThis.fetch=fetcher;
+  const ids=[orders[0].id,orders[1].id,orders[2].id];
+  try{
+    assert((await mailer(req({password:'long-test-only-password',action:'send',order_ids:['not-an-id']}))).status===400);
+    assert(seen.mails.length===0);
+
+    const first=await (await mailer(req({password:'long-test-only-password',action:'send',order_ids:ids}))).json();
+    assert(first.ok && first.results.length===2 && first.skipped===0);
+    assert(seen.mails.length===2);
+    const school=seen.mails.find(m=>m.to[0].toLowerCase()==='maria.siragusa@scuola.ch')!;
+    assert(['MFF-T-AAAAAAAA','MFF-T-BBBBBBBB','MFF-T-CCCCCCCC'].every(c=>school.html.includes(c)));
+    assert(!school.html.includes('MFF-T-DDDDDDDD'));
+    assert(first.results.find((r: {email:string})=>r.email.toLowerCase()==='maria.siragusa@scuola.ch').tickets===3);
+    assert(seen.marked.some(u=>u.includes(orders[0].id)&&u.includes(orders[1].id)));
+
+    // The database now says they went out; the same list again sends nothing.
+    for(const o of orders.slice(0,3))o.email_sent_at='2026-09-30T12:00:00Z';
+    const again=await (await mailer(req({password:'long-test-only-password',action:'send',order_ids:ids}))).json();
+    assert(again.ok && again.results.length===0 && again.skipped===3 && seen.mails.length===2);
+
+    // An explicit resend goes out, under a key of its own.
+    const rid='99999999-9999-4999-8999-999999999999';
+    const resent=await (await mailer(req({password:'long-test-only-password',action:'send',order_ids:[orders[2].id],resend:true,request_id:rid}))).json();
+    assert(resent.results.length===1 && resent.results[0].status==='sent' && seen.mails.length===3);
+    assert(seen.mails[2].key!==seen.mails.find(m=>m.to[0]==='reza.delavar@example.invalid')!.key);
+  }finally{globalThis.fetch=original;}
+});
+
+Deno.test('a refused email leaves the orders waiting, so the next send tries them again',async()=>{
+  const original=globalThis.fetch;Deno.env.set('RESEND_API_KEY','test-key');
+  const {seen,fetcher}=mailBackend(mailOrders.map(o=>({...o})));
+  globalThis.fetch=async(input,init)=>String(input)==='https://api.resend.com/emails'
+    ? Response.json({message:'daily quota'},{status:429})
+    : fetcher(input,init);
+  try{
+    const data=await (await mailer(req({password:'long-test-only-password',action:'send',order_ids:[mailOrders[2].id]}))).json();
+    assert(data.ok && data.results[0].status==='failed');
+    assert(seen.marked.length===0);
   }finally{globalThis.fetch=original;}
 });
