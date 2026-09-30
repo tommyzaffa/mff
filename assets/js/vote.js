@@ -17,7 +17,7 @@
 
   var CFG = window.MFF_VOTE || {};
   var VOTER_KEY = "mff.voter";
-  var VOTES_KEY = "mff.votes.2026";
+  var VOTES_KEY = "mff.votes.2026.final";
 
   var root = document.querySelector("[data-vote]");
   if (!root) return;
