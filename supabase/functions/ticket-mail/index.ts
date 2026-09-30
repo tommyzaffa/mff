@@ -97,7 +97,10 @@ Deno.serve(secured(async (req) => {
     const action = body.action ?? "list";
     if (action === "list") return json(req, { ok: true, session, ...await list(body) });
     if (action === "remind") {
-      const reminded = await remind(body);
+      // Resend's own words come back: whoever holds this password is the one
+      // who has to decide whether to wait, fix an address or give up.
+      const reminded = await remind(body).catch((e) => ({ error: "mail_refused", detail: String(e).slice(0, 300) }));
+      if ("detail" in reminded) return json(req, { ok: false, ...reminded }, 502);
       if ("error" in reminded) return fail(req, reminded.error);
       return json(req, { ok: true, session, ...reminded });
     }

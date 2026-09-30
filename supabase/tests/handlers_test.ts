@@ -369,7 +369,7 @@ Deno.test('remind writes once to every badge but staff, and records nothing if R
 
     refuse=true;
     const failed=await mailer(req({password:'long-test-only-password',action:'remind'}));
-    assert(failed.status===500);assert(events.length===1);
+    assert(failed.status===502 && (await failed.json()).detail.includes('Resend 500'));assert(events.length===1);
 
     refuse=false;
     const sent=await (await mailer(req({password:'long-test-only-password',action:'remind'}))).json();
