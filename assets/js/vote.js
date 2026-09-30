@@ -2,9 +2,8 @@
    Merge Film Festival — premio del pubblico
 
    Si votano i FILM in concorso, uno per uno, da 1 a 10. Il blocco di
-   proiezione serve solo a decidere quando: la finestra si apre quando il
-   programma finisce e dura tre ore, cioè il tempo in cui chi vota ha davvero
-   visto quei film.
+   proiezione serve solo a decidere quando: la finestra si apre all'inizio
+   del programma e chiude tre ore dopo la fine prevista.
 
    Due modi di arrivare qui. Con ?s=<codice> la pagina è quel blocco lì, che è
    quello che stampa il foglio QR per sala. Senza — il QR unico appeso in sala
@@ -114,6 +113,11 @@
     return query("screening=eq." + encodeURIComponent(code) + "&order=position.asc");
   }
 
+  function loadOpenBlock(code) {
+    return query("screening=eq." + encodeURIComponent(code) +
+      "&opens_at=lte.now&closes_at=gt.now&order=position.asc");
+  }
+
   function postVote(slug, score) {
     return fetch(CFG.url + "/rest/v1/votes", {
       method: "POST",
@@ -176,11 +180,13 @@
         fill("[data-block]", blockLabel(first));
         fill("[data-opens]", timeLabel(first.opens_at));
 
-        var now = Date.now();
-        if (now < new Date(first.opens_at).getTime()) { show("early"); return; }
-        if (now >= new Date(first.closes_at).getTime()) { show("closed"); return; }
-
-        begin(films);
+        // The database decides whether voting is open. A wrong phone clock
+        // must never hide a ballot that the server would accept.
+        return loadOpenBlock(code).then(function (available) {
+          if (available.length) { begin(available); return; }
+          if (Date.now() < new Date(first.opens_at).getTime()) show("early");
+          else show("closed");
+        });
       })
     : loadOpen().then(function (films) {
         if (!films.length) { show("none"); return; }
@@ -258,8 +264,10 @@
       btn.classList.add("is-voted");
       var mark = document.createElement("span");
       mark.className = "vote__pick-score";
-      mark.textContent = score;
-      btn.appendChild(mark);
+      if (typeof score === "number") {
+        mark.textContent = score;
+        btn.appendChild(mark);
+      }
       meta.textContent += " · " + t("vote.voted", "voted");
     } else {
       btn.addEventListener("click", function () { openScale(film); });
@@ -304,9 +312,7 @@
     btn.classList.add("is-chosen");
 
     postVote(film.slug, score).then(function (res) {
-      // 409 è il vincolo unique: questo dispositivo aveva già votato il film.
-      // Per chi vota è la stessa cosa di un voto andato a segno.
-      if (res.ok || res.status === 201 || res.status === 409) {
+      if (res.ok) {
         remember(film.slug, score);
         renderList();
 
@@ -319,9 +325,23 @@
         show("films");
         return;
       }
-      // RLS ha rifiutato l'insert, che qui vuol dire che la finestra si è
-      // appena chiusa.
-      if (res.status === 401 || res.status === 403) { show("closed"); return; }
+      // Il voto precedente è privato: un 409 non conferma il numero appena
+      // premuto, quindi non dobbiamo mostrarlo come se fosse stato salvato.
+      if (res.status === 409) {
+        remember(film.slug, "already");
+        renderList();
+        note(t("vote.already", "This film was already rated from this device."));
+        show("films");
+        return;
+      }
+      // RLS may reject a ballot when the window just closed. Recheck it so a
+      // configuration fault is not presented to the visitor as a closed vote.
+      if (res.status === 401 || res.status === 403) {
+        return loadOpenBlock(film.screening).then(function (available) {
+          fill("[data-block]", blockLabel(film));
+          show(available.length ? "error" : "closed");
+        }).catch(function () { show("error"); });
+      }
       show("error");
     }).catch(function () {
       show("error");

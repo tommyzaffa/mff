@@ -48,7 +48,7 @@
                screening, one row per film, in projection order. -->
           <div class="vote__panel" data-panel="films" hidden>
             <p class="vote__eyebrow" data-i18n="vote.eyebrow">Audience Award</p>
-            <h1 class="vote__headline" data-i18n="vote.filmsTitle">Rate the films you have just seen</h1>
+            <h1 class="vote__headline" data-i18n="vote.filmsTitle">Rate the films in this programme</h1>
             <p class="vote__note" data-note hidden></p>
             <div class="vote__groups" data-groups></div>
             <p class="vote__fine" data-i18n="vote.filmsText">Tap a film and give it a mark from 1 to 10.</p>
@@ -57,7 +57,7 @@
           <!-- Same QR, but no window is open -->
           <div class="vote__panel vote__panel--center" data-panel="none" hidden>
             <h1 class="vote__headline" data-i18n="vote.noneTitle">There is nothing to vote on right now.</h1>
-            <p class="vote__fine" data-i18n="vote.noneText">Voting opens at the end of each competition programme and stays open for three hours. Scan again then.</p>
+            <p class="vote__fine" data-i18n="vote.noneText">Voting opens when each competition programme starts and closes three hours after it ends. Scan again then.</p>
             <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
 
@@ -87,7 +87,7 @@
             <p class="vote__fine" data-i18n="vote.fine">One vote per film, from this device. Anonymous — we only store the number.</p>
           </div>
 
-          <!-- Scanned before the screening ended -->
+          <!-- Scanned before the screening began -->
           <div class="vote__panel vote__panel--center" data-panel="early" hidden>
             <h1 class="vote__headline" data-i18n="vote.earlyTitle">Voting is not open yet.</h1>
             <p class="vote__where" data-block></p>
@@ -101,14 +101,14 @@
           <div class="vote__panel vote__panel--center" data-panel="closed" hidden>
             <h1 class="vote__headline" data-i18n="vote.closedTitle">Voting for this screening is closed.</h1>
             <p class="vote__where" data-block></p>
-            <p class="vote__fine" data-i18n="vote.closedText">Votes are only taken in the minutes right after the screening.</p>
+            <p class="vote__fine" data-i18n="vote.closedText">Voting closes three hours after the screening ends.</p>
             <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
 
           <!-- Bad or missing code -->
           <div class="vote__panel vote__panel--center" data-panel="unknown" hidden>
             <h1 class="vote__headline" data-i18n="vote.unknownTitle">This code doesn't match a screening.</h1>
-            <p class="vote__fine" data-i18n="vote.unknownText">Scan the QR code shown in the room at the end of the screening.</p>
+            <p class="vote__fine" data-i18n="vote.unknownText">Scan the QR code shown in the room.</p>
             <a class="btn" href="../index.html" data-i18n="vote.backHome">Back to the festival</a>
           </div>
 
@@ -123,9 +123,9 @@
     </section>
   </main>
 
-  <script src="../assets/js/translations.js?v=54"></script>
+  <script src="../assets/js/translations.js?v=55"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/vote-config.js"></script>
-  <script src="../assets/js/vote.js?v=3"></script>
+  <script src="../assets/js/vote.js?v=4"></script>
 </body>
 </html>

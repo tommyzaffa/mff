@@ -22,6 +22,32 @@ for(const file of fs.readdirSync(dir).filter(f=>f.endsWith('.sql')).sort()) {
   catch(e){console.error('Migration failed:',file,e.message);process.exit(1)}
 }
 console.log('All migrations applied to isolated PostgreSQL');
+await test('competition voting opens at the screening start and closes three hours after its end',async()=>{
+ const rows=await q(`select s.code,s.starts_at,s.opens_at,s.closes_at from screenings s
+   where exists(select 1 from films f where f.screening=s.code and f.is_published)
+   order by s.code`);
+ assert.equal(rows.length,5);
+ for(const r of rows){
+   assert.equal(new Date(r.opens_at).getTime(),new Date(r.starts_at).getTime());
+   assert.ok(new Date(r.closes_at).getTime()>new Date(r.starts_at).getTime());
+ }
+});
+await test('an anonymous vote is accepted only in the window and cannot be repeated',async()=>{
+ await db.exec(`update screenings set starts_at=now()-interval '30 minutes',
+   opens_at=now()-interval '30 minutes', closes_at=now()+interval '30 minutes'
+   where code='concorso-1';`);
+ await db.exec('set role anon');
+ try {
+   await q(`insert into votes(film,score,voter) values('closed-waters',8,'test-voter-1234567890')`);
+   await assert.rejects(q(`insert into votes(film,score,voter) values('closed-waters',9,'test-voter-1234567890')`),/duplicate key/);
+   await assert.rejects(q(`insert into votes(film,score,voter) values('closed-waters',11,'other-voter-12345678')`),/violates check constraint/);
+ } finally { await db.exec('reset role'); }
+ await db.exec(`update screenings set closes_at=now()-interval '1 second' where code='concorso-1'`);
+ await db.exec('set role anon');
+ try {
+   await assert.rejects(q(`insert into votes(film,score,voter) values('closed-waters',7,'other-voter-12345678')`),/row-level security/);
+ } finally { await db.exec('reset role'); }
+});
 await test('private RPCs reject anonymous and authenticated callers',async()=>{
  const rows=await q(`select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and (has_function_privilege('anon',p.oid,'EXECUTE') or has_function_privilege('authenticated',p.oid,'EXECUTE'))`);assert.deepEqual(rows,[]);
 });
@@ -87,13 +113,13 @@ await test('door sales cannot bypass the online sales window',async()=>{
 // Operational acceptance cases: use the same reservation and issuance RPCs as
 // real sales; all names, orders and screenings below live only in this database.
 await db.exec(`insert into screenings(code,title,starts_at,opens_at,closes_at,is_published,is_ticketed,capacity,wheelchair_spaces,price_cents,price_reduced_cents) values
- ('staff-a','Staff A',current_date+interval '2 days 12 hours',current_date+interval '2 days 12 hours',current_date+interval '2 days 14 hours',true,true,20,2,1500,1000),
- ('staff-b','Staff B',current_date+interval '2 days 16 hours',current_date+interval '2 days 16 hours',current_date+interval '2 days 18 hours',true,true,20,2,1500,1000),
- ('staff-closed','Earlier film',current_date+interval '2 days 10 hours',current_date+interval '2 days 10 hours',current_date+interval '2 days 12 hours',true,true,20,2,1500,1000),
+ ('staff-a','Staff A',current_date+interval '20 days 12 hours',current_date+interval '20 days 12 hours',current_date+interval '20 days 14 hours',true,true,20,2,1500,1000),
+ ('staff-b','Staff B',current_date+interval '20 days 16 hours',current_date+interval '20 days 16 hours',current_date+interval '20 days 18 hours',true,true,20,2,1500,1000),
+ ('staff-closed','Earlier film',current_date+interval '20 days 10 hours',current_date+interval '20 days 10 hours',current_date+interval '20 days 12 hours',true,true,20,2,1500,1000),
  ('staff-till','Till',now()+interval '30 minutes',now(),now()+interval '2 hours',true,true,3,2,1500,1000),
- ('staff-nextday','Staff Next Day',current_date+interval '3 days 12 hours',current_date+interval '3 days 12 hours',current_date+interval '3 days 14 hours',true,true,20,2,1500,1000);
+ ('staff-nextday','Staff Next Day',current_date+interval '21 days 12 hours',current_date+interval '21 days 12 hours',current_date+interval '21 days 14 hours',true,true,20,2,1500,1000);
  update screenings set sales_close_at=now()-interval '1 minute' where code='staff-closed';
- insert into festival_days(day,code,price_cents,price_reduced_cents,is_on_sale) values(current_date+2,'staff-day',3000,2500,true);`);
+ insert into festival_days(day,code,price_cents,price_reduced_cents,is_on_sale) values(current_date+20,'staff-day',3000,2500,true);`);
 const book=async(show,seats)=>(await q(`select ticket_reserve($1,'Staff','Test','staff@example.invalid',$2::jsonb,'it',20) as r`,[show,JSON.stringify(seats)]))[0].r;
 const scan=async(code,show)=>(await q(`select ticket_check_in($1,$2) as r`,[code,show]))[0].r;
 const issue=async(order)=>(await q(`select ticket_order_issue($1,'pi_isolated_test') as r`,[order.order_id]))[0].r;
@@ -117,7 +143,7 @@ await test('revoked accreditation cannot bypass revocation using the ticket QR',
  await q(`update passes set status='issued' where id=$1`,[pass]);
 });
 await test('day pass is a credential and reserves no seat on its own',async()=>{
- day=(await q(`select ticket_day_pass_reserve(current_date+2,'Day','Visitor','day@example.invalid','[{"tariff":"reduced","holder":"Day Visitor"}]'::jsonb,'it',20) as r`))[0].r;
+ day=(await q(`select ticket_day_pass_reserve(current_date+20,'Day','Visitor','day@example.invalid','[{"tariff":"reduced","holder":"Day Visitor"}]'::jsonb,'it',20) as r`))[0].r;
  assert.equal(day.ok,true);assert.equal(day.amount_cents,2500);
  assert.equal((await q(`select count(*)::int n from tickets where order_id=$1`,[day.order_id]))[0].n,0);
 });
@@ -152,7 +178,7 @@ await test('cancelled day pass is refused even with a previously issued QR',asyn
 // A pass now outlives its order's seats, so expiry has to cancel the credential
 // itself or an abandoned checkout leaves a live, unpaid day pass behind.
 await test('an abandoned day-pass checkout leaves no live credential',async()=>{
- const held=(await q(`select ticket_day_pass_reserve(current_date+2,'Held','Visitor','held@example.invalid','[{"tariff":"full"}]'::jsonb,'it',20) as r`))[0].r;
+ const held=(await q(`select ticket_day_pass_reserve(current_date+20,'Held','Visitor','held@example.invalid','[{"tariff":"full"}]'::jsonb,'it',20) as r`))[0].r;
  assert.equal(held.ok,true);assert.equal(held.free,false);
  await q(`update ticket_orders set holds_until=now()-interval '1 minute' where id=$1`,[held.order_id]);
  assert.equal((await q(`select ticket_expire_holds() as n`))[0].n>=1,true);
@@ -180,7 +206,7 @@ const inviteDay=async(d,seats,code)=>(await q(`select ticket_day_pass_reserve($1
 await db.exec(`insert into ticket_access_codes(code,label,scope,screening,day,max_uses) values
  ('SCUOLA26-AAAA','Liceo Lugano','screening','staff-a',null,2),
  ('OSPITE26-BBBB','Ospiti','screening',null,null,null),
- ('GIORNO26-CCCC','Giornata sponsor','day',null,current_date+2,1),
+ ('GIORNO26-CCCC','Giornata sponsor','day',null,current_date+20,1),
  ('SPENTO26-DDDD','Codice ritirato','screening','staff-a',null,5),
  ('SCADUTO26-EEE','Codice scaduto','screening','staff-a',null,5);
  update ticket_access_codes set is_active=false where code='SPENTO26-DDDD';
@@ -227,9 +253,9 @@ await test('a cancelled invited order hands its uses back',async()=>{
 });
 await test('a day invitation gives a free day pass that then books free seats',async()=>{
  assert.equal((await inviteDay(null,[{}],'GIORNO26-CCCC')).reason,'unknown_day');
- const bad=await q(`select ticket_day_pass_reserve(current_date+2,'G','I','g@example.invalid','[{}]'::jsonb,'it',20,'SCUOLA26-AAAA') as r`);
+ const bad=await q(`select ticket_day_pass_reserve(current_date+20,'G','I','g@example.invalid','[{}]'::jsonb,'it',20,'SCUOLA26-AAAA') as r`);
  assert.equal(bad[0].r.reason,'invite_not_for_day');
- const o=await inviteDay(new Date(Date.now()+2*864e5).toISOString().slice(0,10),[{holder:'Sponsor'}],'GIORNO26-CCCC');
+ const o=await inviteDay(new Date(Date.now()+20*864e5).toISOString().slice(0,10),[{holder:'Sponsor'}],'GIORNO26-CCCC');
  assert.equal(o.ok,true);assert.equal(o.free,true);assert.equal(o.amount_cents,0);assert.equal(o.invited,true);
  const seat=await book('staff-a',[{badge:o.codes[0]}]);
  assert.equal(seat.ok,true);assert.equal(seat.free,true);
