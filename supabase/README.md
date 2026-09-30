@@ -330,6 +330,14 @@ successive.
   volte la stessa lista non manda niente la seconda volta. Se Resend rifiuta un
   invio, quegli ordini restano da inviare e si possono riprovare.
 
+- `remind` — il promemoria della mattina di apertura a tutti i badge tranne
+  staff: ritirare il badge al Lux e prenotare ogni proiezione col codice, perché
+  il badge da solo non dà un posto. Una volta per badge (lo registra in
+  `pass_events`), nella lingua del badge, a blocchi di al massimo 100 (`limit`).
+  `dry_run: true` conta soltanto; `only: "<email>"` lo manda a un badge solo,
+  anche staff, per vedere com'è. Un indirizzo non valido viene saltato e
+  riportato in `invalid`, invece di far rifiutare a Resend l'intero blocco.
+
 ```bash
 URL="https://luciaehqndzdeszdktzp.supabase.co/functions/v1/ticket-mail"
 curl -s "$URL" -H 'content-type: application/json' \

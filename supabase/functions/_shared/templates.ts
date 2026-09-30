@@ -323,6 +323,115 @@ export function issuedEmail(
   };
 }
 
+// --- the morning the festival opens ----------------------------------------
+
+// Sent once, by hand, to every badge holder but staff: the two things people
+// with a badge keep getting wrong. The badge has to be collected at the Lux, and
+// it reserves nothing — each screening is booked online with its code.
+const REMINDER_COPY: Record<Locale, {
+  subject: string; heading: string; body: string;
+  pickupTitle: string; pickupBody: string;
+  bookTitle: string; bookBody: (code: string) => string;
+  cta: string; foot: string;
+}> = {
+  it: {
+    subject: "Si comincia oggi: il tuo badge e i tuoi posti",
+    heading: "Il festival comincia oggi",
+    body: `Il Merge Film Festival apre oggi, <strong>giovedì 1 ottobre</strong>, con la
+      cerimonia di apertura alle 20:30 al Cinema Lux di Massagno. Due cose prima di venire:`,
+    pickupTitle: "1 · Ritira il badge al Cinema Lux",
+    pickupBody: `Il badge fisico si ritira di persona al <strong>Cinema Lux</strong>
+      (Via Giuseppe Motta 67, Massagno) per tutta la durata del festival, da oggi a
+      domenica 4 ottobre. Basta mostrare il codice qui sotto.`,
+    bookTitle: "2 · Prenota i posti sul sito",
+    bookBody: (code) => `<strong>Il badge da solo non ti dà un posto in sala.</strong> Ogni
+      proiezione che vuoi vedere va prenotata su mergefestival.ch con il codice del tuo badge,
+      <strong>${code}</strong>: è gratuito, un posto per proiezione, fino a un'ora prima
+      dell'inizio. Senza prenotazione il posto non c'è.`,
+    cta: "Scegli le proiezioni",
+    foot: "Dal programma, premi «Biglietti» sulla proiezione e inserisci il codice del badge nel campo del posto.",
+  },
+  en: {
+    subject: "It starts today: your badge and your seats",
+    heading: "The festival starts today",
+    body: `Merge Film Festival opens today, <strong>Thursday 1 October</strong>, with the
+      opening ceremony at 8.30 pm at Cinema Lux in Massagno. Two things before you come:`,
+    pickupTitle: "1 · Collect your badge at Cinema Lux",
+    pickupBody: `The physical badge is collected in person at <strong>Cinema Lux</strong>
+      (Via Giuseppe Motta 67, Massagno) for the whole festival, from today until Sunday
+      4 October. Just show the code below.`,
+    bookTitle: "2 · Book your seats on the website",
+    bookBody: (code) => `<strong>The badge alone does not give you a seat.</strong> Every
+      screening you want to see has to be booked on mergefestival.ch with your badge code,
+      <strong>${code}</strong>: it is free, one seat per screening, until one hour before it
+      starts. No booking, no seat.`,
+    cta: "Choose your screenings",
+    foot: "In the programme, press “Tickets” on a screening and enter your badge code in the seat field.",
+  },
+  fr: {
+    subject: "C'est aujourd'hui : votre badge et vos places",
+    heading: "Le festival commence aujourd'hui",
+    body: `Le Merge Film Festival ouvre aujourd'hui, <strong>jeudi 1er octobre</strong>, avec
+      la cérémonie d'ouverture à 20h30 au Cinema Lux de Massagno. Deux choses avant de venir :`,
+    pickupTitle: "1 · Retirez votre badge au Cinema Lux",
+    pickupBody: `Le badge physique se retire en personne au <strong>Cinema Lux</strong>
+      (Via Giuseppe Motta 67, Massagno) pendant tout le festival, d'aujourd'hui jusqu'au
+      dimanche 4 octobre. Il suffit de montrer le code ci-dessous.`,
+    bookTitle: "2 · Réservez vos places sur le site",
+    bookBody: (code) => `<strong>Le badge seul ne vous donne pas de place.</strong> Chaque
+      projection que vous voulez voir se réserve sur mergefestival.ch avec le code de votre
+      badge, <strong>${code}</strong> : c'est gratuit, une place par projection, jusqu'à une
+      heure avant le début. Sans réservation, pas de place.`,
+    cta: "Choisir les projections",
+    foot: "Dans le programme, appuyez sur « Billets » d'une projection et saisissez le code du badge dans le champ de la place.",
+  },
+  de: {
+    subject: "Heute geht's los: dein Badge und deine Plätze",
+    heading: "Das Festival beginnt heute",
+    body: `Das Merge Film Festival beginnt heute, <strong>Donnerstag, 1. Oktober</strong>, mit
+      der Eröffnungszeremonie um 20:30 Uhr im Cinema Lux in Massagno. Zwei Dinge, bevor du kommst:`,
+    pickupTitle: "1 · Hol dein Badge im Cinema Lux ab",
+    pickupBody: `Das physische Badge holst du persönlich im <strong>Cinema Lux</strong>
+      (Via Giuseppe Motta 67, Massagno) ab, während des ganzen Festivals, von heute bis
+      Sonntag, 4. Oktober. Zeig einfach den Code unten.`,
+    bookTitle: "2 · Reserviere deine Plätze auf der Website",
+    bookBody: (code) => `<strong>Das Badge allein gibt dir keinen Platz im Saal.</strong> Jede
+      Vorführung, die du sehen willst, reservierst du auf mergefestival.ch mit deinem
+      Badge-Code, <strong>${code}</strong>: kostenlos, ein Platz pro Vorführung, bis eine
+      Stunde vor Beginn. Ohne Reservierung kein Platz.`,
+    cta: "Vorführungen wählen",
+    foot: "Im Programm bei einer Vorführung auf «Tickets» tippen und den Badge-Code im Platzfeld eingeben.",
+  },
+};
+
+export function festivalStartEmail(o: {
+  name: string; locale: Locale; badgeCode: string; programmeUrl: string;
+}) {
+  const t = REMINDER_COPY[o.locale];
+  const box = (title: string, body: string, bg: string) =>
+    `<table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+            style="margin:0 0 14px;background:${bg};border-radius:14px">
+       <tr><td style="padding:16px 18px">
+         <p style="margin:0 0 6px;font-size:17px;font-weight:700;color:#2E1B54;line-height:1.3">${esc(title)}</p>
+         <p style="margin:0;font-size:15px;line-height:1.55">${body}</p>
+       </td></tr>
+     </table>`;
+  return {
+    subject: t.subject,
+    html: layout({
+      locale: o.locale,
+      preheader: t.heading,
+      heading: t.heading,
+      body: `<p style="margin:0 0 12px">${esc(COPY[o.locale].hi(o.name))}</p>
+        <p style="margin:0 0 18px">${t.body}</p>
+        ${box(t.pickupTitle, t.pickupBody, "#f0ecff")}
+        ${box(t.bookTitle, t.bookBody(esc(o.badgeCode)), "#f6f4f0")}`,
+      cta: { label: t.cta, href: o.programmeUrl },
+      footnote: esc(t.foot),
+    }),
+  };
+}
+
 // --- the internal one -------------------------------------------------------
 
 // Goes to the festival office with the two buttons that decide the outcome, so

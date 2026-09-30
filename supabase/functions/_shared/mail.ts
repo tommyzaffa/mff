@@ -52,25 +52,41 @@ type SendArgs = {
 };
 
 export async function sendMail({ to, subject, html, replyTo, idempotencyKey }: SendArgs): Promise<void> {
-  const res = await fetch("https://api.resend.com/emails", {
+  await post("https://api.resend.com/emails", message({ to, subject, html, replyTo }), idempotencyKey);
+}
+
+// Up to 100 different messages in one request — Resend's batch endpoint. One
+// call instead of a hundred keeps a mass mailing inside the function's time and
+// the account's per-second rate; each message still counts as one email.
+export async function sendMailBatch(mails: Omit<SendArgs, "idempotencyKey">[], idempotencyKey?: string): Promise<void> {
+  if (mails.length < 1 || mails.length > 100) throw new Error("a batch holds 1 to 100 emails");
+  await post("https://api.resend.com/emails/batch", mails.map(message), idempotencyKey, 30_000);
+}
+
+function message({ to, subject, html, replyTo }: Omit<SendArgs, "idempotencyKey">) {
+  return {
+    from: env.mailFrom,
+    to: Array.isArray(to) ? to : [to],
+    subject,
+    html,
+    // A plain-text alternative alongside the HTML. Nobody reads it, but a
+    // message that has no text part at all is a spam signal in its own right,
+    // and iCloud in particular weighs it heavily against a young domain.
+    text: toText(html),
+    ...(replyTo ? { reply_to: replyTo } : {}),
+  };
+}
+
+async function post(url: string, body: unknown, idempotencyKey?: string, timeoutMs = 12_000): Promise<void> {
+  const res = await fetch(url, {
     method: "POST",
-    signal: AbortSignal.timeout(12_000),
+    signal: AbortSignal.timeout(timeoutMs),
     headers: {
       authorization: `Bearer ${env.resendApiKey()}`,
       "content-type": "application/json",
       ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {}),
     },
-    body: JSON.stringify({
-      from: env.mailFrom,
-      to: Array.isArray(to) ? to : [to],
-      subject,
-      html,
-      // A plain-text alternative alongside the HTML. Nobody reads it, but a
-      // message that has no text part at all is a spam signal in its own right,
-      // and iCloud in particular weighs it heavily against a young domain.
-      text: toText(html),
-      ...(replyTo ? { reply_to: replyTo } : {}),
-    }),
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) {

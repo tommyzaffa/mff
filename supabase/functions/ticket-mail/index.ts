@@ -15,6 +15,10 @@ import { rateLimit, secured } from "../_shared/security.ts";
 //   send — mail the chosen orders. One that already had its email is left alone
 //          unless `resend` is set, so sending the same list twice, or "every
 //          order still waiting", never floods anyone.
+//   remind — the morning the festival opens, to every badge holder but staff:
+//          collect the badge at the Lux, and book each screening with its code,
+//          because the badge alone reserves nothing. Once per pass, in the
+//          pass's language; `dry_run` counts, `only` sends to one address.
 //
 // There is no page in front of it: it is called from a terminal, when someone
 // organising the festival says who should get their tickets now. Its own
@@ -29,6 +33,9 @@ import { rateLimit, secured } from "../_shared/security.ts";
 import { db } from "../_shared/db.ts";
 import { fail, json, preflight } from "../_shared/http.ts";
 import { emailTicketGroup, type MailOrder, ORDER_COLUMNS } from "../_shared/ticket-mail.ts";
+import { sendMailBatch } from "../_shared/mail.ts";
+import { asLocale, festivalStartEmail } from "../_shared/templates.ts";
+import { env } from "../_shared/env.ts";
 
 // One request stays well inside the function's wall clock even at Resend's
 // pace; a longer list goes out in several calls.
@@ -89,6 +96,11 @@ Deno.serve(secured(async (req) => {
 
     const action = body.action ?? "list";
     if (action === "list") return json(req, { ok: true, session, ...await list(body) });
+    if (action === "remind") {
+      const reminded = await remind(body);
+      if ("error" in reminded) return fail(req, reminded.error);
+      return json(req, { ok: true, session, ...reminded });
+    }
     if (action === "send") {
       const sent = await send(body);
       if ("error" in sent) return fail(req, sent.error);
@@ -224,4 +236,74 @@ async function send(body: Record<string, unknown>): Promise<{ error: string } | 
   }
 
   return { results, skipped: ids.length - orders.length };
+}
+
+// --- remind -----------------------------------------------------------------
+
+// What marks a pass as reminded, in its audit trail. The trail is the record of
+// who was written to, so it is also what stops the second press of the button.
+const REMINDER = "reminder festival-start";
+
+type Holder = { id: string; type: string; first_name: string; email: string | null; badge_code: string; locale: string };
+
+async function remind(body: Record<string, unknown>): Promise<
+  { error: string } | {
+    sent: number; remaining: number; already: number; recipients: number;
+    by_locale: Record<string, number>; invalid: string[];
+  }
+> {
+  const only = typeof body.only === "string" ? body.only.trim().toLowerCase() : "";
+  const limit = Math.min(Math.max(Number(body.limit) || 100, 1), 100);
+
+  let query = db().from("passes").select("id, type, first_name, email, badge_code, locale")
+    .eq("status", "issued").not("badge_code", "is", null);
+  // Staff hear it from us in person; `only` is the test send, to anyone's own pass.
+  query = only ? query.eq("email", only) : query.neq("type", "staff");
+  const [{ data: passes, error }, { data: done, error: doneError }] = await Promise.all([
+    query.order("issued_at", { ascending: true }),
+    db().from("pass_events").select("pass_id").eq("kind", "email").like("detail", `${REMINDER}%`),
+  ]);
+  if (error || doneError) throw new Error((error ?? doneError)!.message);
+
+  const reminded = new Set((done ?? []).map((e) => e.pass_id));
+  // One person, one email: a second pass on an address already written to (or
+  // about to be) is skipped, not reminded twice.
+  const seen = new Set(((passes ?? []) as Holder[])
+    .filter((p) => reminded.has(p.id) && p.email).map((p) => p.email!.toLowerCase()));
+  // Resend refuses a whole batch over one malformed address (a badge once came
+  // in as "mailto:…"), so those are left out and reported instead.
+  const invalid: string[] = [];
+  const todo = ((passes ?? []) as Holder[]).filter((p) => {
+    const email = p.email?.toLowerCase();
+    if (!email || reminded.has(p.id) || seen.has(email)) return false;
+    seen.add(email);
+    if (!/^[^@\s:]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { invalid.push(p.email!); return false; }
+    return true;
+  });
+  if (only && !passes?.length) return { error: "unknown_pass" };
+
+  const byLocale: Record<string, number> = {};
+  for (const p of todo) byLocale[asLocale(p.locale)] = (byLocale[asLocale(p.locale)] ?? 0) + 1;
+  const counts = { already: reminded.size, recipients: todo.length, by_locale: byLocale, invalid };
+  if (body.dry_run === true || !todo.length) return { sent: 0, remaining: todo.length, ...counts };
+
+  const batch = todo.slice(0, limit);
+  const mails = batch.map((p) => {
+    const mail = festivalStartEmail({
+      name: p.first_name,
+      locale: asLocale(p.locale),
+      badgeCode: p.badge_code,
+      programmeUrl: `${env.siteUrl}/program/`,
+    });
+    return { to: p.email!, subject: mail.subject, html: mail.html };
+  });
+  // Nothing is written until Resend has taken the whole batch, so a refusal
+  // leaves every pass unreminded and the same call can simply be repeated.
+  await sendMailBatch(mails, `${REMINDER.replace(" ", "/")}/${await sha256(batch.map((p) => p.id).join(","))}`);
+  const { error: logError } = await db().from("pass_events").insert(
+    batch.map((p) => ({ pass_id: p.id, kind: "email", detail: `${REMINDER} -> ${p.email}` })),
+  );
+  if (logError) console.error("ticket-mail remind: reminder sent but not recorded", logError.message);
+
+  return { sent: batch.length, remaining: todo.length - batch.length, ...counts };
 }

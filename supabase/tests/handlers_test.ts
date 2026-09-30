@@ -338,3 +338,48 @@ Deno.test('a refused email leaves the orders waiting, so the next send tries the
     assert(seen.marked.length===0);
   }finally{globalThis.fetch=original;}
 });
+
+Deno.test('remind writes once to every badge but staff, and records nothing if Resend refuses',async()=>{
+  const original=globalThis.fetch;Deno.env.set('RESEND_API_KEY','test-key');
+  const passes=[
+    {id:'10000000-0000-4000-8000-000000000001',type:'industry',first_name:'Ada',email:'ada@example.invalid',badge_code:'MFF-AAAA-AAAA',locale:'it'},
+    {id:'10000000-0000-4000-8000-000000000002',type:'guest',first_name:'Ben',email:'ben@example.invalid',badge_code:'MFF-BBBB-BBBB',locale:'en'},
+    {id:'10000000-0000-4000-8000-000000000003',type:'guest',first_name:'Ben',email:'BEN@example.invalid',badge_code:'MFF-CCCC-CCCC',locale:'en'},
+    {id:'10000000-0000-4000-8000-000000000004',type:'press',first_name:'Cleo',email:'cleo@example.invalid',badge_code:'MFF-DDDD-DDDD',locale:'de'},
+    {id:'10000000-0000-4000-8000-000000000005',type:'industry',first_name:'Dan',email:'mailto:dan@example.invalid',badge_code:'MFF-EEEE-EEEE',locale:'it'},
+  ];
+  let events=[{pass_id:passes[3].id}];let batches:{to:string[],subject:string,html:string}[][]=[];let lists:string[]=[];let refuse=false;
+  globalThis.fetch=async(input,init)=>{
+    const url=decodeURIComponent(String(input));
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/passes?')){lists.push(url);return Response.json(passes);}
+    if(url.includes('/pass_events')&&init?.method==='POST'){events=[...events,...JSON.parse(String(init.body))];return new Response(null,{status:201});}
+    if(url.includes('/pass_events?'))return Response.json(events.map(e=>({pass_id:e.pass_id})));
+    if(url==='https://api.resend.com/emails/batch'){
+      if(refuse)return Response.json({message:'nope'},{status:500});
+      batches.push(JSON.parse(String(init?.body)));return Response.json({data:[]});
+    }
+    throw new Error('Unexpected network operation: '+url);
+  };
+  try{
+    const dry=await (await mailer(req({password:'long-test-only-password',action:'remind',dry_run:true}))).json();
+    assert(dry.ok && dry.recipients===2 && dry.sent===0 && batches.length===0);
+    assert(dry.invalid.length===1 && dry.invalid[0]==='mailto:dan@example.invalid');
+    assert(lists[0].includes('type=neq.staff') && lists[0].includes('status=eq.issued'));
+
+    refuse=true;
+    const failed=await mailer(req({password:'long-test-only-password',action:'remind'}));
+    assert(failed.status===500);assert(events.length===1);
+
+    refuse=false;
+    const sent=await (await mailer(req({password:'long-test-only-password',action:'remind'}))).json();
+    assert(sent.sent===2 && sent.remaining===0 && batches.length===1 && batches[0].length===2);
+    const ada=batches[0].find(m=>m.to[0]==='ada@example.invalid')!;
+    assert(ada.html.includes('MFF-AAAA-AAAA') && ada.subject.startsWith('Si comincia oggi'));
+    assert(batches[0].find(m=>m.to[0]==='ben@example.invalid')!.subject.startsWith('It starts today'));
+    assert(events.length===3);
+
+    const again=await (await mailer(req({password:'long-test-only-password',action:'remind'}))).json();
+    assert(again.sent===0 && batches.length===1);
+  }finally{globalThis.fetch=original;}
+});
