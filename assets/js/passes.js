@@ -333,6 +333,17 @@
         refresh();
         return;
       }
+      // A badge holder who came to book a seat, typing their badge here, would
+      // otherwise be told "invalid code" and conclude the badge is invalid.
+      if (/^MFF-(?:[A-Z0-9]{4}-[A-Z0-9]{4}|D-[A-Z0-9]{8})$/.test(value.replace(/[^A-Z0-9-]/g, ""))) {
+        if (codeState) {
+          codeState.textContent = t("passes.codeIsBadge",
+            "This is the code of a badge you already have — you do not need a new pass. To book seats, choose a screening under Tickets and write this code in the seat’s “Badge code” box.");
+          codeState.className = "pass-form__code-state is-bad";
+        }
+        refresh();
+        return;
+      }
       codeTimer = setTimeout(function () { verifyCode(value); }, 450);
     });
   }

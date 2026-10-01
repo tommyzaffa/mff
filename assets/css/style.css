@@ -2401,6 +2401,11 @@ html.intro-armed #introOverlay {
    it into shouting. */
 .seat__badge { text-transform: uppercase; }
 .seat__badge::placeholder { text-transform: none; }
+/* The badge box carries its own label and example: a placeholder alone read as
+   "optional" and sent badge holders to the invitation box instead. */
+.seat__badge-field { display: grid; gap: 6px; grid-column: 1 / -1; }
+.seat__badge-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.01em; }
+.seat__badge-hint { font-size: 0.8rem; line-height: 1.45; opacity: 0.75; }
 
 /* An invitation pays for the whole booking, so it is deliberately outside the
    seat list. The rule above it is what draws the line between "who is coming"

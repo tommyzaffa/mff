@@ -407,3 +407,28 @@ Deno.test('badges resends only the badge emails that failed and never went out s
     assert(logged.some(e=>e.pass_id===waiting.id && e.kind==='email'));
   }finally{globalThis.fetch=original;}
 });
+
+Deno.test('a badge code typed into the invitation box books the seat with that badge',async()=>{
+  await import('../functions/ticket-reserve/index.ts');const reserve=handler!;
+  const original=globalThis.fetch;let sent: Record<string,unknown>={};let hitDb=false;
+  globalThis.fetch=async(input,init)=>{
+    const url=String(input);
+    if(url.includes('/rpc/security_rate_limit'))return Response.json(true);
+    if(url.includes('/rpc/ticket_expire_holds')){hitDb=true;return Response.json(0);}
+    if(url.includes('/screening_availability'))return Response.json({code:'staff-a',title:'Staff A',venue:'Lux',starts_at:new Date().toISOString(),price_cents:1500,price_reduced_cents:1000});
+    if(url.includes('/rpc/ticket_reserve')){sent=JSON.parse(String(init?.body));return Response.json({ok:true,free:true,order_id:'11111111-1111-4111-8111-111111111111',codes:[]});}
+    return Response.json([]);
+  };
+  const body={screening:'staff-a',first_name:'Pierre',last_name:'T',email:'pierre@example.invalid'};
+  try{
+    // Pasted with a stray space, as from an email.
+    const ok=await reserve(req({...body,seats:[{}],access_code:' mff-2hha -an92 '}));
+    assert((await ok.json()).ok);
+    assert(sent.p_access_code===null);
+    assert((sent.p_seats as {badge:string}[])[0].badge==='MFF-2HHA-AN92');
+    // Every seat already has a code: say where it belongs, without the database.
+    hitDb=false;
+    const full=await reserve(req({...body,seats:[{badge:'MFF-AAAA-BBBB'}],access_code:'MFF-2HHA-AN92'}));
+    assert(full.status===409 && (await full.json()).error==='badge_in_invite');assert(!hitDb);
+  }finally{globalThis.fetch=original;}
+});

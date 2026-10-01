@@ -397,17 +397,33 @@
     // One field for both credentials. A badge is MFF-XXXX-XXXX and a day pass
     // MFF-D-XXXXXXXX, so the server can tell them apart with certainty and the
     // buyer is spared a choice they could only get wrong.
+    //
+    // It has a visible label and an example, not just a grey placeholder: badge
+    // holders kept typing their code into the invitation box below, which can
+    // only ever answer "unknown code".
     if (!current || current.badges) {
+      var badgeField = document.createElement("label");
+      badgeField.className = "seat__badge-field";
+      var badgeLabel = document.createElement("span");
+      badgeLabel.className = "seat__badge-label";
+      badgeLabel.setAttribute("data-badge-label", "");
       var badge = document.createElement("input");
       badge.type = "text";
       badge.className = "seat__badge";
       badge.setAttribute("data-badge", "");
-      badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
+      badge.autocomplete = "off";
+      badge.spellcheck = false;
       badge.addEventListener("input", function () {
         badge.value = credential(badge.value) || "";
         updateTotal();
       });
-      li.appendChild(badge);
+      var badgeHint = document.createElement("span");
+      badgeHint.className = "seat__badge-hint";
+      badgeHint.setAttribute("data-badge-hint", "");
+      badgeField.appendChild(badgeLabel);
+      badgeField.appendChild(badge);
+      badgeField.appendChild(badgeHint);
+      li.appendChild(badgeField);
     }
 
     // A wheelchair space is claimed when a seat is actually taken, so it asks
@@ -460,7 +476,14 @@
           : t("tickets.phHolder", "Name on the ticket (optional)");
       }
       var badge = li.querySelector("[data-badge]");
-      if (badge) badge.placeholder = t("tickets.phBadge", "Badge or day-pass code (optional)");
+      if (badge) badge.placeholder = t("tickets.phBadge", "MFF-XXXX-XXXX");
+      var badgeLabel = li.querySelector("[data-badge-label]");
+      if (badgeLabel) badgeLabel.textContent = t("tickets.badgeLabel", "Badge code — if you have a badge or a day pass");
+      var badgeHint = li.querySelector("[data-badge-hint]");
+      if (badgeHint) {
+        badgeHint.textContent = t("tickets.badgeHint",
+          "It starts with MFF- and is in the email with your badge (e.g. MFF-XXXX-XXXX). With it the seat is free.");
+      }
     });
     if (addSeatBtn) addSeatBtn.hidden = rows.length >= maxRows();
   }
@@ -521,9 +544,34 @@
 
   if (addSeatBtn) addSeatBtn.addEventListener("click", addSeat);
 
+  // A badge (MFF-XXXX-XXXX) or a day pass (MFF-D-XXXXXXXX) in the invitation
+  // box is the commonest mistake on this form, and an invitation can never look
+  // like either. So it is not refused: it goes where its owner meant it, the
+  // first seat with no code of its own, and they are told it moved.
+  var CREDENTIAL = /^MFF-(?:[A-Z0-9]{4}-[A-Z0-9]{4}|D-[A-Z0-9]{8})$/;
+  var inviteNoteEl = form.querySelector("[data-invite-note]");
+
+  function rescueCredential() {
+    if (!inviteEl) return;
+    var code = credential(inviteEl.value);
+    if (!code || !CREDENTIAL.test(code)) return;
+    var empty = seatRows().map(function (li) { return li.querySelector("[data-badge]"); })
+      .filter(function (b) { return b && !credential(b.value); })[0];
+    if (!empty) return;
+    empty.value = code;
+    inviteEl.value = "";
+    if (inviteNoteEl) {
+      inviteNoteEl.textContent = t("tickets.badgeMoved",
+        "That is a badge code, not an invitation: we have moved it to the seat’s “Badge code” box.");
+    }
+    updateTotal();
+  }
+
   if (inviteEl) {
     inviteEl.addEventListener("input", function () {
       inviteEl.value = inviteEl.value.toUpperCase();
+      if (inviteNoteEl) inviteNoteEl.textContent = "";
+      rescueCredential();
       updateTotal();
     });
   }
@@ -540,6 +588,7 @@
 
     statusEl.className = "form__status";
     statusEl.textContent = "";
+    rescueCredential();
 
     var body = {
       first_name: form.first_name.value.trim(),

@@ -8,7 +8,7 @@
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=75" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=76" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -291,7 +291,7 @@
         <div class="pass-flow" data-panel="choose" hidden>
           <p class="pass-perk reveal">
             <span class="pass-perk__label" data-i18n="tickets.perkLabel">Have a badge or a day pass?</span>
-            <span class="pass-perk__text" data-i18n="tickets.perkText">Enter its code when you book and the seat costs nothing — one seat per badge or day pass, per screening.</span>
+            <span class="pass-perk__text" data-i18n="tickets.perkText">Write its code in the “Badge code” box of the seat when you book, and the seat costs nothing — one seat per badge or day pass, per screening. The code starts with MFF- and is in the email with your badge.</span>
           </p>
 
           <div class="ticket-group reveal" data-day-group hidden>
@@ -350,9 +350,10 @@
                  says "this person already has access", an invitation says
                  "this booking is on us". -->
             <div class="form__field ticket-invite">
-              <label class="pass-form__label" for="tkInvite" data-i18n="tickets.inviteLabel">Invitation code (optional)</label>
-              <p class="pass-form__hint" data-i18n="tickets.inviteHint">Only if the festival sent you one. It pays for the seats in this booking.</p>
+              <label class="pass-form__label" for="tkInvite" data-i18n="tickets.inviteLabel">Invitation code — not your badge code</label>
+              <p class="pass-form__hint" data-i18n="tickets.inviteHint">Only if the festival sent you a separate invitation code. Most people leave this empty: a badge code (MFF-…) goes in the seat above.</p>
               <input id="tkInvite" type="text" name="access_code" autocomplete="off" spellcheck="false" data-invite />
+              <p class="pass-form__code-state is-ok" data-invite-note role="status" aria-live="polite"></p>
             </div>
 
             <p class="ticket-total" data-total role="status" aria-live="polite"></p>
@@ -443,10 +444,10 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=54"></script>
+  <script src="../assets/js/translations.js?v=55"></script>
   <script src="../assets/js/app.js?v=10"></script>
   <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/passes.js?v=5"></script>
-  <script src="../assets/js/tickets.js?v=8"></script>
+  <script src="../assets/js/passes.js?v=6"></script>
+  <script src="../assets/js/tickets.js?v=9"></script>
 </body>
 </html>

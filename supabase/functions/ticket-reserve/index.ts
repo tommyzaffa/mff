@@ -98,7 +98,7 @@ Deno.serve(secured(async (req) => {
     // it belongs to the order rather than to a seat; the database decides
     // whether it is live, whether it fits this screening or day and how many
     // seats are left on it.
-    const invite = String(body.access_code ?? "").trim().toUpperCase() || null;
+    let invite = String(body.access_code ?? "").trim().toUpperCase() || null;
 
     // Exactly one of the two. Accepting both would leave the function choosing
     // which the buyer meant, and it would sometimes choose wrong.
@@ -106,12 +106,6 @@ Deno.serve(secured(async (req) => {
     if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return fail(req, "bad_day");
     if (!firstName || !lastName || firstName.length > 60 || lastName.length > 60) return fail(req, "name_required");
     if (email.length > 254 || screening.length > 24) return fail(req, "bad_request");
-    // No invitation can be shaped like a festival QR — the table forbids it —
-    // so a code that is, or that is not a code at all, is answered without
-    // asking the database about it.
-    if (invite && (!/^[A-Z0-9][A-Z0-9-]{2,31}$/.test(invite) || invite.startsWith("MFF-"))) {
-      return fail(req, "unknown_invite", 409);
-    }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return fail(req, "email_invalid");
 
     const rawSeats = Array.isArray(body.seats) ? (body.seats as SeatIn[]) : null;
@@ -129,6 +123,25 @@ Deno.serve(secured(async (req) => {
         tariff: TARIFFS.has(tariff) ? tariff : "full",
       };
     });
+
+    // A badge or day-pass code typed into the invitation box is the commonest
+    // mistake on the form, and no invitation can look like one. It goes where
+    // its owner meant it: the first seat with no code of its own. Only for a
+    // screening — a day pass is bought, and a badge cannot buy one.
+    const asCredential = credential(invite);
+    if (screening && asCredential && /^MFF-(?:[A-Z0-9]{4}-[A-Z0-9]{4}|D-[A-Z0-9]{8})$/.test(asCredential)) {
+      const open = seats.find((s) => !s.badge);
+      if (!open) return fail(req, "badge_in_invite", 409);
+      open.badge = asCredential;
+      invite = null;
+    }
+
+    // No invitation can be shaped like a festival QR — the table forbids it —
+    // so a code that is, or that is not a code at all, is answered without
+    // asking the database about it.
+    if (invite && (!/^[A-Z0-9][A-Z0-9-]{2,31}$/.test(invite) || invite.startsWith("MFF-"))) {
+      return fail(req, "unknown_invite", 409);
+    }
 
     // Give back anything abandoned on a Stripe page before counting, so a busy
     // screening does not look full because of checkouts nobody finished.
