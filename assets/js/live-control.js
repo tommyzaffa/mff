@@ -5,7 +5,11 @@
   let session = ''; let run = null; let wakeLock = null; let discovering = false;
   try { session = sessionStorage.getItem('mff-live-session') || ''; } catch (_) { /* memory-only login */ }
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const fields = ['room', 'title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
+  // Sala Lux and Sala Cosmo never run a talk at the same time, so both feed the
+  // one channel the audience already has open at /live: the hall is told to the
+  // audience in front of the title, not by a second page and a second QR code.
+  const ROOM = 'main';
+  const fields = ['venue', 'title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
   const directions = { 'it-en': { source: 'it', target: 'en' }, 'en-it': { source: 'en', target: 'it' } };
   const direction = () => directions[$('direction').value] || directions['it-en'];
   function status(text, state = '') { $('status').textContent = text; $('status').dataset.state = state; }
@@ -36,12 +40,11 @@
   }
   $('direction').addEventListener('change', relabel);
   function share() {
-    const url = new URL('../', location.href); url.searchParams.set('room', $('room').value);
+    const url = new URL('../', location.href);
     $('audience-link').href = url.href; url.searchParams.set('screen', '1'); $('screen-link').href = url.href;
     $('qr').replaceChildren();
     if (window.QrCreator) QrCreator.render({ text: $('audience-link').href, size: 108, ecLevel: 'M', fill: '#2e1b54', background: '#ffffff' }, $('qr'));
   }
-  $('room').addEventListener('change', share);
   $('copy-link').onclick = async () => {
     try { await navigator.clipboard.writeText($('audience-link').href); $('copy-link').textContent = 'Link copiato'; }
     catch (_) { $('notice').textContent = 'Apri la pagina pubblico e copia l’indirizzo dal browser.'; }
@@ -213,7 +216,7 @@
     }
     const { source, target } = direction();
     // Not `source`/`target`: r.source is already the MediaStreamAudioSourceNode.
-    const r = { publisher: crypto.randomUUID(), room: $('room').value, buffer: new CaptionBuffer(target), sequence: 0,
+    const r = { publisher: crypto.randomUUID(), room: ROOM, buffer: new CaptionBuffer(target), sequence: 0,
       state: 'connecting', stopping: false, claimed: false, dirty: true, attempts: 0, audioSeconds: 0,
       lastPublish: Date.now(), context: context(), langFrom: source, langTo: target };
     run = r; controls(true); render(r); status('Apertura microfono…');
@@ -231,7 +234,7 @@
       await r.audio.audioWorklet.addModule('../../assets/js/live-audio-worklet.js?v=1');
       if (run !== r || r.stopping) return;
       const claim = await request({ action: 'start', session, room: r.room, publisher: r.publisher,
-        title: $('title').value.trim(), minutes: Number($('minutes').value), language: r.langTo });
+        title: (($('venue').value + ' · ') + $('title').value.trim()).slice(0, 120), minutes: Number($('minutes').value), language: r.langTo });
       r.claimed = true; r.endsAt = Date.parse(claim.ends_at); r.startedAt = Date.now();
       if (run !== r || r.stopping) { await release(r); return; }
       r.source = r.audio.createMediaStreamSource(stream);

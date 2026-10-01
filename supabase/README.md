@@ -281,6 +281,11 @@ della cassa non può spendere credito audio e viceversa (test in
 ### Prima di ogni talk
 
 - Aprire `/live/control/` **su HTTPS** (il microfono non parte da `file://`).
+- Scegliere la *Sala*: **Sala Lux** o **Sala Cosmo**. Le due sale non hanno mai
+  un talk in contemporanea, quindi usano lo stesso canale: il pubblico apre
+  sempre `/live` (un solo link, un solo QR) e legge la sala davanti al titolo.
+  Una seconda regia che prova ad avviare mentre l'altra è in diretta riceve
+  `room_busy`.
 - Scegliere la direzione in *Lingua del talk e dei sottotitoli*: si imposta
   prima di *Avvia* e resta fissa per tutta la sessione.
 - *Rileva ingressi* e scegliere l'uscita del mixer, non il microfono interno.

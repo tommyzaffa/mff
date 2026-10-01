@@ -33,7 +33,7 @@
   }
   const errors = {
     unauthorised: 'Sessione scaduta o password errata. Accedi di nuovo.',
-    room_busy: 'Questa sala è già controllata da un’altra regia. Fermala prima di continuare.',
+    room_busy: 'C’è già una diretta in corso da un’altra regia (Sala Lux o Sala Cosmo). Fermala prima di avviarne una nuova.',
     lease_lost: 'Il collegamento con la sala è scaduto. Ferma e riavvia la diretta.',
     room_not_found: 'Sala non configurata.',
     not_configured: 'Soniox o la password regia non sono ancora configurati sul server.',

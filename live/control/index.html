@@ -20,7 +20,7 @@
       <div class="section-heading"><div><span class="eyebrow" id="direction-label">ITALIANO → INGLESE</span><h1>Sottotitoli live</h1></div><button id="logout" class="quiet">Esci</button></div>
       <div class="control-grid">
         <section class="card settings"><h2>Prepara la diretta</h2>
-          <label for="room">Sala</label><select id="room"><option value="main">Palco principale</option></select>
+          <label for="venue">Sala</label><select id="venue"><option value="Sala Lux" selected>Sala Lux</option><option value="Sala Cosmo">Sala Cosmo</option></select>
           <label for="title">Titolo del talk</label><input id="title" value="Merge Film Festival — Live talks" maxlength="120" required>
           <label for="direction">Lingua del talk e dei sottotitoli</label><select id="direction"><option value="it-en" selected>Si parla italiano → sottotitoli in inglese</option><option value="en-it">Si parla inglese → sottotitoli in italiano</option></select>
           <div class="label-row"><label for="device">Ingresso audio</label><button class="text-button" id="devices">Rileva ingressi</button></div>
@@ -42,13 +42,13 @@
             <p class="error" id="error" role="alert"></p><p class="notice" id="notice" role="status"></p>
           </section>
           <section class="caption-preview"><span class="eyebrow" id="translation-label">INGLESE · TESTO VISIBILE AL PUBBLICO</span><p id="translation" lang="en">I sottotitoli appariranno qui.</p><p id="draft" class="draft" lang="en"></p><span class="eyebrow" id="original-label">TRASCRIZIONE ITALIANA</span><p id="original" class="original" lang="it">In attesa dell’audio.</p></section>
-          <section class="card sharing"><div><h2>Apri al pubblico</h2><p class="hint">Lo stesso testo sullo schermo in sala e sui telefoni.</p><div class="actions"><a id="screen-link" class="button" href="../?room=main&amp;screen=1" target="_blank" rel="noopener">Schermo sala ↗</a><a id="audience-link" href="../?room=main" target="_blank" rel="noopener">Pagina pubblico ↗</a><button id="copy-link" class="quiet">Copia link</button></div></div><div id="qr" aria-label="QR code della pagina pubblico"></div></section>
+          <section class="card sharing"><div><h2>Apri al pubblico</h2><p class="hint">Lo stesso testo sullo schermo in sala e sui telefoni.</p><div class="actions"><a id="screen-link" class="button" href="../?screen=1" target="_blank" rel="noopener">Schermo sala ↗</a><a id="audience-link" href="../" target="_blank" rel="noopener">Pagina pubblico ↗</a><button id="copy-link" class="quiet">Copia link</button></div></div><div id="qr" aria-label="QR code della pagina pubblico"></div></section>
         </div>
       </div>
     </section>
     <footer class="control-footer">MERGE FILM FESTIVAL <span>Sottotitoli automatici · verifica l’audio prima di ogni talk.</span></footer>
   </main>
-  <script src="../../assets/js/passes-config.js?v=2"></script><script src="../../assets/js/live-core.js?v=2"></script>
-  <script src="../../assets/js/vendor/qr-creator-1.0.0.min.js"></script><script src="../../assets/js/password-eye.js?v=1"></script><script src="../../assets/js/live-control.js?v=6"></script>
+  <script src="../../assets/js/passes-config.js?v=2"></script><script src="../../assets/js/live-core.js?v=3"></script>
+  <script src="../../assets/js/vendor/qr-creator-1.0.0.min.js"></script><script src="../../assets/js/password-eye.js?v=1"></script><script src="../../assets/js/live-control.js?v=7"></script>
 </body>
 </html>
