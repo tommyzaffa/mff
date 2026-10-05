@@ -1047,6 +1047,17 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   max-width: 124px;
   max-height: 78px;
 }
+/* Tall brush-stroke mark beside a two-line italic wordmark, ~2.6:1: allowed a
+   little more height than a plain wordmark so the tagline stays legible. */
+.supporters__logo img[src*="ombre_duva"] {
+  max-width: 200px;
+  max-height: 76px;
+}
+/* Chef's hat stacked over the wordmark, ~1.4:1: height-bound like Pestalozzi. */
+.supporters__logo img[src*="ghilardi"] {
+  max-width: 116px;
+  max-height: 80px;
+}
 .supporters__logo:hover { transform: scale(1.06); }
 
 /* ============================================================
