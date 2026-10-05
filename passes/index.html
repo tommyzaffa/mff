@@ -3,12 +3,13 @@
 <head>
   <meta name="referrer" content="no-referrer" />
   <meta charset="utf-8" />
+  <meta name="robots" content="noindex" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
   <title>Passes &amp; Tickets — Merge Film Festival</title>
   <meta name="description" content="Merge Film Festival passes and tickets: guest, industry and press accreditations, single seats and day passes." />
 
-  <link rel="stylesheet" href="../assets/css/style.css?v=79" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=80" />
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
@@ -25,9 +26,9 @@
       <span class="brand__text">Merge Film Festival</span>
     </a>
     <div class="nav__actions">
-      <a class="nav__cta-btn" href="index.html">
-        <span class="nav__cta-long" data-i18n="nav.passesLong">Get your pass</span>
-        <span class="nav__cta-short" data-i18n="nav.passesShort">Pass</span>
+      <a class="nav__cta-btn" href="../2026/index.html">
+        <span class="nav__cta-long" data-i18n="nav.editionLong">2026 edition</span>
+        <span class="nav__cta-short" data-i18n="nav.editionShort">2026</span>
       </a>
       <div class="nav__lang-switch" aria-label="Language switch">
         <a class="nav__lang-option" data-lang="it" href="#">IT</a>
@@ -39,10 +40,14 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="../index.html" data-i18n="nav.home">Home</a>
-          <a href="index.html" data-i18n="nav.passes">Passes &amp; Tickets</a>
-          <a href="../program/index.html" data-i18n="nav.program">Program</a>
-          <a href="../in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a>
-          <a href="../in_competition/jury/main.html" data-i18n="nav.mainJury">Main Jury</a>
+          <div class="nav__group">
+            <button class="nav__group-toggle" type="button" aria-expanded="false" aria-controls="navEditions"><span data-i18n="nav.editions">Editions</span></button>
+            <div class="nav__sub" id="navEditions">
+              <div class="nav__sub-inner">
+                <a class="nav__sub-link" href="../2026/index.html"><span class="nav__sub-year">2026</span><span class="nav__sub-label" data-i18n="nav.edition2026">First edition</span></a>
+              </div>
+            </div>
+          </div>
           <a href="../press/index.html" data-i18n="nav.press">Press</a>
           <a href="../contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
@@ -55,336 +60,19 @@
   </header>
 
   <main>
-    <section class="section page-hero page-hero--photo is-on-cream" data-bg="photo" id="top">
+    <!-- Between editions this page is an empty shell: the header, footer and
+         hero are the template for the next edition. The full 2026 version is
+         in git history (commit 302281a) and the edition itself is archived
+         under /2026/. -->
+    <section class="section page-hero page-hero--photo is-on-cream section--pre-footer" data-bg="photo" id="top">
       <span class="stain stain--br" aria-hidden="true"></span>
       <div class="container reveal">
-        <p class="page-hero__kicker" data-i18n="passes.kickerBoth">Passes &amp; tickets • Festival 2026</p>
+        <p class="page-hero__kicker" data-i18n="next.kicker">Next edition</p>
         <h1 class="page-hero__title" data-i18n="passes.titleBoth">Passes &amp; Tickets</h1>
-        <p class="page-hero__subtitle" data-i18n="passes.introBoth">A pass covers all four days — every screening, every masterclass, the opening and the awards night — and travels free on Ticino public transport. Coming for one film instead? Take a single seat or a day pass.</p>
+        <p class="page-hero__subtitle" data-i18n="next.passes">Passes and tickets for the next edition will go on sale here. Thank you to everyone who came to the first one.</p>
         <div class="page-hero__actions">
-          <a class="btn btn--apply" href="#passes" data-i18n="passes.heroCta">See the passes</a>
-          <a class="btn btn--ghost" href="#tickets" data-i18n="passes.heroCtaTickets">See the tickets</a>
+          <a class="btn btn--apply" href="../2026/index.html" data-i18n="nav.editionCta">Relive the 2026 edition</a>
         </div>
-      </div>
-    </section>
-
-    <section class="section is-on-violet section--pre-footer" data-bg="violet" id="choose">
-      <span class="stain stain--tl" aria-hidden="true"></span>
-      <div class="container">
-
-        <!-- ============================================================
-             Two independent flows on one page. Each one owns its panels
-             and never touches the other's: both call them `choose` and
-             `form`, which is exactly why the `data-flow` wrapper is not
-             decoration — passes.js and tickets.js scope themselves to it.
-             ============================================================ -->
-
-        <div class="flow" data-flow="passes" id="passes">
-          <header class="flow__head reveal">
-            <h2 class="flow__title" data-i18n="passes.groupPasses">Passes</h2>
-            <p class="flow__note" data-i18n="passes.groupPassesNote">All four days, everything included — and free travel across Ticino.</p>
-          </header>
-
-        <!-- 1. Choose a pass ------------------------------------------------ -->
-        <div class="pass-flow" data-panel="choose">
-          <!-- Every pass doubles as an Arcobaleno day ticket, which is worth more
-               than the pass itself. Say it before the price, not after. -->
-          <p class="pass-perk reveal">
-            <span class="pass-perk__label" data-i18n="passes.perkLabel">Included with every pass</span>
-            <span class="pass-perk__text" data-i18n="passes.perkTransport">Free travel on all public transport in Ticino — trains, buses and funiculars in every Arcobaleno zone — from 1 to 4 October 2026.</span>
-          </p>
-
-          <!-- The pass is access, not a booking. Said here, before the prices,
-               because it changes what someone is deciding to buy. -->
-          <p class="pass-perk pass-perk--warn reveal">
-            <span class="pass-perk__label" data-i18n="passes.seatsLabel">Seats are booked separately</span>
-            <span class="pass-perk__text" data-i18n="passes.seatsNote">Buying a pass does not reserve any seat. You then book the screenings you want with your badge number, and they cost nothing.</span>
-          </p>
-
-          <ul class="pass-cards reveal">
-            <li class="pass-card pass-card--violet">
-              <span class="pass-card__letter" aria-hidden="true">G</span>
-              <h2 class="pass-card__name" data-i18n="passes.guestName">Guest</h2>
-              <p class="pass-card__desc" data-i18n="passes.guestDesc">For everyone who simply wants to be there. Full access to screenings and public events.</p>
-              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
-              <p class="pass-card__note" data-i18n="passes.guestStudentNote">CHF 30.– for students, with proof of enrolment.</p>
-              <button class="btn btn--apply" type="button" data-choose="guest" data-i18n="passes.choose">Choose</button>
-            </li>
-
-            <li class="pass-card pass-card--red">
-              <span class="pass-card__letter" aria-hidden="true">I</span>
-              <h2 class="pass-card__name" data-i18n="passes.industryName">Industry</h2>
-              <p class="pass-card__desc" data-i18n="passes.industryDesc">For people working in film and production. Includes the industry programme and networking sessions.</p>
-              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
-              <p class="pass-card__note" data-i18n="passes.reviewNote">Subject to approval by the festival before payment.</p>
-              <button class="btn btn--apply" type="button" data-choose="industry" data-i18n="passes.request">Request</button>
-            </li>
-
-            <li class="pass-card pass-card--red">
-              <span class="pass-card__letter" aria-hidden="true">P</span>
-              <h2 class="pass-card__name" data-i18n="passes.pressName">Press</h2>
-              <p class="pass-card__desc" data-i18n="passes.pressDesc">For accredited journalists and critics. Full festival access and interview requests.</p>
-              <p class="pass-card__price"><span data-i18n="passes.currency">CHF</span> 40.–</p>
-              <p class="pass-card__note" data-i18n="passes.reviewNote">Subject to approval by the festival before payment.</p>
-              <button class="btn btn--apply" type="button" data-choose="press" data-i18n="passes.request">Request</button>
-            </li>
-          </ul>
-
-          <div class="pass-invite reveal">
-            <p class="pass-invite__text" data-i18n="passes.inviteText">Delegation, sponsor, staff and media passes are issued by invitation. If we gave you a code, use it here.</p>
-            <button class="btn btn--ghost" type="button" data-choose="invite" data-i18n="passes.inviteCta">I have a code</button>
-          </div>
-        </div>
-
-        <!-- 2. The form ----------------------------------------------------- -->
-        <div class="pass-flow" data-panel="form" hidden>
-          <form class="form-card pass-form" id="passForm" novalidate>
-            <button class="pass-form__back" type="button" data-back data-i18n="passes.back">← Back</button>
-
-            <h2 class="pass-form__title" data-pass-title>Guest</h2>
-            <p class="form__desc" data-i18n="passes.formDesc">Your name and photo go on the badge. Everything else stays with the festival office.</p>
-
-            <!-- Guest only: full fare or student fare -->
-            <fieldset class="pass-fare" data-when="fare" hidden>
-              <legend class="pass-form__legend" data-i18n="passes.fareLegend">Fare</legend>
-              <label class="pass-radio">
-                <input type="radio" name="fare" value="guest" checked />
-                <span><span data-i18n="passes.fareFull">Full</span> — CHF 40.–</span>
-              </label>
-              <label class="pass-radio">
-                <input type="radio" name="fare" value="guest_student" />
-                <span><span data-i18n="passes.fareStudent">Student</span> — CHF 30.–</span>
-              </label>
-            </fieldset>
-
-            <!-- Invite only: which pass the code unlocks -->
-            <div class="form__field" data-when="invite-type" hidden>
-              <label class="pass-form__label" for="inviteType" data-i18n="passes.inviteTypeLabel">Which pass</label>
-              <select id="inviteType" name="invite_type">
-                <option value="delegation" data-i18n="passes.typeDelegation">Delegation</option>
-                <option value="sponsor" data-i18n="passes.typeSponsor">Sponsor</option>
-                <option value="staff" data-i18n="passes.typeStaff">Staff</option>
-                <option value="media" data-i18n="passes.typeMedia">Media</option>
-              </select>
-            </div>
-
-            <div class="pass-form__row">
-              <div class="form__field">
-                <input type="text" name="first_name" autocomplete="given-name" required
-                       placeholder="First name" data-i18n-attr="placeholder:passes.phFirst" />
-              </div>
-              <div class="form__field">
-                <input type="text" name="last_name" autocomplete="family-name" required
-                       placeholder="Last name" data-i18n-attr="placeholder:passes.phLast" />
-              </div>
-            </div>
-
-            <div class="form__field">
-              <input type="email" name="email" autocomplete="email" required
-                     placeholder="Email address" data-i18n-attr="placeholder:passes.phEmail" />
-            </div>
-
-            <div class="form__field" data-when="org" hidden>
-              <input type="text" name="org" data-org-input
-                     placeholder="Production company" data-i18n-attr="placeholder:passes.phOrgIndustry" />
-            </div>
-
-            <!-- Photo, cropped and resized in the browser before it is ever sent -->
-            <div class="form__field pass-photo">
-              <label class="pass-form__label" for="passPhoto" data-i18n="passes.photoLabel">Photo</label>
-              <p class="pass-form__hint" data-i18n="passes.photoHint">A clear portrait, like a passport photo. It is printed on your badge.</p>
-              <input class="pass-photo__input" id="passPhoto" type="file" name="photo"
-                     accept="image/jpeg,image/png,image/webp,image/heic" required />
-
-              <!-- The frame has the badge's photo proportions, so whatever is
-                   lined up here is exactly what gets printed. -->
-              <div class="pass-crop" data-crop hidden>
-                <div class="pass-crop__frame" data-crop-frame>
-                  <img class="pass-crop__img" data-crop-img alt="" draggable="false" />
-                </div>
-                <div class="pass-crop__side">
-                  <p class="pass-form__hint" data-i18n="passes.cropHint">Drag the photo to centre your face, and use the slider to zoom in.</p>
-                  <input class="pass-crop__zoom" type="range" min="1" max="3" step="0.01" value="1"
-                         data-crop-zoom aria-label="Zoom" data-i18n-attr="aria-label:passes.cropZoom" />
-                </div>
-              </div>
-            </div>
-
-            <div class="form__field" data-when="proof" hidden>
-              <label class="pass-form__label" for="passProof" data-i18n="passes.proofLabel">Proof of enrolment</label>
-              <p class="pass-form__hint" data-i18n="passes.proofHint">Student card or enrolment certificate — image or PDF.</p>
-              <input id="passProof" type="file" name="proof"
-                     accept="image/jpeg,image/png,image/webp,image/heic,application/pdf" />
-            </div>
-
-            <div class="form__field" data-when="code">
-              <label class="pass-form__label" for="passCode" data-i18n="passes.codeLabel">Access code</label>
-              <p class="pass-form__hint" data-code-hint data-i18n="passes.codeHintOptional">If the festival gave you a code, enter it here and the pass is free.</p>
-              <input id="passCode" type="text" name="access_code" autocomplete="off" spellcheck="false"
-                     placeholder="MERGE-XXXX" data-i18n-attr="placeholder:passes.phCode" />
-              <p class="pass-form__code-state" data-code-state role="status" aria-live="polite"></p>
-            </div>
-
-            <label class="pass-consent">
-              <input type="checkbox" name="consent" required />
-              <span data-i18n-html="passes.consent">I agree to the processing of my data for the accreditation, as described in the privacy policy.</span>
-            </label>
-
-            <p class="pass-form__perk" data-i18n="passes.perkTransportShort">Your pass is also a day ticket for every public transport in Ticino, 1–4 October 2026.</p>
-            <p class="pass-form__perk" data-i18n="passes.seatsNote">Buying a pass does not reserve any seat. You then book the screenings you want with your badge number, and they cost nothing.</p>
-
-            <button class="btn" type="submit" data-submit-label data-i18n="passes.submitPay">Continue to payment</button>
-            <p class="form__status" data-status role="status" aria-live="polite"></p>
-          </form>
-        </div>
-
-        <!-- 3. Outcomes ----------------------------------------------------- -->
-        <div class="pass-flow" data-panel="issued" hidden>
-          <div class="form-card reveal pass-result">
-            <h2 data-i18n="passes.issuedTitle">Your pass is ready</h2>
-            <p data-i18n="passes.issuedBody">We have sent the badge to your inbox. You can open it right now.</p>
-            <a class="btn btn--apply" href="#" data-badge-link data-i18n="passes.issuedCta">Open my badge</a>
-          </div>
-        </div>
-
-        <div class="pass-flow" data-panel="review" hidden>
-          <div class="form-card reveal pass-result">
-            <h2 data-i18n="passes.reviewTitle">Request received</h2>
-            <p data-i18n="passes.reviewBody">We review press and industry requests within a few working days and write to you as soon as we decide. If it is approved you will get a link to complete the payment.</p>
-            <a class="btn btn--ghost" href="../index.html" data-i18n="passes.backHome">Back to the site</a>
-          </div>
-        </div>
-
-        </div><!-- /flow passes -->
-
-        <div class="flow" data-flow="tickets" id="tickets">
-          <header class="flow__head reveal">
-            <h2 class="flow__title" data-i18n="passes.groupTickets">Tickets</h2>
-            <p class="flow__note" data-i18n="passes.groupTicketsNote">Coming for one film, or for one day. Accredited holders reserve for free.</p>
-          </header>
-
-        <!-- 0. While the programme loads ------------------------------------- -->
-        <div class="pass-flow" data-panel="loading">
-          <p class="ticket-note reveal" data-i18n="tickets.loading">Loading the screenings…</p>
-        </div>
-
-        <!-- 0b. No programme published yet ----------------------------------- -->
-        <div class="pass-flow" data-panel="soon" hidden>
-          <div class="form-card reveal pass-result">
-            <h2 data-i18n="tickets.soonTitle">The programme is on its way</h2>
-            <p data-i18n="tickets.soonBody">Screening dates and times go online as soon as the selection is closed. Accreditations are already available, and every pass includes a seat at each screening.</p>
-            <a class="btn btn--apply" href="#passes" data-i18n="tickets.soonCta">Get your accreditation</a>
-          </div>
-        </div>
-
-        <!-- 0c. The request failed. Never say the programme is missing here. -->
-        <div class="pass-flow" data-panel="offline" hidden>
-          <div class="form-card reveal pass-result">
-            <h2 data-i18n="tickets.offlineTitle">We could not load the screenings</h2>
-            <p data-i18n="tickets.offlineBody">The connection dropped before the programme arrived. The programme is published — check your signal and try again.</p>
-            <button type="button" class="btn btn--apply" data-retry data-i18n="tickets.offlineCta">Try again</button>
-            <p class="ticket-note"><a href="../program/index.html" data-i18n="tickets.offlineProgramme">See the full programme</a></p>
-          </div>
-        </div>
-
-        <!-- 1. Pick a screening ---------------------------------------------- -->
-        <div class="pass-flow" data-panel="choose" hidden>
-          <p class="pass-perk reveal">
-            <span class="pass-perk__label" data-i18n="tickets.perkLabel">Have a badge or a day pass?</span>
-            <span class="pass-perk__text" data-i18n="tickets.perkText">Write its code in the “Badge code” box of the seat when you book, and the seat costs nothing — one seat per badge or day pass, per screening. The code starts with MFF- and is in the email with your badge.</span>
-          </p>
-
-          <div class="ticket-group reveal" data-day-group hidden>
-            <h3 class="ticket-group__title" data-i18n="tickets.dayTitle">Day passes</h3>
-            <p class="ticket-note" data-i18n="tickets.dayNote">One code for every ticketed screening of that day — free, but you still have to reserve each one with it.</p>
-            <!-- Said here, in the form, on the pass, in the email and at the
-                 door: a day pass is a credential, not a seat. -->
-            <p class="pass-perk pass-perk--warn">
-              <span class="pass-perk__label" data-i18n="tickets.dayWarnLabel">Seats are booked separately</span>
-              <span class="pass-perk__text" data-i18n="tickets.dayWarnText">A day pass does not reserve any seat. Once you have it, come back and book the screenings you want with its code — one seat per pass, per screening. Without a reservation there is no seat waiting for you.</span>
-            </p>
-            <ul class="screening-list" data-days></ul>
-          </div>
-
-          <div class="ticket-group reveal">
-            <h3 class="ticket-group__title" data-i18n="tickets.singleTitle">Single screenings</h3>
-            <ul class="screening-list" data-list></ul>
-          </div>
-
-          <p class="ticket-note reveal" data-i18n="tickets.tariffNote">The reduced rate is for students and over-65s. You declare it here and show proof at the door.</p>
-          <p class="ticket-note reveal" data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
-        </div>
-
-        <!-- 2. The form ------------------------------------------------------ -->
-        <div class="pass-flow" data-panel="form" hidden>
-          <form class="form-card pass-form" id="ticketForm" novalidate>
-            <button class="pass-form__back" type="button" data-back data-i18n="tickets.back">← Back</button>
-
-            <p class="ticket-form__show" data-show-title></p>
-            <p class="ticket-form__when" data-show-when></p>
-
-            <div class="pass-form__row">
-              <div class="form__field">
-                <label class="pass-form__label" for="tkFirst" data-i18n="tickets.firstName">First name</label>
-                <input id="tkFirst" type="text" name="first_name" autocomplete="given-name" required />
-              </div>
-              <div class="form__field">
-                <label class="pass-form__label" for="tkLast" data-i18n="tickets.lastName">Last name</label>
-                <input id="tkLast" type="text" name="last_name" autocomplete="family-name" required />
-              </div>
-            </div>
-
-            <div class="form__field">
-              <label class="pass-form__label" for="tkEmail" data-i18n="tickets.email">Email</label>
-              <p class="pass-form__hint" data-i18n="tickets.emailHint">We send the tickets here.</p>
-              <input id="tkEmail" type="email" name="email" autocomplete="email" required />
-            </div>
-
-            <p class="pass-form__label" data-seats-label data-i18n="tickets.seatsLabel">Seats</p>
-            <ul class="seat-list" data-seats></ul>
-
-            <button class="btn btn--ghost btn--small" type="button" data-add-seat data-i18n="tickets.addSeat">+ Add a seat</button>
-
-            <!-- An invitation from the festival covers the WHOLE booking, so it
-                 sits here, apart from the per-seat credential field: a badge
-                 says "this person already has access", an invitation says
-                 "this booking is on us". -->
-            <div class="form__field ticket-invite">
-              <label class="pass-form__label" for="tkInvite" data-i18n="tickets.inviteLabel">Invitation code — not your badge code</label>
-              <p class="pass-form__hint" data-i18n="tickets.inviteHint">Only if the festival sent you a separate invitation code. Most people leave this empty: a badge code (MFF-…) goes in the seat above.</p>
-              <input id="tkInvite" type="text" name="access_code" autocomplete="off" spellcheck="false" data-invite />
-              <p class="pass-form__code-state is-ok" data-invite-note role="status" aria-live="polite"></p>
-            </div>
-
-            <p class="ticket-total" data-total role="status" aria-live="polite"></p>
-
-            <label class="pass-consent">
-              <input type="checkbox" name="consent" required />
-              <span data-i18n-html="tickets.consent">I agree to the processing of my data for this booking, as described in the privacy policy.</span>
-            </label>
-
-            <p class="pass-form__perk" data-seated-only data-i18n="tickets.seatingNote">Seats are guaranteed but not numbered: sit wherever you like.</p>
-            <!-- Shown only when the thing being bought is a day pass, so the
-                 last thing read before paying is what the pass does not do. -->
-            <p class="pass-form__perk" data-day-warning hidden data-i18n="tickets.dayWarnText">A day pass does not reserve any seat. Once you have it, come back and book the screenings you want with its code — one seat per pass, per screening. Without a reservation there is no seat waiting for you.</p>
-
-            <button class="btn" type="submit" data-submit-label data-i18n="tickets.submitPay">Continue to payment</button>
-            <p class="form__status" data-status role="status" aria-live="polite"></p>
-          </form>
-        </div>
-
-        <!-- 3. Done ---------------------------------------------------------- -->
-        <div class="pass-flow" data-panel="done" hidden>
-          <div class="form-card reveal pass-result">
-            <h2 data-done-title data-i18n="tickets.doneTitle">Your seat is booked</h2>
-            <p data-done-body data-i18n="tickets.doneBody">We have sent the tickets to your inbox. Show them at the door — each one admits one person.</p>
-            <ul class="ticket-codes" data-codes></ul>
-            <a class="btn btn--ghost" href="../index.html" data-i18n="tickets.backHome">Back to the site</a>
-          </div>
-        </div>
-
-        </div><!-- /flow tickets -->
-
       </div>
     </section>
   </main>
@@ -397,7 +85,7 @@
           <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
           <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
           <div class="footer__cta">
-            <a class="btn" href="index.html" data-i18n="nav.passesLong">Get your pass</a>
+            <a class="btn" href="../2026/index.html" data-i18n="nav.editionCta">Relive the 2026 edition</a>
           </div>
         </div>
         <div class="footer__panel">
@@ -406,8 +94,7 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="../index.html" data-i18n="nav.home">Home</a></li>
-                <li><a href="index.html" data-i18n="nav.passes">Passes &amp; Tickets</a></li>
-                <li><a href="../program/index.html" data-i18n="nav.program">Program</a></li>
+                <li><a href="../2026/index.html" data-i18n="nav.editionLong">2026 edition</a></li>
               </ul>
             </div>
             <div>
@@ -444,10 +131,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/translations.js?v=68"></script>
-  <script src="../assets/js/app.js?v=11"></script>
-  <script src="../assets/js/passes-config.js?v=2"></script>
-  <script src="../assets/js/passes.js?v=6"></script>
-  <script src="../assets/js/tickets.js?v=9"></script>
+  <script src="../assets/js/translations.js?v=69"></script>
+  <script src="../assets/js/app.js?v=12"></script>
 </body>
 </html>

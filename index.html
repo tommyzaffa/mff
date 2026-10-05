@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#4B2E83" />
   <title>Merge Film Festival</title>
-  <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
+  <meta name="description" content="Merge Film Festival — Switzerland's first film festival dedicated to AI. The first edition took place on 1–4 October 2026 at Cinema Lux in Massagno (Lugano), Switzerland." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=79" />
+  <link rel="stylesheet" href="assets/css/style.css?v=80" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -66,9 +66,9 @@
     </a>
 
     <div class="nav__actions">
-      <a class="nav__cta-btn" href="passes/index.html">
-        <span class="nav__cta-long" data-i18n="nav.passesLong">Get your pass</span>
-        <span class="nav__cta-short" data-i18n="nav.passesShort">Pass</span>
+      <a class="nav__cta-btn" href="2026/index.html">
+        <span class="nav__cta-long" data-i18n="nav.editionLong">2026 edition</span>
+        <span class="nav__cta-short" data-i18n="nav.editionShort">2026</span>
       </a>
 
       <div class="nav__lang-switch" aria-label="Language switch">
@@ -82,10 +82,14 @@
         <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false"><span data-i18n="nav.menu">Menu</span></button>
         <div class="nav__panel">
           <a href="index.html" data-i18n="nav.home">Home</a>
-          <a href="passes/index.html" data-i18n="nav.passes">Passes</a>
-          <a href="program/index.html" data-i18n="nav.program">Program</a>
-          <a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a>
-          <a href="in_competition/jury/main.html" data-i18n="nav.mainJury">Main Jury</a>
+          <div class="nav__group">
+            <button class="nav__group-toggle" type="button" aria-expanded="false" aria-controls="navEditions"><span data-i18n="nav.editions">Editions</span></button>
+            <div class="nav__sub" id="navEditions">
+              <div class="nav__sub-inner">
+                <a class="nav__sub-link" href="2026/index.html"><span class="nav__sub-year">2026</span><span class="nav__sub-label" data-i18n="nav.edition2026">First edition</span></a>
+              </div>
+            </div>
+          </div>
           <a href="press/index.html" data-i18n="nav.press">Press</a>
           <a href="contact/index.html" data-i18n="nav.contact">Contact</a>
           <div class="nav__panel-lang" aria-label="Language switch">
@@ -113,12 +117,12 @@
       <div class="container about__wrap reveal">
         <p class="eyebrow" data-i18n="home.aboutEyebrow">Festival presentation</p>
         <h2 class="about__title" data-i18n="home.aboutTitle">The first film festival in Switzerland entirely dedicated to AI</h2>
-        <p class="about__desc" data-i18n="home.aboutP1">The Merge Film Festival, running from 1 to 4 October, is Switzerland's first film festival dedicated to artificial intelligence.</p>
-        <p class="about__desc" data-i18n="home.aboutP2">It offers four days of screenings, masterclasses and public talks.</p>
+        <p class="about__desc" data-i18n="home.aboutP1">The Merge Film Festival is Switzerland's first film festival dedicated to artificial intelligence.</p>
+        <p class="about__desc" data-i18n="home.aboutP2">Its first edition, from 1 to 4 October 2026 at Cinema Lux in Massagno, brought four days of screenings, masterclasses and public talks.</p>
         <p class="about__desc" data-i18n="home.aboutP3">An opportunity to question the role of artificial intelligence in creative processes and in the wider transformation of our relationship with images.</p>
         <p class="about__desc" data-i18n="home.aboutP4">Merge was born out of the need to give space to a new form of cinematic language, while also serving as a space for reflection on the cultural phenomenon of artificial intelligence. A transformation that is challenging our relationship with reality.</p>
         <div class="about__actions">
-          <a class="btn btn--apply" href="passes/index.html" data-i18n="home.passesCta">Buy your pass</a>
+          <a class="btn btn--apply" href="2026/index.html" data-i18n="nav.editionCta">Relive the 2026 edition</a>
           <a class="btn" href="contact/authors/index.html" data-i18n="home.aboutCta">About us</a>
         </div>
       </div>
@@ -137,6 +141,16 @@
           <div class="carousel__stage">
             <div class="carousel__track news-track">
             <article class="card news-card">
+              <img class="news__img" src="assets/img/news/festival-is-on.jpg" alt="The Merge Film Festival 2026 poster" data-i18n-attr="alt:home.news25Alt" loading="lazy" />
+              <div class="news__body">
+                <p class="news__meta"><span data-i18n="home.news25Date">5 October 2026</span> • News</p>
+                <h3 class="news__title" data-i18n="home.news25Title">The first edition, on one page</h3>
+                <p class="news__text" data-i18n="home.news25Text">Winners, the 36 films in competition, the juries, the audience vote and the programme: everything that happened at Merge Film Festival 2026.</p>
+                <a class="btn news__link" href="2026/index.html" data-i18n="nav.editionCta">Relive the 2026 edition</a>
+              </div>
+            </article>
+
+            <article class="card news-card">
               <div class="news__img news__img--jury-collage" role="img" aria-label="The poster of Le drip and its directors Alex Naghavi and Ezra Li" data-i18n-attr="aria-label:home.news20Alt">
                 <img src="assets/img/films/full/le-drip.jpg" width="607" height="900" alt="" loading="lazy" decoding="async" />
                 <img src="assets/img/films/full/le-drip-director.jpg" width="639" height="800" alt="" loading="lazy" decoding="async" />
@@ -145,7 +159,7 @@
                 <p class="news__meta"><span data-i18n="home.news20Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news20Title">Le drip wins the Full AI Award</h3>
                 <p class="news__text" data-i18n="home.news20Text">The Full AI jury has given its award to Le drip by Alex Naghavi and Ezra Li, chosen from the twenty films made entirely with artificial intelligence.</p>
-                <a class="btn news__link" href="in_competition/full/le-drip.html" data-i18n="home.news20Link">Discover the film</a>
+                <a class="btn news__link" href="2026/full/le-drip.html" data-i18n="home.news20Link">Discover the film</a>
               </div>
             </article>
 
@@ -158,7 +172,7 @@
                 <p class="news__meta"><span data-i18n="home.news21Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news21Title">Railbound wins the Hybrid Award</h3>
                 <p class="news__text" data-i18n="home.news21Text">The Hybrid jury has given its award to Railbound by Jonathan Perry. An honourable mention goes to Bronze bust, digital guard by Isabel Pastor and Benjamin Rossmann.</p>
-                <a class="btn news__link" href="in_competition/hybrid/railbound.html" data-i18n="home.news21Link">Discover the film</a>
+                <a class="btn news__link" href="2026/hybrid/railbound.html" data-i18n="home.news21Link">Discover the film</a>
               </div>
             </article>
 
@@ -171,7 +185,7 @@
                 <p class="news__meta"><span data-i18n="home.news22Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news22Title">Pillow Men wins the Experimental Award</h3>
                 <p class="news__text" data-i18n="home.news22Text">The Experimental jury has given its award to Pillow Men by Jacky Wong, chosen from the eight works where video art meets artificial intelligence.</p>
-                <a class="btn news__link" href="in_competition/experimental/pillow-men.html" data-i18n="home.news22Link">Discover the film</a>
+                <a class="btn news__link" href="2026/experimental/pillow-men.html" data-i18n="home.news22Link">Discover the film</a>
               </div>
             </article>
 
@@ -184,7 +198,7 @@
                 <p class="news__meta"><span data-i18n="home.news23Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news23Title">A Message for the Butterfly wins the Youth Jury Award</h3>
                 <p class="news__text" data-i18n="home.news23Text">The Youth Jury has given its award to A Message for the Butterfly by Zuxin Hou and Mark Wachholz. An honourable mention goes to You Will Always Be Welcome Here by Samuele Portera.</p>
-                <a class="btn news__link" href="in_competition/full/a-message-for-the-butterfly.html" data-i18n="home.news23Link">Discover the film</a>
+                <a class="btn news__link" href="2026/full/a-message-for-the-butterfly.html" data-i18n="home.news23Link">Discover the film</a>
               </div>
             </article>
 
@@ -197,7 +211,7 @@
                 <p class="news__meta"><span data-i18n="home.news24Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news24Title">Home wins the Audience Award</h3>
                 <p class="news__text" data-i18n="home.news24Text">The Audience Award, decided by the votes of the festival audience, goes to Home by Emil Gasanov. Thank you to everyone who voted.</p>
-                <a class="btn news__link" href="in_competition/hybrid/home.html" data-i18n="home.news24Link">Discover the film</a>
+                <a class="btn news__link" href="2026/hybrid/home.html" data-i18n="home.news24Link">Discover the film</a>
               </div>
             </article>
 
@@ -210,7 +224,7 @@
                 <p class="news__meta"><span data-i18n="home.news19Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news19Title">Little Mes wins the Critics’ Award</h3>
                 <p class="news__text" data-i18n="home.news19Text">The Critics’ Award 2026, conferred by Filmexplorer, goes to Little Mes by Fabian Jimenez and Lucas Levitan. An honourable mention goes to Symptoms of Multiple Sclerosis by Sabine von Bassewitz.</p>
-                <a class="btn news__link" href="in_competition/full/little-mes.html" data-i18n="home.news19Link">Discover the film</a>
+                <a class="btn news__link" href="2026/full/little-mes.html" data-i18n="home.news19Link">Discover the film</a>
               </div>
             </article>
 
@@ -223,131 +237,7 @@
                 <p class="news__meta"><span data-i18n="home.news18Date">4 October 2026</span> • News</p>
                 <h3 class="news__title" data-i18n="home.news18Title">Let’s Play Ball wins the Swiss Press Award</h3>
                 <p class="news__text" data-i18n="home.news18Text">The Swiss Press Award by linkfloyd goes to Let’s Play Ball by Dayu, one of the twenty films in the Full AI competition.</p>
-                <a class="btn news__link" href="in_competition/full/lets-play-ball.html" data-i18n="home.news18Link">Discover the film</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/vote-now.jpg" alt="QR code to mergefestival.ch/vote" data-i18n-attr="alt:home.news17Alt" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news17Date">3 October 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news17Title">Vote for the films in competition</h3>
-                <p class="news__text" data-i18n="home.news17Text">You decide the Audience Award: rate the films you have seen from 1 to 10, from the start of each competition screening until three hours after it ends.</p>
-                <a class="btn news__link" href="vote/" data-i18n="home.news17Link">Vote now</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/festival-is-on.jpg" alt="The Merge Film Festival 2026 poster" data-i18n-attr="alt:home.news16Alt" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news16Date">3 October 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news16Title">The festival has begun</h3>
-                <p class="news__text" data-i18n="home.news16Text">Merge Film Festival is under way and runs until Sunday 4 October. Follow us on Instagram to stay up to date with everything happening at the festival.</p>
-                <a class="btn news__link" href="https://www.instagram.com/mergefilmfestival/" target="_blank" rel="noopener noreferrer" data-i18n="home.news16Link">Follow us on Instagram</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <div class="news__img news__img--jury-collage news__img--jury-collage-3" role="img" aria-label="Giuseppe Di Salvatore, Evelyn Kreutzer and Olivier Legras, the Critics’ Jury" data-i18n-attr="aria-label:home.news15Alt">
-                <img src="assets/img/jury/giuseppe-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/evelyn-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/olivier-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-              </div>
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news15Date">21 September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news15Title">Meet the Critics’ Jury</h3>
-                <p class="news__text" data-i18n="home.news15Text">Merge Film Festival invited Filmexplorer to confer the Critics’ Award 2026. Giuseppe Di Salvatore, Evelyn Kreutzer and Olivier Legras form the jury. Discover their profiles.</p>
-                <a class="btn news__link" href="in_competition/jury/main.html#critics" data-i18n="home.news15Link">Meet the jury</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <div class="news__img news__img--jury-collage news__img--jury-collage-3" role="img" aria-label="Alessandro Bavari, Marco Poloni and Keith Zhang, the Experimental jury" data-i18n-attr="aria-label:home.news14Alt">
-                <img src="assets/img/jury/bavari.webp" width="400" height="500" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/poloni-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/keith.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-              </div>
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news14Date">17 September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news14Title">Meet the Experimental jury</h3>
-                <p class="news__text" data-i18n="home.news14Text">Alessandro Bavari, Marco Poloni and Keith Zhang will judge the eight films in the Experimental competition, where video art meets artificial intelligence. Discover their profiles.</p>
-                <a class="btn news__link" href="in_competition/jury/main.html#experimental" data-i18n="home.news14Link">Meet the jury</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <div class="news__img news__img--jury-collage" role="img" aria-label="Javishth Chabria and Hardeep Gambhir, the Full AI jury" data-i18n-attr="aria-label:home.news12Alt">
-                <img src="assets/img/jury/javishth.webp" width="433" height="541" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/hardeep-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-              </div>
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news12Date">16 September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news12Title">Meet the Full AI jury</h3>
-                <p class="news__text" data-i18n="home.news12Text">Javishth Chabria and Hardeep Gambhir will judge the twenty films made entirely with artificial intelligence. Discover their profiles.</p>
-                <a class="btn news__link" href="in_competition/jury/main.html#full" data-i18n="home.news12Link">Meet the jury</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <div class="news__img news__img--jury-collage" role="img" aria-label="Marco Longo and Francesca Monti, the Hybrid jury" data-i18n-attr="aria-label:home.news11Alt">
-                <img src="assets/img/jury/longo-480.webp" width="480" height="600" alt="" loading="lazy" decoding="async" />
-                <img src="assets/img/jury/monti.webp" width="440" height="550" alt="" loading="lazy" decoding="async" />
-              </div>
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news11Date">15 September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news11Title">Meet the Hybrid jury</h3>
-                <p class="news__text" data-i18n="home.news11Text">Marco Longo and Francesca Monti will judge the films in the Hybrid competition, where traditional filmmaking meets artificial intelligence. Discover their profiles.</p>
-                <a class="btn news__link" href="in_competition/jury/main.html#hybrid" data-i18n="home.news11Link">Meet the jury</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/programme-is-out.jpg" alt="The 2026 programme" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news10Date">September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news10Title">The full programme is out</h3>
-                <p class="news__text" data-i18n="home.news10Text">Four days, hour by hour: competition screenings, masterclasses, the opening night and the awards. Read it online or download it as a PDF.</p>
-                <a class="btn news__link" href="program/index.html" data-i18n="home.news10Link">See the programme</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/full-selection.jpg" alt="Full AI official selection" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news9Date">September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news9Title">The Full AI official selection is out</h3>
-                <p class="news__text" data-i18n="home.news9Text">Nineteen films make up the Full AI competition: posters, synopses and the first trailers are online.</p>
-                <a class="btn news__link" href="in_competition/index.html#full" data-i18n="home.news9Link">See the selection</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/hybrid-selection.jpg" alt="Hybrid official selection" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news8Date">September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news8Title">The Hybrid official selection is out</h3>
-                <p class="news__text" data-i18n="home.news8Text">Eight films make up the Hybrid competition: posters, synopses and the first trailers are online.</p>
-                <a class="btn news__link" href="in_competition/index.html#hybrid" data-i18n="home.news8Link">See the selection</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/experimental-selection.jpg" alt="Experimental official selection" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news7Date">September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news7Title">The Experimental official selection is out</h3>
-                <p class="news__text" data-i18n="home.news7Text">Eight works make up the Experimental competition: posters, synopses and the first trailers are online.</p>
-                <a class="btn news__link" href="in_competition/index.html#experimental" data-i18n="home.news7Link">See the selection</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/news/badges-are-out.jpg" alt="Badges are out" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="home.news6Date">September 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news6Title">Accreditation pre-sales are open</h3>
-                <p class="news__text" data-i18n="home.news6Text">Festival passes are on sale: choose the one that suits you, upload your photo and receive your digital badge by email.</p>
-                <a class="btn news__link" href="passes/index.html" data-i18n="home.news6Link">Get your pass</a>
+                <a class="btn news__link" href="2026/full/lets-play-ball.html" data-i18n="home.news18Link">Discover the film</a>
               </div>
             </article>
 
@@ -358,16 +248,6 @@
                 <h3 class="news__title" data-i18n="home.news5Title">Corriere della Sera features Merge</h3>
                 <p class="news__text" data-i18n="home.news5Text">Corriere della Sera has published an article about the Merge Film Festival and cinema made with artificial intelligence.</p>
                 <a class="btn news__link" href="https://www.corriere.it/native/26_agosto_23/cultura-u3530164894367enc.shtml" target="_blank" rel="noopener noreferrer" data-i18n="home.news5Link">Read the article</a>
-              </div>
-            </article>
-
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/jury/young-application.jpg" alt="Youth Jury Application" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="meta.monthShort">May 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news4Title">Youth Jury open call</h3>
-                <p class="news__text" data-i18n="home.news4Text">Applications for the Merge Film Festival Youth Jury are now open. Young people, students and film enthusiasts can apply to join.</p>
-                <a class="btn news__link" href="in_competition/jury/young.html" data-i18n="home.news4Link">Apply now</a>
               </div>
             </article>
 
@@ -391,15 +271,6 @@
               </div>
             </article>
 
-            <article class="card news-card">
-              <img class="news__img" src="assets/img/authors/tutti_sorrisi_2.webp" alt="Merge Festival team" loading="lazy" />
-              <div class="news__body">
-                <p class="news__meta"><span data-i18n="meta.monthShort">May 2026</span> • News</p>
-                <h3 class="news__title" data-i18n="home.news3Title">Merge Festival is officially open</h3>
-                <p class="news__text" data-i18n="home.news3Text">The Merge Film Festival is officially launched — see you in October.</p>
-                <a class="btn news__link" href="contact/authors/index.html" data-i18n="home.news3Link">About us</a>
-              </div>
-            </article>
             </div>
           </div>
           <div class="carousel__nav">
@@ -624,7 +495,7 @@
           <h2 class="footer__headline" data-i18n="footer.headline">See you at the festival.</h2>
           <p class="footer__lead" data-i18n="footer.lead">The first film festival in Switzerland entirely dedicated to AI.</p>
           <div class="footer__cta">
-            <a class="btn" href="passes/index.html" data-i18n="nav.passesLong">Get your pass</a>
+            <a class="btn" href="2026/index.html" data-i18n="nav.editionCta">Relive the 2026 edition</a>
           </div>
         </div>
 
@@ -634,9 +505,7 @@
               <p class="footer__title" data-i18n="footer.colExplore">Explore</p>
               <ul class="footer__links">
                 <li><a href="index.html" data-i18n="nav.home">Home</a></li>
-                <li><a href="passes/index.html" data-i18n="nav.passes">Passes</a></li>
-                <li><a href="program/index.html" data-i18n="nav.program">Program</a></li>
-                <li><a href="in_competition/index.html" data-i18n="nav.inCompetition">In Competition</a></li>
+                <li><a href="2026/index.html" data-i18n="nav.editionLong">2026 edition</a></li>
               </ul>
             </div>
             <div>
@@ -675,8 +544,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/js/translations.js?v=68"></script>
-  <script src="assets/js/app.js?v=11"></script>
+  <script src="assets/js/translations.js?v=69"></script>
+  <script src="assets/js/app.js?v=12"></script>
 
   <!-- Google Maps -->
   <script>

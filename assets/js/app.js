@@ -396,6 +396,30 @@
         });
       });
       panel.addEventListener("click", function (e) { if (e.target === panel) close(); });
+
+      /* A menu entry that opens in place (Editions): the button only folds
+         its sub-links in and out, the links themselves navigate. It starts
+         open when the visitor is already inside one of its pages. */
+      $all(".nav__group", panel).forEach(function (group) {
+        var btn = $(".nav__group-toggle", group);
+        if (!btn) return;
+        function setExpanded(on) {
+          group.classList.toggle("is-expanded", on);
+          btn.setAttribute("aria-expanded", on ? "true" : "false");
+        }
+        var here = location.pathname.replace(/index\.html$/, "");
+        $all(".nav__sub a", group).forEach(function (a) {
+          var target = a.pathname.replace(/index\.html$/, "");
+          var dir = target.replace(/[^/]*$/, "");
+          if (here.indexOf(dir) !== 0) return;
+          setExpanded(true);
+          if (here === target) a.setAttribute("aria-current", "page");
+        });
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          setExpanded(!group.classList.contains("is-expanded"));
+        });
+      });
     }
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
   }
