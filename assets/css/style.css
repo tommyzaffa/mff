@@ -3287,7 +3287,8 @@ body.badge-page::before { display: none; }
 .ed-stat__num {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  /* Sized so "≈ 1500" still fits a quarter of the container at every width. */
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
   line-height: 1;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
