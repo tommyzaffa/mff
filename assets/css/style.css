@@ -3730,3 +3730,27 @@ a.ed-jury:hover .ed-jury__more::after { transform: translateX(4px); }
 }
 .ed-motion .ed-thanks:not(.ed-in)::before { transform: scaleX(0); }
 .ed-motion .ed-thanks:not(.ed-in) .ed-thanks__title { opacity: 0; letter-spacing: 0.18em; filter: blur(8px); }
+
+/* A note under a watch link that only works on a computer (Bilibili). */
+.watch-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45em;
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  opacity: 0.72;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+.watch-hint::before {
+  content: "";
+  flex: none;
+  width: 1.1em;
+  height: 0.8em;
+  margin-top: 0.2em;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  box-shadow: 0 0.18em 0 -0.05em currentColor;
+}
+.film__actions + .watch-hint { margin-top: 12px; }
