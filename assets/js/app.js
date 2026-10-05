@@ -444,7 +444,10 @@
       cards.forEach(function (c) { if (c.offsetHeight > maxH) maxH = c.offsetHeight; });
       if (stage && maxH) stage.style.height = Math.ceil(maxH + 56) + "px";
 
-      var w = cards[0].getBoundingClientRect().width || 340;
+      /* offsetWidth, not getBoundingClientRect: the rect includes the card's
+         own scale/rotateY, so once card 0 had shrunk away (active 1–4) the
+         spacing collapsed and the side cards hid behind the active one. */
+      var w = cards[0].offsetWidth || 340;
       var compact = mobileMq.matches;
       var spacing = compact ? 0 : w * 0.6;
 
@@ -509,7 +512,9 @@
     var root = document.documentElement;
     var LOOP_START_DESKTOP = 0;
     var LOOP_START_MOBILE = 0;
-    function device() { return window.matchMedia("(max-width: 700px)").matches ? "mobile" : "desktop"; }
+    /* Portrait windows get the 9:16 cut even above 700px: the 16:9 one would
+       have to crop its burned-in title. Must match the media query in style.css. */
+    function device() { return window.matchMedia("(max-width: 700px), (max-aspect-ratio: 1/1)").matches ? "mobile" : "desktop"; }
     function loopStartSeconds() { return device() === "mobile" ? LOOP_START_MOBILE : LOOP_START_DESKTOP; }
 
     // Some environments (notably iOS Low Power / energy-saving mode) block

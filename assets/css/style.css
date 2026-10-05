@@ -660,10 +660,17 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   z-index: -4;
   overflow: hidden;
   pointer-events: none;
+  /* Where the cover crop is anchored (0 = left/top, 1 = right/bottom), shared
+     by the video and .hero__frame. The title is burned into the left of the
+     16:9 cut, so a centred crop sliced "MERGE" in any window narrower than
+     ~3:2; anchoring near the left keeps it whole down to a square window. */
+  --hero-x: 0.1;
+  --hero-y: 0.5;
 }
 .bg__video {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: calc(var(--hero-x) * 100%) calc(var(--hero-y) * 100%);
 }
 .bg__overlay {
   position: absolute; inset: 0;
@@ -673,17 +680,21 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 
 /* Venue line, welded to the type burned into the hero video.
    .hero__frame is sized with the same rule the browser applies for
-   object-fit: cover on a 16:9 (desktop) / 9:16 (mobile) source, so a
-   percentage inside it lands on the same pixel as in the footage. It sits
-   under .bg__overlay so it picks up exactly the same tint as the footage. */
+   object-fit: cover on a 16:9 (desktop) / 9:16 (mobile) source, and placed
+   the way object-position places it, so a percentage inside it lands on the
+   same pixel as in the footage. It sits under .bg__overlay so it picks up
+   exactly the same tint as the footage. */
 .hero__stage {
   position: absolute; inset: 0; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
 }
 .hero__frame {
-  position: relative; flex: none;
-  width: max(100%, 177.7778svh);
-  height: max(100%, 56.25vw);
+  --frame-w: max(100%, 177.7778svh);
+  --frame-h: max(100%, 56.25vw);
+  position: absolute;
+  width: var(--frame-w);
+  height: var(--frame-h);
+  left: calc((100% - var(--frame-w)) * var(--hero-x));
+  top: calc((100% - var(--frame-h)) * var(--hero-y));
 }
 /* Type matched to the subtitle in the footage: Sora 400, cap height 16px at
    the native 1920px width, tracked to the same measured line widths. With
@@ -703,8 +714,12 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   color: #675f76;
   white-space: nowrap;
 }
-@media (max-width: 700px) {
-  .hero__frame { width: max(100%, 56.25svh); height: max(100%, 177.7778vw); }
+/* The 9:16 cut, also for portrait windows wider than 700px (iPads, a tall
+   desktop window) — app.js device() uses the same query. Its title sits at the
+   top, so a tall-ish crop keeps the top and gives up the chin. */
+@media (max-width: 700px), (max-aspect-ratio: 1/1) {
+  .bg { --hero-x: 0.5; --hero-y: 0.1; }
+  .hero__frame { --frame-w: max(100%, 56.25svh); --frame-h: max(100%, 177.7778vw); }
   .hero__venue {
     left: 50%; top: 35.015%;
     transform: translateX(-50%);
