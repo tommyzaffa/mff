@@ -824,6 +824,8 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
 }
 /* Wordmark logos must stay whole, so show them contained on their own white plate. */
 .news__img[src*="corriere"] { object-fit: contain; background: #fff; padding: 26px; }
+/* Landscape portrait with the director at the right edge. */
+.news__img--jury-collage img[src*="home-director"] { object-position: 86% center; }
 .news__body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 .news__meta {
   font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.14em;
