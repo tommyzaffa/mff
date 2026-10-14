@@ -655,11 +655,22 @@ body:not(.home-page) main > .section:not(.page-hero--photo) { background: transp
   opacity: 0;
   transform: translateY(40px);
 }
-.nav__panel.is-open .nav__group { animation: menuItemIn 0.72s var(--ease) forwards; }
+/* Longhands, never the `animation` shorthand: these rules come after the
+   nth-child cascade above with the same specificity, and the shorthand would
+   reset animation-delay to 0 — the group would then pop in before Home. */
+.nav__panel.is-open .nav__group {
+  animation-name: menuItemIn;
+  animation-duration: 0.72s;
+  animation-timing-function: var(--ease);
+  animation-fill-mode: forwards;
+}
 .nav__panel.is-closing .nav__group {
   opacity: 1;
   transform: translateY(0);
-  animation: menuItemOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-name: menuItemOut;
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
 }
 .nav__group-toggle {
   display: inline-flex;
