@@ -9,7 +9,7 @@
   // one channel the audience already has open at /live: the hall is told to the
   // audience in front of the title, not by a second page and a second QR code.
   const ROOM = 'main';
-  const fields = ['venue', 'title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
+  const fields = ['title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
   const directions = { 'it-en': { source: 'it', target: 'en' }, 'en-it': { source: 'en', target: 'it' },
     'en-zh': { source: 'en', target: 'zh' }, 'zh-en': { source: 'zh', target: 'en' } };
   const direction = () => directions[$('direction').value] || directions['it-en'];
@@ -236,7 +236,7 @@
       await r.audio.audioWorklet.addModule('../../assets/js/live-audio-worklet.js?v=1');
       if (run !== r || r.stopping) return;
       const claim = await request({ action: 'start', session, room: r.room, publisher: r.publisher,
-        title: (($('venue').value + ' · ') + $('title').value.trim()).slice(0, 120), minutes: Number($('minutes').value), language: r.langTo });
+        title: $('title').value.trim().slice(0, 120), minutes: Number($('minutes').value), language: r.langTo });
       r.claimed = true; r.endsAt = Date.parse(claim.ends_at); r.startedAt = Date.now();
       if (run !== r || r.stopping) { await release(r); return; }
       r.source = r.audio.createMediaStreamSource(stream);

@@ -261,6 +261,12 @@ supabase functions deploy live-captions
 della cassa non può spendere credito audio e viceversa (test in
 `tests/handlers_test.ts`).
 
+`LIVE_CAPTIONS_PASSWORD_2` è una **seconda password** per la stessa regia, da
+dare al festival a cui si presta il sistema senza consegnargli la nostra. Apre
+le stesse porte; le sessioni restano firmate con la prima, quindi cambiare o
+togliere la seconda non butta fuori nessuno a metà talk. Deve essere lunga
+almeno 16 caratteri, altrimenti viene ignorata.
+
 ### Come gira, tecnicamente
 
 1. La regia fa login → riceve una sessione firmata (12 h, `sessionStorage`).
@@ -287,11 +293,10 @@ della cassa non può spendere credito audio e viceversa (test in
 ### Prima di ogni talk
 
 - Aprire `/live/control/` **su HTTPS** (il microfono non parte da `file://`).
-- Scegliere il *Venue*: **Sala Lux** o **Sala Cosmo**. Le due sale non hanno mai
-  un talk in contemporanea, quindi usano lo stesso canale: il pubblico apre
-  sempre `/live` (un solo link, un solo QR) e legge la sala davanti al titolo.
-  Una seconda regia che prova ad avviare mentre l'altra è in diretta riceve
-  `room_busy`.
+- C'è **una sola sala**, `main`: il pubblico apre sempre `/live` (un solo link,
+  un solo QR) e legge il titolo del talk. Una seconda regia che prova ad
+  avviare mentre l'altra è in diretta riceve `room_busy`, quindi due talk in
+  contemporanea oggi non si possono fare.
 - Scegliere la direzione in *Spoken language and caption language*: si imposta
   prima di *Start* e resta fissa per tutta la sessione. Il cinese è servito come
   `zh` (semplificato); la sala accetta solo `en`, `it`, `zh`.

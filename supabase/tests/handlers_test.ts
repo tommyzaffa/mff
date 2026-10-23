@@ -6,6 +6,7 @@ Deno.env.set('STRIPE_WEBHOOK_SECRET', 'test-signing-secret');
 // Deliberately the same string as DOOR_PASSWORD: the two session domains must
 // stay separate even when the festival reuses a passphrase.
 Deno.env.set('LIVE_CAPTIONS_PASSWORD', 'long-test-only-password');
+Deno.env.set('LIVE_CAPTIONS_PASSWORD_2', 'a-lent-festival-password');
 Deno.env.set('SONIOX_API_KEY', 'soniox-account-key');
 // Same passphrase again, for the same reason: the mail endpoint's sessions are
 // their own domain too.
@@ -141,6 +142,23 @@ Deno.test('a box-office session cannot spend audio credit, nor a regia session o
   assert((await live(req({action:'check',session:liveSession}))).status===200);
   assert(!calls.some(c=>c.includes('soniox')));
 });
+Deno.test('either control-room password opens the same session, a wrong one opens nothing',async()=>{
+  const sessionOf=async(password:string)=>{
+    const res=await live(req({action:'login',password}));
+    return {status:res.status,body:await res.json()};
+  };
+  const host=await sessionOf('long-test-only-password');
+  const guest=await sessionOf('a-lent-festival-password');
+  assert(host.status===200 && guest.status===200);
+  // The guest password is a door, not a second signing key: both sessions are
+  // signed the same way, so neither depends on the other password surviving.
+  assert((await live(req({action:'check',session:guest.body.session}))).status===200);
+  assert((await live(req({action:'check',session:host.body.session}))).status===200);
+  assert(guest.body.session!==host.body.session);
+  assert((await sessionOf('a-lent-festival-passwor')).status===401);
+  assert((await sessionOf('')).status===401);
+});
+
 Deno.test('a Soniox key needs a live lease, and the account key never leaves the server',async()=>{
   const original=globalThis.fetch;
   const {createLiveSession}=await import('../functions/_shared/live-session.ts');

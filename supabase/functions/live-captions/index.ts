@@ -19,7 +19,13 @@ Deno.serve(secured(async req => {
   if(body.action==='login') {
     const blocked=await rateLimit(req,'live-login',8,60,300);
     if(blocked) return blocked;
-    if(!passwordMatches(body.password,secret)) return fail(req,'unauthorised',401);
+    // A festival the system is lent to gets its own password and nothing else:
+    // both open the same control room, and every session is signed with the
+    // first secret, so a changed guest password never invalidates a live shift.
+    const guest=Deno.env.get('LIVE_CAPTIONS_PASSWORD_2')??'';
+    const allowed=passwordMatches(body.password,secret) ||
+      (guest.length>=16 && passwordMatches(body.password,guest));
+    if(!allowed) return fail(req,'unauthorised',401);
     return json(req,{ok:true,session:await createLiveSession(secret),configured:!!Deno.env.get('SONIOX_API_KEY')});
   }
   if(!await validLiveSession(body.session,secret)) return fail(req,'unauthorised',401);
