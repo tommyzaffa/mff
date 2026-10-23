@@ -13,8 +13,10 @@
           if (translation) this.translated = (this.translated + token.text).slice(-1400);
           else {
             this.original = (this.original + token.text).slice(-1400);
-            // In one-way mode speech already in the target language is never translated.
-            if (token.language === this.target) this.translated = (this.translated + token.text).slice(-1400);
+            // In one-way mode speech already in the target language is never
+            // translated. Soniox may answer 'zh-CN' where we asked for 'zh'.
+            const spoken = typeof token.language === 'string' ? token.language.slice(0, 2).toLowerCase() : '';
+            if (spoken === this.target) this.translated = (this.translated + token.text).slice(-1400);
           }
         } else if (translation) this.draft += token.text;
       }
@@ -24,32 +26,33 @@
   }
   // Keep whole words at the start of the rolling screen. Final text only goes
   // to the audience; provisional hypotheses stay in the operator preview.
+  // Chinese writes no spaces, so there the cut simply falls where it falls.
   function tail(text, limit = 320) {
     text = String(text || '').trim();
     if (text.length <= limit) return text;
     const cut = text.slice(-limit);
     const space = cut.indexOf(' ');
-    return space >= 0 ? cut.slice(space + 1) : cut;
+    return space >= 0 && space < 40 ? cut.slice(space + 1) : cut;
   }
   const errors = {
-    unauthorised: 'Sessione scaduta o password errata. Accedi di nuovo.',
-    room_busy: 'C’è già una diretta in corso da un’altra regia (Sala Lux o Sala Cosmo). Fermala prima di avviarne una nuova.',
-    lease_lost: 'Il collegamento con la sala è scaduto. Ferma e riavvia la diretta.',
-    room_not_found: 'Sala non configurata.',
-    not_configured: 'Soniox o la password regia non sono ancora configurati sul server.',
-    service_unavailable: 'Servizio momentaneamente non disponibile. Riprova tra poco.',
-    soniox_unavailable: 'Soniox non è disponibile. Verifica la chiave e il credito nel suo pannello.',
-    soniox_capacity: 'Soniox ha raggiunto il limite di connessioni. Riprova tra poco.',
-    rate_limited: 'Troppe richieste. Attendi un minuto prima di riprovare.',
-    NotAllowedError: 'Accesso al microfono negato. Abilitalo nelle impostazioni del browser.',
-    NotFoundError: 'Nessun ingresso audio disponibile. Collega il mixer o un microfono.',
-    NotReadableError: 'L’ingresso audio è occupato o non disponibile.',
-    AbortError: 'La richiesta ha impiegato troppo tempo. Controlla la connessione.',
+    unauthorised: 'Session expired or wrong password. Sign in again.',
+    room_busy: 'Another control room is already live. Stop that session before starting a new one.',
+    lease_lost: 'The link with the room expired. Stop and start the session again.',
+    room_not_found: 'Room not configured.',
+    not_configured: 'Soniox or the control-room password is not configured on the server yet.',
+    service_unavailable: 'Service temporarily unavailable. Try again shortly.',
+    soniox_unavailable: 'Soniox is unavailable. Check the key and the credit in its dashboard.',
+    soniox_capacity: 'Soniox hit its connection limit. Try again shortly.',
+    rate_limited: 'Too many requests. Wait a minute before trying again.',
+    NotAllowedError: 'Microphone access denied. Allow it in the browser settings.',
+    NotFoundError: 'No audio input available. Connect the mixer or a microphone.',
+    NotReadableError: 'The audio input is busy or unavailable.',
+    AbortError: 'The request took too long. Check the connection.',
   };
-  function errorText(error) { return errors[error.code || error.name] || error.message || 'Collegamento interrotto. Riprova.'; }
+  function errorText(error) { return errors[error.code || error.name] || error.message || 'Connection interrupted. Try again.'; }
   async function request(body, { keepalive = false } = {}) {
     const url = root.MFF_PASSES && root.MFF_PASSES.url;
-    if (!url) throw new Error('Configurazione del sito non disponibile.');
+    if (!url) throw new Error('Site configuration unavailable.');
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
@@ -59,7 +62,7 @@
       });
       const data = await response.json();
       if (!response.ok || !data.ok) {
-        const error = new Error(errors[data.error] || 'Servizio non disponibile. Riprova.');
+        const error = new Error(errors[data.error] || 'Service unavailable. Try again.');
         error.code = data.error; throw error;
       }
       return data;

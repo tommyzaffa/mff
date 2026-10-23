@@ -8,29 +8,47 @@
   let stopped = false; let booting = false; let poll; let tick; let bootTimer; let shown = 'en';
   // The audience reads the page in the language it is being translated into.
   const copy = {
-    en: { label: 'LIVE CAPTIONS / ENGLISH', source: 'Automatically translated from Italian.',
+    en: { label: 'LIVE CAPTIONS', source: 'Automatically translated in real time.',
       accuracy: 'Names and expressions may contain errors.', size: 'Caption size',
-      standard: 'Standard text', large: 'Large text', fullscreen: 'Full screen ↗',
+      standard: 'Standard text', large: 'Large text', fullscreen: 'Full screen',
       idle: 'Waiting for the talk', ended: 'Talk ended', reconnecting: 'Reconnecting…',
       connecting: 'Starting…', live: 'Live', waiting: 'Captions will appear when the talk begins.',
       thanks: 'Thank you for joining us.',
-      interrupted: 'The live connection was interrupted. The text above is the last received caption.' },
-    it: { label: 'SOTTOTITOLI LIVE / ITALIANO', source: 'Tradotto automaticamente dall’inglese.',
+      interrupted: 'The live connection was interrupted. The text above is the last received caption.',
+      brand: 'LIVE TRANSLATION BY', contact: 'Live caption enquiries' },
+    it: { label: 'SOTTOTITOLI LIVE', source: 'Tradotto automaticamente in tempo reale.',
       accuracy: 'Nomi ed espressioni possono contenere errori.', size: 'Dimensione del testo',
-      standard: 'Testo standard', large: 'Testo grande', fullscreen: 'Schermo intero ↗',
+      standard: 'Testo standard', large: 'Testo grande', fullscreen: 'Schermo intero',
       idle: 'In attesa del talk', ended: 'Talk terminato', reconnecting: 'Riconnessione…',
       connecting: 'Avvio…', live: 'In diretta', waiting: 'I sottotitoli appariranno all’inizio del talk.',
       thanks: 'Grazie per aver seguito il talk.',
-      interrupted: 'Il collegamento si è interrotto. Il testo qui sopra è l’ultimo sottotitolo ricevuto.' },
+      interrupted: 'Il collegamento si è interrotto. Il testo qui sopra è l’ultimo sottotitolo ricevuto.',
+      brand: 'TRADUZIONE LIVE A CURA DI', contact: 'Per info sui sottotitoli live' },
+    zh: { label: '实时字幕', source: '实时自动翻译。',
+      accuracy: '人名和专有名词可能有误。', size: '字幕大小',
+      standard: '标准字号', large: '大字号', fullscreen: '全屏',
+      idle: '等待开始', ended: '已结束', reconnecting: '正在重新连接…',
+      connecting: '正在启动…', live: '直播中', waiting: '活动开始后将显示字幕。',
+      thanks: '感谢观看。',
+      interrupted: '连接已中断，以上为最后收到的字幕。',
+      brand: '实时翻译提供方', contact: '实时字幕咨询' },
   };
+  // The room is international even when the captions are not: every label is
+  // said in English and then in the language being translated into.
+  let words = copy.en;
   function speak(language) {
     if (language === shown) return;
-    shown = language; const words = copy[language];
+    shown = language; words = {};
+    for (const key in copy.en) {
+      const native = copy[language][key];
+      words[key] = !native || native === copy.en[key] ? copy.en[key] : copy.en[key] + ' / ' + native;
+    }
     document.documentElement.lang = language;
     $('captions').lang = language; $('stage-label').textContent = words.label;
     $('source-note').textContent = words.source; $('accuracy-note').textContent = words.accuracy;
-    $('size-label').textContent = words.size; $('fullscreen').textContent = words.fullscreen;
+    $('size-label').textContent = words.size; $('fullscreen').textContent = words.fullscreen + ' ↗';
     $('text-size').options[0].textContent = words.standard; $('text-size').options[1].textContent = words.large;
+    $('brand-label').textContent = words.brand; $('contact-note').textContent = words.contact;
   }
   if (params.get('screen') === '1') { document.body.classList.add('screen-mode'); document.body.dataset.size = 'large'; $('text-size').value = 'large'; }
   $('text-size').onchange = () => { document.body.dataset.size = $('text-size').value; render(); };
@@ -49,14 +67,31 @@
   // audience loses the place it was reading; then keep the last line at the bottom.
   let painted = '';
   const glide = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // The room publishes a rolling window of the last 1400 characters, so after a
+  // couple of minutes a new reading no longer *starts* with what is on screen —
+  // it is the same text shifted left, and a naive prefix test repainted the whole
+  // paragraph on every update. That is the flicker the audience was following.
+  // The window only ever loses characters from its head, so the new reading is
+  // `painted` minus some head plus a short tail: find that tail.
+  function appended(text) {
+    if (!painted) return null;
+    if (text.startsWith(painted)) return text.slice(painted.length);
+    // Longest first: speech adds a few characters per update, so this matches
+    // on the first or second try and never walks the whole window.
+    for (let keep = Math.min(painted.length, text.length); keep >= 40; keep--) {
+      if (painted.endsWith(text.slice(0, keep))) return text.slice(keep);
+    }
+    return null; // a different talk, or a gap too long to bridge
+  }
   function paint(text, placeholder) {
     const caption = $('captions'); const frame = $('caption-window');
+    const grown = text ? appended(text) : null;
     if (!text) { caption.textContent = placeholder; painted = ''; }
-    else if (painted && text.startsWith(painted)) {
-      const grown = text.slice(painted.length);
-      if (grown) caption.append(grown);
-      painted = text;
-    } else { caption.textContent = text; painted = text; }
+    // Appending for ever would make the browser re-lay out an essay on every
+    // word, so the paragraph restarts about twice an hour — one jump, not one
+    // per update.
+    else if (grown === null || painted.length > 24000) { caption.textContent = text; painted = text; }
+    else if (grown) { caption.append(grown); painted += grown; }
     const bottom = frame.scrollHeight - frame.clientHeight;
     // A new line glides up; a jump of more than one window (a new talk, a phone
     // waking up) snaps instead, so nobody has to watch the text fly past. A hidden
@@ -66,8 +101,7 @@
   }
   function render() {
     if (!snapshot) return;
-    speak(snapshot.language === 'it' ? 'it' : 'en');
-    const words = copy[shown];
+    speak(copy[snapshot.language] ? snapshot.language : 'en');
     const age = Date.now() - Date.parse(snapshot.updated_at);
     const stale = age > 30000;
     // The lease lives 45 seconds, so a room nobody has written to in three minutes

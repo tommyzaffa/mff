@@ -10,7 +10,8 @@
   // audience in front of the title, not by a second page and a second QR code.
   const ROOM = 'main';
   const fields = ['venue', 'title', 'direction', 'device', 'minutes', 'context', 'terms', 'glossary'];
-  const directions = { 'it-en': { source: 'it', target: 'en' }, 'en-it': { source: 'en', target: 'it' } };
+  const directions = { 'it-en': { source: 'it', target: 'en' }, 'en-it': { source: 'en', target: 'it' },
+    'en-zh': { source: 'en', target: 'zh' }, 'zh-en': { source: 'zh', target: 'en' } };
   const direction = () => directions[$('direction').value] || directions['it-en'];
   function status(text, state = '') { $('status').textContent = text; $('status').dataset.state = state; }
   function controls(active) {
@@ -27,15 +28,16 @@
     if (!configured) $('error').textContent = errorText({ code: 'not_configured' });
     share(); relabel();
   }
-  // The regia reads the source language, the audience reads the target one.
+  // The control room reads the source language, the audience reads the target one.
   function relabel() {
     const { source, target } = direction();
-    const names = { it: ['ITALIANO', 'italiano'], en: ['INGLESE', 'inglese'] };
+    const names = { it: ['ITALIAN', 'italian'], en: ['ENGLISH', 'english'], zh: ['CHINESE', 'chinese'] };
+    const example = { it: 'cortometraggio', en: 'short film', zh: '短片' };
     $('direction-label').textContent = names[source][0] + ' → ' + names[target][0];
-    $('glossary-label').textContent = 'Traduzioni preferite · ' + names[source][1] + ' = ' + names[target][1];
-    $('glossary').placeholder = target === 'en' ? 'cortometraggio = short film' : 'short film = cortometraggio';
-    $('translation-label').textContent = names[target][0] + ' · TESTO VISIBILE AL PUBBLICO';
-    $('original-label').textContent = 'TRASCRIZIONE ' + (source === 'it' ? 'ITALIANA' : 'INGLESE');
+    $('glossary-label').textContent = 'Preferred translations · ' + names[source][1] + ' = ' + names[target][1];
+    $('glossary').placeholder = example[source] + ' = ' + example[target];
+    $('translation-label').textContent = names[target][0] + ' · WHAT THE AUDIENCE SEES';
+    $('original-label').textContent = names[source][0] + ' TRANSCRIPT';
     $('translation').lang = $('draft').lang = target; $('original').lang = source;
   }
   $('direction').addEventListener('change', relabel);
@@ -46,8 +48,8 @@
     if (window.QrCreator) QrCreator.render({ text: $('audience-link').href, size: 108, ecLevel: 'M', fill: '#2e1b54', background: '#ffffff' }, $('qr'));
   }
   $('copy-link').onclick = async () => {
-    try { await navigator.clipboard.writeText($('audience-link').href); $('copy-link').textContent = 'Link copiato'; }
-    catch (_) { $('notice').textContent = 'Apri la pagina pubblico e copia l’indirizzo dal browser.'; }
+    try { await navigator.clipboard.writeText($('audience-link').href); $('copy-link').textContent = 'Link copied'; }
+    catch (_) { $('notice').textContent = 'Open the audience page and copy the address from the browser.'; }
   };
   $('login-form').addEventListener('submit', async event => {
     event.preventDefault(); const button = event.submitter; button.disabled = true; $('login-error').textContent = '';
@@ -63,9 +65,9 @@
   async function listDevices() {
     const selected = $('device').value;
     const devices = await navigator.mediaDevices.enumerateDevices();
-    $('device').replaceChildren(new Option('Ingresso predefinito', ''));
+    $('device').replaceChildren(new Option('Default input', ''));
     for (const device of devices.filter(d => d.kind === 'audioinput')) {
-      $('device').append(new Option(device.label || 'Ingresso audio', device.deviceId));
+      $('device').append(new Option(device.label || 'Audio input', device.deviceId));
     }
     if (Array.from($('device').options).some(option => option.value === selected)) $('device').value = selected;
   }
@@ -73,7 +75,7 @@
     discovering = true; controls(false); $('error').textContent = '';
     let stream;
     try {
-      if (!navigator.mediaDevices) throw new Error('Apri la pagina tramite HTTPS o localhost per usare il microfono.');
+      if (!navigator.mediaDevices) throw new Error('Open this page over HTTPS or localhost to use the microphone.');
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       await listDevices();
     } catch (error) { $('error').textContent = errorText(error); }
@@ -84,9 +86,9 @@
   }
   document.addEventListener('visibilitychange', () => { if (run && !run.stopping) void keepAwake(); });
   function render(r) {
-    $('translation').textContent = tail(r.buffer.translated) || 'I sottotitoli appariranno qui.';
-    $('draft').textContent = r.buffer.draft ? 'In elaborazione: ' + r.buffer.draft : '';
-    $('original').textContent = tail(r.buffer.original, 400) || 'In attesa dell’audio.';
+    $('translation').textContent = tail(r.buffer.translated) || 'Captions will appear here.';
+    $('draft').textContent = r.buffer.draft ? 'Processing: ' + r.buffer.draft : '';
+    $('original').textContent = tail(r.buffer.original, 400) || 'Waiting for audio.';
   }
   function message(r, state) {
     return { action: 'publish', session, room: r.room, publisher: r.publisher, sequence: ++r.sequence,
@@ -107,7 +109,7 @@
         await request(payload); r.pending = null; r.lastPublish = Date.now();
       } catch (error) {
         if (run === r && !r.stopping) {
-          $('notice').textContent = 'Invio al pubblico interrotto. La regia sta tentando di ricollegarsi.';
+          $('notice').textContent = 'Delivery to the audience stopped. The control room is trying to reconnect.';
           if (['unauthorised', 'lease_lost'].includes(error.code) || Date.now() - r.lastPublish > 25000) {
             // Do not await stop here: it drains this very publish promise.
             void stop(errorText(error));
@@ -117,15 +119,15 @@
     })();
     return r.publishing;
   }
-  // Fermare un talk restituisce la sala al prossimo: la pagina del pubblico torna
-  // in attesa invece di restare per giorni sull'ultima riga di un talk finito.
+  // Stopping a talk hands the room to the next one: the audience page goes back
+  // to waiting instead of sitting for days on the last line of a finished talk.
   const closing = r => ({ ...message(r, 'idle'), original: '', translated: '' });
   async function release(r) {
     if (!r.claimed) return;
     if (r.publishing) await r.publishing; // final update follows all earlier requests
     r.pending = null;
     try { await request(closing(r), { keepalive: true }); }
-    catch (_) { if (run === r) $('notice').textContent = 'Audio fermato, ma la schermata del pubblico non si è ripulita: si azzera da sola entro tre minuti.'; }
+    catch (_) { if (run === r) $('notice').textContent = 'Audio stopped, but the audience screen did not clear: it resets on its own within three minutes.'; }
     r.claimed = false;
   }
   function context() {
@@ -149,7 +151,7 @@
   async function connect(r) {
     if (run !== r || r.stopping) return;
     r.state = r.attempts ? 'reconnecting' : 'connecting'; r.dirty = true;
-    status(r.attempts ? 'Riconnessione…' : 'Collegamento…', r.state);
+    status(r.attempts ? 'Reconnecting…' : 'Connecting…', r.state);
     const key = await request({ action: 'key', session, room: r.room, publisher: r.publisher });
     if (run !== r || r.stopping) return;
     const ws = new WebSocket(key.websocket_url); r.ws = ws; r.ready = false;
@@ -173,7 +175,7 @@
         const detail = typeof data.error_message === 'string' ? data.error_message.slice(0, 180) : '';
         r.fatal = ![408, 429, 500, 502, 503, 504].includes(Number(data.error_code));
         // Soniox explains itself better than we can guess: show its own words.
-        r.failure = 'Soniox ha interrotto la traduzione (' + data.error_code + ')' + (detail ? ': ' + detail : '.');
+        r.failure = 'Soniox stopped the translation (' + data.error_code + ')' + (detail ? ': ' + detail : '.');
         ws.close(); return;
       }
       // The audience only ever sees final text, so only new final text is worth a
@@ -182,7 +184,7 @@
       r.buffer.accept(data); render(r);
       if (settled !== r.buffer.translated + '\v' + r.buffer.original) { r.dirty = true; void publish(r); }
       if (!r.stopping) {
-        r.state = 'live'; status('In diretta', 'live');
+        r.state = 'live'; status('Live', 'live');
         if (Date.now() - r.socketOpened > 30000) r.attempts = 0;
       }
       if (data.finished && r.finish) r.finish();
@@ -199,9 +201,9 @@
   }
   function scheduleReconnect(r) {
     if (run !== r || r.stopping) return;
-    if (++r.attempts > 3) { void stop('Connessione persa dopo tre tentativi. Controlla la rete e riavvia la diretta.'); return; }
-    r.state = 'reconnecting'; r.dirty = true; status('Riconnessione…', r.state);
-    $('notice').textContent = 'Connessione interrotta: il parlato durante questa pausa non verrà recuperato.';
+    if (++r.attempts > 3) { void stop('Connection lost after three attempts. Check the network and start again.'); return; }
+    r.state = 'reconnecting'; r.dirty = true; status('Reconnecting…', r.state);
+    $('notice').textContent = 'Connection dropped: anything said during this gap will not be recovered.';
     r.retry = setTimeout(() => { void connect(r).catch(error => {
       if (['lease_lost', 'unauthorised'].includes(error.code)) void stop(errorText(error));
       else scheduleReconnect(r);
@@ -210,16 +212,16 @@
   async function start() {
     if (run || discovering) return;
     $('error').textContent = ''; $('notice').textContent = '';
-    if (!$('title').value.trim()) { $('title').focus(); $('error').textContent = 'Inserisci il titolo del talk.'; return; }
+    if (!$('title').value.trim()) { $('title').focus(); $('error').textContent = 'Enter the talk title.'; return; }
     if (!window.isSecureContext || !navigator.mediaDevices || !window.AudioWorkletNode) {
-      $('error').textContent = 'Usa un browser aggiornato su HTTPS o localhost per avviare l’audio.'; return;
+      $('error').textContent = 'Use an up-to-date browser over HTTPS or localhost to start the audio.'; return;
     }
     const { source, target } = direction();
     // Not `source`/`target`: r.source is already the MediaStreamAudioSourceNode.
     const r = { publisher: crypto.randomUUID(), room: ROOM, buffer: new CaptionBuffer(target), sequence: 0,
       state: 'connecting', stopping: false, claimed: false, dirty: true, attempts: 0, audioSeconds: 0,
       lastPublish: Date.now(), context: context(), langFrom: source, langTo: target };
-    run = r; controls(true); render(r); status('Apertura microfono…');
+    run = r; controls(true); render(r); status('Opening the microphone…');
     try {
       // Resume during the user's gesture (important on Safari).
       r.audio = new AudioContext(); await r.audio.resume();
@@ -230,7 +232,7 @@
       } });
       if (run !== r || r.stopping) { stream.getTracks().forEach(track => track.stop()); return; }
       r.stream = stream;
-      stream.getAudioTracks()[0].addEventListener('ended', () => { if (run === r && !r.stopping) void stop('Ingresso audio scollegato. Ricollega il mixer e riavvia.'); });
+      stream.getAudioTracks()[0].addEventListener('ended', () => { if (run === r && !r.stopping) void stop('Audio input disconnected. Reconnect the mixer and start again.'); });
       await r.audio.audioWorklet.addModule('../../assets/js/live-audio-worklet.js?v=1');
       if (run !== r || r.stopping) return;
       const claim = await request({ action: 'start', session, room: r.room, publisher: r.publisher,
@@ -256,10 +258,10 @@
         const elapsed = Math.floor((Date.now() - r.startedAt) / 1000);
         $('elapsed').textContent = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
         $('cost').textContent = '$' + (r.audioSeconds / 3600 * 0.18).toFixed(2);
-        if (Date.now() >= r.endsAt) { void stop('Durata massima raggiunta. Avvia una nuova sessione per continuare.'); return; }
+        if (Date.now() >= r.endsAt) { void stop('Maximum duration reached. Start a new session to continue.'); return; }
         if (r.ws && [WebSocket.CONNECTING, WebSocket.OPEN].includes(r.ws.readyState) && Date.now() - r.lastResponse > 20000) r.ws.close();
         if (r.state === 'live' && Date.now() - (r.lastSound || r.startedAt) > 15000) {
-          $('notice').textContent = 'Nessun segnale audio da 15 secondi. Controlla il mixer e l’ingresso selezionato.';
+          $('notice').textContent = 'No audio for 15 seconds. Check the mixer and the selected input.';
         }
       }, 1000);
       void keepAwake();
@@ -270,7 +272,7 @@
   async function stop(reason = '') {
     const r = run;
     if (!r || r.stopping) return;
-    r.stopping = true; controls(true); $('stop').disabled = true; status('Chiusura…');
+    r.stopping = true; controls(true); $('stop').disabled = true; status('Closing…');
     clearInterval(r.pump); clearInterval(r.tick); clearTimeout(r.retry);
     // Stop capture immediately, then let Soniox finalize the remaining words.
     closeAudio(r);
@@ -283,7 +285,7 @@
     await release(r);
     if (wakeLock) { await wakeLock.release().catch(() => {}); wakeLock = null; }
     if (run === r) {
-      run = null; controls(false); status('Fermato');
+      run = null; controls(false); status('Stopped');
       $('error').textContent = reason;
     }
   }
@@ -296,7 +298,7 @@
     clearInterval(r.pump); clearInterval(r.tick); clearTimeout(r.retry);
     closeAudio(r); if (r.ws) r.ws.close();
     if (r.claimed) void request(closing(r), { keepalive: true }).catch(() => {});
-    run = null; controls(false); status('Fermato');
+    run = null; controls(false); status('Stopped');
   });
   if (session) request({ action: 'check', session }).then(data => showControl(data.configured)).catch(error => {
     if (error.code === 'unauthorised') remember('');

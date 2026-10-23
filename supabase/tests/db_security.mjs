@@ -362,5 +362,14 @@ await test('a regia whose lease expired can still clear the audience screen',asy
  const closed=await room();
  assert.deepEqual([closed.state,closed.translated,closed.title],['idle','','Secondo talk']);
 });
+await test('a room can be claimed for Chinese, and only for a language we serve',async()=>{
+ assert.equal((await claim(regiaA,'宁波 talk',30,'zh')).ok,true);
+ const zh=await room();
+ assert.deepEqual([zh.language,zh.title,zh.state],['zh','宁波 talk','connecting']);
+ assert.equal((await caption(regiaA,1,'live','字幕')).ok,true);
+ assert.equal((await room()).translated,'字幕');
+ assert.equal((await caption(regiaA,2,'idle','')).ok,true);
+ assert.equal((await claim(regiaA,'Talk',30,'jp')).error,'bad_request');
+});
 console.log(`${count} database security tests passed`);
 await db.close();

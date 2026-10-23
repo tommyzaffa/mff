@@ -31,7 +31,7 @@ Deno.serve(secured(async req => {
     if(!Deno.env.get('SONIOX_API_KEY')) return fail(req,'not_configured',503);
     if(typeof body.title!=='string' || !body.title.trim() || body.title.length>120 ||
       !Number.isInteger(body.minutes) || body.minutes<5 || body.minutes>240 ||
-      !['en','it'].includes(body.language)) return fail(req,'bad_request');
+      !['en','it','zh'].includes(body.language)) return fail(req,'bad_request');
     const blocked=await rateLimit(req,'live-start',12,80,60);
     if(blocked) return blocked;
     const {data,error}=await db().rpc('live_caption_claim',{

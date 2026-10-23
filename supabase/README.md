@@ -223,12 +223,18 @@ si passa al piano da 20 USD/mese per quel mese e basta.
 ## 10. Sottotitoli live (Soniox)
 
 Si parla una lingua sul palco e se ne legge un'altra sullo schermo. La regia
-(`/live/control/`) sceglie la direzione a ogni talk — **italiano → inglese**
-oppure **inglese → italiano** — apre il microfono, e il pubblico (`/live/`)
-legge; la pagina del pubblico si mette da sola nella lingua dei sottotitoli,
-perché la sala la scrive nella colonna `language`. Il browser della regia parla
+(`/live/control/`) sceglie la direzione a ogni talk — **italiano → inglese**,
+**inglese → italiano**, **inglese → cinese**, **cinese → inglese** — apre il
+microfono, e il pubblico (`/live/`) legge. Il browser della regia parla
 **direttamente** con Soniox via WebSocket, ma non conosce mai la chiave
 dell'account: la funzione `live-captions` gliene consegna una temporanea.
+
+Le due pagine sono **in inglese**, perché il sistema viene prestato ad altri
+festival (OMNI x AI Youth, Ningbo, ottobre 2026). Il contorno della pagina del
+pubblico è bilingue: ogni etichetta è scritta in inglese e poi nella lingua dei
+sottotitoli (`Live / 直播中`), presa dalla colonna `language` della sala. La
+stessa pagina porta il marchio Merge, un QR verso `mergefestival.ch` e i
+contatti per chi volesse la traduzione live al proprio festival.
 
 ### Dove si prende la chiave
 
@@ -258,7 +264,7 @@ della cassa non può spendere credito audio e viceversa (test in
 ### Come gira, tecnicamente
 
 1. La regia fa login → riceve una sessione firmata (12 h, `sessionStorage`).
-2. *Avvia diretta* → `action:'start'` prende in carico la sala `main` con un
+2. *Start* → `action:'start'` prende in carico la sala `main` con un
    lease e una durata massima; un'altra regia riceve `room_busy`.
 3. `action:'key'` → la funzione chiede a Soniox una **chiave temporanea**
    (60 s di validità, monouso, durata massima pari a quanto resta della
@@ -271,7 +277,7 @@ della cassa non può spendere credito audio e viceversa (test in
 5. I token finali tornano indietro e ogni ~1,2 s la regia li pubblica con
    `action:'publish'`; la riga pubblica va in `live_caption_rooms`, che il
    pubblico legge in realtime con la sola chiave anon (RLS: sola lettura).
-6. *Ferma* chiude microfono e WebSocket, scrive lo stato `idle` con il testo
+6. *Stop* chiude microfono e WebSocket, scrive lo stato `idle` con il testo
    azzerato — la pagina del pubblico torna in attesa invece di restare
    sull'ultima riga del talk finito — e libera la sala per il talk successivo.
    La chiusura passa anche a lease scaduto (solo per chi possiede la sala): se
@@ -281,19 +287,20 @@ della cassa non può spendere credito audio e viceversa (test in
 ### Prima di ogni talk
 
 - Aprire `/live/control/` **su HTTPS** (il microfono non parte da `file://`).
-- Scegliere la *Sala*: **Sala Lux** o **Sala Cosmo**. Le due sale non hanno mai
+- Scegliere il *Venue*: **Sala Lux** o **Sala Cosmo**. Le due sale non hanno mai
   un talk in contemporanea, quindi usano lo stesso canale: il pubblico apre
   sempre `/live` (un solo link, un solo QR) e legge la sala davanti al titolo.
   Una seconda regia che prova ad avviare mentre l'altra è in diretta riceve
   `room_busy`.
-- Scegliere la direzione in *Lingua del talk e dei sottotitoli*: si imposta
-  prima di *Avvia* e resta fissa per tutta la sessione.
-- *Rileva ingressi* e scegliere l'uscita del mixer, non il microfono interno.
-- Compilare *Nomi e contesto*: nomi degli ospiti, titoli dei film e le
+- Scegliere la direzione in *Spoken language and caption language*: si imposta
+  prima di *Start* e resta fissa per tutta la sessione. Il cinese è servito come
+  `zh` (semplificato); la sala accetta solo `en`, `it`, `zh`.
+- *Detect inputs* e scegliere l'uscita del mixer, non il microfono interno.
+- Compilare *Names and context of the talk*: nomi degli ospiti, titoli dei film e le
   traduzioni obbligate (`cortometraggio = short film`). È quello che alza la
   qualità più di ogni altra impostazione.
-- Provare trenta secondi di parlato e guardare *Livello audio* e il monitor.
-- Il QR della card *Apri al pubblico* porta alla pagina del pubblico;
+- Provare trenta secondi di parlato e guardare *Audio level* e il monitor.
+- Il QR della card *Open to the audience* porta alla pagina del pubblico;
   `?screen=1` è la versione a caratteri grandi per il proiettore.
 
 ### Costo
