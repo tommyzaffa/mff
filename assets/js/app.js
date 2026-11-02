@@ -929,6 +929,9 @@
   function boot() {
     initIntro();
     applyTranslations(resolveInitialLang());
+    /* The page was held back by the inline script in <head> (non-English
+       visitors only) so the English markup would not flash: show it now. */
+    document.documentElement.classList.remove("i18n-pending");
     initMobileInnerColors();
     initLangControls();
     initMenu();

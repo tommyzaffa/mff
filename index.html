@@ -19,7 +19,11 @@
   <meta property="og:image:alt" content="The main hall of Cinema Lux full of students for WALL·E at Merge Film Festival 2026" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=86" />
+  <!-- Hold the page back until app.js has applied a non-English language, so
+       the English fallback in the markup never flashes (app.js removes the
+       class; 3 s at most). Same choice as resolveInitialLang() in app.js. -->
+  <script>(function(){var d=document.documentElement,l=null;try{l=localStorage.getItem("mff_lang")}catch(e){}if(["en","it","fr","de"].indexOf(l)<0)l=(navigator.language||"en").slice(0,2).toLowerCase();if(["it","fr","de"].indexOf(l)>=0){d.classList.add("i18n-pending");setTimeout(function(){d.classList.remove("i18n-pending")},3000)}})();</script>
+  <link rel="stylesheet" href="assets/css/style.css?v=87" />
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -569,7 +573,7 @@
 
   <!-- Scripts -->
   <script src="assets/js/translations.js?v=74"></script>
-  <script src="assets/js/app.js?v=12"></script>
+  <script src="assets/js/app.js?v=13"></script>
 
   <!-- Google Maps -->
   <script>

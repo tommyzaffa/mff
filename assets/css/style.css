@@ -122,6 +122,11 @@ body.is-menu-open {
 body {
   animation: pageFadeIn 0.85s var(--ease) both;
 }
+/* While the inline script in each page's head holds the page back for a
+   non-English visitor, the fade-in waits at its first frame (opacity 0), so
+   the English fallback never shows; app.js removes .i18n-pending once the
+   language is applied and the fade-in plays on the translated page. */
+html.i18n-pending body { animation-play-state: paused; opacity: 0; }
 body.is-leaving {
   animation: none;
   opacity: 0;
