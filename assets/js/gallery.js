@@ -278,13 +278,13 @@
     });
   });
 
-  /* A shared #photo-2026-07 address opens that photo — after app.js has
-     translated the captions, which it does on DOMContentLoaded. */
+  /* A shared #photo-2026-07 address opens that photo — once app.js has
+     translated the captions (it may first have to fetch the language). */
   function openFromHash() {
     var id = location.hash && location.hash.indexOf("#photo-") === 0 ? location.hash.slice(1) : "";
     var target = id ? doc.getElementById(id) : null;
     if (target && target.classList.contains("gallery-item") && !target.hidden) open(target);
   }
-  if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", openFromHash);
-  else openFromHash();
+  if (window.MFF_READY) openFromHash();
+  else window.addEventListener("mff:ready", openFromHash, { once: true });
 })();

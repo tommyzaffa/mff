@@ -1,6 +1,6 @@
 /* ============================================================
    Merge Film Festival 2.0 — app.js
-   - i18n runtime (translations.js)
+   - i18n runtime (assets/js/i18n/<lang>.js, one file per language)
    - scroll-driven background colour crossfade (cream <-> violet)
    - artistic full-screen menu
    - news carousel, hero video controller, scroll reveals
@@ -24,9 +24,35 @@
     return (node == null && lang !== "en") ? lookup("en", path) : node;
   }
 
-  /* ---------------- i18n ---------------- */
+  /* ---------------- i18n ----------------
+     Each language is its own file, assets/js/i18n/<lang>.js. English is a
+     plain <script> on every page (it is also the fallback for any missing
+     key); the visitor's language is preloaded by the inline script in <head>
+     and executed here, and any other language is fetched when chosen. */
+  var I18N_EN_SRC = (function () {
+    var el = document.querySelector('script[src*="i18n/en.js"]');
+    return el ? el.getAttribute("src") : null;
+  })();
+  var langWaiting = {};
+  function ensureLang(lang, done) {
+    if (I18N[lang] || !I18N_EN_SRC || SUPPORTED.indexOf(lang) === -1) { done(); return; }
+    if (langWaiting[lang]) { langWaiting[lang].push(done); return; }
+    langWaiting[lang] = [done];
+    var el = document.createElement("script");
+    el.src = I18N_EN_SRC.replace("/en.js", "/" + lang + ".js");
+    el.onload = el.onerror = function () {
+      var waiting = langWaiting[lang];
+      delete langWaiting[lang];
+      waiting.forEach(function (fn) { fn(); });
+    };
+    document.head.appendChild(el);
+  }
+  function setLanguage(lang) {
+    ensureLang(lang, function () { applyTranslations(lang); });
+  }
+
   function applyTranslations(lang) {
-    if (SUPPORTED.indexOf(lang) === -1) lang = "en";
+    if (SUPPORTED.indexOf(lang) === -1 || !I18N[lang]) lang = "en";
     var dict = I18N[lang];
     if (!dict) return;
 
@@ -70,7 +96,7 @@
     return SUPPORTED.indexOf(nav) !== -1 ? nav : "en";
   }
 
-  window.setLang = applyTranslations;
+  window.setLang = setLanguage;
 
   /* ---------------- background crossfade engine ---------------- */
   function colorFor(kind) {
@@ -429,7 +455,7 @@
     $all(LANG_CONTROL_SELECTOR).forEach(function (a) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
-        applyTranslations(a.getAttribute("data-lang"));
+        setLanguage(a.getAttribute("data-lang"));
       });
     });
   }
@@ -927,11 +953,19 @@
 
   /* ---------------- boot ---------------- */
   function boot() {
+    var lang = resolveInitialLang();
+    /* Usually already downloaded: <head> preloaded it while the page parsed. */
+    ensureLang(lang, function () { start(lang); });
+  }
+  function start(lang) {
     initIntro();
-    applyTranslations(resolveInitialLang());
+    applyTranslations(lang);
     /* The page was held back by the inline script in <head> (non-English
        visitors only) so the English markup would not flash: show it now. */
     document.documentElement.classList.remove("i18n-pending");
+    /* Page scripts that need the translated text wait for this. */
+    window.MFF_READY = true;
+    window.dispatchEvent(new Event("mff:ready"));
     initMobileInnerColors();
     initLangControls();
     initMenu();
